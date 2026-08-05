@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2563eb">
+  <title>Volleyball Trainer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section id="modeBanner" class="card mode-banner view-mode">
+      <div>
+        <strong id="modeTitle">Ansichtsmodus</strong>
+        <p id="modeHint">Schritte ansehen und Animation abspielen.</p>
+      </div>
+      <button id="toggleMode" type="button">Bearbeiten</button>
+    </section>
+
+    <section class="card">
+      <label>
+        Rotation
+        <select id="rotationSelect">
+          <option value="0">Grundaufstellung</option>
+          <option value="1">Rotation +1</option>
+          <option value="2">Rotation +2</option>
+          <option value="3">Rotation +3</option>
+          <option value="4">Rotation +4</option>
+          <option value="5">Rotation +5</option>
+        </select>
+      </label>
+    </section>
+
+    <section id="courtHeader" class="card court-header view-mode">
+      <div class="header-row">
+        <div>
+          <span class="muted">Aktuell</span>
+          <div>
+            <strong id="rotationName">Grundaufstellung</strong>
+            · Schritt <span id="stepNumber">1</span> von <span id="stepTotal">1</span>
+          </div>
+        </div>
+        <span id="modeBadge" class="badge">Ansicht</span>
+      </div>
+
+      <label id="stepNameRow" class="hidden top-control">
+        Name des Schritts
+        <input id="stepNameInput" type="text" autocomplete="off">
+      </label>
+
+      <label id="editTargetRow" class="hidden top-control">
+        Bearbeiten
+        <select id="editTarget">
+          <option value="players">Spieler verschieben</option>
+          <option value="ball">Ball verschieben</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="card compact-toolbar">
+      <div class="step-toolbar">
+        <button id="prevStep" type="button" aria-label="Vorheriger Schritt">◀</button>
+        <button id="play" type="button" class="primary">▶ Abspielen</button>
+        <button id="nextStep" type="button" aria-label="Nächster Schritt">▶</button>
+        <button id="saveStep" type="button" class="icon-button hidden" aria-label="Schritt speichern" title="Schritt speichern">💾</button>
+        <button id="addStep" type="button" class="hidden">Neuer Schritt</button>
+        <button id="deleteStep" type="button" class="icon-button hidden danger" aria-label="Schritt löschen" title="Schritt löschen">🗑️</button>
+      </div>
+
+      <div id="editControls" class="hidden edit-controls">
+        <div id="playerControls">
+          <label>
+            Spieler verschieben mit
+            <select id="moveMode">
+              <option value="tap">Spieler antippen → Ziel antippen</option>
+              <option value="drag">Spieler ziehen</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="ballControls" class="hidden control-grid">
+          <label>
+            Ballpunkt
+            <select id="ballPointMode">
+              <option value="start">Startpunkt setzen</option>
+              <option value="contact">Kontaktpunkt setzen</option>
+              <option value="end">Endpunkt setzen</option>
+            </select>
+          </label>
+
+          <label>
+            Spielsituation
+            <select id="situationSelect">
+              <option value="serveReceive">Aufschlag / Annahme</option>
+              <option value="opponentAttack">Gegnerischer Angriff / Abwehr</option>
+              <option value="freeBall">Freeball</option>
+              <option value="ownAttack">Eigener Angriff</option>
+              <option value="custom">Benutzerdefiniert</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="court-card">
+      <svg id="court" viewBox="0 0 600 760" role="img" aria-label="Volleyballfeld">
+        <defs>
+          <marker id="arrowHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z"></path>
+          </marker>
+        </defs>
+
+        <rect x="65" y="35" width="470" height="690" rx="10" class="court-outline"></rect>
+        <line x1="65" y1="380" x2="535" y2="380" class="net-line"></line>
+        <line x1="65" y1="260" x2="535" y2="260" class="attack-line"></line>
+        <line x1="65" y1="500" x2="535" y2="500" class="attack-line"></line>
+
+        <text x="300" y="24" text-anchor="middle" class="court-label">Gegner</text>
+        <text x="300" y="750" text-anchor="middle" class="court-label">Eigene Mannschaft</text>
+
+        <g id="validationLayer"></g>
+        <g id="movementLayer"></g>
+        <g id="ballPathLayer"></g>
+        <g id="playerLayer"></g>
+
+        <g id="ball" visibility="hidden">
+          <circle r="18" class="ball-fill"></circle>
+          <path d="M-12 0 Q0 -14 12 0 Q0 14 -12 0 M0 -17 Q-7 0 0 17" class="ball-seams"></path>
+        </g>
+      </svg>
+    </section>
+
+    <section id="tapNotice" class="card notice hidden">
+      <strong>Ziel auswählen</strong>
+      <span>Tippe auf die gewünschte Stelle im Spielfeld.</span>
+    </section>
+
+    <p id="status" class="status" aria-live="polite">Grundaufstellung geladen.</p>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+:root {
+  --blue: #2563eb;
+  --red: #dc2626;
+  --yellow: #f59e0b;
+  --green: #16a34a;
+  --panel: #ffffff;
+  --background: #f3f4f6;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #d1d5db;
+  --danger-bg: #fef2f2;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
+
+button, input, select { font: inherit; }
+
+button, input, select {
+  min-height: 44px;
+  border-radius: 12px;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  padding: 9px 13px;
+}
+
+button:active { transform: translateY(1px); }
+
+button.primary {
+  color: #fff;
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+button.danger { background: var(--danger-bg); }
+
+input, select {
+  width: 100%;
+  margin-top: 5px;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+label { display: block; font-size: 14px; }
+
+.app-shell {
+  width: min(880px, 100%);
+  margin: 0 auto;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.mode-banner,
+.court-header {
+  border-width: 4px;
+}
+
+.view-mode { border-color: var(--blue); }
+.edit-mode { border-color: var(--red); }
+
+.mode-banner,
+.header-row,
+.step-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mode-banner p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.muted {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.badge {
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: #eef2ff;
+  font-size: 13px;
+}
+
+.top-control { margin-top: 10px; }
+
+.compact-toolbar {
+  display: grid;
+  gap: 10px;
+}
+
+.step-toolbar {
+  justify-content: flex-start;
+}
+
+.icon-button {
+  min-width: 46px;
+  font-size: 20px;
+  padding-inline: 11px;
+}
+
+.edit-controls { display: grid; gap: 10px; }
+
+.control-grid {
+  display: grid;
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .control-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.court-card {
+  border-radius: 16px;
+}
+
+#court {
+  width: 100%;
+  display: block;
+  border: 4px solid var(--blue);
+  border-radius: 16px;
+  background: #fff;
+  touch-action: none;
+  overscroll-behavior: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+#court.edit-mode { border-color: var(--red); }
+
+.court-outline {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 4;
+}
+
+.net-line {
+  stroke: var(--text);
+  stroke-width: 6;
+}
+
+.attack-line {
+  stroke: var(--border);
+  stroke-width: 3;
+  stroke-dasharray: 10 8;
+}
+
+.court-label {
+  fill: var(--muted);
+  font-size: 18px;
+}
+
+.player.editable {
+  cursor: grab;
+  touch-action: none;
+}
+
+.player.selected circle { stroke-width: 7; }
+
+.movement-path {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 5;
+  stroke-dasharray: 11 8;
+  marker-end: url(#arrowHead);
+  opacity: .85;
+}
+
+.ball-path {
+  fill: none;
+  stroke: var(--yellow);
+  stroke-width: 4;
+  stroke-dasharray: 9 7;
+  marker-end: url(#arrowHead);
+  opacity: .9;
+}
+
+.ball-point {
+  fill: #fff7ed;
+  stroke: var(--yellow);
+  stroke-width: 3;
+}
+
+.ball-fill {
+  fill: var(--yellow);
+  stroke: var(--text);
+  stroke-width: 2;
+}
+
+.ball-seams {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 2;
+}
+
+.validation-warning {
+  stroke: var(--yellow);
+  stroke-width: 5;
+  stroke-dasharray: 10 7;
+}
+
+.validation-invalid {
+  stroke: var(--red);
+  stroke-width: 6;
+  stroke-dasharray: 6 5;
+}
+
+.notice {
+  display: grid;
+  gap: 3px;
+}
+
+.notice span, .status {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.status { margin: 0 2px 8px; }
+
+.hidden { display: none !important; }

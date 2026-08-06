@@ -2,7 +2,7 @@
   "use strict";
 
   const APP_VERSION = {
-    number: "1.5.1",
+    number: "1.6.0",
     date: "06.08.2026",
     changes: [
       "Info- und Bearbeiten-Button technisch neu aufgebaut.",
@@ -374,7 +374,7 @@
     const position = currentStep().ball.position;
 
     elements.ball.setAttribute("transform", `translate(${position.x} ${position.y})`);
-    elements.ball.setAttribute("visibility", editMode ? "visible" : "hidden");
+    elements.ball.setAttribute("visibility", "visible");
     elements.ball.classList.toggle("editable", editMode);
     elements.ball.classList.toggle("selected", selectedObject?.type === "ball");
 
@@ -386,6 +386,74 @@
       marker.setAttribute("class", "ball-point");
       elements.ballPathLayer.appendChild(marker);
     }
+
+    renderStepPaths();
+  }
+
+  function renderStepPaths() {
+    elements.movementLayer.innerHTML = "";
+    elements.ballPathLayer
+      .querySelectorAll(".step-ball-path")
+      .forEach(node => node.remove());
+
+    if (state.stepIndex <= 0) return;
+
+    const previousStep = currentRotation().steps[state.stepIndex - 1];
+    const activeStep = currentStep();
+
+    for (const player of ROSTER) {
+      const from = previousStep.positions[player.id];
+      const to = activeStep.positions[player.id];
+
+      if (from.x !== to.x || from.y !== to.y) {
+        drawLine(
+          elements.movementLayer,
+          from.x, from.y, to.x, to.y,
+          "step-path"
+        );
+      }
+    }
+
+    const fromBall = previousStep.ball.position;
+    const toBall = activeStep.ball.position;
+
+    if (fromBall.x !== toBall.x || fromBall.y !== toBall.y) {
+      drawLine(
+        elements.ballPathLayer,
+        fromBall.x, fromBall.y, toBall.x, toBall.y,
+        "step-ball-path"
+      );
+    }
+  }
+
+  async function switchStepAnimated(targetIndex) {
+    const boundedTarget = Math.max(
+      0,
+      Math.min(currentRotation().steps.length - 1, targetIndex)
+    );
+
+    if (boundedTarget === state.stepIndex) return;
+
+    stopPlayback();
+
+    const fromIndex = state.stepIndex;
+    const fromStep = currentRotation().steps[fromIndex];
+    const toStep = currentRotation().steps[boundedTarget];
+
+    playing = true;
+    elements.play.textContent = "⏸ Stoppen";
+
+    await animateTransition(fromStep, toStep);
+
+    if (!playing) return;
+
+    state.stepIndex = boundedTarget;
+    playing = false;
+    activeAnimations = [];
+    elements.play.textContent = "▶ Abspielen";
+    renderAll();
+    elements.status.textContent =
+      `Schritt ${fromIndex + 1} → Schritt ${boundedTarget + 1} animiert.`;
   }
 
   function updateUi() {
@@ -648,16 +716,12 @@
     renderAll();
   });
 
-  elements.prevStep.addEventListener("click", () => {
-    stopPlayback();
-    state.stepIndex = Math.max(0, state.stepIndex - 1);
-    renderAll();
+  elements.prevStep.addEventListener("click", async () => {
+    await switchStepAnimated(state.stepIndex - 1);
   });
 
-  elements.nextStep.addEventListener("click", () => {
-    stopPlayback();
-    state.stepIndex = Math.min(currentRotation().steps.length - 1, state.stepIndex + 1);
-    renderAll();
+  elements.nextStep.addEventListener("click", async () => {
+    await switchStepAnimated(state.stepIndex + 1);
   });
 
   elements.saveStep.addEventListener("click", () => {
@@ -746,7 +810,6 @@
     }
 
     stopPlayback();
-    elements.ball.setAttribute("visibility", "hidden");
     renderAll();
     elements.status.textContent = "Animation beendet.";
   });

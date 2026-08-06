@@ -46,6 +46,22 @@ const elements = {
 };
 
 let state = loadState() ?? makeInitialState();
+
+const VALID_SITUATIONS = new Set(["serveReceive", "attack", "defense", "ownServe"]);
+
+function normalizeSituation(value) {
+  if (VALID_SITUATIONS.has(value)) return value;
+  if (value === "opponentAttack" || value === "freeBall") return "defense";
+  if (value === "ownAttack") return "attack";
+  return "serveReceive";
+}
+
+for (const rotation of state.rotations) {
+  for (const step of rotation.steps) {
+    step.situation = normalizeSituation(step.situation);
+  }
+}
+
 let editMode = false;
 let selectedPlayerId = null;
 let draggingPlayerId = null;
@@ -109,6 +125,11 @@ function createPlayers() {
 }
 
 function renderValidation() {
+  if (currentStep().situation !== "serveReceive") {
+    elements.validationLayer.innerHTML = "";
+    return new Set();
+  }
+
   const positionsByRotation = rotationNumber => {
     const player = playerAtRotation(rotationNumber);
     return currentStep().positions[player.id];
@@ -277,8 +298,6 @@ elements.court.addEventListener("pointerdown", event => {
   if (elements.editTarget.value === "ball") {
     const key = elements.ballPointMode.value;
     currentStep().ball[key] = clampBall(eventPoint(event));
-    currentStep().situation = "custom";
-    elements.situationSelect.value = "custom";
     renderBallEditor();
     elements.status.textContent = "Ballpunkt wurde gesetzt.";
     return;
@@ -327,6 +346,14 @@ elements.toggleMode.addEventListener("click", () => {
 elements.editTarget.addEventListener("change", () => {
   updateEditTargetUi();
   renderAll();
+});
+
+elements.situationSelect.addEventListener("change", event => {
+  currentStep().situation = event.target.value;
+  renderAll();
+  elements.status.textContent = currentStep().situation === "serveReceive"
+    ? "Aufstellungsprüfung ist aktiv."
+    : "Freie Aufstellung: In dieser Spielsituation wird die Stellung nicht geprüft.";
 });
 
 elements.rotationSelect.addEventListener("change", event => {

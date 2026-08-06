@@ -14,7 +14,10 @@
         <strong id="modeTitle">Ansichtsmodus</strong>
         <p id="modeHint">Schritte ansehen und Animation abspielen.</p>
       </div>
-      <button id="toggleMode" type="button">Bearbeiten</button>
+      <div class="header-actions" style="display:flex;gap:8px;align-items:center">
+        <button id="infoButton" type="button" aria-label="Versionsinformationen" title="Versionsinformationen">ℹ️ Info</button>
+        <button id="toggleMode" type="button">Bearbeiten</button>
+      </div>
     </section>
 
     <section class="card">
@@ -135,8 +138,34 @@
     </section>
 
     <p id="status" class="status" aria-live="polite">Grundaufstellung geladen.</p>
+    <dialog id="versionDialog" style="width:min(92vw,520px);border:0;border-radius:16px;padding:0;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+      <section class="card" style="border:0;margin:0">
+        <div class="header-row">
+          <div>
+            <span class="muted">Volleyball Trainer</span>
+            <h2 style="margin:3px 0 0;font-size:1.25rem">Version <span id="versionNumber">–</span></h2>
+          </div>
+          <button id="closeVersionDialog" type="button" aria-label="Info schließen">✕</button>
+        </div>
+
+        <p id="versionDate" class="status" style="margin-top:10px"></p>
+
+        <strong>Neueste Änderungen</strong>
+        <ul id="versionChanges" style="margin:8px 0 14px;padding-left:22px"></ul>
+
+        <div class="card" style="background:#f9fafb">
+          <strong>Aktuelle Spielsituation</strong>
+          <p id="currentSituationInfo" class="status" style="margin:5px 0 0"></p>
+        </div>
+
+        <div class="step-toolbar" style="margin-top:12px;justify-content:flex-end">
+          <button id="closeVersionDialogBottom" type="button" class="primary">Schließen</button>
+        </div>
+      </section>
+    </dialog>
+
   </main>
 
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js?v=1.3.0"></script>
 </body>
 </html>

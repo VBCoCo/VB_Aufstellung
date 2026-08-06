@@ -8,6 +8,25 @@ import { validateAndRender } from "./validation.js";
 import { AnimationController } from "./animation.js";
 import { loadState, saveState } from "./storage.js";
 
+const APP_VERSION = {
+  number: "1.3.0",
+  date: "06.08.2026",
+  changes: [
+    "Info-Button mit Versionsnummer und Änderungsübersicht ergänzt.",
+    "Spielsituationen: Aufschlag / Annahme, Angriff, Abwehr und eigener Aufschlag.",
+    "Die Aufstellungsprüfung ist nur bei Aufschlag / Annahme aktiv.",
+    "Bei Angriff, Abwehr und eigenem Aufschlag ist die Spieleraufstellung frei.",
+    "Cache-Kennung ergänzt, damit GitHub Pages die aktuelle app.js lädt."
+  ]
+};
+
+const SITUATION_LABELS = {
+  serveReceive: "Aufschlag / Annahme – Aufstellungsprüfung aktiv",
+  attack: "Angriff – freie Aufstellung",
+  defense: "Abwehr – freie Aufstellung",
+  ownServe: "Eigener Aufschlag – freie Aufstellung"
+};
+
 const elements = {
   modeBanner: document.querySelector("#modeBanner"),
   modeTitle: document.querySelector("#modeTitle"),
@@ -42,7 +61,15 @@ const elements = {
   playerLayer: document.querySelector("#playerLayer"),
   ball: document.querySelector("#ball"),
   tapNotice: document.querySelector("#tapNotice"),
-  status: document.querySelector("#status")
+  status: document.querySelector("#status"),
+  infoButton: document.querySelector("#infoButton"),
+  versionDialog: document.querySelector("#versionDialog"),
+  closeVersionDialog: document.querySelector("#closeVersionDialog"),
+  closeVersionDialogBottom: document.querySelector("#closeVersionDialogBottom"),
+  versionNumber: document.querySelector("#versionNumber"),
+  versionDate: document.querySelector("#versionDate"),
+  versionChanges: document.querySelector("#versionChanges"),
+  currentSituationInfo: document.querySelector("#currentSituationInfo")
 };
 
 let state = loadState() ?? makeInitialState();
@@ -88,6 +115,40 @@ function playerRotation(player) {
 
 function playerAtRotation(rotationNumber) {
   return ROSTER.find(player => playerRotation(player) === rotationNumber);
+}
+
+
+function situationLabel(value) {
+  return SITUATION_LABELS[value] ?? value;
+}
+
+function openVersionDialog() {
+  elements.versionNumber.textContent = APP_VERSION.number;
+  elements.versionDate.textContent = `Stand: ${APP_VERSION.date}`;
+  elements.versionChanges.innerHTML = "";
+
+  for (const change of APP_VERSION.changes) {
+    const item = document.createElement("li");
+    item.textContent = change;
+    elements.versionChanges.appendChild(item);
+  }
+
+  elements.currentSituationInfo.textContent =
+    `${situationLabel(currentStep().situation)} · ${rotationName(state.rotationIndex)} · Schritt ${state.stepIndex + 1}`;
+
+  if (typeof elements.versionDialog.showModal === "function") {
+    elements.versionDialog.showModal();
+  } else {
+    elements.versionDialog.setAttribute("open", "");
+  }
+}
+
+function closeVersionDialog() {
+  if (typeof elements.versionDialog.close === "function") {
+    elements.versionDialog.close();
+  } else {
+    elements.versionDialog.removeAttribute("open");
+  }
 }
 
 function createPlayers() {
@@ -450,6 +511,17 @@ elements.play.addEventListener("click", async () => {
   elements.play.textContent = "▶ Abspielen";
   renderAll();
   elements.status.textContent = "Animation beendet.";
+});
+
+
+elements.infoButton.addEventListener("click", openVersionDialog);
+elements.closeVersionDialog.addEventListener("click", closeVersionDialog);
+elements.closeVersionDialogBottom.addEventListener("click", closeVersionDialog);
+
+elements.versionDialog.addEventListener("click", event => {
+  if (event.target === elements.versionDialog) {
+    closeVersionDialog();
+  }
 });
 
 createPlayers();

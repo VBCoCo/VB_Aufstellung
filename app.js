@@ -5,18 +5,17 @@ import {
   makeInitialState
 } from "./rotation.js";
 import { validateAndRender } from "./validation.js";
-import { AnimationController } from "./animation.js";
 import { loadState, saveState } from "./storage.js";
 
 const APP_VERSION = {
-  number: "1.3.0",
+  number: "1.5.0",
   date: "06.08.2026",
   changes: [
-    "Info-Button mit Versionsnummer und Änderungsübersicht ergänzt.",
-    "Spielsituationen: Aufschlag / Annahme, Angriff, Abwehr und eigener Aufschlag.",
-    "Die Aufstellungsprüfung ist nur bei Aufschlag / Annahme aktiv.",
-    "Bei Angriff, Abwehr und eigenem Aufschlag ist die Spieleraufstellung frei.",
-    "Cache-Kennung ergänzt, damit GitHub Pages die aktuelle app.js lädt."
+    "Die Auswahl zwischen Spieler verschieben und Ball verschieben wurde entfernt.",
+    "Der Ball lässt sich jetzt genauso wie ein Spieler antippen oder ziehen.",
+    "Antippen und Ziehen gelten gemeinsam für Spieler und Ball.",
+    "Der ausgewählte Ball wird mit einem deutlichen orangefarbenen Ring markiert.",
+    "Die Aufstellungsprüfung bleibt nur bei Aufschlag / Annahme aktiv."
   ]
 };
 
@@ -26,6 +25,90 @@ const SITUATION_LABELS = {
   defense: "Abwehr – freie Aufstellung",
   ownServe: "Eigener Aufschlag – freie Aufstellung"
 };
+
+class AnimationController {
+  constructor({ playerLayer, movementLayer, ballPathLayer, ball, roster }) {
+    this.playerLayer = playerLayer;
+    this.movementLayer = movementLayer;
+    this.ballPathLayer = ballPathLayer;
+    this.ball = ball;
+    this.roster = roster;
+    this.active = [];
+    this.timer = null;
+    this.playing = false;
+  }
+
+  stop() {
+    this.playing = false;
+    clearTimeout(this.timer);
+    this.active.forEach(animation => animation.cancel());
+    this.active = [];
+    this.movementLayer.innerHTML = "";
+    this.ballPathLayer.innerHTML = "";
+    this.ball.setAttribute("visibility", "hidden");
+  }
+
+  drawLine(layer, from, to, className) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", from.x);
+    line.setAttribute("y1", from.y);
+    line.setAttribute("x2", to.x);
+    line.setAttribute("y2", to.y);
+    line.setAttribute("class", className);
+    layer.appendChild(line);
+  }
+
+  async playTransition(fromStep, toStep, duration = 1700) {
+    this.playing = true;
+    this.movementLayer.innerHTML = "";
+    this.ballPathLayer.innerHTML = "";
+
+    for (const player of this.roster) {
+      const from = fromStep.positions[player.id];
+      const to = toStep.positions[player.id];
+
+      if (from.x !== to.x || from.y !== to.y) {
+        this.drawLine(this.movementLayer, from, to, "movement-path");
+      }
+    }
+
+    const fromBall = fromStep.ball.position;
+    const toBall = toStep.ball.position;
+
+    if (fromBall.x !== toBall.x || fromBall.y !== toBall.y) {
+      this.drawLine(this.ballPathLayer, fromBall, toBall, "ball-path");
+    }
+
+    this.ball.setAttribute("visibility", "visible");
+    this.ball.setAttribute("transform", `translate(${fromBall.x} ${fromBall.y})`);
+
+    const playerAnimations = this.roster.map(player => {
+      const from = fromStep.positions[player.id];
+      const to = toStep.positions[player.id];
+      const element = this.playerLayer.querySelector(`[data-id="${player.id}"]`);
+
+      return element.animate(
+        [
+          { transform: `translate(${from.x}px, ${from.y}px)` },
+          { transform: `translate(${to.x}px, ${to.y}px)` }
+        ],
+        { duration, easing: "ease-in-out", fill: "forwards" }
+      );
+    });
+
+    const ballAnimation = this.ball.animate(
+      [
+        { transform: `translate(${fromBall.x}px, ${fromBall.y}px)` },
+        { transform: `translate(${toBall.x}px, ${toBall.y}px)` }
+      ],
+      { duration, easing: "ease-in-out", fill: "forwards" }
+    );
+
+    this.active = [...playerAnimations, ballAnimation];
+    await Promise.all(this.active.map(animation => animation.finished.catch(() => {})));
+    return this.playing;
+  }
+}
 
 const elements = {
   modeBanner: document.querySelector("#modeBanner"),
@@ -40,8 +123,6 @@ const elements = {
   modeBadge: document.querySelector("#modeBadge"),
   stepNameRow: document.querySelector("#stepNameRow"),
   stepNameInput: document.querySelector("#stepNameInput"),
-  editTargetRow: document.querySelector("#editTargetRow"),
-  editTarget: document.querySelector("#editTarget"),
   prevStep: document.querySelector("#prevStep"),
   play: document.querySelector("#play"),
   nextStep: document.querySelector("#nextStep"),
@@ -49,10 +130,7 @@ const elements = {
   addStep: document.querySelector("#addStep"),
   deleteStep: document.querySelector("#deleteStep"),
   editControls: document.querySelector("#editControls"),
-  playerControls: document.querySelector("#playerControls"),
   moveMode: document.querySelector("#moveMode"),
-  ballControls: document.querySelector("#ballControls"),
-  ballPointMode: document.querySelector("#ballPointMode"),
   situationSelect: document.querySelector("#situationSelect"),
   court: document.querySelector("#court"),
   validationLayer: document.querySelector("#validationLayer"),
@@ -90,8 +168,8 @@ for (const rotation of state.rotations) {
 }
 
 let editMode = false;
-let selectedPlayerId = null;
-let draggingPlayerId = null;
+let selectedObject = null;
+let draggingObject = null;
 
 const animator = new AnimationController({
   playerLayer: elements.playerLayer,
@@ -100,6 +178,41 @@ const animator = new AnimationController({
   ball: elements.ball,
   roster: ROSTER
 });
+
+function normalizeBallData() {
+  for (const rotation of state.rotations) {
+    for (const step of rotation.steps) {
+      const legacy = step.ball ?? {};
+      const position =
+        legacy.position ??
+        legacy.contact ??
+        legacy.start ??
+        { x: 300, y: 315 };
+
+      step.ball = {
+        position: { ...position }
+      };
+    }
+  }
+}
+
+function normalizeSituations() {
+  const mapping = {
+    opponentAttack: "defense",
+    freeBall: "defense",
+    ownAttack: "attack",
+    custom: "attack"
+  };
+
+  for (const rotation of state.rotations) {
+    for (const step of rotation.steps) {
+      step.situation = mapping[step.situation] ?? step.situation ?? "serveReceive";
+    }
+  }
+}
+
+normalizeBallData();
+normalizeSituations();
 
 function currentRotation() {
   return state.rotations[state.rotationIndex];
@@ -186,8 +299,9 @@ function createPlayers() {
 }
 
 function renderValidation() {
+  elements.validationLayer.innerHTML = "";
+
   if (currentStep().situation !== "serveReceive") {
-    elements.validationLayer.innerHTML = "";
     return new Set();
   }
 
@@ -215,7 +329,7 @@ function renderPlayers() {
 
     group.setAttribute("transform", `translate(${position.x} ${position.y})`);
     group.classList.toggle("editable", editMode);
-    group.classList.toggle("selected", selectedPlayerId === player.id);
+    group.classList.toggle("selected", selectedObject?.type === "player" && selectedObject.id === player.id);
 
     const fill = invalidIds.has(player.id)
       ? "#dc2626"
@@ -241,26 +355,23 @@ function drawLine(layer, from, to, className) {
 function renderBallEditor() {
   elements.ballPathLayer.innerHTML = "";
 
-  if (!editMode) {
-    elements.ball.setAttribute("visibility", "hidden");
-    return;
-  }
+  const position = currentStep().ball.position;
+  elements.ball.setAttribute("transform", `translate(${position.x} ${position.y})`);
+  elements.ball.setAttribute("visibility", editMode ? "visible" : "hidden");
+  elements.ball.classList.toggle("editable", editMode);
+  elements.ball.classList.toggle(
+    "selected",
+    selectedObject?.type === "ball"
+  );
 
-  const ballData = currentStep().ball;
-  drawLine(elements.ballPathLayer, ballData.start, ballData.contact, "ball-path");
-  drawLine(elements.ballPathLayer, ballData.contact, ballData.end, "ball-path");
+  if (!editMode) return;
 
-  for (const point of [ballData.start, ballData.contact, ballData.end]) {
-    const marker = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    marker.setAttribute("cx", point.x);
-    marker.setAttribute("cy", point.y);
-    marker.setAttribute("r", "8");
-    marker.setAttribute("class", "ball-point");
-    elements.ballPathLayer.appendChild(marker);
-  }
-
-  elements.ball.setAttribute("transform", `translate(${ballData.start.x} ${ballData.start.y})`);
-  elements.ball.setAttribute("visibility", "visible");
+  const marker = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  marker.setAttribute("cx", position.x);
+  marker.setAttribute("cy", position.y);
+  marker.setAttribute("r", "8");
+  marker.setAttribute("class", "ball-point");
+  elements.ballPathLayer.appendChild(marker);
 }
 
 function updateUi() {
@@ -280,7 +391,8 @@ function renderAll() {
 
 function setMode(value) {
   editMode = value;
-  selectedPlayerId = null;
+  selectedObject = null;
+  draggingObject = null;
   elements.tapNotice.classList.add("hidden");
 
   elements.modeBanner.classList.toggle("edit-mode", editMode);
@@ -298,7 +410,6 @@ function setMode(value) {
 
   for (const element of [
     elements.stepNameRow,
-    elements.editTargetRow,
     elements.editControls,
     elements.saveStep,
     elements.addStep,
@@ -307,17 +418,10 @@ function setMode(value) {
     element.classList.toggle("hidden", !editMode);
   }
 
-  updateEditTargetUi();
   renderAll();
 }
 
-function updateEditTargetUi() {
-  const ballMode = elements.editTarget.value === "ball";
-  elements.playerControls.classList.toggle("hidden", ballMode);
-  elements.ballControls.classList.toggle("hidden", !ballMode);
-  selectedPlayerId = null;
-  elements.tapNotice.classList.add("hidden");
-}
+
 
 function eventPoint(event) {
   const point = elements.court.createSVGPoint();
@@ -356,57 +460,81 @@ elements.court.addEventListener("pointerdown", event => {
   if (!editMode || animator.playing) return;
   event.preventDefault();
 
-  if (elements.editTarget.value === "ball") {
-    const key = elements.ballPointMode.value;
-    currentStep().ball[key] = clampBall(eventPoint(event));
-    renderBallEditor();
-    elements.status.textContent = "Ballpunkt wurde gesetzt.";
-    return;
-  }
-
   const playerElement = event.target.closest("[data-id]");
+  const ballElement = event.target.closest("#ball");
   const moveMode = elements.moveMode.value;
 
   if (moveMode === "tap") {
     if (playerElement) {
-      selectedPlayerId = playerElement.dataset.id;
+      selectedObject = { type: "player", id: playerElement.dataset.id };
       elements.tapNotice.classList.remove("hidden");
       renderPlayers();
+      renderBallEditor();
       return;
     }
 
-    if (selectedPlayerId) {
-      currentStep().positions[selectedPlayerId] = clampPlayer(eventPoint(event));
-      selectedPlayerId = null;
+    if (ballElement) {
+      selectedObject = { type: "ball" };
+      elements.tapNotice.classList.remove("hidden");
+      renderPlayers();
+      renderBallEditor();
+      return;
+    }
+
+    if (selectedObject) {
+      const target = eventPoint(event);
+
+      if (selectedObject.type === "player") {
+        currentStep().positions[selectedObject.id] = clampPlayer(target);
+      } else {
+        currentStep().ball.position = clampBall(target);
+      }
+
+      selectedObject = null;
       elements.tapNotice.classList.add("hidden");
       renderPlayers();
+      renderBallEditor();
     }
+
     return;
   }
 
-  if (!playerElement) return;
-  draggingPlayerId = playerElement.dataset.id;
-  elements.court.setPointerCapture(event.pointerId);
+  if (playerElement) {
+    draggingObject = { type: "player", id: playerElement.dataset.id };
+    elements.court.setPointerCapture(event.pointerId);
+    return;
+  }
+
+  if (ballElement) {
+    draggingObject = { type: "ball" };
+    elements.court.setPointerCapture(event.pointerId);
+  }
 }, { passive: false });
 
 elements.court.addEventListener("pointermove", event => {
-  if (!draggingPlayerId || !editMode || animator.playing) return;
+  if (!draggingObject || !editMode || animator.playing) return;
   event.preventDefault();
-  currentStep().positions[draggingPlayerId] = clampPlayer(eventPoint(event));
+
+  const target = eventPoint(event);
+
+  if (draggingObject.type === "player") {
+    currentStep().positions[draggingObject.id] = clampPlayer(target);
+  } else {
+    currentStep().ball.position = clampBall(target);
+  }
+
   renderPlayers();
+  renderBallEditor();
 }, { passive: false });
 
-elements.court.addEventListener("pointerup", () => { draggingPlayerId = null; });
-elements.court.addEventListener("pointercancel", () => { draggingPlayerId = null; });
+elements.court.addEventListener("pointerup", () => { draggingObject = null; });
+elements.court.addEventListener("pointercancel", () => { draggingObject = null; });
 
 elements.toggleMode.addEventListener("click", () => {
   animator.stop();
   setMode(!editMode);
 });
 
-elements.editTarget.addEventListener("change", () => {
-  updateEditTargetUi();
-  renderAll();
 });
 
 elements.situationSelect.addEventListener("change", event => {

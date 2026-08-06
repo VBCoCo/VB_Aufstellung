@@ -50,14 +50,6 @@
         Name des Schritts
         <input id="stepNameInput" type="text" autocomplete="off">
       </label>
-
-      <label id="editTargetRow" class="hidden top-control">
-        Bearbeiten
-        <select id="editTarget">
-          <option value="players">Spieler verschieben</option>
-          <option value="ball">Ball verschieben</option>
-        </select>
-      </label>
     </section>
 
     <section class="card compact-toolbar">
@@ -71,23 +63,12 @@
       </div>
 
       <div id="editControls" class="hidden edit-controls">
-        <div id="playerControls">
+        <div class="control-grid">
           <label>
-            Spieler verschieben mit
+            Spieler oder Ball verschieben mit
             <select id="moveMode">
-              <option value="tap">Spieler antippen → Ziel antippen</option>
-              <option value="drag">Spieler ziehen</option>
-            </select>
-          </label>
-        </div>
-
-        <div id="ballControls" class="hidden control-grid">
-          <label>
-            Ballpunkt
-            <select id="ballPointMode">
-              <option value="start">Startpunkt setzen</option>
-              <option value="contact">Kontaktpunkt setzen</option>
-              <option value="end">Endpunkt setzen</option>
+              <option value="tap">Objekt antippen → Ziel antippen</option>
+              <option value="drag">Objekt ziehen</option>
             </select>
           </label>
 
@@ -125,7 +106,7 @@
         <g id="ballPathLayer"></g>
         <g id="playerLayer"></g>
 
-        <g id="ball" visibility="hidden">
+        <g id="ball" class="ball-object" visibility="hidden">
           <circle r="18" class="ball-fill"></circle>
           <path d="M-12 0 Q0 -14 12 0 Q0 14 -12 0 M0 -17 Q-7 0 0 17" class="ball-seams"></path>
         </g>
@@ -166,6 +147,6 @@
 
   </main>
 
-  <script type="module" src="app.js?v=1.3.0"></script>
+  <script type="module" src="app.js?v=1.5.0"></script>
 </body>
 </html>

@@ -1,0 +1,15 @@
+{
+  "version": "2.2.0",
+  "date": "2026-08-06",
+  "files": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "assets/volleyball.png"
+  ],
+  "notes": [
+    "Full clean release",
+    "Tall narrow court",
+    "Cache busting enabled"
+  ]
+}

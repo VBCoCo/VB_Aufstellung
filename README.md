@@ -1,18 +1,28 @@
-# Volleyball Trainer Web v2
+# Volleyball Trainer 2.2.0
 
-Statische Web-App für GitHub Pages.
+## Bei GitHub hochladen
 
-## Dateien
+Den gesamten Inhalt dieses Ordners in den `main`-Branch hochladen:
 
-- `index.html`
-- `style.css`
-- `app.js`
-- `assets/volleyball.png`
+- index.html
+- style.css
+- app.js
+- version.json
+- assets/volleyball.png
 
-## Veröffentlichung bei GitHub Pages
+Wichtig: Alte gleichnamige Dateien vollständig ersetzen.
 
-1. Alle Dateien und den Ordner `assets` in das GitHub-Repository hochladen.
-2. In GitHub unter **Settings → Pages** den Branch `main` und den Ordner `/root` auswählen.
-3. Nach dem Speichern wird die Seite unter der GitHub-Pages-Adresse veröffentlicht.
+## GitHub Pages
 
-Die App speichert Schritte und Positionen lokal im Browser (`localStorage`).
+Unter `Settings → Pages`:
+
+- Source: Deploy from a branch
+- Branch: main
+- Folder: / (root)
+
+## Falls weiterhin eine alte Seite erscheint
+
+1. GitHub Pages zwei bis fünf Minuten Zeit geben.
+2. Die Seite in Safari neu laden.
+3. Notfalls Safari schließen und erneut öffnen.
+4. Prüfen, ob der Info-Dialog Version 2.2.0 zeigt.

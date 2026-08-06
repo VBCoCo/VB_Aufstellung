@@ -1,33 +1,18 @@
-# Volleyball Trainer
+# Volleyball Trainer Web v2
 
-Kleine modulare Web-App für Volleyball-Aufstellungen, Rotationen, Laufwege und Ballflug.
+Statische Web-App für GitHub Pages.
 
 ## Dateien
 
-- `index.html` – Oberfläche
-- `style.css` – Darstellung
-- `app.js` – zentrale Bedienlogik
-- `animation.js` – Ball- und Spieleranimation
-- `rotation.js` – Rotationen und Grunddaten
-- `validation.js` – Aufstellungsprüfung
-- `storage.js` – Speicherung im Browser
+- `index.html`
+- `style.css`
+- `app.js`
+- `assets/volleyball.png`
 
-## Starten
+## Veröffentlichung bei GitHub Pages
 
-Am einfachsten mit einem kleinen lokalen Webserver:
+1. Alle Dateien und den Ordner `assets` in das GitHub-Repository hochladen.
+2. In GitHub unter **Settings → Pages** den Branch `main` und den Ordner `/root` auswählen.
+3. Nach dem Speichern wird die Seite unter der GitHub-Pages-Adresse veröffentlicht.
 
-```bash
-python3 -m http.server 8000
-```
-
-Danach im Browser öffnen:
-
-```text
-http://localhost:8000
-```
-
-Direktes Öffnen von `index.html` kann je nach Browser wegen JavaScript-Modulen eingeschränkt sein.
-
-## Speicherung
-
-Beim Klick auf das Speichersymbol wird der aktuelle Zustand im `localStorage` des Browsers gespeichert.
+Die App speichert Schritte und Positionen lokal im Browser (`localStorage`).

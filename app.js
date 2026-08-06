@@ -1,821 +1,376 @@
 (() => {
   "use strict";
 
-  const APP_VERSION = {
-    number: "1.6.0",
-    date: "06.08.2026",
-    changes: [
-      "Info- und Bearbeiten-Button technisch neu aufgebaut.",
-      "app.js funktioniert jetzt ohne weitere JavaScript-Importe.",
-      "Ball und Spieler lassen sich identisch antippen oder ziehen.",
-      "Ball und Spieler bewegen sich gemeinsam von Schritt zu Schritt.",
-      "Die Aufstellungsprüfung ist nur bei Aufschlag / Annahme aktiv."
-    ]
-  };
+  const VERSION = "2.0.0";
+  const STORAGE_KEY = "volleyball-trainer-v2";
 
-  const STORAGE_KEY = "volleyball-trainer-state-v1";
-  const VIEW_COLOR = "#2563eb";
-  const EDIT_COLOR = "#f59e0b";
-  const INVALID_COLOR = "#dc2626";
-  const CIRCLE_RADIUS = 36;
-  const WARNING_DISTANCE = 18;
-  const ANIMATION_DURATION = 1700;
-
-  const BASE_SLOTS = {
-    1: { x: 440, y: 625 },
-    2: { x: 430, y: 455 },
-    3: { x: 300, y: 455 },
-    4: { x: 170, y: 455 },
-    5: { x: 160, y: 625 },
-    6: { x: 300, y: 625 }
-  };
-
-  const ROSTER = [
-    { id: "a1", role: "AA", name: "Außen 1", baseRotation: 1 },
-    { id: "z1", role: "Z", name: "Zuspieler 1", baseRotation: 2 },
-    { id: "m1", role: "MB", name: "Mitte 1", baseRotation: 3 },
-    { id: "a2", role: "AA", name: "Außen 2", baseRotation: 4 },
-    { id: "z2", role: "Z", name: "Zuspieler 2", baseRotation: 5 },
-    { id: "m2", role: "MB", name: "Mitte 2", baseRotation: 6 }
+  const roster = [
+    { id:"a1", role:"AA", base:1 },
+    { id:"z1", role:"Z", base:2 },
+    { id:"m1", role:"MB", base:3 },
+    { id:"a2", role:"AA", base:4 },
+    { id:"z2", role:"Z", base:5 },
+    { id:"m2", role:"MB", base:6 }
   ];
 
-  const SITUATION_LABELS = {
-    serveReceive: "Aufschlag / Annahme – Aufstellungsprüfung aktiv",
-    attack: "Angriff – freie Aufstellung",
-    defense: "Abwehr – freie Aufstellung",
-    ownServe: "Eigener Aufschlag – freie Aufstellung"
+  const slots = {
+    1:{x:650,y:480}, 2:{x:650,y:360}, 3:{x:450,y:360},
+    4:{x:250,y:360}, 5:{x:250,y:480}, 6:{x:450,y:480}
   };
 
-  const elements = {
-    modeBanner: document.querySelector("#modeBanner"),
-    modeTitle: document.querySelector("#modeTitle"),
-    modeHint: document.querySelector("#modeHint"),
-    toggleMode: document.querySelector("#toggleMode"),
-    infoButton: document.querySelector("#infoButton"),
-    rotationSelect: document.querySelector("#rotationSelect"),
-    courtHeader: document.querySelector("#courtHeader"),
-    rotationName: document.querySelector("#rotationName"),
-    stepNumber: document.querySelector("#stepNumber"),
-    stepTotal: document.querySelector("#stepTotal"),
-    modeBadge: document.querySelector("#modeBadge"),
-    stepNameRow: document.querySelector("#stepNameRow"),
-    stepNameInput: document.querySelector("#stepNameInput"),
-    prevStep: document.querySelector("#prevStep"),
-    play: document.querySelector("#play"),
-    nextStep: document.querySelector("#nextStep"),
-    saveStep: document.querySelector("#saveStep"),
-    addStep: document.querySelector("#addStep"),
-    deleteStep: document.querySelector("#deleteStep"),
-    editControls: document.querySelector("#editControls"),
-    moveMode: document.querySelector("#moveMode"),
-    situationSelect: document.querySelector("#situationSelect"),
-    court: document.querySelector("#court"),
-    validationLayer: document.querySelector("#validationLayer"),
-    movementLayer: document.querySelector("#movementLayer"),
-    ballPathLayer: document.querySelector("#ballPathLayer"),
-    playerLayer: document.querySelector("#playerLayer"),
-    ball: document.querySelector("#ball"),
-    tapNotice: document.querySelector("#tapNotice"),
-    status: document.querySelector("#status"),
-    versionDialog: document.querySelector("#versionDialog"),
-    closeVersionDialog: document.querySelector("#closeVersionDialog"),
-    closeVersionDialogBottom: document.querySelector("#closeVersionDialogBottom"),
-    versionNumber: document.querySelector("#versionNumber"),
-    versionDate: document.querySelector("#versionDate"),
-    versionChanges: document.querySelector("#versionChanges"),
-    currentSituationInfo: document.querySelector("#currentSituationInfo")
-  };
+  const els = Object.fromEntries([
+    "infoButton","infoButtonBottom","editButton","rotationSelect","stepNumber","stepTotal",
+    "prevStep","playButton","nextStep","stepNameWrap","stepNameInput","saveStep","addStep",
+    "deleteStep","editPanel","situationSelect","rotationTitle","currentStepTitle","modeBadge",
+    "court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject",
+    "tapNotice","status","infoDialog","closeInfo","closeInfoBottom","infoSituation"
+  ].map(id => [id, document.getElementById(id)]));
 
-  const required = [
-    "toggleMode", "infoButton", "court", "playerLayer", "ball",
-    "rotationSelect", "stepNameInput", "situationSelect"
-  ];
-
-  for (const key of required) {
-    if (!elements[key]) {
-      console.error(`Volleyball Trainer: Element #${key} fehlt.`);
-      return;
-    }
-  }
-
-  function rotatedPosition(position, steps) {
-    let result = position;
-    for (let index = 0; index < steps; index += 1) {
-      result = result === 1 ? 6 : result - 1;
-    }
+  function rotated(pos, steps){
+    let result = pos;
+    for(let i=0;i<steps;i++) result = result === 1 ? 6 : result - 1;
     return result;
   }
 
-  function rotationName(index) {
-    return index === 0 ? "Grundaufstellung" : `Rotation +${index}`;
-  }
-
-  function makeInitialStep(rotationIndex) {
+  function initialStep(rotation){
     const positions = {};
-    for (const player of ROSTER) {
-      const slot = rotatedPosition(player.baseRotation, rotationIndex);
-      positions[player.id] = { ...BASE_SLOTS[slot] };
-    }
-
+    roster.forEach(p => positions[p.id] = {...slots[rotated(p.base, rotation)]});
     return {
-      name: "Grundposition",
+      name:"Grundposition",
+      situation:"serveReceive",
       positions,
-      situation: "serveReceive",
-      ball: { position: { x: 300, y: 315 } }
+      ball:{x:560,y:415}
     };
   }
 
-  function makeInitialState() {
+  function defaultState(){
     return {
-      rotations: Array.from({ length: 6 }, (_, index) => ({
-        steps: [makeInitialStep(index)]
-      })),
-      rotationIndex: 0,
-      stepIndex: 0
+      rotation:0,
+      step:0,
+      rotations:Array.from({length:6},(_,r)=>({steps:[initialStep(r)]}))
     };
   }
 
-  function loadState() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  }
+  function normalize(raw){
+    const s = raw?.rotations ? raw : defaultState();
+    s.rotation = Math.max(0,Math.min(5,Number(s.rotation)||0));
+    s.step = Math.max(0,Number(s.step)||0);
 
-  function saveState() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }
-
-  function normalizeState(candidate) {
-    const normalized = candidate?.rotations ? candidate : makeInitialState();
-
-    normalized.rotationIndex = Number.isInteger(normalized.rotationIndex)
-      ? Math.max(0, Math.min(5, normalized.rotationIndex))
-      : 0;
-    normalized.stepIndex = Number.isInteger(normalized.stepIndex)
-      ? normalized.stepIndex
-      : 0;
-
-    while (normalized.rotations.length < 6) {
-      normalized.rotations.push({ steps: [makeInitialStep(normalized.rotations.length)] });
+    while(s.rotations.length<6){
+      s.rotations.push({steps:[initialStep(s.rotations.length)]});
     }
 
-    normalized.rotations.forEach((rotation, rotationIndex) => {
-      if (!Array.isArray(rotation.steps) || rotation.steps.length === 0) {
-        rotation.steps = [makeInitialStep(rotationIndex)];
+    s.rotations.forEach((rotation,rIndex)=>{
+      if(!Array.isArray(rotation.steps) || !rotation.steps.length){
+        rotation.steps=[initialStep(rIndex)];
       }
-
-      rotation.steps.forEach(step => {
-        step.name = step.name || "Grundposition";
-
-        const situationMap = {
-          opponentAttack: "defense",
-          freeBall: "defense",
-          ownAttack: "attack",
-          custom: "attack"
-        };
-        step.situation = situationMap[step.situation] || step.situation || "serveReceive";
-        if (!SITUATION_LABELS[step.situation]) step.situation = "serveReceive";
-
-        const legacyBall = step.ball || {};
-        const ballPosition =
-          legacyBall.position ||
-          legacyBall.contact ||
-          legacyBall.start ||
-          { x: 300, y: 315 };
-        step.ball = { position: { ...ballPosition } };
-
-        if (!step.positions) {
-          step.positions = makeInitialStep(rotationIndex).positions;
-        }
+      rotation.steps.forEach(step=>{
+        step.name ||= "Grundposition";
+        const map={opponentAttack:"defense",freeBall:"defense",ownAttack:"attack",custom:"attack"};
+        step.situation = map[step.situation] || step.situation || "serveReceive";
+        step.positions ||= initialStep(rIndex).positions;
+        if(step.ball?.position) step.ball={...step.ball.position};
+        if(step.ball?.contact) step.ball={...step.ball.contact};
+        if(!step.ball?.x) step.ball={x:560,y:415};
       });
     });
 
-    normalized.stepIndex = Math.max(
-      0,
-      Math.min(
-        normalized.rotations[normalized.rotationIndex].steps.length - 1,
-        normalized.stepIndex
-      )
-    );
-
-    return normalized;
+    s.step=Math.min(s.step,s.rotations[s.rotation].steps.length-1);
+    return s;
   }
 
-  let state = normalizeState(loadState());
-  let editMode = false;
-  let selectedObject = null;
-  let draggingObject = null;
+  let state = normalize(JSON.parse(localStorage.getItem(STORAGE_KEY) || "null"));
+  let editing = false;
+  let selected = null;
+  let dragging = null;
   let playing = false;
   let activeAnimations = [];
-  let playbackTimer = null;
 
-  function currentRotation() {
-    return state.rotations[state.rotationIndex];
+  const rotationData = () => state.rotations[state.rotation];
+  const stepData = () => rotationData().steps[state.step];
+  const rotationName = n => n===0 ? "Grundaufstellung" : `Rotation +${n}`;
+  const playerRotation = p => rotated(p.base,state.rotation);
+  const playerAt = pos => roster.find(p=>playerRotation(p)===pos);
+
+  function save(message="Gespeichert."){
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+    els.status.textContent=message;
   }
 
-  function currentStep() {
-    return currentRotation().steps[state.stepIndex];
+  function svgEl(name,attrs={}){
+    const el=document.createElementNS("http://www.w3.org/2000/svg",name);
+    Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+    return el;
   }
 
-  function playerRotation(player) {
-    return rotatedPosition(player.baseRotation, state.rotationIndex);
+  function createPlayers(){
+    els.playerLayer.innerHTML="";
+    roster.forEach(p=>{
+      const g=svgEl("g",{class:"player-object","data-id":p.id});
+      const c=svgEl("circle",{r:29,fill:"#0d6efd",stroke:"#fff","stroke-width":3,filter:"url(#shadow)"});
+      const t=svgEl("text",{"text-anchor":"middle",y:7,fill:"#fff","font-size":19,"font-weight":800});
+      t.textContent=p.role;
+      const label=svgEl("text",{"text-anchor":"middle",y:50,fill:"#fff","font-size":13,"font-weight":700,"data-label":"1"});
+      g.append(c,t,label);
+      els.playerLayer.appendChild(g);
+    });
   }
 
-  function playerAtRotation(rotationNumber) {
-    return ROSTER.find(player => playerRotation(player) === rotationNumber);
+  function drawLine(layer,from,to,className){
+    layer.appendChild(svgEl("line",{x1:from.x,y1:from.y,x2:to.x,y2:to.y,class:className}));
   }
 
-  function createPlayers() {
-    elements.playerLayer.innerHTML = "";
+  function validate(){
+    els.validationLayer.innerHTML="";
+    const invalid=new Set();
+    if(stepData().situation!=="serveReceive") return invalid;
 
-    for (const player of ROSTER) {
-      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      group.classList.add("player");
-      group.dataset.id = player.id;
+    const posByRot=n=>stepData().positions[playerAt(n).id];
+    const horizontal=[[4,3],[3,2],[5,6],[6,1]];
+    const vertical=[[4,5],[3,6],[2,1]];
 
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("r", "36");
-      circle.setAttribute("stroke", "#111827");
-      circle.setAttribute("stroke-width", "2");
-
-      const role = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      role.setAttribute("text-anchor", "middle");
-      role.setAttribute("y", "7");
-      role.setAttribute("font-size", "18");
-      role.setAttribute("font-weight", "700");
-      role.setAttribute("fill", "#ffffff");
-      role.textContent = player.role;
-
-      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      label.dataset.positionLabel = "true";
-      label.setAttribute("text-anchor", "middle");
-      label.setAttribute("y", "60");
-      label.setAttribute("font-size", "14");
-      label.setAttribute("font-weight", "600");
-      label.setAttribute("fill", "#111827");
-
-      group.append(circle, role, label);
-      elements.playerLayer.appendChild(group);
-    }
-  }
-
-  function drawLine(layer, x1, y1, x2, y2, className) {
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("x1", x1);
-    line.setAttribute("y1", y1);
-    line.setAttribute("x2", x2);
-    line.setAttribute("y2", y2);
-    line.setAttribute("class", className);
-    layer.appendChild(line);
-  }
-
-  function validateFormation() {
-    elements.validationLayer.innerHTML = "";
-    const invalidIds = new Set();
-
-    if (currentStep().situation !== "serveReceive") return invalidIds;
-
-    const positionByRotation = number => {
-      const player = playerAtRotation(number);
-      return currentStep().positions[player.id];
-    };
-
-    const horizontal = [
-      { left: 4, right: 3 },
-      { left: 3, right: 2 },
-      { left: 5, right: 6 },
-      { left: 6, right: 1 }
-    ];
-
-    const vertical = [
-      { front: 4, back: 5 },
-      { front: 3, back: 6 },
-      { front: 2, back: 1 }
-    ];
-
-    for (const relation of horizontal) {
-      const left = positionByRotation(relation.left);
-      const right = positionByRotation(relation.right);
-      const testedEdge = left.x - CIRCLE_RADIUS;
-      const boundary = right.x + CIRCLE_RADIUS;
-      const remaining = boundary - testedEdge;
-      const state = remaining <= 0 ? "invalid" : remaining <= WARNING_DISTANCE ? "warning" : "clear";
-
-      if (state === "invalid" || (editMode && state === "warning")) {
-        drawLine(
-          elements.validationLayer,
-          boundary, 382, boundary, 724,
-          state === "invalid" ? "validation-invalid" : "validation-warning"
-        );
+    horizontal.forEach(([leftN,rightN])=>{
+      const left=posByRot(leftN),right=posByRot(rightN);
+      const boundary=right.x+29;
+      const remaining=boundary-(left.x-29);
+      const state=remaining<=0?"invalid":remaining<=18?"warning":"clear";
+      if(state!=="clear" && (editing || state==="invalid")){
+        els.validationLayer.appendChild(svgEl("line",{
+          x1:boundary,y1:320,x2:boundary,y2:585,
+          class:state==="invalid"?"validation-invalid":"validation-warning"
+        }));
       }
+      if(state==="invalid"){invalid.add(playerAt(leftN).id);invalid.add(playerAt(rightN).id)}
+    });
 
-      if (state === "invalid") {
-        invalidIds.add(playerAtRotation(relation.left).id);
-        invalidIds.add(playerAtRotation(relation.right).id);
+    vertical.forEach(([frontN,backN])=>{
+      const front=posByRot(frontN),back=posByRot(backN);
+      const boundary=back.y+29;
+      const remaining=boundary-(front.y-29);
+      const state=remaining<=0?"invalid":remaining<=18?"warning":"clear";
+      if(state!=="clear" && (editing || state==="invalid")){
+        els.validationLayer.appendChild(svgEl("line",{
+          x1:105,y1:boundary,x2:795,y2:boundary,
+          class:state==="invalid"?"validation-invalid":"validation-warning"
+        }));
       }
+      if(state==="invalid"){invalid.add(playerAt(frontN).id);invalid.add(playerAt(backN).id)}
+    });
+    return invalid;
+  }
+
+  function renderPaths(){
+    els.movementLayer.innerHTML="";
+    els.ballPathLayer.innerHTML="";
+    if(state.step===0) return;
+    const prev=rotationData().steps[state.step-1];
+    const cur=stepData();
+    roster.forEach(p=>{
+      const a=prev.positions[p.id],b=cur.positions[p.id];
+      if(a.x!==b.x||a.y!==b.y) drawLine(els.movementLayer,a,b,"movement-path");
+    });
+    if(prev.ball.x!==cur.ball.x||prev.ball.y!==cur.ball.y){
+      drawLine(els.ballPathLayer,prev.ball,cur.ball,"ball-path");
     }
+  }
 
-    for (const relation of vertical) {
-      const front = positionByRotation(relation.front);
-      const back = positionByRotation(relation.back);
-      const testedEdge = front.y - CIRCLE_RADIUS;
-      const boundary = back.y + CIRCLE_RADIUS;
-      const remaining = boundary - testedEdge;
-      const state = remaining <= 0 ? "invalid" : remaining <= WARNING_DISTANCE ? "warning" : "clear";
+  function renderObjects(){
+    const invalid=validate();
+    roster.forEach(p=>{
+      const g=els.playerLayer.querySelector(`[data-id="${p.id}"]`);
+      const pos=stepData().positions[p.id];
+      g.setAttribute("transform",`translate(${pos.x} ${pos.y})`);
+      g.classList.toggle("editable",editing);
+      g.classList.toggle("selected",selected?.type==="player"&&selected.id===p.id);
+      g.querySelector("circle").setAttribute("fill",invalid.has(p.id)?"#e32828":editing?"#f59e0b":"#0d6efd");
+      g.querySelector("[data-label]").textContent=`Position ${playerRotation(p)}`;
+    });
 
-      if (state === "invalid" || (editMode && state === "warning")) {
-        drawLine(
-          elements.validationLayer,
-          66, boundary, 534, boundary,
-          state === "invalid" ? "validation-invalid" : "validation-warning"
-        );
+    els.ballObject.setAttribute("visibility","visible");
+    els.ballObject.setAttribute("transform",`translate(${stepData().ball.x} ${stepData().ball.y})`);
+    els.ballObject.classList.toggle("editable",editing);
+    els.ballObject.classList.toggle("selected",selected?.type==="ball");
+  }
+
+  function renderUI(){
+    els.rotationSelect.value=state.rotation;
+    els.rotationTitle.textContent=rotationName(state.rotation);
+    els.stepNumber.textContent=state.step+1;
+    els.stepTotal.textContent=rotationData().steps.length;
+    els.stepNameInput.value=stepData().name;
+    els.currentStepTitle.textContent=stepData().name;
+    els.situationSelect.value=stepData().situation;
+    els.modeBadge.textContent=editing?"Bearbeitung":"Ansicht";
+    document.querySelectorAll(".mode-card").forEach(card=>{
+      const input=card.querySelector("input");
+      card.classList.toggle("active",input.checked);
+    });
+  }
+
+  function render(){
+    renderUI();
+    renderPaths();
+    renderObjects();
+  }
+
+  function setEditing(value){
+    stopAnimation();
+    editing=value;
+    selected=null;
+    dragging=null;
+    els.editButton.textContent=editing?"✓ Fertig":"✎ Bearbeiten";
+    [els.stepNameWrap,els.saveStep,els.addStep,els.deleteStep,els.editPanel]
+      .forEach(el=>el.classList.toggle("hidden",!editing));
+    els.tapNotice.classList.add("hidden");
+    render();
+  }
+
+  function pointFromEvent(event){
+    const p=els.court.createSVGPoint();
+    p.x=event.clientX;p.y=event.clientY;
+    return p.matrixTransform(els.court.getScreenCTM().inverse());
+  }
+
+  const clampPlayer=p=>({x:Math.max(130,Math.min(770,p.x)),y:Math.max(340,Math.min(555,p.y))});
+  const clampBall=p=>({x:Math.max(115,Math.min(785,p.x)),y:Math.max(65,Math.min(565,p.y))});
+  const moveMode=()=>document.querySelector('input[name="moveMode"]:checked').value;
+
+  els.court.addEventListener("pointerdown",event=>{
+    if(!editing||playing) return;
+    event.preventDefault();
+    const playerEl=event.target.closest("[data-id]");
+    const ballEl=event.target.closest("#ballObject");
+
+    if(moveMode()==="tap"){
+      if(playerEl){
+        selected={type:"player",id:playerEl.dataset.id};
+        els.tapNotice.classList.remove("hidden");render();return;
       }
-
-      if (state === "invalid") {
-        invalidIds.add(playerAtRotation(relation.front).id);
-        invalidIds.add(playerAtRotation(relation.back).id);
+      if(ballEl){
+        selected={type:"ball"};els.tapNotice.classList.remove("hidden");render();return;
       }
-    }
-
-    return invalidIds;
-  }
-
-  function renderPlayers() {
-    const invalidIds = validateFormation();
-
-    for (const player of ROSTER) {
-      const position = currentStep().positions[player.id];
-      const group = elements.playerLayer.querySelector(`[data-id="${player.id}"]`);
-
-      group.setAttribute("transform", `translate(${position.x} ${position.y})`);
-      group.classList.toggle("editable", editMode);
-      group.classList.toggle(
-        "selected",
-        selectedObject?.type === "player" && selectedObject.id === player.id
-      );
-
-      const fill = invalidIds.has(player.id)
-        ? INVALID_COLOR
-        : editMode
-          ? EDIT_COLOR
-          : VIEW_COLOR;
-
-      group.querySelector("circle").setAttribute("fill", fill);
-      group.querySelector("[data-position-label]").textContent =
-        `Position ${playerRotation(player)}`;
-    }
-  }
-
-  function renderBall() {
-    elements.ballPathLayer.innerHTML = "";
-    const position = currentStep().ball.position;
-
-    elements.ball.setAttribute("transform", `translate(${position.x} ${position.y})`);
-    elements.ball.setAttribute("visibility", "visible");
-    elements.ball.classList.toggle("editable", editMode);
-    elements.ball.classList.toggle("selected", selectedObject?.type === "ball");
-
-    if (editMode) {
-      const marker = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      marker.setAttribute("cx", position.x);
-      marker.setAttribute("cy", position.y);
-      marker.setAttribute("r", "8");
-      marker.setAttribute("class", "ball-point");
-      elements.ballPathLayer.appendChild(marker);
-    }
-
-    renderStepPaths();
-  }
-
-  function renderStepPaths() {
-    elements.movementLayer.innerHTML = "";
-    elements.ballPathLayer
-      .querySelectorAll(".step-ball-path")
-      .forEach(node => node.remove());
-
-    if (state.stepIndex <= 0) return;
-
-    const previousStep = currentRotation().steps[state.stepIndex - 1];
-    const activeStep = currentStep();
-
-    for (const player of ROSTER) {
-      const from = previousStep.positions[player.id];
-      const to = activeStep.positions[player.id];
-
-      if (from.x !== to.x || from.y !== to.y) {
-        drawLine(
-          elements.movementLayer,
-          from.x, from.y, to.x, to.y,
-          "step-path"
-        );
+      if(selected){
+        const p=pointFromEvent(event);
+        if(selected.type==="player") stepData().positions[selected.id]=clampPlayer(p);
+        else stepData().ball=clampBall(p);
+        selected=null;els.tapNotice.classList.add("hidden");render();
       }
+      return;
     }
 
-    const fromBall = previousStep.ball.position;
-    const toBall = activeStep.ball.position;
+    if(playerEl){dragging={type:"player",id:playerEl.dataset.id};els.court.setPointerCapture(event.pointerId)}
+    else if(ballEl){dragging={type:"ball"};els.court.setPointerCapture(event.pointerId)}
+  },{passive:false});
 
-    if (fromBall.x !== toBall.x || fromBall.y !== toBall.y) {
-      drawLine(
-        elements.ballPathLayer,
-        fromBall.x, fromBall.y, toBall.x, toBall.y,
-        "step-ball-path"
-      );
-    }
+  els.court.addEventListener("pointermove",event=>{
+    if(!dragging||!editing||playing)return;
+    event.preventDefault();
+    const p=pointFromEvent(event);
+    if(dragging.type==="player") stepData().positions[dragging.id]=clampPlayer(p);
+    else stepData().ball=clampBall(p);
+    render();
+  },{passive:false});
+
+  ["pointerup","pointercancel"].forEach(name=>els.court.addEventListener(name,()=>dragging=null));
+
+  function stopAnimation(){
+    playing=false;
+    activeAnimations.forEach(a=>a.cancel());
+    activeAnimations=[];
+    els.playButton.textContent="▶";
   }
 
-  async function switchStepAnimated(targetIndex) {
-    const boundedTarget = Math.max(
-      0,
-      Math.min(currentRotation().steps.length - 1, targetIndex)
-    );
+  async function animateTo(targetIndex){
+    const target=Math.max(0,Math.min(rotationData().steps.length-1,targetIndex));
+    if(target===state.step)return;
 
-    if (boundedTarget === state.stepIndex) return;
+    stopAnimation();
+    const from=stepData();
+    const to=rotationData().steps[target];
+    playing=true;els.playButton.textContent="■";
+    els.movementLayer.innerHTML="";els.ballPathLayer.innerHTML="";
 
-    stopPlayback();
+    roster.forEach(p=>{
+      const a=from.positions[p.id],b=to.positions[p.id];
+      if(a.x!==b.x||a.y!==b.y) drawLine(els.movementLayer,a,b,"movement-path");
+    });
+    if(from.ball.x!==to.ball.x||from.ball.y!==to.ball.y) drawLine(els.ballPathLayer,from.ball,to.ball,"ball-path");
 
-    const fromIndex = state.stepIndex;
-    const fromStep = currentRotation().steps[fromIndex];
-    const toStep = currentRotation().steps[boundedTarget];
-
-    playing = true;
-    elements.play.textContent = "⏸ Stoppen";
-
-    await animateTransition(fromStep, toStep);
-
-    if (!playing) return;
-
-    state.stepIndex = boundedTarget;
-    playing = false;
-    activeAnimations = [];
-    elements.play.textContent = "▶ Abspielen";
-    renderAll();
-    elements.status.textContent =
-      `Schritt ${fromIndex + 1} → Schritt ${boundedTarget + 1} animiert.`;
-  }
-
-  function updateUi() {
-    elements.rotationSelect.value = String(state.rotationIndex);
-    elements.rotationName.textContent = rotationName(state.rotationIndex);
-    elements.stepNumber.textContent = String(state.stepIndex + 1);
-    elements.stepTotal.textContent = String(currentRotation().steps.length);
-    elements.stepNameInput.value = currentStep().name;
-    elements.situationSelect.value = currentStep().situation;
-  }
-
-  function renderAll() {
-    updateUi();
-    renderPlayers();
-    renderBall();
-  }
-
-  function setMode(value) {
-    stopPlayback();
-    editMode = Boolean(value);
-    selectedObject = null;
-    draggingObject = null;
-    elements.tapNotice.classList.add("hidden");
-
-    elements.modeBanner.classList.toggle("edit-mode", editMode);
-    elements.modeBanner.classList.toggle("view-mode", !editMode);
-    elements.courtHeader.classList.toggle("edit-mode", editMode);
-    elements.courtHeader.classList.toggle("view-mode", !editMode);
-    elements.court.classList.toggle("edit-mode", editMode);
-
-    elements.modeTitle.textContent = editMode ? "Trainermodus" : "Ansichtsmodus";
-    elements.modeHint.textContent = editMode
-      ? "Spieler und Ball können direkt angetippt oder gezogen werden."
-      : "Schritte ansehen und Animation abspielen.";
-    elements.toggleMode.textContent = editMode ? "Bearbeitung beenden" : "Bearbeiten";
-    elements.modeBadge.textContent = editMode ? "Bearbeitung" : "Ansicht";
-
-    for (const item of [
-      elements.stepNameRow,
-      elements.editControls,
-      elements.saveStep,
-      elements.addStep,
-      elements.deleteStep
-    ]) {
-      item.classList.toggle("hidden", !editMode);
-    }
-
-    renderAll();
-  }
-
-  function eventPoint(event) {
-    const point = elements.court.createSVGPoint();
-    point.x = event.clientX;
-    point.y = event.clientY;
-    return point.matrixTransform(elements.court.getScreenCTM().inverse());
-  }
-
-  function clampPlayer(point) {
-    return {
-      x: Math.max(105, Math.min(495, point.x)),
-      y: Math.max(420, Math.min(680, point.y))
-    };
-  }
-
-  function clampBall(point) {
-    return {
-      x: Math.max(85, Math.min(515, point.x)),
-      y: Math.max(55, Math.min(705, point.y))
-    };
-  }
-
-  function persist(message) {
-    saveState();
-    elements.status.textContent = message;
-  }
-
-  function openVersionDialog() {
-    elements.versionNumber.textContent = APP_VERSION.number;
-    elements.versionDate.textContent = `Stand: ${APP_VERSION.date}`;
-    elements.versionChanges.innerHTML = "";
-
-    for (const change of APP_VERSION.changes) {
-      const item = document.createElement("li");
-      item.textContent = change;
-      elements.versionChanges.appendChild(item);
-    }
-
-    elements.currentSituationInfo.textContent =
-      `${SITUATION_LABELS[currentStep().situation]} · ` +
-      `${rotationName(state.rotationIndex)} · Schritt ${state.stepIndex + 1}`;
-
-    if (typeof elements.versionDialog.showModal === "function") {
-      elements.versionDialog.showModal();
-    } else {
-      elements.versionDialog.setAttribute("open", "");
-    }
-  }
-
-  function closeVersionDialog() {
-    if (typeof elements.versionDialog.close === "function") {
-      elements.versionDialog.close();
-    } else {
-      elements.versionDialog.removeAttribute("open");
-    }
-  }
-
-  function stopPlayback() {
-    playing = false;
-    clearTimeout(playbackTimer);
-    activeAnimations.forEach(animation => animation.cancel());
-    activeAnimations = [];
-    elements.movementLayer.innerHTML = "";
-    elements.ballPathLayer.innerHTML = "";
-    elements.play.textContent = "▶ Abspielen";
-  }
-
-  async function animateTransition(fromStep, toStep) {
-    elements.movementLayer.innerHTML = "";
-    elements.ballPathLayer.innerHTML = "";
-
-    for (const player of ROSTER) {
-      const from = fromStep.positions[player.id];
-      const to = toStep.positions[player.id];
-
-      if (from.x !== to.x || from.y !== to.y) {
-        drawLine(elements.movementLayer, from.x, from.y, to.x, to.y, "movement-path");
-      }
-    }
-
-    const fromBall = fromStep.ball.position;
-    const toBall = toStep.ball.position;
-
-    if (fromBall.x !== toBall.x || fromBall.y !== toBall.y) {
-      drawLine(
-        elements.ballPathLayer,
-        fromBall.x, fromBall.y, toBall.x, toBall.y,
-        "ball-path"
-      );
-    }
-
-    elements.ball.setAttribute("visibility", "visible");
-    elements.ball.setAttribute("transform", `translate(${fromBall.x} ${fromBall.y})`);
-
-    const playerAnimations = ROSTER.map(player => {
-      const from = fromStep.positions[player.id];
-      const to = toStep.positions[player.id];
-      const element = elements.playerLayer.querySelector(`[data-id="${player.id}"]`);
-
-      return element.animate(
-        [
-          { transform: `translate(${from.x}px, ${from.y}px)` },
-          { transform: `translate(${to.x}px, ${to.y}px)` }
-        ],
-        {
-          duration: ANIMATION_DURATION,
-          easing: "ease-in-out",
-          fill: "forwards"
-        }
+    const animations=roster.map(p=>{
+      const a=from.positions[p.id],b=to.positions[p.id];
+      return els.playerLayer.querySelector(`[data-id="${p.id}"]`).animate(
+        [{transform:`translate(${a.x}px,${a.y}px)`},{transform:`translate(${b.x}px,${b.y}px)`}],
+        {duration:1450,easing:"ease-in-out",fill:"forwards"}
       );
     });
 
-    const ballAnimation = elements.ball.animate(
-      [
-        { transform: `translate(${fromBall.x}px, ${fromBall.y}px)` },
-        { transform: `translate(${toBall.x}px, ${toBall.y}px)` }
-      ],
-      {
-        duration: ANIMATION_DURATION,
-        easing: "ease-in-out",
-        fill: "forwards"
-      }
+    const ballAnim=els.ballObject.animate(
+      [{transform:`translate(${from.ball.x}px,${from.ball.y}px) rotate(0deg)`},
+       {transform:`translate(${to.ball.x}px,${to.ball.y}px) rotate(360deg)`}],
+      {duration:1450,easing:"ease-in-out",fill:"forwards"}
     );
 
-    activeAnimations = [...playerAnimations, ballAnimation];
-    await Promise.all(activeAnimations.map(animation => animation.finished.catch(() => {})));
+    activeAnimations=[...animations,ballAnim];
+    await Promise.all(activeAnimations.map(a=>a.finished.catch(()=>{})));
+    if(!playing)return;
+    state.step=target;
+    playing=false;activeAnimations=[];els.playButton.textContent="▶";render();
   }
 
-  elements.court.addEventListener("pointerdown", event => {
-    if (!editMode || playing) return;
-    event.preventDefault();
+  els.prevStep.addEventListener("click",()=>animateTo(state.step-1));
+  els.nextStep.addEventListener("click",()=>animateTo(state.step+1));
 
-    const playerElement = event.target.closest("[data-id]");
-    const ballElement = event.target.closest("#ball");
-    const moveMode = elements.moveMode.value;
-
-    if (moveMode === "tap") {
-      if (playerElement) {
-        selectedObject = { type: "player", id: playerElement.dataset.id };
-        elements.tapNotice.classList.remove("hidden");
-        renderAll();
-        return;
-      }
-
-      if (ballElement) {
-        selectedObject = { type: "ball" };
-        elements.tapNotice.classList.remove("hidden");
-        renderAll();
-        return;
-      }
-
-      if (selectedObject) {
-        const target = eventPoint(event);
-
-        if (selectedObject.type === "player") {
-          currentStep().positions[selectedObject.id] = clampPlayer(target);
-        } else {
-          currentStep().ball.position = clampBall(target);
-        }
-
-        selectedObject = null;
-        elements.tapNotice.classList.add("hidden");
-        renderAll();
-      }
-      return;
+  els.playButton.addEventListener("click",async()=>{
+    if(playing){stopAnimation();render();return}
+    if(rotationData().steps.length<2){els.status.textContent="Lege zuerst einen zweiten Schritt an.";return}
+    let index=state.step>=rotationData().steps.length-1?0:state.step;
+    while(index<rotationData().steps.length-1){
+      await animateTo(index+1);
+      if(playing) break;
+      index=state.step;
+      await new Promise(r=>setTimeout(r,300));
     }
-
-    if (playerElement) {
-      draggingObject = { type: "player", id: playerElement.dataset.id };
-      elements.court.setPointerCapture(event.pointerId);
-      return;
-    }
-
-    if (ballElement) {
-      draggingObject = { type: "ball" };
-      elements.court.setPointerCapture(event.pointerId);
-    }
-  }, { passive: false });
-
-  elements.court.addEventListener("pointermove", event => {
-    if (!draggingObject || !editMode || playing) return;
-    event.preventDefault();
-
-    const target = eventPoint(event);
-
-    if (draggingObject.type === "player") {
-      currentStep().positions[draggingObject.id] = clampPlayer(target);
-    } else {
-      currentStep().ball.position = clampBall(target);
-    }
-
-    renderAll();
-  }, { passive: false });
-
-  elements.court.addEventListener("pointerup", () => { draggingObject = null; });
-  elements.court.addEventListener("pointercancel", () => { draggingObject = null; });
-
-  elements.toggleMode.addEventListener("click", () => setMode(!editMode));
-  elements.infoButton.addEventListener("click", openVersionDialog);
-  elements.closeVersionDialog.addEventListener("click", closeVersionDialog);
-  elements.closeVersionDialogBottom.addEventListener("click", closeVersionDialog);
-
-  elements.versionDialog.addEventListener("click", event => {
-    if (event.target === elements.versionDialog) closeVersionDialog();
   });
 
-  elements.rotationSelect.addEventListener("change", event => {
-    stopPlayback();
-    state.rotationIndex = Number(event.target.value);
-    state.stepIndex = 0;
-    renderAll();
+  els.editButton.addEventListener("click",()=>setEditing(!editing));
+  els.rotationSelect.addEventListener("change",e=>{state.rotation=Number(e.target.value);state.step=0;render()});
+  els.situationSelect.addEventListener("change",e=>{stepData().situation=e.target.value;render()});
+  els.saveStep.addEventListener("click",()=>{
+    stepData().name=els.stepNameInput.value.trim()||`Schritt ${state.step+1}`;
+    save("Schritt gespeichert.");render();
   });
-
-  elements.prevStep.addEventListener("click", async () => {
-    await switchStepAnimated(state.stepIndex - 1);
-  });
-
-  elements.nextStep.addEventListener("click", async () => {
-    await switchStepAnimated(state.stepIndex + 1);
-  });
-
-  elements.saveStep.addEventListener("click", () => {
-    currentStep().name =
-      elements.stepNameInput.value.trim() || `Schritt ${state.stepIndex + 1}`;
-    currentStep().situation = elements.situationSelect.value;
-    persist("Schritt wurde gespeichert.");
-    renderAll();
-  });
-
-  elements.situationSelect.addEventListener("change", event => {
-    currentStep().situation = event.target.value;
-    renderPlayers();
-  });
-
-  elements.addStep.addEventListener("click", () => {
-    currentStep().name =
-      elements.stepNameInput.value.trim() || `Schritt ${state.stepIndex + 1}`;
-    currentStep().situation = elements.situationSelect.value;
-
-    const source = currentStep();
-    currentRotation().steps.splice(state.stepIndex + 1, 0, {
-      name: `Schritt ${state.stepIndex + 2}`,
-      positions: structuredClone(source.positions),
-      situation: source.situation,
-      ball: structuredClone(source.ball)
+  els.addStep.addEventListener("click",()=>{
+    stepData().name=els.stepNameInput.value.trim()||`Schritt ${state.step+1}`;
+    const source=stepData();
+    rotationData().steps.splice(state.step+1,0,{
+      name:`Schritt ${state.step+2}`,
+      situation:source.situation,
+      positions:structuredClone(source.positions),
+      ball:structuredClone(source.ball)
     });
-
-    state.stepIndex += 1;
-    persist("Neuer Schritt wurde angelegt.");
-    renderAll();
+    state.step++;save("Neuer Schritt angelegt.");render();
+  });
+  els.deleteStep.addEventListener("click",()=>{
+    if(rotationData().steps.length===1){els.status.textContent="Der einzige Schritt kann nicht gelöscht werden.";return}
+    rotationData().steps.splice(state.step,1);
+    state.step=Math.max(0,state.step-1);save("Schritt gelöscht.");render();
   });
 
-  elements.deleteStep.addEventListener("click", () => {
-    if (currentRotation().steps.length === 1) {
-      elements.status.textContent = "Der einzige Schritt kann nicht gelöscht werden.";
-      return;
-    }
-
-    currentRotation().steps.splice(state.stepIndex, 1);
-    state.stepIndex = Math.max(0, state.stepIndex - 1);
-    persist("Schritt wurde gelöscht.");
-    renderAll();
+  document.querySelectorAll('input[name="moveMode"]').forEach(input=>{
+    input.addEventListener("change",()=>{selected=null;els.tapNotice.classList.add("hidden");render()});
   });
 
-  elements.play.addEventListener("click", async () => {
-    if (playing) {
-      stopPlayback();
-      elements.status.textContent = "Animation angehalten.";
-      renderAll();
-      return;
-    }
-
-    if (currentRotation().steps.length < 2) {
-      elements.status.textContent = "Lege zunächst einen zweiten Schritt an.";
-      return;
-    }
-
-    setMode(false);
-    playing = true;
-    elements.play.textContent = "⏸ Stoppen";
-
-    let index =
-      state.stepIndex >= currentRotation().steps.length - 1
-        ? 0
-        : state.stepIndex;
-
-    while (playing && index < currentRotation().steps.length - 1) {
-      state.stepIndex = index;
-      updateUi();
-
-      await animateTransition(
-        currentRotation().steps[index],
-        currentRotation().steps[index + 1]
-      );
-
-      if (!playing) break;
-
-      state.stepIndex = index + 1;
-      renderAll();
-      index += 1;
-
-      await new Promise(resolve => {
-        playbackTimer = setTimeout(resolve, 350);
-      });
-    }
-
-    stopPlayback();
-    renderAll();
-    elements.status.textContent = "Animation beendet.";
-  });
+  function openInfo(){
+    els.infoSituation.textContent=`Aktuell: ${rotationName(state.rotation)} · Schritt ${state.step+1} · ${stepData().name}`;
+    els.infoDialog.showModal();
+  }
+  els.infoButton.addEventListener("click",openInfo);
+  els.infoButtonBottom.addEventListener("click",openInfo);
+  els.closeInfo.addEventListener("click",()=>els.infoDialog.close());
+  els.closeInfoBottom.addEventListener("click",()=>els.infoDialog.close());
+  els.infoDialog.addEventListener("click",e=>{if(e.target===els.infoDialog)els.infoDialog.close()});
 
   createPlayers();
-  setMode(false);
-  elements.status.textContent = `Version ${APP_VERSION.number} geladen.`;
+  setEditing(false);
+  els.status.textContent=`Version ${VERSION} geladen.`;
 })();
-

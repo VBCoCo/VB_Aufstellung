@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07111d">
   <title>Volleyball Trainer</title>
+  
 <style>
 :root{
   --bg:#07111d;
@@ -150,10 +151,11 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
   .step-nav button{width:52px;height:52px}
 }
 
-/* Version 2.1.0: laengeres, schmaleres Spielfeld */
+/* Einzeldatei Version 2.1.1 */
 .court-wrap{display:flex;flex-direction:column;align-items:center}
-#court{width:min(100%,760px);max-height:82vh}
-@media(max-width:680px){#court{width:100%;max-height:none}}
+#court{width:min(100%,720px);height:auto;max-height:none}
+@media(max-width:980px){.court-section{grid-row:auto}.layout{grid-template-columns:1fr}.sidebar{grid-template-columns:1fr 1fr}}
+@media(max-width:680px){.sidebar{grid-template-columns:1fr}#court{width:100%}.court-wrap{padding:6px}}
 
 </style>
 </head>
@@ -253,7 +255,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
 
         <section class="panel version-panel">
           <div>
-            <span>Version 2.1.0</span>
+            <span>Version 2.1.1</span>
             <span>06.08.2026</span>
           </div>
           <button id="infoButtonBottom" type="button" class="ghost full">ⓘ Infos anzeigen</button>
@@ -315,7 +317,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
         </div>
 
         <div id="tapNotice" class="notice hidden">Zielposition antippen</div>
-        <div id="status" class="status">Version 2.1.0 geladen.</div>
+        <div id="status" class="status">Version 2.1.1 geladen.</div>
       </section>
     </section>
   </main>
@@ -325,14 +327,14 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
       <div class="dialog-head">
         <div>
           <span class="eyebrow">Volleyball Trainer</span>
-          <h2>Version 2.1.0</h2>
+          <h2>Version 2.1.1</h2>
         </div>
         <button id="closeInfo" type="button">✕</button>
       </div>
 
       <ul>
-        <li>Neues dunkles Trainer-Layout</li>
-        <li>Gelb-blauer Volleyball</li>
+        <li>Einzige HTML-Datei für einfaches GitHub-Update</li>
+        <li>Längeres und schmaleres Spielfeld</li>
         <li>Spieler und Ball identisch verschiebbar</li>
         <li>Animierter Wechsel zwischen Schritten</li>
         <li>Ball und Laufwege bleiben sichtbar</li>
@@ -343,12 +345,14 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
       <button id="closeInfoBottom" class="primary full" type="button">Schließen</button>
     </div>
   </dialog>
+
+  
 <script>
 (() => {
   "use strict";
 
-  const VERSION = "2.1.0";
-  const STORAGE_KEY = "volleyball-trainer-v2";
+  const VERSION = "2.1.1";
+  const STORAGE_KEY = "volleyball-trainer-v2-1-1";
 
   const roster = [
     { id:"a1", role:"AA", base:1 },

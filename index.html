@@ -7,14 +7,14 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Volleyball Trainer 2.4.1</title>
-  <link rel="stylesheet" href="style.css?v=2.4.1">
+  <title>Volleyball Trainer 2.4.2</title>
+  <link rel="stylesheet" href="style.css?v=2.4.2">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.4.1" alt="TTC Geltendorf e.V." class="brand-logo"></div>
+        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.4.2" alt="TTC Geltendorf e.V." class="brand-logo"></div>
         <div class="brand-copy"><h1>Volleyball Trainer</h1><p>TTC Geltendorf e.V.</p></div>
       </div>
       <div class="top-actions"><button id="infoButton" class="ghost" type="button">ⓘ Info</button><button id="editButton" class="primary" type="button">✎ Bearbeiten</button></div>
@@ -23,6 +23,9 @@
     <section class="layout">
       <aside class="sidebar">
         <section id="stepEditPanel" class="panel step-panel hidden">
+          <label class="field">Name der Spielsituation<input id="situationNameInput" type="text"></label>
+          <div class="situation-actions"><button id="saveSituation" class="ghost" type="button">Spielsituation speichern</button><button id="addSituation" class="blue" type="button">⊞ Neue Spielsituation</button><button id="deleteSituation" class="red" type="button" title="Spielsituation löschen">🗑</button></div>
+          <div class="panel-divider"></div>
           <label id="stepNameWrap" class="field">Name des Schritts<input id="stepNameInput" type="text"></label>
           <div class="step-actions"><button id="saveStep" class="icon-button" type="button" title="Speichern">💾</button><button id="addStep" class="blue" type="button">⊞ Neuer Schritt</button><button id="deleteStep" class="red" type="button" title="Löschen">🗑</button></div>
         </section>
@@ -33,7 +36,7 @@
             <label class="mode-card active"><input type="radio" name="moveMode" value="tap" checked><span class="mode-icon">☝</span><strong>Antippen</strong><small>Objekt wählen, dann Ziel antippen</small></label>
             <label class="mode-card"><input type="radio" name="moveMode" value="drag"><span class="mode-icon">✋</span><strong>Ziehen</strong><small>Objekt direkt verschieben</small></label>
           </div>
-          <label class="field">Spielsituation<select id="situationSelect"><option value="serveReceive">Aufschlag / Annahme</option><option value="attack">Angriff</option><option value="defense">Abwehr</option><option value="ownServe">Eigener Aufschlag</option></select></label>
+          <label class="field">Spielphase<select id="situationSelect"><option value="serveReceive">Aufschlag / Annahme</option><option value="attack">Angriff</option><option value="defense">Abwehr</option><option value="ownServe">Eigener Aufschlag</option></select></label>
           <button id="lineupToggle" class="lineup-toggle" type="button"><span>⚙ Aufstellungsänderung</span><span id="lineupChevron">▾</span></button>
           <div id="lineupEditor" class="lineup-editor hidden">
             <div id="lineupGrid" class="lineup-grid"></div>
@@ -42,13 +45,13 @@
           </div>
         </section>
 
-        <section class="panel"><h2>So funktioniert es</h2><ol><li>Bearbeiten freischalten</li><li>Spieler oder Ball verschieben</li><li>Optional Aufstellung/Rollen ändern</li><li>Neuen Schritt anlegen</li><li>Mit den Pfeilen animiert wechseln</li></ol></section>
-        <section class="panel version-panel"><div><span>Version 2.4.1</span><span>07.08.2026</span></div><button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button><div id="syncBadge" class="sync-badge">Speicherung: Browser</div></section>
+        <section id="helpPanel" class="panel edit-help"><h2>So funktioniert es</h2><ol><li>Bearbeiten freischalten</li><li>Spieler oder Ball verschieben</li><li>Optional Aufstellung/Rollen ändern</li><li>Neuen Schritt anlegen</li><li>Mit den Pfeilen animiert wechseln</li></ol></section>
+        <section class="panel version-panel"><div><span>Version 2.4.2</span><span>07.08.2026</span></div><button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button><div id="syncBadge" class="sync-badge">Speicherung: Browser</div></section>
       </aside>
 
       <section class="court-section">
         <div class="court-toolbar">
-          <label class="rotation-compact"><span>Rotation</span><select id="rotationSelect"><option value="0">Grundaufstellung</option><option value="1">Rotation +1</option><option value="2">Rotation +2</option><option value="3">Rotation +3</option><option value="4">Rotation +4</option><option value="5">Rotation +5</option></select></label>
+          <label class="situation-compact"><span>Spielsituation</span><select id="rotationSelect"></select></label>
           <div class="step-compact"><span class="step-label">Schritt <strong><span id="stepNumber">1</span>/<span id="stepTotal">1</span></strong></span><div class="step-nav"><button id="prevStep" type="button" aria-label="Vorheriger Schritt">←</button><button id="playButton" type="button" aria-label="Animation abspielen">▶</button><button id="nextStep" type="button" aria-label="Nächster Schritt">→</button></div></div>
         </div>
         <div class="court-head"><div><span class="eyebrow">Aktueller Schritt</span><h2 id="currentStepTitle">Grundposition</h2></div></div>
@@ -68,7 +71,7 @@
   </main>
 
   <dialog id="passwordDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Bearbeitungsmodus</span><h2>Passwort eingeben</h2></div><button id="closePassword" type="button">✕</button></div><label class="password-field">Passwort<input id="passwordInput" type="password" autocomplete="current-password" placeholder="Aktuell kein Passwort erforderlich"></label><div class="dialog-actions"><button id="cancelPassword" class="ghost" type="button">Abbrechen</button><button id="confirmPassword" class="primary" type="button">OK</button></div><p id="passwordStatus" class="status"></p></div></dialog>
-  <dialog id="infoDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.4.1</h2></div><button id="closeInfo" type="button">✕</button></div><ul><li>Vereinslogo im Kopfbereich sauber maskiert</li><li>Bearbeitungsmodus wird durch gelben App-Hintergrund signalisiert</li><li>Rotation und Schrittsteuerung kompakt direkt über dem Spielfeld</li><li>Passwortabfrage bleibt sichtbar, aktuell genügt OK ohne Eingabe</li><li>Flexible Rollen und Libero-Logik aus 2.4.0 bleiben erhalten</li><li>Optionale Supabase-Synchronisation vorbereitet</li></ul><p id="infoSituation"></p><button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
-  <script src="config.js?v=2.4.1"></script><script defer src="app.js?v=2.4.1"></script>
+  <dialog id="infoDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.4.2</h2></div><button id="closeInfo" type="button">✕</button></div><ul><li>Spielsituation und Schrittsteuerung kompakt über dem Spielfeld</li><li>Neue Spielsituationen können im Bearbeitungsmodus angelegt und benannt werden</li><li>Hinweisbox „So funktioniert es“ erscheint nur beim Bearbeiten</li><li>Spielerbewegung und Positionsprüfung überarbeitet</li><li>Passwortabfrage bleibt sichtbar, aktuell genügt OK ohne Eingabe</li><li>Optionale Supabase-Synchronisation vorbereitet</li></ul><p id="infoSituation"></p><button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
+  <script src="config.js?v=2.4.2"></script><script defer src="app.js?v=2.4.2"></script>
 </body>
 </html>

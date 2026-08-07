@@ -7,14 +7,14 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Volleyball Trainer 2.2.0</title>
-  <link rel="stylesheet" href="style.css?v=2.2.0">
+  <title>Volleyball Trainer 2.3.0</title>
+  <link rel="stylesheet" href="style.css?v=2.3.0">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <img src="assets/volleyball.png?v=2.2.0" alt="" class="brand-ball">
+        <img src="assets/volleyball.png?v=2.3.0" alt="" class="brand-ball">
         <div>
           <h1>Volleyball Trainer</h1>
           <p id="rotationTitle">Grundaufstellung</p>
@@ -104,7 +104,7 @@
         </section>
 
         <section class="panel version-panel">
-          <div><span>Version 2.2.0</span><span>06.08.2026</span></div>
+          <div><span>Version 2.3.0</span><span>07.08.2026</span></div>
           <button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button>
         </section>
       </aside>
@@ -138,8 +138,8 @@
 
             <rect x="95" y="50" width="510" height="800" rx="8" fill="url(#courtGradient)" stroke="#fff" stroke-width="4"/>
             <line x1="95" y1="450" x2="605" y2="450" stroke="#fff" stroke-width="6"/>
-            <line x1="95" y1="275" x2="605" y2="275" stroke="#fff" stroke-width="2" opacity=".7"/>
-            <line x1="95" y1="625" x2="605" y2="625" stroke="#fff" stroke-width="2" opacity=".7"/>
+            <line x1="95" y1="316.667" x2="605" y2="316.667" stroke="#fff" stroke-width="2" opacity=".7"/>
+            <line x1="95" y1="583.333" x2="605" y2="583.333" stroke="#fff" stroke-width="2" opacity=".7"/>
             <line x1="350" y1="50" x2="350" y2="850" stroke="#fff" stroke-width="1.5" opacity=".28"/>
 
             <g id="validationLayer"></g>
@@ -158,11 +158,12 @@
             <span><i class="line player-line"></i>Laufweg Spieler</span>
             <span><i class="line ball-line"></i>Ballweg</span>
             <span><i class="dot blue-dot"></i>Eigene Spieler</span>
+            <span><i class="dot red-dot"></i>Gegner</span>
           </div>
         </div>
 
         <div id="tapNotice" class="notice hidden">Zielposition antippen</div>
-        <div id="status" class="status">Version 2.2.0 geladen.</div>
+        <div id="status" class="status">Version 2.3.0 geladen.</div>
       </section>
     </section>
   </main>
@@ -172,7 +173,7 @@
       <div class="dialog-head">
         <div>
           <span class="eyebrow">Volleyball Trainer</span>
-          <h2>Version 2.2.0</h2>
+          <h2>Version 2.3.0</h2>
         </div>
         <button id="closeInfo" type="button">✕</button>
       </div>
@@ -183,12 +184,16 @@
         <li>Animierter Wechsel zwischen Schritten</li>
         <li>Ball und Laufwege bleiben sichtbar</li>
         <li>Cache-Busting über Versionsparameter</li>
+        <li>6 verschiebbare gegnerische Spieler ergänzt</li>
+        <li>Spieler können in Angriff/Abwehr außerhalb des Feldes stehen</li>
+        <li>Aufschlag/Annahme hält beide Teams vollständig im Feld</li>
+        <li>3-Meter-Linien auf korrektes 3-m-/6-m-Verhältnis gesetzt</li>
       </ul>
       <p id="infoSituation"></p>
       <button id="closeInfoBottom" class="primary full" type="button">Schließen</button>
     </div>
   </dialog>
 
-  <script defer src="app.js?v=2.2.0"></script>
+  <script defer src="app.js?v=2.3.0"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
--- Volleyball Trainer 2.4.0
+-- Volleyball Trainer 2.4.1
 -- Einmal im Supabase SQL Editor ausführen.
 -- Kein Benutzer-Login nötig. Lesen ist öffentlich; Schreiben erfolgt nur über RPC mit Editor-Passwort.
 
@@ -20,7 +20,7 @@ create table if not exists public.volleyball_trainer_settings (
 );
 
 insert into public.volleyball_trainer_settings(id,editor_password_hash)
-values('main', crypt('TTC 2026', gen_salt('bf')))
+values('main', crypt('', gen_salt('bf')))
 on conflict (id) do update set editor_password_hash=excluded.editor_password_hash;
 
 alter table public.volleyball_trainer_state enable row level security;

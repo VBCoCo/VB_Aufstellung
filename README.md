@@ -1,6 +1,6 @@
-# Volleyball Trainer 2.4.0
+# Volleyball Trainer 2.4.1
 
-## Neu in 2.4.0
+## Neu in 2.4.1
 
 - Mobile Breite korrigiert: Header, Spielfeld und Bedienkarten bleiben auf derselben Gerätebreite.
 - TTC-Geltendorf-Branding auf Basis des vorhandenen Vereinswappens: Blau, Weiß und Schwarz.
@@ -8,7 +8,7 @@
 - Für jeden der sechs eigenen Stammspieler kann die Rolle gewählt werden: Außen (AA), Mitte (MB), Zuspiel (Z), Diagonal (D).
 - Option **Mit Libero spielen**. Befindet sich ein als MB eingestellter Spieler in einer Hinterfeldposition (1, 5 oder 6), wird er automatisch als Libero (L) dargestellt.
 - Bearbeitungsmodus ist passwortgeschützt.
-- Testpasswort ohne Supabase: `TTC 2026`.
+- Testpasswort ohne Supabase: leeres Passwort (einfach **OK** drücken).
 - Supabase-Synchronisierung für die komplette Trainer-Aufstellung vorbereitet.
 
 ## GitHub Pages
@@ -33,7 +33,7 @@ Danach lädt die App beim Start den gemeinsamen Zustand aus Supabase. Beim Speic
 
 ### Passwort
 
-Das Testpasswort wird in Supabase **nicht im Klartext** gespeichert. `supabase.sql` erzeugt einen bcrypt-Hash für `TTC 2026`. Die App schickt das eingegebene Passwort zur Prüfung an eine RPC-Funktion. Ohne konfigurierte Supabase-Verbindung gibt es für den Testbetrieb einen lokalen Fallback mit demselben Passwort.
+Das Testpasswort wird in Supabase **nicht im Klartext** gespeichert. `supabase.sql` erzeugt einen bcrypt-Hash für leeres Passwort (einfach **OK** drücken). Die App schickt das eingegebene Passwort zur Prüfung an eine RPC-Funktion. Ohne konfigurierte Supabase-Verbindung gibt es für den Testbetrieb einen lokalen Fallback mit demselben Passwort.
 
 ### Sicherheitshinweis
 

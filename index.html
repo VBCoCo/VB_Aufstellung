@@ -7,26 +7,24 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Volleyball Trainer 2.4.0</title>
-  <link rel="stylesheet" href="style.css?v=2.4.0">
+  <title>Volleyball Trainer 2.4.1</title>
+  <link rel="stylesheet" href="style.css?v=2.4.1">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <img src="assets/ttc-logo.png?v=2.4.0" alt="TTC Geltendorf e.V." class="brand-logo">
-        <div class="brand-copy"><h1>Volleyball Trainer</h1><p id="rotationTitle">Grundaufstellung</p></div>
+        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.4.1" alt="TTC Geltendorf e.V." class="brand-logo"></div>
+        <div class="brand-copy"><h1>Volleyball Trainer</h1><p>TTC Geltendorf e.V.</p></div>
       </div>
       <div class="top-actions"><button id="infoButton" class="ghost" type="button">ⓘ Info</button><button id="editButton" class="primary" type="button">✎ Bearbeiten</button></div>
     </header>
 
     <section class="layout">
       <aside class="sidebar">
-        <section class="panel step-panel">
-          <div class="step-summary"><div><span>Schritt</span><strong><span id="stepNumber">1</span> / <span id="stepTotal">1</span></strong></div><div class="step-nav"><button id="prevStep" type="button">←</button><button id="playButton" type="button">▶</button><button id="nextStep" type="button">→</button></div></div>
-          <label class="field">Rotation<select id="rotationSelect"><option value="0">Grundaufstellung</option><option value="1">Rotation +1</option><option value="2">Rotation +2</option><option value="3">Rotation +3</option><option value="4">Rotation +4</option><option value="5">Rotation +5</option></select></label>
-          <label id="stepNameWrap" class="field hidden">Name des Schritts<input id="stepNameInput" type="text"></label>
-          <div class="step-actions"><button id="saveStep" class="icon-button hidden" type="button" title="Speichern">💾</button><button id="addStep" class="blue hidden" type="button">⊞ Neuer Schritt</button><button id="deleteStep" class="red hidden" type="button" title="Löschen">🗑</button></div>
+        <section id="stepEditPanel" class="panel step-panel hidden">
+          <label id="stepNameWrap" class="field">Name des Schritts<input id="stepNameInput" type="text"></label>
+          <div class="step-actions"><button id="saveStep" class="icon-button" type="button" title="Speichern">💾</button><button id="addStep" class="blue" type="button">⊞ Neuer Schritt</button><button id="deleteStep" class="red" type="button" title="Löschen">🗑</button></div>
         </section>
 
         <section id="editPanel" class="panel hidden">
@@ -44,12 +42,16 @@
           </div>
         </section>
 
-        <section class="panel"><h2>So funktioniert es</h2><ol><li>Bearbeiten mit Passwort freischalten</li><li>Spieler oder Ball verschieben</li><li>Optional Aufstellung/Rollen ändern</li><li>Neuen Schritt anlegen</li><li>Mit den Pfeilen animiert wechseln</li></ol></section>
-        <section class="panel version-panel"><div><span>Version 2.4.0</span><span>07.08.2026</span></div><button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button><div id="syncBadge" class="sync-badge">Speicherung: Browser</div></section>
+        <section class="panel"><h2>So funktioniert es</h2><ol><li>Bearbeiten freischalten</li><li>Spieler oder Ball verschieben</li><li>Optional Aufstellung/Rollen ändern</li><li>Neuen Schritt anlegen</li><li>Mit den Pfeilen animiert wechseln</li></ol></section>
+        <section class="panel version-panel"><div><span>Version 2.4.1</span><span>07.08.2026</span></div><button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button><div id="syncBadge" class="sync-badge">Speicherung: Browser</div></section>
       </aside>
 
       <section class="court-section">
-        <div class="court-head"><div><span class="eyebrow">Aktueller Schritt</span><h2 id="currentStepTitle">Grundposition</h2></div><span id="modeBadge" class="mode-badge">Ansicht</span></div>
+        <div class="court-toolbar">
+          <label class="rotation-compact"><span>Rotation</span><select id="rotationSelect"><option value="0">Grundaufstellung</option><option value="1">Rotation +1</option><option value="2">Rotation +2</option><option value="3">Rotation +3</option><option value="4">Rotation +4</option><option value="5">Rotation +5</option></select></label>
+          <div class="step-compact"><span class="step-label">Schritt <strong><span id="stepNumber">1</span>/<span id="stepTotal">1</span></strong></span><div class="step-nav"><button id="prevStep" type="button" aria-label="Vorheriger Schritt">←</button><button id="playButton" type="button" aria-label="Animation abspielen">▶</button><button id="nextStep" type="button" aria-label="Nächster Schritt">→</button></div></div>
+        </div>
+        <div class="court-head"><div><span class="eyebrow">Aktueller Schritt</span><h2 id="currentStepTitle">Grundposition</h2></div></div>
         <div class="court-wrap">
           <svg id="court" viewBox="0 0 700 900" role="img" aria-label="Volleyballfeld">
             <defs><linearGradient id="courtGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8a5c"/><stop offset="100%" stop-color="#ef6a42"/></linearGradient><filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000" flood-opacity=".25"/></filter><marker id="arrowWhite" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#fff"/></marker><marker id="arrowYellow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ffd400"/></marker></defs>
@@ -60,13 +62,13 @@
           </svg>
           <div class="legend"><span><i class="line player-line"></i>Laufweg Spieler</span><span><i class="line ball-line"></i>Ballweg</span><span><i class="dot blue-dot"></i>Eigene Spieler</span><span><i class="dot red-dot"></i>Gegner</span></div>
         </div>
-        <div id="tapNotice" class="notice hidden">Zielposition antippen</div><div id="status" class="status">Version 2.4.0 geladen.</div>
+        <div id="tapNotice" class="notice hidden">Zielposition antippen</div><div id="status" class="status court-status" aria-live="polite"></div>
       </section>
     </section>
   </main>
 
-  <dialog id="passwordDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Bearbeitungsmodus</span><h2>Passwort eingeben</h2></div><button id="closePassword" type="button">✕</button></div><label class="password-field">Passwort<input id="passwordInput" type="password" autocomplete="current-password" placeholder="Passwort"></label><div class="dialog-actions"><button id="cancelPassword" class="ghost" type="button">Abbrechen</button><button id="confirmPassword" class="primary" type="button">Freischalten</button></div><p id="passwordStatus" class="status"></p></div></dialog>
-  <dialog id="infoDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.4.0</h2></div><button id="closeInfo" type="button">✕</button></div><ul><li>Mobiles Layout auf einheitliche Bildschirmbreite korrigiert</li><li>TTC-Geltendorf-Farbschema und Vereinswappen übernommen</li><li>Flexible Rollen für alle sechs eigenen Spieler</li><li>Libero-Option mit automatischem Ersatz des hinteren Mittelblockers</li><li>Bearbeitungsmodus mit Passwortschutz</li><li>Optionale Supabase-Synchronisation vorbereitet</li><li>Gegner frei verschiebbar; Außenpositionen in Angriff/Abwehr</li><li>3-Meter-Linien korrekt bei 3 m vor / 6 m hinten</li></ul><p id="infoSituation"></p><button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
-  <script src="config.js?v=2.4.0"></script><script defer src="app.js?v=2.4.0"></script>
+  <dialog id="passwordDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Bearbeitungsmodus</span><h2>Passwort eingeben</h2></div><button id="closePassword" type="button">✕</button></div><label class="password-field">Passwort<input id="passwordInput" type="password" autocomplete="current-password" placeholder="Aktuell kein Passwort erforderlich"></label><div class="dialog-actions"><button id="cancelPassword" class="ghost" type="button">Abbrechen</button><button id="confirmPassword" class="primary" type="button">OK</button></div><p id="passwordStatus" class="status"></p></div></dialog>
+  <dialog id="infoDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.4.1</h2></div><button id="closeInfo" type="button">✕</button></div><ul><li>Vereinslogo im Kopfbereich sauber maskiert</li><li>Bearbeitungsmodus wird durch gelben App-Hintergrund signalisiert</li><li>Rotation und Schrittsteuerung kompakt direkt über dem Spielfeld</li><li>Passwortabfrage bleibt sichtbar, aktuell genügt OK ohne Eingabe</li><li>Flexible Rollen und Libero-Logik aus 2.4.0 bleiben erhalten</li><li>Optionale Supabase-Synchronisation vorbereitet</li></ul><p id="infoSituation"></p><button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
+  <script src="config.js?v=2.4.1"></script><script defer src="app.js?v=2.4.1"></script>
 </body>
 </html>

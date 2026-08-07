@@ -1,18 +1,1 @@
-{
-  "version": "2.3.0",
-  "date": "2026-08-07",
-  "files": [
-    "index.html",
-    "style.css",
-    "app.js",
-    "assets/volleyball.png"
-  ],
-  "notes": [
-    "Six draggable opponent players added",
-    "Players can be positioned outside the court in attack and defense situations",
-    "Serve/receive constrains both teams to their court halves",
-    "Attack lines corrected to 3 m from the net, leaving 6 m back court",
-    "Existing 2.2.0 local data is migrated automatically",
-    "Cache busting enabled"
-  ]
-}
+{"version":"2.4.0","date":"2026-08-07"}

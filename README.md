@@ -1,36 +1,40 @@
-# Volleyball Trainer 2.3.0
+# Volleyball Trainer 2.4.0
 
-## Neu in 2.3.0
+## Neu in 2.4.0
 
-- 6 gegnerische Spieler werden auf der oberen Feldhälfte angezeigt und können verschoben werden.
-- In Angriff und Abwehr können Spieler auch außerhalb des Spielfeldes platziert werden, z. B. für den Außenangriff.
-- Bei Aufschlag / Annahme bleiben alle Spieler vollständig innerhalb ihrer jeweiligen Feldhälfte.
-- Die Angriffslinien liegen korrekt 3 m vom Netz entfernt: 3 m Vorderzone und 6 m Hinterzone.
-- Vorhandene gespeicherte Aufstellungen aus Version 2.2.0 bleiben erhalten; fehlende Gegenspieler werden automatisch ergänzt.
-
-## Bei GitHub hochladen
-
-Den gesamten Inhalt dieses Ordners in den `main`-Branch hochladen:
-
-- index.html
-- style.css
-- app.js
-- version.json
-- assets/volleyball.png
-
-Wichtig: Alte gleichnamige Dateien vollständig ersetzen.
+- Mobile Breite korrigiert: Header, Spielfeld und Bedienkarten bleiben auf derselben Gerätebreite.
+- TTC-Geltendorf-Branding auf Basis des vorhandenen Vereinswappens: Blau, Weiß und Schwarz.
+- Im Bearbeitungsmodus gibt es **Aufstellungsänderung** als aufklappbaren Bereich.
+- Für jeden der sechs eigenen Stammspieler kann die Rolle gewählt werden: Außen (AA), Mitte (MB), Zuspiel (Z), Diagonal (D).
+- Option **Mit Libero spielen**. Befindet sich ein als MB eingestellter Spieler in einer Hinterfeldposition (1, 5 oder 6), wird er automatisch als Libero (L) dargestellt.
+- Bearbeitungsmodus ist passwortgeschützt.
+- Testpasswort ohne Supabase: `TTC 2026`.
+- Supabase-Synchronisierung für die komplette Trainer-Aufstellung vorbereitet.
 
 ## GitHub Pages
 
-Unter `Settings → Pages`:
+Alle Dateien dieses Ordners in das Repository kopieren und GitHub Pages wie bisher aus `/root` veröffentlichen.
 
-- Source: Deploy from a branch
-- Branch: main
-- Folder: / (root)
+## Supabase einrichten
 
-## Falls weiterhin eine alte Seite erscheint
+1. In Supabase ein neues Projekt anlegen oder ein bestehendes verwenden.
+2. Im **SQL Editor** den kompletten Inhalt von `supabase.sql` einmal ausführen.
+3. Unter **Project Settings / API** die Project URL und den anon/public key kopieren.
+4. In `config.js` eintragen:
 
-1. GitHub Pages kurz Zeit für das Deployment geben.
-2. Die Seite in Safari neu laden.
-3. Notfalls Safari schließen und erneut öffnen.
-4. Prüfen, ob der Info-Dialog Version 2.3.0 zeigt.
+```js
+window.APP_CONFIG = {
+  SUPABASE_URL: "https://DEIN-PROJEKT.supabase.co",
+  SUPABASE_ANON_KEY: "DEIN-ANON-KEY"
+};
+```
+
+Danach lädt die App beim Start den gemeinsamen Zustand aus Supabase. Beim Speichern im Bearbeitungsmodus wird der komplette Zustand wieder nach Supabase geschrieben.
+
+### Passwort
+
+Das Testpasswort wird in Supabase **nicht im Klartext** gespeichert. `supabase.sql` erzeugt einen bcrypt-Hash für `TTC 2026`. Die App schickt das eingegebene Passwort zur Prüfung an eine RPC-Funktion. Ohne konfigurierte Supabase-Verbindung gibt es für den Testbetrieb einen lokalen Fallback mit demselben Passwort.
+
+### Sicherheitshinweis
+
+Diese Lösung ist bewusst eine Zwischenstufe ohne Benutzerkonten. Sie schützt den Bearbeitungsmodus mit einem gemeinsamen Passwort, ersetzt aber kein echtes Benutzer-/Rollenmodell. Wenn später mehrere Trainer unterschiedliche Rechte brauchen, sollte Supabase Auth ergänzt werden.

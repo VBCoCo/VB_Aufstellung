@@ -3,197 +3,70 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#07111d">
+  <meta name="theme-color" content="#0b4fc6">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Volleyball Trainer 2.3.0</title>
-  <link rel="stylesheet" href="style.css?v=2.3.0">
+  <title>Volleyball Trainer 2.4.0</title>
+  <link rel="stylesheet" href="style.css?v=2.4.0">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <img src="assets/volleyball.png?v=2.3.0" alt="" class="brand-ball">
-        <div>
-          <h1>Volleyball Trainer</h1>
-          <p id="rotationTitle">Grundaufstellung</p>
-        </div>
+        <img src="assets/ttc-logo.png?v=2.4.0" alt="TTC Geltendorf e.V." class="brand-logo">
+        <div class="brand-copy"><h1>Volleyball Trainer</h1><p id="rotationTitle">Grundaufstellung</p></div>
       </div>
-      <div class="top-actions">
-        <button id="infoButton" class="ghost" type="button">ⓘ Info</button>
-        <button id="editButton" class="primary" type="button">✎ Bearbeiten</button>
-      </div>
+      <div class="top-actions"><button id="infoButton" class="ghost" type="button">ⓘ Info</button><button id="editButton" class="primary" type="button">✎ Bearbeiten</button></div>
     </header>
 
     <section class="layout">
       <aside class="sidebar">
         <section class="panel step-panel">
-          <div class="step-summary">
-            <div>
-              <span>Schritt</span>
-              <strong><span id="stepNumber">1</span> / <span id="stepTotal">1</span></strong>
-            </div>
-            <div class="step-nav">
-              <button id="prevStep" type="button">←</button>
-              <button id="playButton" type="button">▶</button>
-              <button id="nextStep" type="button">→</button>
-            </div>
-          </div>
-
-          <label class="field">
-            Rotation
-            <select id="rotationSelect">
-              <option value="0">Grundaufstellung</option>
-              <option value="1">Rotation +1</option>
-              <option value="2">Rotation +2</option>
-              <option value="3">Rotation +3</option>
-              <option value="4">Rotation +4</option>
-              <option value="5">Rotation +5</option>
-            </select>
-          </label>
-
-          <label id="stepNameWrap" class="field hidden">
-            Name des Schritts
-            <input id="stepNameInput" type="text">
-          </label>
-
-          <div class="step-actions">
-            <button id="saveStep" class="icon-button hidden" type="button" title="Speichern">💾</button>
-            <button id="addStep" class="blue hidden" type="button">⊞ Neuer Schritt</button>
-            <button id="deleteStep" class="red hidden" type="button" title="Löschen">🗑</button>
-          </div>
+          <div class="step-summary"><div><span>Schritt</span><strong><span id="stepNumber">1</span> / <span id="stepTotal">1</span></strong></div><div class="step-nav"><button id="prevStep" type="button">←</button><button id="playButton" type="button">▶</button><button id="nextStep" type="button">→</button></div></div>
+          <label class="field">Rotation<select id="rotationSelect"><option value="0">Grundaufstellung</option><option value="1">Rotation +1</option><option value="2">Rotation +2</option><option value="3">Rotation +3</option><option value="4">Rotation +4</option><option value="5">Rotation +5</option></select></label>
+          <label id="stepNameWrap" class="field hidden">Name des Schritts<input id="stepNameInput" type="text"></label>
+          <div class="step-actions"><button id="saveStep" class="icon-button hidden" type="button" title="Speichern">💾</button><button id="addStep" class="blue hidden" type="button">⊞ Neuer Schritt</button><button id="deleteStep" class="red hidden" type="button" title="Löschen">🗑</button></div>
         </section>
 
         <section id="editPanel" class="panel hidden">
           <h2>Objekte verschieben mit</h2>
           <div class="move-modes">
-            <label class="mode-card active">
-              <input type="radio" name="moveMode" value="tap" checked>
-              <span class="mode-icon">☝</span>
-              <strong>Antippen</strong>
-              <small>Objekt wählen, dann Ziel antippen</small>
-            </label>
-            <label class="mode-card">
-              <input type="radio" name="moveMode" value="drag">
-              <span class="mode-icon">✋</span>
-              <strong>Ziehen</strong>
-              <small>Objekt direkt verschieben</small>
-            </label>
+            <label class="mode-card active"><input type="radio" name="moveMode" value="tap" checked><span class="mode-icon">☝</span><strong>Antippen</strong><small>Objekt wählen, dann Ziel antippen</small></label>
+            <label class="mode-card"><input type="radio" name="moveMode" value="drag"><span class="mode-icon">✋</span><strong>Ziehen</strong><small>Objekt direkt verschieben</small></label>
           </div>
-
-          <label class="field">
-            Spielsituation
-            <select id="situationSelect">
-              <option value="serveReceive">Aufschlag / Annahme</option>
-              <option value="attack">Angriff</option>
-              <option value="defense">Abwehr</option>
-              <option value="ownServe">Eigener Aufschlag</option>
-            </select>
-          </label>
+          <label class="field">Spielsituation<select id="situationSelect"><option value="serveReceive">Aufschlag / Annahme</option><option value="attack">Angriff</option><option value="defense">Abwehr</option><option value="ownServe">Eigener Aufschlag</option></select></label>
+          <button id="lineupToggle" class="lineup-toggle" type="button"><span>⚙ Aufstellungsänderung</span><span id="lineupChevron">▾</span></button>
+          <div id="lineupEditor" class="lineup-editor hidden">
+            <div id="lineupGrid" class="lineup-grid"></div>
+            <label class="libero-row"><input id="liberoToggle" type="checkbox"><span><strong>Mit Libero spielen</strong><br><small>Ein hinterer Mittelblocker wird automatisch als Libero dargestellt.</small></span></label>
+            <p class="hint">Die sechs Stammspieler bleiben erhalten. Hier änderst du ihre Rollen für alle Rotationen und Schritte.</p>
+          </div>
         </section>
 
-        <section class="panel">
-          <h2>So funktioniert es</h2>
-          <ol>
-            <li>Bearbeiten einschalten</li>
-            <li>Spieler oder Ball verschieben</li>
-            <li>Neuen Schritt anlegen</li>
-            <li>Mit den Pfeilen animiert wechseln</li>
-          </ol>
-        </section>
-
-        <section class="panel version-panel">
-          <div><span>Version 2.3.0</span><span>07.08.2026</span></div>
-          <button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button>
-        </section>
+        <section class="panel"><h2>So funktioniert es</h2><ol><li>Bearbeiten mit Passwort freischalten</li><li>Spieler oder Ball verschieben</li><li>Optional Aufstellung/Rollen ändern</li><li>Neuen Schritt anlegen</li><li>Mit den Pfeilen animiert wechseln</li></ol></section>
+        <section class="panel version-panel"><div><span>Version 2.4.0</span><span>07.08.2026</span></div><button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button><div id="syncBadge" class="sync-badge">Speicherung: Browser</div></section>
       </aside>
 
       <section class="court-section">
-        <div class="court-head">
-          <div>
-            <span class="eyebrow">Aktueller Schritt</span>
-            <h2 id="currentStepTitle">Grundposition</h2>
-          </div>
-          <span id="modeBadge" class="mode-badge">Ansicht</span>
-        </div>
-
+        <div class="court-head"><div><span class="eyebrow">Aktueller Schritt</span><h2 id="currentStepTitle">Grundposition</h2></div><span id="modeBadge" class="mode-badge">Ansicht</span></div>
         <div class="court-wrap">
           <svg id="court" viewBox="0 0 700 900" role="img" aria-label="Volleyballfeld">
-            <defs>
-              <linearGradient id="courtGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#ff8a5c"/>
-                <stop offset="100%" stop-color="#ef6a42"/>
-              </linearGradient>
-              <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
-                <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000" flood-opacity=".25"/>
-              </filter>
-              <marker id="arrowWhite" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M0 0 L10 5 L0 10 z" fill="#fff"/>
-              </marker>
-              <marker id="arrowYellow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                <path d="M0 0 L10 5 L0 10 z" fill="#ffd400"/>
-              </marker>
-            </defs>
-
+            <defs><linearGradient id="courtGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8a5c"/><stop offset="100%" stop-color="#ef6a42"/></linearGradient><filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000" flood-opacity=".25"/></filter><marker id="arrowWhite" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#fff"/></marker><marker id="arrowYellow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ffd400"/></marker></defs>
             <rect x="95" y="50" width="510" height="800" rx="8" fill="url(#courtGradient)" stroke="#fff" stroke-width="4"/>
-            <line x1="95" y1="450" x2="605" y2="450" stroke="#fff" stroke-width="6"/>
-            <line x1="95" y1="316.667" x2="605" y2="316.667" stroke="#fff" stroke-width="2" opacity=".7"/>
-            <line x1="95" y1="583.333" x2="605" y2="583.333" stroke="#fff" stroke-width="2" opacity=".7"/>
-            <line x1="350" y1="50" x2="350" y2="850" stroke="#fff" stroke-width="1.5" opacity=".28"/>
-
-            <g id="validationLayer"></g>
-            <g id="movementLayer"></g>
-            <g id="ballPathLayer"></g>
-            <g id="playerLayer"></g>
-
-            <g id="ballObject" class="ball-object" visibility="hidden" filter="url(#shadow)">
-              <circle r="25" fill="#ffd400" stroke="#0f4bcf" stroke-width="5"/>
-              <path d="M-20 -6 C-5 -22 8 -18 23 -8 C12 0 3 8 -8 21 C-18 12 -22 3 -20 -6Z" fill="#0f4bcf"/>
-              <path d="M-16 8 C-5 2 4 -3 13 -17" fill="none" stroke="#ffec70" stroke-width="2" opacity=".7"/>
-            </g>
+            <line x1="95" y1="450" x2="605" y2="450" stroke="#fff" stroke-width="6"/><line x1="95" y1="316.667" x2="605" y2="316.667" stroke="#fff" stroke-width="2" opacity=".7"/><line x1="95" y1="583.333" x2="605" y2="583.333" stroke="#fff" stroke-width="2" opacity=".7"/><line x1="350" y1="50" x2="350" y2="850" stroke="#fff" stroke-width="1.5" opacity=".28"/>
+            <g id="validationLayer"></g><g id="movementLayer"></g><g id="ballPathLayer"></g><g id="playerLayer"></g>
+            <g id="ballObject" class="ball-object" visibility="hidden" filter="url(#shadow)"><circle r="25" fill="#ffd400" stroke="#0f4bcf" stroke-width="5"/><path d="M-20 -6 C-5 -22 8 -18 23 -8 C12 0 3 8 -8 21 C-18 12 -22 3 -20 -6Z" fill="#0f4bcf"/><path d="M-16 8 C-5 2 4 -3 13 -17" fill="none" stroke="#ffec70" stroke-width="2" opacity=".7"/></g>
           </svg>
-
-          <div class="legend">
-            <span><i class="line player-line"></i>Laufweg Spieler</span>
-            <span><i class="line ball-line"></i>Ballweg</span>
-            <span><i class="dot blue-dot"></i>Eigene Spieler</span>
-            <span><i class="dot red-dot"></i>Gegner</span>
-          </div>
+          <div class="legend"><span><i class="line player-line"></i>Laufweg Spieler</span><span><i class="line ball-line"></i>Ballweg</span><span><i class="dot blue-dot"></i>Eigene Spieler</span><span><i class="dot red-dot"></i>Gegner</span></div>
         </div>
-
-        <div id="tapNotice" class="notice hidden">Zielposition antippen</div>
-        <div id="status" class="status">Version 2.3.0 geladen.</div>
+        <div id="tapNotice" class="notice hidden">Zielposition antippen</div><div id="status" class="status">Version 2.4.0 geladen.</div>
       </section>
     </section>
   </main>
 
-  <dialog id="infoDialog">
-    <div class="dialog-card">
-      <div class="dialog-head">
-        <div>
-          <span class="eyebrow">Volleyball Trainer</span>
-          <h2>Version 2.3.0</h2>
-        </div>
-        <button id="closeInfo" type="button">✕</button>
-      </div>
-      <ul>
-        <li>Komplettes, zusammenpassendes Release-Paket</li>
-        <li>Längeres und schmaleres Spielfeld</li>
-        <li>Gelb-blauer Ball</li>
-        <li>Animierter Wechsel zwischen Schritten</li>
-        <li>Ball und Laufwege bleiben sichtbar</li>
-        <li>Cache-Busting über Versionsparameter</li>
-        <li>6 verschiebbare gegnerische Spieler ergänzt</li>
-        <li>Spieler können in Angriff/Abwehr außerhalb des Feldes stehen</li>
-        <li>Aufschlag/Annahme hält beide Teams vollständig im Feld</li>
-        <li>3-Meter-Linien auf korrektes 3-m-/6-m-Verhältnis gesetzt</li>
-      </ul>
-      <p id="infoSituation"></p>
-      <button id="closeInfoBottom" class="primary full" type="button">Schließen</button>
-    </div>
-  </dialog>
-
-  <script defer src="app.js?v=2.3.0"></script>
+  <dialog id="passwordDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Bearbeitungsmodus</span><h2>Passwort eingeben</h2></div><button id="closePassword" type="button">✕</button></div><label class="password-field">Passwort<input id="passwordInput" type="password" autocomplete="current-password" placeholder="Passwort"></label><div class="dialog-actions"><button id="cancelPassword" class="ghost" type="button">Abbrechen</button><button id="confirmPassword" class="primary" type="button">Freischalten</button></div><p id="passwordStatus" class="status"></p></div></dialog>
+  <dialog id="infoDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.4.0</h2></div><button id="closeInfo" type="button">✕</button></div><ul><li>Mobiles Layout auf einheitliche Bildschirmbreite korrigiert</li><li>TTC-Geltendorf-Farbschema und Vereinswappen übernommen</li><li>Flexible Rollen für alle sechs eigenen Spieler</li><li>Libero-Option mit automatischem Ersatz des hinteren Mittelblockers</li><li>Bearbeitungsmodus mit Passwortschutz</li><li>Optionale Supabase-Synchronisation vorbereitet</li><li>Gegner frei verschiebbar; Außenpositionen in Angriff/Abwehr</li><li>3-Meter-Linien korrekt bei 3 m vor / 6 m hinten</li></ul><p id="infoSituation"></p><button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
+  <script src="config.js?v=2.4.0"></script><script defer src="app.js?v=2.4.0"></script>
 </body>
 </html>

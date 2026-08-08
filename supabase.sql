@@ -1,4 +1,4 @@
--- Volleyball Trainer 2.4.5
+-- Volleyball Trainer 2.4.6
 -- Einmal im Supabase SQL Editor ausführen.
 -- Kein Benutzer-Login nötig. Lesen ist öffentlich; Schreiben erfolgt nur über RPC mit Editor-Passwort.
 

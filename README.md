@@ -1,6 +1,7 @@
-# Volleyball Trainer 2.4.5
+# Volleyball Trainer 2.4.6
 
-## Neu in 2.4.5
+## Neu in 2.4.6
+- Supabase Project URL und Publishable Key sind bereits in `config.js` eingetragen.
 - Supabase: `pgcrypto`-Funktionen werden schemaqualifiziert über `extensions.crypt` und `extensions.gen_salt` aufgerufen; behebt den Fehler `function crypt(text, text) does not exist` in SECURITY-DEFINER-Funktionen.
 
 - Fehler beim Verschieben von Spielern behoben: abgeschlossene Schrittanimationen werden sauber entfernt und überdecken die im Bearbeitungsmodus gesetzten SVG-Positionen nicht mehr.

@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const VERSION="2.5.3",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
+const VERSION="2.5.4",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
 const ownRoster=[{id:"a1",base:1,team:"own"},{id:"z1",base:2,team:"own"},{id:"m1",base:3,team:"own"},{id:"a2",base:4,team:"own"},{id:"z2",base:5,team:"own"},{id:"m2",base:6,team:"own"}];
 const defaultRoles={a1:"AA",z1:"Z",m1:"MB",a2:"AA",z2:"Z",m2:"MB"};
 const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role:"Z",base:2,team:"opponent"},{id:"om1",role:"MB",base:3,team:"opponent"},{id:"oa2",role:"AA",base:4,team:"opponent"},{id:"oz2",role:"Z",base:5,team:"opponent"},{id:"om2",role:"MB",base:6,team:"opponent"}];
@@ -99,6 +99,19 @@ function create25Players(){
 function line25(layer,a,b,cls){const A=project25(a),B=project25(b);layer.appendChild(svg("line",{x1:A.x,y1:A.y,x2:B.x,y2:B.y,class:cls}))}
 const actionNames={serve:"Aufschlag",receive:"Annahme",set:"Zuspiel",attack:"Angriff",block:"Block",defense:"Abwehr"};
 function actionData(){const a=sd().action||{};return{type:a.type||"",actorId:a.actorId||"",helperId:a.helperId||"",blocker1Id:a.blocker1Id||"",blocker2Id:a.blocker2Id||""}}
+const ballMotion={
+  serve:{duration:1320,lift2d:72,lift25:54,easing:"cubic-bezier(.22,.61,.36,1)"},
+  receive:{duration:1250,lift2d:88,lift25:64,easing:"ease-in-out"},
+  set:{duration:1450,lift2d:150,lift25:108,easing:"ease-in-out"},
+  attack:{duration:980,lift2d:48,lift25:38,easing:"cubic-bezier(.18,.78,.28,1)"},
+  block:{duration:900,lift2d:58,lift25:44,easing:"ease-out"},
+  defense:{duration:1280,lift2d:105,lift25:76,easing:"ease-in-out"},
+  default:{duration:1350,lift2d:75,lift25:56,easing:"ease-in-out"}
+};
+function motionFor(step){return ballMotion[step?.action?.type]||ballMotion.default}
+function ballCurve2d(A,B,lift){const mx=(A.x+B.x)/2,my=(A.y+B.y)/2-lift;return `M ${A.x} ${A.y} Q ${mx} ${my} ${B.x} ${B.y}`}
+function ballCurve25(A,B,lift){const PA=project25(A),PB=project25(B),M=project25({x:(A.x+B.x)/2,y:(A.y+B.y)/2});return `M ${PA.x} ${PA.y-25*PA.scale} Q ${M.x} ${M.y-25*M.scale-lift} ${PB.x} ${PB.y-25*PB.scale}`}
+function drawBallCurve(layer,A,B,cls,is25,motion){layer.appendChild(svg("path",{d:is25?ballCurve25(A,B,motion.lift25):ballCurve2d(A,B,motion.lift2d),class:cls}))}
 function playerLabel(p){if(!p)return"";const role=effectiveRole(p);return p.team==="opponent"?`Gegner ${role} · P${p.base}`:`${roleNames[role]||role} · Position ${prot(p)}`}
 function syncContactBall(){const a=actionData();if(!a.actorId)return;const pos=sd().positions[a.actorId];if(pos)sd().ball={x:pos.x,y:pos.y}}
 function renderActionLinks(){
@@ -141,20 +154,20 @@ function render25(){
   [...allPlayers].sort((a,b)=>sd().positions[a.id].y-sd().positions[b.id].y).forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`);e.player25Layer.appendChild(node)});
   allPlayers.forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`),pos=sd().positions[p.id],P=project25(pos),role=effectiveRole(p);node.setAttribute("transform",`translate(${P.x} ${P.y}) scale(${P.scale})`);node.querySelector("[data-role25]").textContent=role;const isLib=role==="L";node.querySelector("[data-body]").setAttribute("fill",p.team==="opponent"?"#e32828":isLib?"#111827":"#0b4fc6");node.querySelector("[data-badge]").setAttribute("fill",p.team==="opponent"?"#b91c1c":isLib?"#111827":"#073b9a")});
   const bp=project25(sd().ball);e.ball25Object.setAttribute("transform",`translate(${bp.x} ${bp.y-25*bp.scale}) scale(${bp.scale})`);e.ball25Object.setAttribute("visibility","visible");
-  if(state.step>0){const a=rd().steps[state.step-1],b=sd();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line25(e.movement25Layer,A,B,"movement25-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)line25(e.ballPath25Layer,a.ball,b.ball,"ball25-path")}
+  if(state.step>0){const a=rd().steps[state.step-1],b=sd();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line25(e.movement25Layer,A,B,"movement25-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPath25Layer,a.ball,b.ball,"ball25-path",true,motionFor(a))}
 }
 function currentCourtIs25(){return !editing&&preferredView==="25d"}
 function createPlayers(){e.playerLayer.innerHTML="";allPlayers.forEach(p=>{const g=svg("g",{class:`player-object ${p.team}`,"data-id":p.id}),c=svg("circle",{r:29,fill:p.team==="opponent"?"#e32828":"#0b4fc6",stroke:"#fff","stroke-width":3,filter:"url(#shadow)"}),t=svg("text",{"text-anchor":"middle",y:7,fill:"#fff","font-size":19,"font-weight":800,"data-role":"1"}),l=svg("text",{"text-anchor":"middle",y:50,fill:"#fff","font-size":13,"font-weight":700,"data-label":"1"});g.append(c,t,l);e.playerLayer.appendChild(g)})}
 function line(layer,a,b,cls){layer.appendChild(svg("line",{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:cls}))}
 function validate(){e.validationLayer.innerHTML="";const bad=new Set;if(sd().situation!=="serveReceive")return bad;const p=n=>sd().positions[pat(n).id];[[4,3],[3,2],[5,6],[6,1]].forEach(([l,r])=>{const L=p(l),R=p(r),b=R.x+29,rem=b-(L.x-29),s=rem<=0?"invalid":rem<=18?"warning":"clear";if(s!=="clear"&&(editing||s==="invalid"))e.validationLayer.appendChild(svg("line",{x1:b,y1:455,x2:b,y2:840,class:s==="invalid"?"validation-invalid":"validation-warning"}));if(s==="invalid"){bad.add(pat(l).id);bad.add(pat(r).id)}});[[4,5],[3,6],[2,1]].forEach(([f,bk])=>{const F=p(f),B=p(bk),b=B.y+29,rem=b-(F.y-29),s=rem<=0?"invalid":rem<=18?"warning":"clear";if(s!=="clear"&&(editing||s==="invalid"))e.validationLayer.appendChild(svg("line",{x1:105,y1:b,x2:595,y2:b,class:s==="invalid"?"validation-invalid":"validation-warning"}));if(s==="invalid"){bad.add(pat(f).id);bad.add(pat(bk).id)}});return bad}
-function paths(){e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";if(editing||state.step===0)return;const a=rd().steps[state.step-1],b=sd();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line(e.movementLayer,A,B,"movement-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)line(e.ballPathLayer,a.ball,b.ball,"ball-path")}
+function paths(){e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";if(editing||state.step===0)return;const a=rd().steps[state.step-1],b=sd();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line(e.movementLayer,A,B,"movement-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPathLayer,a.ball,b.ball,"ball-path",false,motionFor(a))}
 function renderSituationOptions(){
   const current=String(state.rotation);e.rotationSelect.innerHTML="";state.rotations.forEach((situation,i)=>{const o=document.createElement("option");o.value=String(i);o.textContent=situation.name||defaultSituationName(i);e.rotationSelect.appendChild(o)});e.rotationSelect.value=current;e.situationNameInput.value=rd().name||defaultSituationName(state.rotation)
 }
 function render(){
   renderSituationOptions();e.stepNumber.textContent=state.step+1;e.stepTotal.textContent=rd().steps.length;e.stepNameInput.value=sd().name;e.stepNamePreset.value=["Aufschlag","Annahme","Zuspiel","Angriff","Angriffssicherung","Block","Doppelblock","Abwehr"].includes(sd().name)?sd().name:"";e.currentStepTitle.textContent=sd().name;e.situationSelect.value=sd().situation;e.liberoToggle.checked=state.teamConfig.libero;document.body.classList.toggle("editing-mode",editing);updateMigrationUI();document.querySelectorAll(".mode-card").forEach(c=>c.classList.toggle("active",c.querySelector("input").checked));renderActionEditor();paths();const bad=validate();
   allPlayers.forEach(p=>{const g=e.playerLayer.querySelector(`[data-id="${p.id}"]`),pos=sd().positions[p.id],role=effectiveRole(p);g.setAttribute("transform",`translate(${pos.x} ${pos.y})`);g.classList.toggle("editable",editing);g.classList.toggle("selected",selected?.type==="player"&&selected.id===p.id);g.classList.toggle("position-warning",bad.has(p.id)&&p.team==="own");g.querySelector("[data-role]").textContent=role;g.querySelector("circle").setAttribute("fill",p.team==="opponent"?"#e32828":role==="L"?"#111827":"#0b4fc6");g.querySelector("[data-label]").textContent=p.team==="opponent"?`Gegner · P${p.base}`:role==="L"?`Libero · Position ${prot(p)}`:`${roleNames[role]||role} · Position ${prot(p)}`});
-  e.ballObject.setAttribute("visibility","visible");e.ballObject.setAttribute("transform",`translate(${sd().ball.x} ${sd().ball.y})`);e.ballObject.classList.toggle("editable",editing);e.ballObject.classList.toggle("selected",selected?.type==="ball");
+  e.ballObject.setAttribute("visibility","visible");e.ballObject.setAttribute("transform",`translate(${sd().ball.x} ${sd().ball.y})`);e.ballObject.classList.toggle("editable",editing);e.ballObject.classList.toggle("selected",selected?.type==="ball");e.ballObject.classList.toggle("linked-contact",editing&&Boolean(actionData().actorId));
   render25();renderActionLinks();
 }
 function buildLineupEditor(){
@@ -180,17 +193,17 @@ async function animate(target,{sequence=false}={}){
   target=Math.max(0,Math.min(rd().steps.length-1,target));
   if(target===state.step)return true;
   if(!sequence)stop();else{animations.forEach(a=>a.cancel());animations=[];clearVisualAnimations()}
-  const a=sd(),b=rd().steps[target];playing=true;e.playButton.textContent="■";e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";
+  const a=sd(),b=rd().steps[target],motion=motionFor(a),duration=motion.duration;playing=true;e.playButton.textContent="■";e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";
   allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line(e.movementLayer,A,B,"movement-path")});
-  if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)line(e.ballPathLayer,a.ball,b.ball,"ball-path");
+  if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPathLayer,a.ball,b.ball,"ball-path",false,motion);
   let pa,ba;
   if(currentCourtIs25()){
-    e.movement25Layer.innerHTML="";e.ballPath25Layer.innerHTML="";allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line25(e.movement25Layer,A,B,"movement25-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)line25(e.ballPath25Layer,a.ball,b.ball,"ball25-path");
-    pa=allPlayers.map(p=>{const A=project25(a.positions[p.id]),B=project25(b.positions[p.id]);return e.player25Layer.querySelector(`[data-id25="${p.id}"]`).animate([{transform:`translate(${A.x}px,${A.y}px) scale(${A.scale})`},{transform:`translate(${B.x}px,${B.y}px) scale(${B.scale})`}],{duration:1450,easing:"ease-in-out",fill:"forwards"})});
-    const A=project25(a.ball),B=project25(b.ball);ba=e.ball25Object.animate([{transform:`translate(${A.x}px,${A.y-25*A.scale}px) scale(${A.scale}) rotate(0deg)`},{transform:`translate(${B.x}px,${B.y-25*B.scale}px) scale(${B.scale}) rotate(360deg)`}],{duration:1450,easing:"ease-in-out",fill:"forwards"});
+    e.movement25Layer.innerHTML="";e.ballPath25Layer.innerHTML="";allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line25(e.movement25Layer,A,B,"movement25-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPath25Layer,a.ball,b.ball,"ball25-path",true,motion);
+    pa=allPlayers.map(p=>{const A=project25(a.positions[p.id]),B=project25(b.positions[p.id]);return e.player25Layer.querySelector(`[data-id25="${p.id}"]`).animate([{transform:`translate(${A.x}px,${A.y}px) scale(${A.scale})`},{transform:`translate(${B.x}px,${B.y}px) scale(${B.scale})`}],{duration,easing:"ease-in-out",fill:"forwards"})});
+    const A=project25(a.ball),B=project25(b.ball),M=project25({x:(a.ball.x+b.ball.x)/2,y:(a.ball.y+b.ball.y)/2});ba=e.ball25Object.animate([{transform:`translate(${A.x}px,${A.y-25*A.scale}px) scale(${A.scale}) rotate(0deg)`,offset:0},{transform:`translate(${M.x}px,${M.y-25*M.scale-motion.lift25}px) scale(${M.scale}) rotate(190deg)`,offset:.5},{transform:`translate(${B.x}px,${B.y-25*B.scale}px) scale(${B.scale}) rotate(380deg)`,offset:1}],{duration,easing:motion.easing,fill:"forwards"});
   }else{
-    pa=allPlayers.map(p=>e.playerLayer.querySelector(`[data-id="${p.id}"]`).animate([{transform:`translate(${a.positions[p.id].x}px,${a.positions[p.id].y}px)`},{transform:`translate(${b.positions[p.id].x}px,${b.positions[p.id].y}px)`}],{duration:1450,easing:"ease-in-out",fill:"forwards"}));
-    ba=e.ballObject.animate([{transform:`translate(${a.ball.x}px,${a.ball.y}px) rotate(0deg)`},{transform:`translate(${b.ball.x}px,${b.ball.y}px) rotate(360deg)`}],{duration:1450,easing:"ease-in-out",fill:"forwards"});
+    pa=allPlayers.map(p=>e.playerLayer.querySelector(`[data-id="${p.id}"]`).animate([{transform:`translate(${a.positions[p.id].x}px,${a.positions[p.id].y}px)`},{transform:`translate(${b.positions[p.id].x}px,${b.positions[p.id].y}px)`}],{duration,easing:"ease-in-out",fill:"forwards"}));
+    const mx=(a.ball.x+b.ball.x)/2,my=(a.ball.y+b.ball.y)/2-motion.lift2d;ba=e.ballObject.animate([{transform:`translate(${a.ball.x}px,${a.ball.y}px) rotate(0deg)`,offset:0},{transform:`translate(${mx}px,${my}px) rotate(190deg)`,offset:.5},{transform:`translate(${b.ball.x}px,${b.ball.y}px) rotate(380deg)`,offset:1}],{duration,easing:motion.easing,fill:"forwards"});
   }
   const localAnimations=[...pa,ba];animations=localAnimations;
   await Promise.all(localAnimations.map(x=>x.finished.catch(()=>{})));

@@ -46,3 +46,7 @@ dialog{border:0;padding:0;background:transparent;color:var(--text);max-width:100
 .attack-block-wrap{margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(11,79,198,.08)}
 .attack-block-wrap>strong{display:block;margin-bottom:8px}
 .block-attempt-link{stroke-dasharray:7 6;opacity:.75}
+
+/* 2.5.4: gekoppelte Baelle fangen beim Bearbeiten keine Touch-Ereignisse ab */
+.editing-mode .ball-object.linked-contact{pointer-events:none;cursor:default}
+.ball-path,.ball25-path{stroke-linecap:round;stroke-linejoin:round}

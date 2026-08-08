@@ -113,3 +113,9 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 
 ## Version 2.6.9
 - Feste Zusatzinfo-Zeile unter dem Schrittnamen verhindert vertikales Springen während der Wiedergabe.
+
+
+## Version 2.6.10
+- Schalter 'Positionen: an/aus' für 2D und 2,5D.
+- 2,5D zeigt bei aktivierter Option die Positionsnummer unter jedem Spieler.
+- Einstellung wird lokal im Browser gespeichert.

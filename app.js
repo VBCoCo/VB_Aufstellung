@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const VERSION="2.5.8",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
+const VERSION="2.5.9",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
 const ownRoster=[{id:"a1",base:1,team:"own"},{id:"z1",base:2,team:"own"},{id:"m1",base:3,team:"own"},{id:"a2",base:4,team:"own"},{id:"z2",base:5,team:"own"},{id:"m2",base:6,team:"own"}];
 const defaultRoles={a1:"AA",z1:"Z",m1:"MB",a2:"AA",z2:"Z",m2:"MB"};
 const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role:"Z",base:2,team:"opponent"},{id:"om1",role:"MB",base:3,team:"opponent"},{id:"oa2",role:"AA",base:4,team:"opponent"},{id:"oz2",role:"Z",base:5,team:"opponent"},{id:"om2",role:"MB",base:6,team:"opponent"}];
@@ -102,18 +102,18 @@ function line25(layer,a,b,cls){const A=project25(a),B=project25(b);layer.appendC
 const actionNames={serve:"Aufschlag",receive:"Annahme",set:"Zuspiel",attack:"Angriff",block:"Block",defense:"Abwehr"};
 function actionData(){const a=sd().action||{};return{type:a.type||"",actorId:a.actorId||"",technique:a.technique||"",helperId:a.helperId||"",blocker1Id:a.blocker1Id||"",blocker2Id:a.blocker2Id||""}}
 const ballMotion={
-  serve:{duration:1320,lift2d:72,lift25:54,easing:"cubic-bezier(.22,.61,.36,1)"},
-  receive:{duration:1320,lift2d:135,lift25:132,easing:"ease-in-out"},
-  set:{duration:1450,lift2d:150,lift25:108,easing:"ease-in-out"},
-  attack:{duration:980,lift2d:48,lift25:38,easing:"cubic-bezier(.18,.78,.28,1)"},
+  serve:{duration:1320,lift2d:82,lift25:68,easing:"cubic-bezier(.22,.61,.36,1)"},
+  receive:{duration:1320,lift2d:170,lift25:178,easing:"ease-in-out"},
+  set:{duration:1450,lift2d:158,lift25:132,easing:"ease-in-out"},
+  attack:{duration:980,lift2d:52,lift25:44,easing:"cubic-bezier(.18,.78,.28,1)"},
   block:{duration:900,lift2d:58,lift25:44,easing:"ease-out"},
-  defense:{duration:1320,lift2d:130,lift25:118,easing:"ease-in-out"},
-  default:{duration:1350,lift2d:75,lift25:56,easing:"ease-in-out"}
+  defense:{duration:1320,lift2d:162,lift25:170,easing:"ease-in-out"},
+  default:{duration:1350,lift2d:80,lift25:66,easing:"ease-in-out"}
 };
 function motionFor(step){
   const base=ballMotion[step?.action?.type]||ballMotion.default,a=step?.action||{};
-  if(a.type==="receive")return{...base,lift2d:a.technique==="upper"?165:138,lift25:a.technique==="upper"?158:132};
-  if(a.type==="defense")return{...base,lift2d:a.technique==="upper"?155:132,lift25:a.technique==="upper"?145:120};
+  if(a.type==="receive")return{...base,lift2d:a.technique==="upper"?205:182,lift25:a.technique==="upper"?212:188};
+  if(a.type==="defense")return{...base,lift2d:a.technique==="upper"?188:170,lift25:a.technique==="upper"?196:178};
   return base;
 }
 function jumpParticipantIds(step){
@@ -125,10 +125,10 @@ function jumpParticipantIds(step){
 function contactLift25(step,playerId){
   const a=step?.action||{};
   if(a.type==="attack"){
-    if(a.actorId===playerId)return 92;
-    if([a.blocker1Id,a.blocker2Id].includes(playerId))return 78;
+    if(a.actorId===playerId)return 46;
+    if([a.blocker1Id,a.blocker2Id].includes(playerId))return 39;
   }
-  if(a.type==="block"&&[a.actorId,a.helperId].includes(playerId))return 78;
+  if(a.type==="block"&&[a.actorId,a.helperId].includes(playerId))return 39;
   return 0;
 }
 function contactRole25(step,playerId){
@@ -141,21 +141,21 @@ function contactRole25(step,playerId){
 function player25Frames(A,B,{startLift=0,endLift=0,endRole="move"}={}){
   const p=t=>({x:A.x+(B.x-A.x)*t,y:A.y+(B.y-A.y)*t,scale:A.scale+(B.scale-A.scale)*t});
   const frame=(P,lift,offset)=>({transform:`translate(${P.x}px,${P.y-lift*P.scale}px) scale(${P.scale})`,offset});
-  const P0=p(0),P1=p(.18),P2=p(.42),P3=p(.70),P4=p(1);
+  const P0=p(0),P1=p(.15),P2=p(.36),P3=p(.62),P4=p(1);
   if(!startLift&&!endLift)return[frame(P0,0,0),frame(P4,0,1)];
   if(startLift&&endLift){
-    return[frame(P0,startLift,0),frame(P2,Math.max(startLift,endLift)+4,.42),frame(P4,endLift,1)];
+    return[frame(P0,startLift,0),frame(P1,Math.max(startLift,endLift),.15),frame(P2,Math.max(startLift,endLift)+2,.36),frame(P4,endLift,1)];
   }
   if(startLift&&!endLift){
-    return[frame(P0,startLift,0),frame(P1,startLift,.18),frame(P2,startLift*.78,.42),frame(P3,startLift*.25,.70),frame(P4,0,1)];
+    return[frame(P0,startLift,0),frame(P1,startLift,.15),frame(P2,startLift*.86,.36),frame(P3,startLift*.42,.62),frame(P4,0,1)];
   }
   if(endRole==="attack"){
-    return[frame(P0,0,0),frame(P1,endLift*.10,.18),frame(P2,endLift*.62,.42),frame(P3,endLift*1.04,.70),frame(P4,endLift,1)];
+    return[frame(P0,0,0),frame(P1,endLift*.28,.15),frame(P2,endLift*.82,.36),frame(P3,endLift*1.02,.62),frame(P4,endLift,1)];
   }
   if(endRole==="block"){
-    return[frame(P0,0,0),frame(P1,0,.18),frame(P2,endLift*.40,.42),frame(P3,endLift*1.03,.70),frame(P4,endLift,1)];
+    return[frame(P0,0,0),frame(P1,endLift*.18,.15),frame(P2,endLift*.82,.36),frame(P3,endLift*1.01,.62),frame(P4,endLift,1)];
   }
-  return[frame(P0,0,0),frame(P2,endLift*.70,.42),frame(P4,endLift,1)];
+  return[frame(P0,0,0),frame(P2,endLift*.72,.36),frame(P4,endLift,1)];
 }
 function supportsTechnique(type){return ["receive","set","defense"].includes(type)}
 function techniqueName(v){return v==="upper"?"oben":v==="lower"?"unten":""}
@@ -163,24 +163,24 @@ function contactHeight25(step){
   const a=step?.action||{};
   if(!a.actorId)return 25;
   if(supportsTechnique(a.type)){
-    if(a.technique==="upper")return a.type==="set"?232:205;
+    if(a.technique==="upper")return a.type==="set"?300:270;
     if(a.technique==="lower")return 34;
   }
-  if(a.type==="attack")return 216;
-  if(a.type==="block")return 202;
-  if(a.type==="serve")return 104;
+  if(a.type==="attack")return 238;
+  if(a.type==="block")return 220;
+  if(a.type==="serve")return 116;
   return 50;
 }
 function ballVisual25(step){
   const P=project25(step.ball),a=step?.action||{};
   let dx=0,dy=0;
-  if(supportsTechnique(a.type)&&a.technique==="upper")dy=-10*P.scale;
-  if(a.type==="attack"){dx=10*P.scale;dy=-8*P.scale}
-  if(a.type==="block")dy=-8*P.scale;
+  if(supportsTechnique(a.type)&&a.technique==="upper")dy=-24*P.scale;
+  if(a.type==="attack"){dx=14*P.scale;dy=-14*P.scale}
+  if(a.type==="block")dy=-12*P.scale;
   return{x:P.x+dx,y:P.y-contactHeight25(step)*P.scale+dy,scale:P.scale};
 }
-function ballCurve2d(A,B,lift){const mx=(A.x+B.x)/2,my=(A.y+B.y)/2-lift;return `M ${A.x} ${A.y} Q ${mx} ${my} ${B.x} ${B.y}`}
-function ballCurve25(Astep,Bstep,lift){const PA=ballVisual25(Astep),PB=ballVisual25(Bstep),M=project25({x:(Astep.ball.x+Bstep.ball.x)/2,y:(Astep.ball.y+Bstep.ball.y)/2});return `M ${PA.x} ${PA.y} Q ${M.x} ${M.y-45*M.scale-lift} ${PB.x} ${PB.y}`}
+function ballCurve2d(A,B,lift){const mx=(A.x+B.x)/2,my=Math.min(A.y,B.y)-lift;return `M ${A.x} ${A.y} Q ${mx} ${my} ${B.x} ${B.y}`}
+function ballCurve25(Astep,Bstep,lift){const PA=ballVisual25(Astep),PB=ballVisual25(Bstep),cx=(PA.x+PB.x)/2,cy=Math.min(PA.y,PB.y)-lift;return `M ${PA.x} ${PA.y} Q ${cx} ${cy} ${PB.x} ${PB.y}`}
 function drawBallCurve(layer,A,B,cls,is25,motion,Astep=null,Bstep=null){layer.appendChild(svg("path",{d:is25&&Astep&&Bstep?ballCurve25(Astep,Bstep,motion.lift25):is25?ballCurve25({ball:A,action:{}},{ball:B,action:{}},motion.lift25):ballCurve2d(A,B,motion.lift2d),class:cls}))}
 function playerLabel(p){if(!p)return"";const role=effectiveRole(p);return p.team==="opponent"?`Gegner ${role} · P${p.base}`:`${roleNames[role]||role} · Position ${prot(p)}`}
 function syncContactBall(){const a=actionData();if(!a.actorId)return;const pos=sd().positions[a.actorId];if(pos)sd().ball={x:pos.x,y:pos.y}}
@@ -222,7 +222,7 @@ function render25(){
   if(!visible)return;
   e.movement25Layer.innerHTML="";e.ballPath25Layer.innerHTML="";e.action25Layer.innerHTML="";
   [...allPlayers].sort((a,b)=>sd().positions[a.id].y-sd().positions[b.id].y).forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`);e.player25Layer.appendChild(node)});
-  allPlayers.forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`),pos=sd().positions[p.id],P=project25(pos),role=effectiveRole(p),contactLift=contactLift25(sd(),p.id);node.setAttribute("transform",`translate(${P.x} ${P.y-contactLift*P.scale}) scale(${P.scale})`);node.querySelector("[data-role25]").textContent=role;const isLib=role==="L";node.querySelector("[data-body]").setAttribute("fill",p.team==="opponent"?"#e32828":isLib?"#111827":"#0b4fc6");node.querySelector("[data-badge]").setAttribute("fill",p.team==="opponent"?"#b91c1c":isLib?"#111827":"#073b9a");const ca=actionData(),active=ca.actorId===p.id&&supportsTechnique(ca.type);const upper=active&&ca.technique==="upper",lower=active&&ca.technique==="lower";const attackActor=ca.type==="attack"&&ca.actorId===p.id;const blocker=(ca.type==="attack"&&[ca.blocker1Id,ca.blocker2Id].includes(p.id))||(ca.type==="block"&&[ca.actorId,ca.helperId].includes(p.id));let armL="M-9 -44 L-20 -25",armR="M9 -44 L20 -25";if(upper){armL="M-9 -44 Q-22 -74 -7 -114";armR="M9 -44 Q22 -74 7 -114"}else if(lower){armL="M-9 -42 Q-14 -30 -8 -19";armR="M9 -42 Q14 -30 8 -19"}else if(blocker){armL="M-9 -44 Q-15 -72 -12 -103";armR="M9 -44 Q15 -72 12 -103"}else if(attackActor){armL="M-9 -44 Q-3 -59 6 -76";armR="M9 -44 Q18 -70 22 -108"}node.querySelector("[data-arm-left]").setAttribute("d",armL);node.querySelector("[data-arm-right]").setAttribute("d",armR)});
+  allPlayers.forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`),pos=sd().positions[p.id],P=project25(pos),role=effectiveRole(p),contactLift=contactLift25(sd(),p.id);node.setAttribute("transform",`translate(${P.x} ${P.y-contactLift*P.scale}) scale(${P.scale})`);node.querySelector("[data-role25]").textContent=role;const isLib=role==="L";node.querySelector("[data-body]").setAttribute("fill",p.team==="opponent"?"#e32828":isLib?"#111827":"#0b4fc6");node.querySelector("[data-badge]").setAttribute("fill",p.team==="opponent"?"#b91c1c":isLib?"#111827":"#073b9a");const ca=actionData(),active=ca.actorId===p.id&&supportsTechnique(ca.type);const upper=active&&ca.technique==="upper",lower=active&&ca.technique==="lower";const attackActor=ca.type==="attack"&&ca.actorId===p.id;const blocker=(ca.type==="attack"&&[ca.blocker1Id,ca.blocker2Id].includes(p.id))||(ca.type==="block"&&[ca.actorId,ca.helperId].includes(p.id));let armL="M-9 -44 L-20 -25",armR="M9 -44 L20 -25";if(upper){armL="M-9 -44 Q-24 -82 -9 -136";armR="M9 -44 Q24 -82 9 -136"}else if(lower){armL="M-9 -42 Q-14 -30 -8 -19";armR="M9 -42 Q14 -30 8 -19"}else if(blocker){armL="M-9 -44 Q-16 -80 -12 -122";armR="M9 -44 Q16 -80 12 -122"}else if(attackActor){armL="M-9 -44 Q-2 -60 7 -84";armR="M9 -44 Q18 -78 24 -124"}node.querySelector("[data-arm-left]").setAttribute("d",armL);node.querySelector("[data-arm-right]").setAttribute("d",armR)});
   const bp=ballVisual25(sd());e.ball25Object.setAttribute("transform",`translate(${bp.x} ${bp.y}) scale(${bp.scale})`);e.ball25Object.setAttribute("visibility","visible");
   if(state.step>0){const a=rd().steps[state.step-1],b=sd();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line25(e.movement25Layer,A,B,"movement25-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPath25Layer,a.ball,b.ball,"ball25-path",true,motionFor(a),a,b)}
 }
@@ -271,10 +271,10 @@ async function animate(target,{sequence=false}={}){
     e.movement25Layer.innerHTML="";e.ballPath25Layer.innerHTML="";allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line25(e.movement25Layer,A,B,"movement25-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPath25Layer,a.ball,b.ball,"ball25-path",true,motion,a,b);
     const jumpers=jumpParticipantIds(a);
     pa=allPlayers.map(p=>{const A=project25(a.positions[p.id]),B=project25(b.positions[p.id]);const startLift=contactLift25(a,p.id),endLift=contactLift25(b,p.id),endRole=contactRole25(b,p.id);return e.player25Layer.querySelector(`[data-id25="${p.id}"]`).animate(player25Frames(A,B,{startLift,endLift,endRole}),{duration,easing:"ease-in-out",fill:"forwards"})});
-    const A=ballVisual25(a),B=ballVisual25(b),M=project25({x:(a.ball.x+b.ball.x)/2,y:(a.ball.y+b.ball.y)/2});ba=e.ball25Object.animate([{transform:`translate(${A.x}px,${A.y}px) scale(${A.scale}) rotate(0deg)`,offset:0},{transform:`translate(${M.x}px,${M.y-45*M.scale-motion.lift25}px) scale(${M.scale}) rotate(190deg)`,offset:.5},{transform:`translate(${B.x}px,${B.y}px) scale(${B.scale}) rotate(380deg)`,offset:1}],{duration,easing:motion.easing,fill:"forwards"});
+    const A=ballVisual25(a),B=ballVisual25(b),cx=(A.x+B.x)/2,cy=Math.min(A.y,B.y)-motion.lift25,midScale=(A.scale+B.scale)/2;ba=e.ball25Object.animate([{transform:`translate(${A.x}px,${A.y}px) scale(${A.scale}) rotate(0deg)`,offset:0},{transform:`translate(${cx}px,${cy}px) scale(${midScale}) rotate(190deg)`,offset:.5},{transform:`translate(${B.x}px,${B.y}px) scale(${B.scale}) rotate(380deg)`,offset:1}],{duration,easing:motion.easing,fill:"forwards"});
   }else{
     pa=allPlayers.map(p=>e.playerLayer.querySelector(`[data-id="${p.id}"]`).animate([{transform:`translate(${a.positions[p.id].x}px,${a.positions[p.id].y}px)`},{transform:`translate(${b.positions[p.id].x}px,${b.positions[p.id].y}px)`}],{duration,easing:"ease-in-out",fill:"forwards"}));
-    const mx=(a.ball.x+b.ball.x)/2,my=(a.ball.y+b.ball.y)/2-motion.lift2d;ba=e.ballObject.animate([{transform:`translate(${a.ball.x}px,${a.ball.y}px) rotate(0deg)`,offset:0},{transform:`translate(${mx}px,${my}px) rotate(190deg)`,offset:.5},{transform:`translate(${b.ball.x}px,${b.ball.y}px) rotate(380deg)`,offset:1}],{duration,easing:motion.easing,fill:"forwards"});
+    const mx=(a.ball.x+b.ball.x)/2,my=Math.min(a.ball.y,b.ball.y)-motion.lift2d;ba=e.ballObject.animate([{transform:`translate(${a.ball.x}px,${a.ball.y}px) rotate(0deg)`,offset:0},{transform:`translate(${mx}px,${my}px) rotate(190deg)`,offset:.5},{transform:`translate(${b.ball.x}px,${b.ball.y}px) rotate(380deg)`,offset:1}],{duration,easing:motion.easing,fill:"forwards"});
   }
   const localAnimations=[...pa,ba];animations=localAnimations;
   await Promise.all(localAnimations.map(x=>x.finished.catch(()=>{})));

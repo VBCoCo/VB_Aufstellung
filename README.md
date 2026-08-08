@@ -125,3 +125,10 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - 2,5D-Ansicht vertikal enger zugeschnitten.
 - Deutlich weniger Leerraum über dem Spielfeld auf mobilen Geräten.
 - Spielfeldgeometrie und gespeicherte Positionen bleiben unverändert.
+
+
+## Version 2.6.12
+- Web-App-/Standalone-Unterstützung für iPhone und iPad.
+- Manifest und Home-Screen-Icon ergänzt.
+- Start vom Home-Bildschirm ohne Safari-Adressleiste.
+- Bewusst kein Service-Worker-Cache, damit neue Releases weiterhin zuverlässig geladen werden.

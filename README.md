@@ -57,3 +57,9 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Technik-Auswahl „oben“ / „unten“ bei Annahme, Zuspiel und Abwehr.
 - 2,5D-Kontaktpunkt berücksichtigt die Technik: oben über Kopf, unten tiefer vor dem Körper.
 - Ballflug startet und endet an den jeweiligen visuellen Kontaktpunkten.
+
+## Neu in 2.5.6
+- Obere Annahme, oberes Zuspiel und obere Abwehr zeigen den Ballkontakt in 2,5D deutlich über dem Kopf statt vor dem Gesicht.
+- Die Armhaltung für obere und untere Technik wurde klarer getrennt.
+- Angreifer sowie zugeordnete Blockspieler springen während des Übergangs in 2,5D sichtbar hoch.
+- Bei einem eigenen Blockkontakt springen der Blockspieler und ein optionaler zweiter Blockspieler ebenfalls.

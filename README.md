@@ -1,9 +1,9 @@
-# Volleyball Trainer 2.4.7
+# Volleyball Trainer 2.4.8
 
-## Neu in 2.4.7
+## Neu in 2.4.8
 - Supabase Project URL und Publishable Key sind bereits in `config.js` eingetragen.
 - Die App liest jetzt ausdrücklich `SUPABASE_PUBLISHABLE_KEY` (mit Fallback auf den alten `SUPABASE_ANON_KEY`).
-- Alle CSS-, Logo-, Config- und App-Dateien tragen `?v=2.4.7`, damit GitHub Pages/Safari keine alte 2.4.2-Datei aus dem Cache verwenden.
+- Alle CSS-, Logo-, Config- und App-Dateien tragen `?v=2.4.8`, damit GitHub Pages/Safari keine alte 2.4.2-Datei aus dem Cache verwenden.
 - Supabase: `pgcrypto`-Funktionen werden schemaqualifiziert über `extensions.crypt` und `extensions.gen_salt` aufgerufen; behebt den Fehler `function crypt(text, text) does not exist` in SECURITY-DEFINER-Funktionen.
 
 - Fehler beim Verschieben von Spielern behoben: abgeschlossene Schrittanimationen werden sauber entfernt und überdecken die im Bearbeitungsmodus gesetzten SVG-Positionen nicht mehr.
@@ -21,3 +21,7 @@ Alle Dateien dieses Ordners in das Repository kopieren und GitHub Pages wie bish
 ## Supabase
 
 Die Supabase-Anbindung ist in dieser Version bereits vorkonfiguriert. Nach dem Upload sollte unten `Speicherung: Supabase verbunden` erscheinen. Falls noch eine alte Seite im Safari-Cache liegt, die Seite einmal vollständig neu laden oder den Tab schließen und erneut öffnen.
+
+
+## Version 2.4.8
+Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertragen werden. Im Anzeigemodus wird keine Migrationsfunktion angezeigt.

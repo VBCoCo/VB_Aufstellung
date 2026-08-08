@@ -1,19 +1,20 @@
 (() => {
 "use strict";
-const VERSION="2.4.7",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
+const VERSION="2.4.8",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
 const ownRoster=[{id:"a1",base:1,team:"own"},{id:"z1",base:2,team:"own"},{id:"m1",base:3,team:"own"},{id:"a2",base:4,team:"own"},{id:"z2",base:5,team:"own"},{id:"m2",base:6,team:"own"}];
 const defaultRoles={a1:"AA",z1:"Z",m1:"MB",a2:"AA",z2:"Z",m2:"MB"};
 const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role:"Z",base:2,team:"opponent"},{id:"om1",role:"MB",base:3,team:"opponent"},{id:"oa2",role:"AA",base:4,team:"opponent"},{id:"oz2",role:"Z",base:5,team:"opponent"},{id:"om2",role:"MB",base:6,team:"opponent"}];
 const allPlayers=[...ownRoster,...opponentRoster];
 const ownSlots={1:{x:520,y:735},2:{x:520,y:545},3:{x:350,y:545},4:{x:180,y:545},5:{x:180,y:735},6:{x:350,y:735}};
 const opponentSlots={1:{x:180,y:165},2:{x:180,y:355},3:{x:350,y:355},4:{x:520,y:355},5:{x:520,y:165},6:{x:350,y:165}};
-const ids=["infoButton","infoButtonBottom","editButton","rotationSelect","situationNameInput","saveSituation","addSituation","deleteSituation","stepNumber","stepTotal","prevStep","playButton","nextStep","stepEditPanel","stepNameWrap","stepNameInput","saveStep","addStep","deleteStep","editPanel","situationSelect","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","status","infoDialog","closeInfo","closeInfoBottom","infoSituation","lineupToggle","lineupChevron","lineupEditor","lineupGrid","liberoToggle","syncBadge","passwordDialog","closePassword","cancelPassword","confirmPassword","passwordInput","passwordStatus"];
+const ids=["infoButton","infoButtonBottom","editButton","rotationSelect","situationNameInput","saveSituation","addSituation","deleteSituation","stepNumber","stepTotal","prevStep","playButton","nextStep","stepEditPanel","stepNameWrap","stepNameInput","saveStep","addStep","deleteStep","editPanel","situationSelect","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","status","infoDialog","closeInfo","closeInfoBottom","infoSituation","lineupToggle","lineupChevron","lineupEditor","lineupGrid","liberoToggle","syncBadge","passwordDialog","closePassword","cancelPassword","confirmPassword","passwordInput","passwordStatus","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint"];
 const e=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
 const roleNames={AA:"Außen",MB:"Mitte",Z:"Zuspiel",D:"Diagonal",L:"Libero"};
 const rot=(p,n)=>{let r=p;for(let i=0;i<n;i++)r=r===1?6:r-1;return r};
 const initialStep=r=>{const positions={};ownRoster.forEach(p=>positions[p.id]={...ownSlots[rot(p.base,r)]});opponentRoster.forEach(p=>positions[p.id]={...opponentSlots[p.base]});return{name:"Grundposition",situation:"serveReceive",positions,ball:{x:450,y:650}}};
 const defaultSituationName=i=>i===0?"Grundaufstellung":`Grundaufstellung +${i}`;
 const fresh=()=>({rotation:0,step:0,teamConfig:{roles:{...defaultRoles},libero:false},rotations:Array.from({length:6},(_,r)=>({name:defaultSituationName(r),rotationOffset:r,steps:[initialStep(r)]}))});
+const hadLocalStateAtStartup=Boolean(localStorage.getItem(KEY));
 let state;try{state=JSON.parse(localStorage.getItem(KEY)||"null")||fresh()}catch{state=fresh()}
 function migrate(){
   if(!state||!Array.isArray(state.rotations)||!state.rotations.length){state=fresh();return}
@@ -23,20 +24,37 @@ function migrate(){
 }
 migrate();
 let editing=false,selected=null,dragging=null,playing=false,animations=[],editorPassword=null,lineupOpen=false,committedState=structuredClone(state),dirty=false;
+let remoteHasData=false,dataSource=hadLocalStateAtStartup?"browser":"default";
 const rd=()=>state.rotations[state.rotation],sd=()=>rd().steps[state.step],rname=n=>state.rotations[n]?.name||defaultSituationName(n),prot=p=>rot(p.base,rd().rotationOffset||0),pat=n=>ownRoster.find(p=>prot(p)===n);
 const supabaseKey=()=>window.APP_CONFIG?.SUPABASE_PUBLISHABLE_KEY||window.APP_CONFIG?.SUPABASE_ANON_KEY||"";
 const supabaseConfigured=()=>Boolean(window.APP_CONFIG?.SUPABASE_URL&&supabaseKey());
+function updateMigrationUI(){
+  if(!e.dataSourceStatus)return;
+  const sourceText=dataSource==="supabase"?"Supabase":dataSource==="browser"?"Browser – lokale Daten":"Standarddaten – noch nicht gespeichert";
+  e.dataSourceStatus.textContent=sourceText;
+  const canMigrate=editing&&supabaseConfigured()&&!remoteHasData&&hadLocalStateAtStartup&&dataSource!=="supabase";
+  e.migrateLocalButton.classList.toggle("hidden",!canMigrate);
+  e.migrationHint.classList.toggle("hidden",!canMigrate);
+}
 function rpcHeaders(){const key=supabaseKey();return{"Content-Type":"application/json",apikey:key,Authorization:`Bearer ${key}`}}
 async function rpc(name,body={}){const base=window.APP_CONFIG.SUPABASE_URL.replace(/\/$/,"");const res=await fetch(`${base}/rest/v1/rpc/${name}`,{method:"POST",headers:rpcHeaders(),body:JSON.stringify(body)});if(!res.ok)throw new Error((await res.text())||`HTTP ${res.status}`);const text=await res.text();return text?JSON.parse(text):null}
 async function loadRemote(){
-  if(!supabaseConfigured()){e.syncBadge.textContent="Speicherung: Browser (Supabase noch nicht konfiguriert)";return}
+  if(!supabaseConfigured()){e.syncBadge.textContent="Speicherung: Browser (Supabase noch nicht konfiguriert)";dataSource=hadLocalStateAtStartup?"browser":"default";updateMigrationUI();return}
   e.syncBadge.textContent="Speicherung: Supabase verbunden";
-  try{const remote=await rpc("load_trainer_state");if(remote&&Array.isArray(remote.rotations)){state=remote;migrate();committedState=structuredClone(state);localStorage.setItem(KEY,JSON.stringify(state));buildLineupEditor();render();e.status.textContent="Daten aus Supabase geladen."}else e.status.textContent="Supabase verbunden. Noch keine gespeicherte Aufstellung vorhanden."}
-  catch(err){e.syncBadge.textContent="Speicherung: Browser (Supabase nicht erreichbar)";e.status.textContent=`Supabase konnte nicht geladen werden: ${err.message}`}
+  try{
+    const remote=await rpc("load_trainer_state");
+    if(remote&&Array.isArray(remote.rotations)){
+      remoteHasData=true;dataSource="supabase";state=remote;migrate();committedState=structuredClone(state);localStorage.setItem(KEY,JSON.stringify(state));buildLineupEditor();render();
+    }else{
+      remoteHasData=false;dataSource=hadLocalStateAtStartup?"browser":"default";
+    }
+    updateMigrationUI();
+  }catch(err){e.syncBadge.textContent="Speicherung: Browser (Supabase nicht erreichbar)";dataSource=hadLocalStateAtStartup?"browser":"default";updateMigrationUI()}
 }
 async function save(msg){
   committedState=structuredClone(state);dirty=false;localStorage.setItem(KEY,JSON.stringify(committedState));e.status.textContent=msg;
-  if(supabaseConfigured()&&editorPassword!==null){try{await rpc("save_trainer_state",{p_password:editorPassword,p_payload:state});e.syncBadge.textContent="Speicherung: Supabase synchron"}catch(err){e.syncBadge.textContent="Speicherung: Browser; Supabase-Fehler";e.status.textContent=`${msg} Lokal gespeichert. Supabase: ${err.message}`}}
+  if(supabaseConfigured()&&editorPassword!==null){try{await rpc("save_trainer_state",{p_password:editorPassword,p_payload:state});remoteHasData=true;dataSource="supabase";e.syncBadge.textContent="Speicherung: Supabase synchron"}catch(err){dataSource="browser";e.syncBadge.textContent="Speicherung: Browser; Supabase-Fehler";e.status.textContent=`${msg} Lokal gespeichert. Supabase: ${err.message}`}}
+  updateMigrationUI();
 }
 function ownRole(p){return state.teamConfig.roles[p.id]||defaultRoles[p.id]||"AA"}
 function effectiveRole(p){if(p.team==="opponent")return p.role;const role=ownRole(p);return state.teamConfig.libero&&role==="MB"&&[1,5,6].includes(prot(p))?"L":role}
@@ -49,7 +67,7 @@ function renderSituationOptions(){
   const current=String(state.rotation);e.rotationSelect.innerHTML="";state.rotations.forEach((situation,i)=>{const o=document.createElement("option");o.value=String(i);o.textContent=situation.name||defaultSituationName(i);e.rotationSelect.appendChild(o)});e.rotationSelect.value=current;e.situationNameInput.value=rd().name||defaultSituationName(state.rotation)
 }
 function render(){
-  renderSituationOptions();e.stepNumber.textContent=state.step+1;e.stepTotal.textContent=rd().steps.length;e.stepNameInput.value=sd().name;e.currentStepTitle.textContent=sd().name;e.situationSelect.value=sd().situation;e.liberoToggle.checked=state.teamConfig.libero;document.body.classList.toggle("editing-mode",editing);document.querySelectorAll(".mode-card").forEach(c=>c.classList.toggle("active",c.querySelector("input").checked));paths();const bad=validate();
+  renderSituationOptions();e.stepNumber.textContent=state.step+1;e.stepTotal.textContent=rd().steps.length;e.stepNameInput.value=sd().name;e.currentStepTitle.textContent=sd().name;e.situationSelect.value=sd().situation;e.liberoToggle.checked=state.teamConfig.libero;document.body.classList.toggle("editing-mode",editing);updateMigrationUI();document.querySelectorAll(".mode-card").forEach(c=>c.classList.toggle("active",c.querySelector("input").checked));paths();const bad=validate();
   allPlayers.forEach(p=>{const g=e.playerLayer.querySelector(`[data-id="${p.id}"]`),pos=sd().positions[p.id],role=effectiveRole(p);g.setAttribute("transform",`translate(${pos.x} ${pos.y})`);g.classList.toggle("editable",editing);g.classList.toggle("selected",selected?.type==="player"&&selected.id===p.id);g.classList.toggle("position-warning",bad.has(p.id)&&p.team==="own");g.querySelector("[data-role]").textContent=role;g.querySelector("circle").setAttribute("fill",p.team==="opponent"?"#e32828":role==="L"?"#111827":"#0b4fc6");g.querySelector("[data-label]").textContent=p.team==="opponent"?`Gegner · P${p.base}`:role==="L"?`Libero · Position ${prot(p)}`:`${roleNames[role]||role} · Position ${prot(p)}`});
   e.ballObject.setAttribute("visibility","visible");e.ballObject.setAttribute("transform",`translate(${sd().ball.x} ${sd().ball.y})`);e.ballObject.classList.toggle("editable",editing);e.ballObject.classList.toggle("selected",selected?.type==="ball");
 }
@@ -114,6 +132,17 @@ e.deleteStep.addEventListener("click",()=>{if(rd().steps.length===1){e.status.te
 document.querySelectorAll('input[name="moveMode"]').forEach(i=>i.addEventListener("change",()=>{selected=null;e.tapNotice.classList.add("hidden");render()}));
 e.lineupToggle.addEventListener("click",()=>{lineupOpen=!lineupOpen;e.lineupEditor.classList.toggle("hidden",!lineupOpen);e.lineupChevron.textContent=lineupOpen?"▴":"▾"});e.liberoToggle.addEventListener("change",()=>{state.teamConfig.libero=e.liberoToggle.checked;dirty=true;render()});
 e.confirmPassword.addEventListener("click",confirmPassword);e.passwordInput.addEventListener("keydown",ev=>{if(ev.key==="Enter")confirmPassword()});[e.closePassword,e.cancelPassword].forEach(x=>x.addEventListener("click",()=>e.passwordDialog.close()));
+async function migrateLocalToSupabase(){
+  if(!editing||!supabaseConfigured()||remoteHasData||!hadLocalStateAtStartup)return;
+  e.migrateLocalButton.disabled=true;e.migrateLocalButton.textContent="Übertrage …";
+  try{
+    await rpc("save_trainer_state",{p_password:editorPassword??"",p_payload:state});
+    remoteHasData=true;dataSource="supabase";committedState=structuredClone(state);localStorage.setItem(KEY,JSON.stringify(state));dirty=false;
+    e.syncBadge.textContent="Speicherung: Supabase synchron";e.dataSourceStatus.textContent="Supabase";
+  }catch(err){e.dataSourceStatus.textContent="Browser – Übertragung fehlgeschlagen";e.migrationHint.textContent=`Übertragung fehlgeschlagen: ${err.message}`;e.migrationHint.classList.remove("hidden")}
+  finally{e.migrateLocalButton.disabled=false;e.migrateLocalButton.textContent="Lokale Daten nach Supabase übertragen";updateMigrationUI()}
+}
+e.migrateLocalButton.addEventListener("click",migrateLocalToSupabase);
 function info(){e.infoSituation.textContent=`Aktuell: ${rname(state.rotation)} · Schritt ${state.step+1} · ${sd().name}`;e.infoDialog.showModal()}e.infoButton.addEventListener("click",info);e.infoButtonBottom.addEventListener("click",info);e.closeInfo.addEventListener("click",()=>e.infoDialog.close());e.closeInfoBottom.addEventListener("click",()=>e.infoDialog.close());e.infoDialog.addEventListener("click",x=>{if(x.target===e.infoDialog)e.infoDialog.close()});
 createPlayers();buildLineupEditor();edit(false);loadRemote();
 })();

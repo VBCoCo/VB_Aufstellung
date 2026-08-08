@@ -109,3 +109,7 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Alte Annahme-, Zuspiel- und Abwehrkontakte ohne Technikangabe werden automatisch als oberer Kontakt interpretiert.
 - Spieler- und Ballpositionen werden durch die Migration nicht verändert.
 - Supabase-Daten müssen nicht pro Schritt neu gespeichert werden; die Migration wirkt direkt beim Laden und Rendern.
+
+
+## Version 2.6.9
+- Feste Zusatzinfo-Zeile unter dem Schrittnamen verhindert vertikales Springen während der Wiedergabe.

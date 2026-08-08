@@ -58,20 +58,28 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - 2,5D-Kontaktpunkt berücksichtigt die Technik: oben über Kopf, unten tiefer vor dem Körper.
 - Ballflug startet und endet an den jeweiligen visuellen Kontaktpunkten.
 
-## Neu in 2.6.2
+## Neu in 2.6.3
 - Obere Annahme, oberes Zuspiel und obere Abwehr zeigen den Ballkontakt in 2,5D deutlich über dem Kopf statt vor dem Gesicht.
 - Die Armhaltung für obere und untere Technik wurde klarer getrennt.
 - Angreifer sowie zugeordnete Blockspieler springen während des Übergangs in 2,5D sichtbar hoch.
 - Bei einem eigenen Blockkontakt springen der Blockspieler und ein optionaler zweiter Blockspieler ebenfalls.
 
 
-## 2.6.2
+## 2.6.3
 - Oberes Zuspiel/Annahme deutlich höher über dem Kopf.
 - Höhere Annahme-Flugkurven.
 - Angriff/Block-Sprünge bleiben über zusammenhängende Kontakt-Schritte in der Luft und landen erst danach.
 
 
-## Cache-sicher 2.6.2
+## Cache-sicher 2.6.3
 - JavaScript, CSS und Konfiguration besitzen neue Dateinamen.
 - Im Versionsbereich wird sichtbar angezeigt, welche JavaScript-Version tatsächlich geladen wurde.
 - Bestehende Schritte und Supabase-Daten bleiben kompatibel; kein Neuaufbau des Ablaufs nötig.
+
+
+## Neu in 2.6.3
+- Abgestimmte Demo-Geometrie fuer oberes Zuspiel in 2,5D.
+- Hohes Zuspiel fliegt als echte Bogenkurve.
+- Angriff zum Block fliegt geradlinig.
+- Blockflug zum Folgeschritt fliegt geradlinig; Angriff und Doppelblock bleiben ueber den Blockschritt gemeinsam in der Luft und landen anschliessend.
+- Cache-sichere Dateinamen app-2.6.3.js, style-2.6.3.css und config-2.6.3.js.

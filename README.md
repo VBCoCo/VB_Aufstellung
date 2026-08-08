@@ -92,3 +92,8 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 
 ## Version 2.6.5
 - Oberes Zuspiel in 2,5D wieder tiefer gesetzt: weiterhin über Kopf, aber näher an Händen und Kopf.
+
+
+## Version 2.6.6
+- Überkopf-Zuspiel in 2,5D um etwa eine Balllänge abgesenkt.
+- Kontakt bleibt über dem Kopf, aber näher an Händen/Kopf.

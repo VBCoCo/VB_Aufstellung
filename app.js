@@ -1,13 +1,13 @@
 (() => {
 "use strict";
-const VERSION="2.4.9",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
+const VERSION="2.5.0",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
 const ownRoster=[{id:"a1",base:1,team:"own"},{id:"z1",base:2,team:"own"},{id:"m1",base:3,team:"own"},{id:"a2",base:4,team:"own"},{id:"z2",base:5,team:"own"},{id:"m2",base:6,team:"own"}];
 const defaultRoles={a1:"AA",z1:"Z",m1:"MB",a2:"AA",z2:"Z",m2:"MB"};
 const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role:"Z",base:2,team:"opponent"},{id:"om1",role:"MB",base:3,team:"opponent"},{id:"oa2",role:"AA",base:4,team:"opponent"},{id:"oz2",role:"Z",base:5,team:"opponent"},{id:"om2",role:"MB",base:6,team:"opponent"}];
 const allPlayers=[...ownRoster,...opponentRoster];
 const ownSlots={1:{x:520,y:735},2:{x:520,y:545},3:{x:350,y:545},4:{x:180,y:545},5:{x:180,y:735},6:{x:350,y:735}};
 const opponentSlots={1:{x:180,y:165},2:{x:180,y:355},3:{x:350,y:355},4:{x:520,y:355},5:{x:520,y:165},6:{x:350,y:165}};
-const ids=["infoButton","infoButtonBottom","editButton","rotationSelect","situationNameInput","saveSituation","addSituation","deleteSituation","stepNumber","stepTotal","prevStep","playButton","nextStep","stepEditPanel","stepNameWrap","stepNamePreset","stepNameInput","saveStep","addStep","deleteStep","editPanel","situationSelect","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","status","infoDialog","closeInfo","closeInfoBottom","infoSituation","lineupToggle","lineupChevron","lineupEditor","lineupGrid","liberoToggle","syncBadge","passwordDialog","closePassword","cancelPassword","confirmPassword","passwordInput","passwordStatus","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint"];
+const ids=["infoButton","infoButtonBottom","editButton","rotationSelect","situationNameInput","saveSituation","addSituation","deleteSituation","stepNumber","stepTotal","prevStep","playButton","nextStep","stepEditPanel","stepNameWrap","stepNamePreset","stepNameInput","saveStep","addStep","deleteStep","editPanel","situationSelect","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","status","infoDialog","closeInfo","closeInfoBottom","infoSituation","lineupToggle","lineupChevron","lineupEditor","lineupGrid","liberoToggle","syncBadge","passwordDialog","closePassword","cancelPassword","confirmPassword","passwordInput","passwordStatus","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint","viewToggle","view2d","view25d","court25d","court25Floor","movement25Layer","ballPath25Layer","player25Layer","ball25Object"];
 const e=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
 const roleNames={AA:"Außen",MB:"Mitte",Z:"Zuspiel",D:"Diagonal",L:"Libero"};
 const rot=(p,n)=>{let r=p;for(let i=0;i<n;i++)r=r===1?6:r-1;return r};
@@ -25,6 +25,7 @@ function migrate(){
 migrate();
 let editing=false,selected=null,dragging=null,playing=false,animations=[],editorPassword=null,lineupOpen=false,committedState=structuredClone(state),dirty=false;
 let remoteHasData=false,dataSource=hadLocalStateAtStartup?"browser":"default";
+let preferredView=localStorage.getItem("volleyball-trainer-view")||"2d";if(!["2d","25d"].includes(preferredView))preferredView="2d";
 const rd=()=>state.rotations[state.rotation],sd=()=>rd().steps[state.step],rname=n=>state.rotations[n]?.name||defaultSituationName(n),prot=p=>rot(p.base,rd().rotationOffset||0),pat=n=>ownRoster.find(p=>prot(p)===n);
 const supabaseKey=()=>window.APP_CONFIG?.SUPABASE_PUBLISHABLE_KEY||window.APP_CONFIG?.SUPABASE_ANON_KEY||"";
 const supabaseConfigured=()=>Boolean(window.APP_CONFIG?.SUPABASE_URL&&supabaseKey());
@@ -59,6 +60,50 @@ async function save(msg){
 function ownRole(p){return state.teamConfig.roles[p.id]||defaultRoles[p.id]||"AA"}
 function effectiveRole(p){if(p.team==="opponent")return p.role;const role=ownRole(p);return state.teamConfig.libero&&role==="MB"&&[1,5,6].includes(prot(p))?"L":role}
 function svg(name,a={}){const x=document.createElementNS("http://www.w3.org/2000/svg",name);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));return x}
+
+const METRE_2D=510/9;
+function project25(pos){
+  const t=clamp((850-pos.y)/800,0,1),scale=1-.46*t;
+  return{x:350+(pos.x-350)*scale,y:805-650*Math.pow(t,.86),scale};
+}
+function create25Floor(){
+  const q=(x,y)=>project25({x,y}), pts=(arr)=>arr.map(([x,y])=>{const z=q(x,y);return `${z.x},${z.y}`}).join(" ");
+  e.court25Floor.innerHTML="";
+  e.court25Floor.appendChild(svg("polygon",{points:pts([[95,850],[605,850],[605,50],[95,50]]),fill:"url(#court25Gradient)",stroke:"#fff","stroke-width":4}));
+  [583.333,450,316.667].forEach((y,i)=>{const a=q(95,y),b=q(605,y);e.court25Floor.appendChild(svg("line",{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:"#fff","stroke-width":i===1?5:2,opacity:i===1?1:.8}))});
+  const n1=q(95,450),n2=q(605,450),netTopY=n1.y-58;
+  e.court25Floor.appendChild(svg("polygon",{points:`${n1.x},${n1.y} ${n2.x},${n2.y} ${n2.x},${netTopY} ${n1.x},${netTopY}`,fill:"#f8fafc",opacity:.22,stroke:"#fff","stroke-width":2}));
+  for(let i=1;i<7;i++){const x=n1.x+(n2.x-n1.x)*i/7;e.court25Floor.appendChild(svg("line",{x1:x,y1:n1.y,x2:x,y2:netTopY,stroke:"#fff","stroke-width":1,opacity:.55}))}
+  e.court25Floor.appendChild(svg("line",{x1:n1.x,y1:netTopY,x2:n2.x,y2:netTopY,stroke:"#fff","stroke-width":4}));
+  e.court25Floor.appendChild(svg("line",{x1:n1.x,y1:n1.y+8,x2:n1.x,y2:netTopY-10,stroke:"#26384b","stroke-width":6}));
+  e.court25Floor.appendChild(svg("line",{x1:n2.x,y1:n2.y+8,x2:n2.x,y2:netTopY-10,stroke:"#26384b","stroke-width":6}));
+}
+function create25Players(){
+  e.player25Layer.innerHTML="";
+  allPlayers.forEach(p=>{
+    const g=svg("g",{class:`player25-object ${p.team}`,"data-id25":p.id});
+    const foot=svg("ellipse",{"data-footprint":"1",cx:0,cy:0,rx:METRE_2D/2,ry:METRE_2D/5.2,fill:"none",stroke:p.team==="opponent"?"#b91c1c":"#0752c7","stroke-width":3,opacity:.72});
+    const shadow=svg("ellipse",{"data-shadow":"1",cx:0,cy:-2,rx:20,ry:7,fill:"#000",opacity:.2});
+    const body=svg("path",{"data-body":"1",d:"M-9 -12 Q0 -20 9 -12 L13 -48 Q0 -60 -13 -48 Z",fill:p.team==="opponent"?"#e32828":"#0b4fc6",stroke:"#fff","stroke-width":2,filter:"url(#shadow25)"});
+    const head=svg("circle",{"data-head":"1",cx:0,cy:-63,r:12,fill:"#f3caa3",stroke:"#fff","stroke-width":2});
+    const badge=svg("circle",{"data-badge":"1",cx:0,cy:-34,r:17,fill:p.team==="opponent"?"#b91c1c":"#073b9a",stroke:"#fff","stroke-width":2});
+    const role=svg("text",{"data-role25":"1","text-anchor":"middle",x:0,y:-28,fill:"#fff","font-size":13,"font-weight":800});
+    g.append(foot,shadow,body,head,badge,role);e.player25Layer.appendChild(g)
+  })
+}
+function line25(layer,a,b,cls){const A=project25(a),B=project25(b);layer.appendChild(svg("line",{x1:A.x,y1:A.y,x2:B.x,y2:B.y,class:cls}))}
+function render25(){
+  const visible=!editing&&preferredView==="25d";
+  e.court.classList.toggle("hidden",visible);e.court25d.classList.toggle("hidden",!visible);
+  e.view2d.classList.toggle("active",preferredView==="2d");e.view25d.classList.toggle("active",preferredView==="25d");
+  if(!visible)return;
+  e.movement25Layer.innerHTML="";e.ballPath25Layer.innerHTML="";
+  [...allPlayers].sort((a,b)=>sd().positions[a.id].y-sd().positions[b.id].y).forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`);e.player25Layer.appendChild(node)});
+  allPlayers.forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`),pos=sd().positions[p.id],P=project25(pos),role=effectiveRole(p);node.setAttribute("transform",`translate(${P.x} ${P.y}) scale(${P.scale})`);node.querySelector("[data-role25]").textContent=role;const isLib=role==="L";node.querySelector("[data-body]").setAttribute("fill",p.team==="opponent"?"#e32828":isLib?"#111827":"#0b4fc6");node.querySelector("[data-badge]").setAttribute("fill",p.team==="opponent"?"#b91c1c":isLib?"#111827":"#073b9a")});
+  const bp=project25(sd().ball);e.ball25Object.setAttribute("transform",`translate(${bp.x} ${bp.y-25*bp.scale}) scale(${bp.scale})`);e.ball25Object.setAttribute("visibility","visible");
+  if(state.step>0){const a=rd().steps[state.step-1],b=sd();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line25(e.movement25Layer,A,B,"movement25-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)line25(e.ballPath25Layer,a.ball,b.ball,"ball25-path")}
+}
+function currentCourtIs25(){return !editing&&preferredView==="25d"}
 function createPlayers(){e.playerLayer.innerHTML="";allPlayers.forEach(p=>{const g=svg("g",{class:`player-object ${p.team}`,"data-id":p.id}),c=svg("circle",{r:29,fill:p.team==="opponent"?"#e32828":"#0b4fc6",stroke:"#fff","stroke-width":3,filter:"url(#shadow)"}),t=svg("text",{"text-anchor":"middle",y:7,fill:"#fff","font-size":19,"font-weight":800,"data-role":"1"}),l=svg("text",{"text-anchor":"middle",y:50,fill:"#fff","font-size":13,"font-weight":700,"data-label":"1"});g.append(c,t,l);e.playerLayer.appendChild(g)})}
 function line(layer,a,b,cls){layer.appendChild(svg("line",{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:cls}))}
 function validate(){e.validationLayer.innerHTML="";const bad=new Set;if(sd().situation!=="serveReceive")return bad;const p=n=>sd().positions[pat(n).id];[[4,3],[3,2],[5,6],[6,1]].forEach(([l,r])=>{const L=p(l),R=p(r),b=R.x+29,rem=b-(L.x-29),s=rem<=0?"invalid":rem<=18?"warning":"clear";if(s!=="clear"&&(editing||s==="invalid"))e.validationLayer.appendChild(svg("line",{x1:b,y1:455,x2:b,y2:840,class:s==="invalid"?"validation-invalid":"validation-warning"}));if(s==="invalid"){bad.add(pat(l).id);bad.add(pat(r).id)}});[[4,5],[3,6],[2,1]].forEach(([f,bk])=>{const F=p(f),B=p(bk),b=B.y+29,rem=b-(F.y-29),s=rem<=0?"invalid":rem<=18?"warning":"clear";if(s!=="clear"&&(editing||s==="invalid"))e.validationLayer.appendChild(svg("line",{x1:105,y1:b,x2:595,y2:b,class:s==="invalid"?"validation-invalid":"validation-warning"}));if(s==="invalid"){bad.add(pat(f).id);bad.add(pat(bk).id)}});return bad}
@@ -70,12 +115,13 @@ function render(){
   renderSituationOptions();e.stepNumber.textContent=state.step+1;e.stepTotal.textContent=rd().steps.length;e.stepNameInput.value=sd().name;e.stepNamePreset.value=["Aufschlag","Annahme","Angriff","Block","Abwehr"].includes(sd().name)?sd().name:"";e.currentStepTitle.textContent=sd().name;e.situationSelect.value=sd().situation;e.liberoToggle.checked=state.teamConfig.libero;document.body.classList.toggle("editing-mode",editing);updateMigrationUI();document.querySelectorAll(".mode-card").forEach(c=>c.classList.toggle("active",c.querySelector("input").checked));paths();const bad=validate();
   allPlayers.forEach(p=>{const g=e.playerLayer.querySelector(`[data-id="${p.id}"]`),pos=sd().positions[p.id],role=effectiveRole(p);g.setAttribute("transform",`translate(${pos.x} ${pos.y})`);g.classList.toggle("editable",editing);g.classList.toggle("selected",selected?.type==="player"&&selected.id===p.id);g.classList.toggle("position-warning",bad.has(p.id)&&p.team==="own");g.querySelector("[data-role]").textContent=role;g.querySelector("circle").setAttribute("fill",p.team==="opponent"?"#e32828":role==="L"?"#111827":"#0b4fc6");g.querySelector("[data-label]").textContent=p.team==="opponent"?`Gegner · P${p.base}`:role==="L"?`Libero · Position ${prot(p)}`:`${roleNames[role]||role} · Position ${prot(p)}`});
   e.ballObject.setAttribute("visibility","visible");e.ballObject.setAttribute("transform",`translate(${sd().ball.x} ${sd().ball.y})`);e.ballObject.classList.toggle("editable",editing);e.ballObject.classList.toggle("selected",selected?.type==="ball");
+  render25();
 }
 function buildLineupEditor(){
   e.lineupGrid.innerHTML="";ownRoster.forEach((p,i)=>{const label=document.createElement("label");label.className="player-role";label.textContent=`Spieler ${i+1} · Startposition ${p.base}`;const select=document.createElement("select");select.dataset.playerId=p.id;[["AA","Außen (AA)"],["MB","Mitte (MB)"],["Z","Zuspiel (Z)"],["D","Diagonal (D)"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;select.appendChild(o)});select.value=ownRole(p);select.addEventListener("change",()=>{state.teamConfig.roles[p.id]=select.value;dirty=true;render()});label.appendChild(select);e.lineupGrid.appendChild(label)});e.liberoToggle.checked=state.teamConfig.libero
 }
 function clearVisualAnimations(){
-  e.playerLayer.querySelectorAll("[data-id]").forEach(node=>node.getAnimations().forEach(a=>a.cancel()));
+  e.playerLayer.querySelectorAll("[data-id]").forEach(node=>node.getAnimations().forEach(a=>a.cancel()));e.player25Layer?.querySelectorAll("[data-id25]").forEach(node=>node.getAnimations().forEach(a=>a.cancel()));e.ball25Object?.getAnimations().forEach(a=>a.cancel());
   e.ballObject.getAnimations().forEach(a=>a.cancel());
 }
 function stop(){playing=false;animations.forEach(a=>a.cancel());animations=[];clearVisualAnimations();e.playButton.textContent="▶"}
@@ -97,8 +143,15 @@ async function animate(target,{sequence=false}={}){
   const a=sd(),b=rd().steps[target];playing=true;e.playButton.textContent="■";e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";
   allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line(e.movementLayer,A,B,"movement-path")});
   if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)line(e.ballPathLayer,a.ball,b.ball,"ball-path");
-  const pa=allPlayers.map(p=>e.playerLayer.querySelector(`[data-id="${p.id}"]`).animate([{transform:`translate(${a.positions[p.id].x}px,${a.positions[p.id].y}px)`},{transform:`translate(${b.positions[p.id].x}px,${b.positions[p.id].y}px)`}],{duration:1450,easing:"ease-in-out",fill:"forwards"}));
-  const ba=e.ballObject.animate([{transform:`translate(${a.ball.x}px,${a.ball.y}px) rotate(0deg)`},{transform:`translate(${b.ball.x}px,${b.ball.y}px) rotate(360deg)`}],{duration:1450,easing:"ease-in-out",fill:"forwards"});
+  let pa,ba;
+  if(currentCourtIs25()){
+    e.movement25Layer.innerHTML="";e.ballPath25Layer.innerHTML="";allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line25(e.movement25Layer,A,B,"movement25-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)line25(e.ballPath25Layer,a.ball,b.ball,"ball25-path");
+    pa=allPlayers.map(p=>{const A=project25(a.positions[p.id]),B=project25(b.positions[p.id]);return e.player25Layer.querySelector(`[data-id25="${p.id}"]`).animate([{transform:`translate(${A.x}px,${A.y}px) scale(${A.scale})`},{transform:`translate(${B.x}px,${B.y}px) scale(${B.scale})`}],{duration:1450,easing:"ease-in-out",fill:"forwards"})});
+    const A=project25(a.ball),B=project25(b.ball);ba=e.ball25Object.animate([{transform:`translate(${A.x}px,${A.y-25*A.scale}px) scale(${A.scale}) rotate(0deg)`},{transform:`translate(${B.x}px,${B.y-25*B.scale}px) scale(${B.scale}) rotate(360deg)`}],{duration:1450,easing:"ease-in-out",fill:"forwards"});
+  }else{
+    pa=allPlayers.map(p=>e.playerLayer.querySelector(`[data-id="${p.id}"]`).animate([{transform:`translate(${a.positions[p.id].x}px,${a.positions[p.id].y}px)`},{transform:`translate(${b.positions[p.id].x}px,${b.positions[p.id].y}px)`}],{duration:1450,easing:"ease-in-out",fill:"forwards"}));
+    ba=e.ballObject.animate([{transform:`translate(${a.ball.x}px,${a.ball.y}px) rotate(0deg)`},{transform:`translate(${b.ball.x}px,${b.ball.y}px) rotate(360deg)`}],{duration:1450,easing:"ease-in-out",fill:"forwards"});
+  }
   const localAnimations=[...pa,ba];animations=localAnimations;
   await Promise.all(localAnimations.map(x=>x.finished.catch(()=>{})));
   if(!playing)return false;
@@ -125,6 +178,7 @@ async function playAll(){
 }
 function goStep(target){target=Math.max(0,Math.min(rd().steps.length-1,target));if(target===state.step)return;if(editing){clearVisualAnimations();state.step=target;selected=dragging=null;render();return}animate(target)}
 e.prevStep.addEventListener("click",()=>goStep(state.step-1));e.nextStep.addEventListener("click",()=>goStep(state.step+1));e.playButton.addEventListener("click",playAll);
+e.view2d.addEventListener("click",()=>{preferredView="2d";localStorage.setItem("volleyball-trainer-view",preferredView);clearVisualAnimations();render()});e.view25d.addEventListener("click",()=>{if(editing)return;preferredView="25d";localStorage.setItem("volleyball-trainer-view",preferredView);clearVisualAnimations();render()});
 e.editButton.addEventListener("click",requestEdit);e.rotationSelect.addEventListener("change",x=>{state.rotation=Number(x.target.value);state.step=0;buildLineupEditor();render()});e.situationNameInput.addEventListener("input",()=>{dirty=true});e.stepNamePreset.addEventListener("change",()=>{if(e.stepNamePreset.value){e.stepNameInput.value=e.stepNamePreset.value;dirty=true}});e.stepNameInput.addEventListener("input",()=>{e.stepNamePreset.value=["Aufschlag","Annahme","Angriff","Block","Abwehr"].includes(e.stepNameInput.value.trim())?e.stepNameInput.value.trim():"";dirty=true});e.saveSituation.addEventListener("click",()=>{rd().name=e.situationNameInput.value.trim()||defaultSituationName(state.rotation);save("Spielsituation gespeichert.");render()});e.addSituation.addEventListener("click",()=>{const copy=structuredClone(rd());copy.name=`Neue Spielsituation ${state.rotations.length+1}`;state.rotations.splice(state.rotation+1,0,copy);state.rotation++;state.step=0;dirty=true;render()});e.deleteSituation.addEventListener("click",()=>{if(state.rotations.length===1){e.status.textContent="Die einzige Spielsituation kann nicht gelöscht werden.";return}state.rotations.splice(state.rotation,1);state.rotation=Math.max(0,state.rotation-1);state.step=0;dirty=true;render()});e.situationSelect.addEventListener("change",x=>{sd().situation=x.target.value;keepServeReceiveInside();dirty=true;render()});
 e.saveStep.addEventListener("click",()=>{sd().name=e.stepNameInput.value.trim()||`Schritt ${state.step+1}`;keepServeReceiveInside();save("Schritt gespeichert.");render()});
 e.addStep.addEventListener("click",()=>{sd().name=e.stepNameInput.value.trim()||`Schritt ${state.step+1}`;keepServeReceiveInside();const s=sd();rd().steps.splice(state.step+1,0,{name:`Schritt ${state.step+2}`,situation:s.situation,positions:structuredClone(s.positions),ball:structuredClone(s.ball)});state.step++;dirty=true;render()});
@@ -144,5 +198,5 @@ async function migrateLocalToSupabase(){
 }
 e.migrateLocalButton.addEventListener("click",migrateLocalToSupabase);
 function info(){e.infoSituation.textContent=`Aktuell: ${rname(state.rotation)} · Schritt ${state.step+1} · ${sd().name}`;e.infoDialog.showModal()}e.infoButton.addEventListener("click",info);e.infoButtonBottom.addEventListener("click",info);e.closeInfo.addEventListener("click",()=>e.infoDialog.close());e.closeInfoBottom.addEventListener("click",()=>e.infoDialog.close());e.infoDialog.addEventListener("click",x=>{if(x.target===e.infoDialog)e.infoDialog.close()});
-createPlayers();buildLineupEditor();edit(false);loadRemote();
+createPlayers();create25Floor();create25Players();buildLineupEditor();edit(false);loadRemote();
 })();

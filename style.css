@@ -1,4 +1,4 @@
-/* Volleyball Trainer 2.4.2 */
+/* Volleyball Trainer 2.5.0 */
 :root{
   --bg:#07111d;--panel:#10233a;--panel2:#0b1a2b;--line:#294766;--text:#f8fafc;--muted:#aebed0;
   --club-blue:#0b4fc6;--club-blue-2:#073b9a;--club-white:#ffffff;--club-black:#0b0d10;
@@ -32,3 +32,10 @@ dialog{border:0;padding:0;background:transparent;color:var(--text);max-width:100
 @media(max-width:430px){.topbar{grid-template-columns:minmax(0,1fr)}.top-actions{width:100%}.top-actions button{flex:1}.brand h1{font-size:1.7rem}.move-modes{grid-template-columns:1fr 1fr}.court-toolbar{gap:6px}.step-compact{gap:5px}.step-nav{gap:3px}.step-nav button{width:34px;height:34px;min-height:34px;font-size:1rem}.step-label{font-size:.72rem}.situation-compact{grid-template-columns:1fr}.situation-compact>span{font-size:.64rem}.situation-compact select{font-size:.82rem;padding-left:8px}}
 
 .migration-panel{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.14);display:grid;gap:10px}.migration-panel .blue{width:100%}.migration-panel .hint{margin:4px 0 0}.editing-mode .migration-panel{display:grid}
+
+
+/* 2.5D display */
+.view-toggle{display:flex;align-items:center;gap:4px;padding:3px;background:#071522;border:1px solid #365473;border-radius:10px;flex:0 0 auto}.view-toggle button{min-height:32px;height:32px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:#cfe0f5;font-size:.82rem}.view-toggle button.active{background:linear-gradient(180deg,var(--club-blue),var(--club-blue-2));color:#fff}.editing-mode .view-toggle{display:none}
+#court25d{width:min(100%,720px);height:auto;display:block;border-radius:14px;touch-action:none;user-select:none;-webkit-user-select:none}.movement25-path{fill:none;stroke:#fff;stroke-width:4;stroke-dasharray:10 9;marker-end:url(#arrowWhite25)}.ball25-path{fill:none;stroke:var(--yellow);stroke-width:4;stroke-dasharray:10 9;marker-end:url(#arrowYellow25)}
+.player25-object{transform-box:fill-box;transform-origin:center}.player25-object [data-footprint]{vector-effect:non-scaling-stroke}.player25-object text{paint-order:stroke;stroke:#0004;stroke-width:1px}
+@media(max-width:680px){#court25d{width:100%;max-width:100%;height:auto}.view-toggle button{padding:0 8px;font-size:.78rem}.court-head{min-height:52px}}

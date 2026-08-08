@@ -7,14 +7,14 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Volleyball Trainer 2.5.1</title>
-  <link rel="stylesheet" href="style.css?v=2.5.2">
+  <title>Volleyball Trainer 2.5.3</title>
+  <link rel="stylesheet" href="style.css?v=2.5.3">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.5.2" alt="TTC Geltendorf e.V." class="brand-logo"></div>
+        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.5.3" alt="TTC Geltendorf e.V." class="brand-logo"></div>
         <div class="brand-copy"><h1>Volleyball Trainer</h1><p>TTC Geltendorf e.V.</p></div>
       </div>
       <div class="top-actions"><button id="infoButton" class="ghost" type="button">ⓘ Info</button><button id="editButton" class="primary" type="button">✎ Bearbeiten</button></div>
@@ -26,7 +26,7 @@
           <label class="field">Name der Spielsituation<input id="situationNameInput" type="text"></label>
           <div class="situation-actions"><button id="saveSituation" class="ghost" type="button">Spielsituation speichern</button><button id="addSituation" class="blue" type="button">⊞ Neue Spielsituation</button><button id="deleteSituation" class="red" type="button" title="Spielsituation löschen">🗑</button></div>
           <div class="panel-divider"></div>
-          <label class="field">Schritt-Vorlage<select id="stepNamePreset"><option value="">– frei benennen –</option><option value="Aufschlag">Aufschlag</option><option value="Annahme">Annahme</option><option value="Angriff">Angriff</option><option value="Block">Block</option><option value="Abwehr">Abwehr</option></select></label>
+          <label class="field">Schritt-Vorlage<select id="stepNamePreset"><option value="">– frei benennen –</option><option value="Aufschlag">Aufschlag</option><option value="Annahme">Annahme</option><option value="Zuspiel">Zuspiel</option><option value="Angriff">Angriff</option><option value="Angriffssicherung">Angriffssicherung</option><option value="Block">Block</option><option value="Doppelblock">Doppelblock</option><option value="Abwehr">Abwehr</option></select></label>
           <label id="stepNameWrap" class="field">Name des Schritts<input id="stepNameInput" type="text" placeholder="z. B. Doppelblock"></label>
           <div class="step-actions"><button id="saveStep" class="icon-button" type="button" title="Speichern">💾</button><button id="addStep" class="blue" type="button">⊞ Neuer Schritt</button><button id="deleteStep" class="red" type="button" title="Löschen">🗑</button></div>
         </section>
@@ -39,13 +39,18 @@
           </div>
           <label class="field">Spielphase<select id="situationSelect"><option value="serveReceive">Aufschlag / Annahme</option><option value="attack">Angriff</option><option value="defense">Abwehr</option><option value="ownServe">Eigener Aufschlag</option></select></label>
           <div id="actionPanel" class="action-panel">
-            <button class="action-panel-title" type="button" disabled><span>🏐 Ballkontakt</span><small>Kontakt in diesem Schritt</small></button>
-            <label class="field">Kontaktart<select id="actionType"><option value="">– kein Ballkontakt –</option><option value="serve">Aufschlag</option><option value="receive">Annahme</option><option value="set">Zuspiel</option><option value="attack">Angriff</option><option value="block">Block</option><option value="defense">Abwehr</option></select></label>
-            <label class="field">Ballkontakt durch<select id="actionActor"></select></label>
-            
+            <button class="action-panel-title" type="button" disabled><span>🔗 Aktion festlegen</span><small>optional je Schritt</small></button>
+            <label class="field">Ballkontakt<select id="actionType"><option value="">– kein Ballkontakt –</option><option value="serve">Aufschlag</option><option value="receive">Annahme</option><option value="set">Zuspiel</option><option value="attack">Angriff</option><option value="block">Block</option><option value="defense">Abwehr</option></select></label>
+            <label class="field">Kontaktspieler<select id="actionActor"></select></label>
             <label id="actionHelperWrap" class="field hidden">Zweiter Blockspieler<select id="actionHelper"></select></label>
-            <div class="action-buttons"><button id="snapBallToActor" class="ghost" type="button">🏐 Ballkontakt an Spieler setzen</button><button id="clearAction" class="ghost" type="button">Kontakt löschen</button></div>
-            <p id="actionHint" class="hint">Der Schritt beschreibt den Moment des Ballkontakts. Beim Wechsel zum nächsten Schritt fliegt der Ball automatisch zu dessen Kontaktpunkt; gleichzeitig bewegen sich die Spieler zu ihren dort gespeicherten Positionen.</p>
+            <div id="attackBlockWrap" class="attack-block-wrap hidden">
+              <strong>Blockversuch beim Angriff</strong>
+              <label class="field">Blockspieler 1<select id="attackBlocker1"></select></label>
+              <label class="field">Blockspieler 2 (optional)<select id="attackBlocker2"></select></label>
+              <p class="hint">Die Blockspieler gehören zur jeweils anderen Mannschaft. Sie berühren den Ball nicht automatisch; ihre Bewegung ergibt sich aus den Positionen dieses und des nächsten Schritts.</p>
+            </div>
+            <div class="action-buttons"><button id="snapBallToActor" class="ghost" type="button">🏐 Ball an Akteur setzen</button><button id="clearAction" class="ghost" type="button">Verknüpfung lösen</button></div>
+            <p id="actionHint" class="hint">Optional: Spieler und Ballkontakt logisch miteinander verknüpfen.</p>
           </div>
           <button id="lineupToggle" class="lineup-toggle" type="button"><span>⚙ Aufstellungsänderung</span><span id="lineupChevron">▾</span></button>
           <div id="lineupEditor" class="lineup-editor hidden">
@@ -61,7 +66,7 @@
         </section>
 
         <section id="helpPanel" class="panel edit-help"><h2>So funktioniert es</h2><ol><li>Bearbeiten freischalten</li><li>Spieler oder Ball verschieben</li><li>Optional Aufstellung/Rollen ändern</li><li>Neuen Schritt anlegen</li><li>Im Bearbeiten-Modus je Schritt feste Positionen setzen</li><li>Speichern übernimmt Änderungen dauerhaft</li><li>Im Anzeigemodus zwischen Schritten animieren</li></ol></section>
-        <section class="panel version-panel"><div><span>Version 2.5.2</span><span>08.08.2026</span></div><button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button><div id="syncBadge" class="sync-badge">Speicherung: Browser</div></section>
+        <section class="panel version-panel"><div><span>Version 2.5.3</span><span>08.08.2026</span></div><button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button><div id="syncBadge" class="sync-badge">Speicherung: Browser</div></section>
       </aside>
 
       <section class="court-section">
@@ -97,7 +102,7 @@
   </main>
 
   <dialog id="passwordDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Bearbeitungsmodus</span><h2>Passwort eingeben</h2></div><button id="closePassword" type="button">✕</button></div><label class="password-field">Passwort<input id="passwordInput" type="password" autocomplete="current-password" placeholder="Aktuell kein Passwort erforderlich"></label><div class="dialog-actions"><button id="cancelPassword" class="ghost" type="button">Abbrechen</button><button id="confirmPassword" class="primary" type="button">OK</button></div><p id="passwordStatus" class="status"></p></div></dialog>
-  <dialog id="infoDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.5.2</h2></div><button id="closeInfo" type="button">✕</button></div><ul><li>Spielsituation und Schrittsteuerung kompakt über dem Spielfeld</li><li>Neue Spielsituationen können im Bearbeitungsmodus angelegt und benannt werden</li><li>Hinweisbox „So funktioniert es“ erscheint nur beim Bearbeiten</li><li>Schritte enthalten feste Spielerpositionen; Pfeile animieren jeweils einen Schritt</li><li>Play startet immer bei Schritt 1 und spielt alle Schritte bis zum Ende ab</li><li>Abgeschlossene Animationen blockieren die Spielerpositionen im Bearbeitungsmodus nicht mehr</li><li>Ungespeicherte Bearbeitungen werden beim Verlassen verworfen</li><li>Passwortabfrage bleibt sichtbar, aktuell genügt OK ohne Eingabe</li><li>Supabase-Konfiguration wird mit Publishable Key geladen und die Dateien werden versionssicher ohne alten Browser-Cache geladen</li><li>Lokale Browserdaten können ausschließlich im Bearbeitungsmodus gezielt nach Supabase übertragen werden</li><li>Feste Schritt-Vorlagen: Aufschlag, Annahme, Angriff, Block und Abwehr; der konkrete Schrittname bleibt frei editierbar</li><li>Neue 2,5D-Anzeige aus erhöhter Kameraperspektive hinter der eigenen Grundlinie</li><li>Spieler besitzen in 2,5D eine perspektivische Standfläche von ungefähr 1 × 1 Meter; die Bearbeitung bleibt bewusst in 2D</li><li>2,5D-Perspektive nutzt das eigene Feld breiter, komprimiert das gegnerische Hinterfeld und setzt die Netzpfosten weiter nach außen</li><li>Neues Kontaktmodell: Jeder Schritt beschreibt einen Ballkontakt bzw. Spielzustand</li><li>Kontaktarten: Aufschlag, Annahme, Zuspiel, Angriff, Block und Abwehr</li><li>Der Übergang zum nächsten Schritt animiert automatisch Ballflug und alle Spielerbewegungen</li><li>Mit „Ballkontakt an Spieler setzen“ wird der Ball exakt auf den ausführenden Spieler gelegt</li></ul><p id="infoSituation"></p><button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
-  <script src="config.js?v=2.5.2"></script><script defer src="app.js?v=2.5.2"></script>
+  <dialog id="infoDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.5.3</h2></div><button id="closeInfo" type="button">✕</button></div><ul><li>Spielsituation und Schrittsteuerung kompakt über dem Spielfeld</li><li>Neue Spielsituationen können im Bearbeitungsmodus angelegt und benannt werden</li><li>Hinweisbox „So funktioniert es“ erscheint nur beim Bearbeiten</li><li>Schritte enthalten feste Spielerpositionen; Pfeile animieren jeweils einen Schritt</li><li>Play startet immer bei Schritt 1 und spielt alle Schritte bis zum Ende ab</li><li>Abgeschlossene Animationen blockieren die Spielerpositionen im Bearbeitungsmodus nicht mehr</li><li>Ungespeicherte Bearbeitungen werden beim Verlassen verworfen</li><li>Passwortabfrage bleibt sichtbar, aktuell genügt OK ohne Eingabe</li><li>Supabase-Konfiguration wird mit Publishable Key geladen und die Dateien werden versionssicher ohne alten Browser-Cache geladen</li><li>Lokale Browserdaten können ausschließlich im Bearbeitungsmodus gezielt nach Supabase übertragen werden</li><li>Feste Schritt-Vorlagen: Aufschlag, Annahme, Angriff, Block und Abwehr; der konkrete Schrittname bleibt frei editierbar</li><li>Neue 2,5D-Anzeige aus erhöhter Kameraperspektive hinter der eigenen Grundlinie</li><li>Spieler besitzen in 2,5D eine perspektivische Standfläche von ungefähr 1 × 1 Meter; die Bearbeitung bleibt bewusst in 2D</li><li>2,5D-Perspektive nutzt das eigene Feld breiter, komprimiert das gegnerische Hinterfeld und setzt die Netzpfosten weiter nach außen</li><li>Optionale Aktionen je Schritt: Aufschlag, Annahme, Zuspiel, Angriff und Block mit Akteur, Zielspieler und zweitem Blockspieler</li><li>Mit „Ball an Akteur setzen“ kann der Ballkontakt exakt an die aktuelle Spielerposition gekoppelt werden</li><li>Schritt-Vorlagen zusätzlich: Zuspiel, Angriffssicherung und Doppelblock</li><li>Aufschläger werden bei Aufschlag hinter der jeweiligen Grundlinie positioniert und dürfen dort bewegt werden</li><li>Bei Angriff können ein oder zwei Blockspieler der anderen Mannschaft als Blockversuch verknüpft werden, ohne Ballkontakt</li></ul><p id="infoSituation"></p><button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
+  <script src="config.js?v=2.5.3"></script><script defer src="app.js?v=2.5.3"></script>
 </body>
 </html>

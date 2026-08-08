@@ -132,3 +132,10 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Manifest und Home-Screen-Icon ergänzt.
 - Start vom Home-Bildschirm ohne Safari-Adressleiste.
 - Bewusst kein Service-Worker-Cache, damit neue Releases weiterhin zuverlässig geladen werden.
+
+
+## Version 2.6.13
+- Neue kompakte Plausibilitätsprüfung unter dem Spielfeld.
+- Fehler: Ballkontakt ohne Kontaktspieler, Aufschläger nicht hinter Grundlinie, Blocker falsche Mannschaft/Netzseite, mehr als drei reguläre Kontakte einer Mannschaft in Folge.
+- Warnungen: Blocker zu weit vom Netz, Doppelblock zu weit auseinander, Angriff→Block inkonsistent, Ballkontakt weit vom Akteur.
+- Block zählt bei der 3-Kontakt-Regel nicht als Ballkontakt.

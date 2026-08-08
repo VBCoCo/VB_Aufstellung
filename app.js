@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const VERSION="2.6.0",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
+const VERSION="2.6.1",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
 const ownRoster=[{id:"a1",base:1,team:"own"},{id:"z1",base:2,team:"own"},{id:"m1",base:3,team:"own"},{id:"a2",base:4,team:"own"},{id:"z2",base:5,team:"own"},{id:"m2",base:6,team:"own"}];
 const defaultRoles={a1:"AA",z1:"Z",m1:"MB",a2:"AA",z2:"Z",m2:"MB"};
 const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role:"Z",base:2,team:"opponent"},{id:"om1",role:"MB",base:3,team:"opponent"},{id:"oa2",role:"AA",base:4,team:"opponent"},{id:"oz2",role:"Z",base:5,team:"opponent"},{id:"om2",role:"MB",base:6,team:"opponent"}];
@@ -105,7 +105,7 @@ const ballMotion={
   serve:{duration:1280,lift2d:84,lift25:70,easing:"cubic-bezier(.22,.61,.36,1)"},
   receive:{duration:1340,lift2d:190,lift25:202,easing:"ease-in-out"},
   set:{duration:1420,lift2d:164,lift25:146,easing:"ease-in-out"},
-  attack:{duration:820,lift2d:26,lift25:20,easing:"cubic-bezier(.18,.78,.28,1)"},
+  attack:{duration:760,lift2d:18,lift25:12,easing:"cubic-bezier(.18,.78,.28,1)"},
   block:{duration:860,lift2d:36,lift25:30,easing:"ease-out"},
   defense:{duration:1340,lift2d:178,lift25:188,easing:"ease-in-out"},
   default:{duration:1320,lift2d:82,lift25:68,easing:"ease-in-out"}
@@ -184,13 +184,16 @@ function contactHeight25(step){
   return 50;
 }
 function ballVisual25(step){
-  const P=project25(step.ball),a=step?.action||{};
+  const a=step?.action||{};
+  const actorPos=a.actorId?step?.positions?.[a.actorId]:null;
+  const actorP=actorPos?project25(actorPos):null;
+  const baseP=project25(step.ball);
+  if(actorP&&a.type==="set"&&a.technique==="upper")return{x:actorP.x,y:actorP.y-182*actorP.scale,scale:actorP.scale};
+  if(actorP&&(a.type==="receive"||a.type==="defense")&&a.technique==="upper")return{x:actorP.x,y:actorP.y-154*actorP.scale,scale:actorP.scale};
   let dx=0,dy=0;
-  if(a.type==="set"&&a.technique==="upper"){dx=0;dy=-42*P.scale}
-  else if((a.type==="receive"||a.type==="defense")&&a.technique==="upper"){dx=0;dy=-28*P.scale}
-  if(a.type==="attack"){dx=14*P.scale;dy=-16*P.scale}
-  if(a.type==="block")dy=-14*P.scale;
-  return{x:P.x+dx,y:P.y-contactHeight25(step)*P.scale+dy,scale:P.scale};
+  if(a.type==="attack"){dx=14*baseP.scale;dy=-16*baseP.scale}
+  if(a.type==="block")dy=-14*baseP.scale;
+  return{x:baseP.x+dx,y:baseP.y-contactHeight25(step)*baseP.scale+dy,scale:baseP.scale};
 }
 function ballCurve2d(A,B,lift){const mx=(A.x+B.x)/2,my=Math.min(A.y,B.y)-lift;return `M ${A.x} ${A.y} Q ${mx} ${my} ${B.x} ${B.y}`}
 function ballCurve25(Astep,Bstep,lift){const PA=ballVisual25(Astep),PB=ballVisual25(Bstep),cx=(PA.x+PB.x)/2,cy=Math.min(PA.y,PB.y)-lift;return `M ${PA.x} ${PA.y} Q ${cx} ${cy} ${PB.x} ${PB.y}`}
@@ -235,7 +238,8 @@ function render25(){
   if(!visible)return;
   e.movement25Layer.innerHTML="";e.ballPath25Layer.innerHTML="";e.action25Layer.innerHTML="";
   [...allPlayers].sort((a,b)=>sd().positions[a.id].y-sd().positions[b.id].y).forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`);e.player25Layer.appendChild(node)});
-  allPlayers.forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`),pos=sd().positions[p.id],P=project25(pos),role=effectiveRole(p),contactLift=contactLift25(sd(),p.id,state.step);node.setAttribute("transform",`translate(${P.x} ${P.y-contactLift*P.scale}) scale(${P.scale})`);node.querySelector("[data-role25]").textContent=role;const isLib=role==="L";node.querySelector("[data-body]").setAttribute("fill",p.team==="opponent"?"#e32828":isLib?"#111827":"#0b4fc6");node.querySelector("[data-badge]").setAttribute("fill",p.team==="opponent"?"#b91c1c":isLib?"#111827":"#073b9a");const ca=actionData(),active=ca.actorId===p.id&&supportsTechnique(ca.type);const upper=active&&ca.technique==="upper",lower=active&&ca.technique==="lower";const attackActor=ca.type==="attack"&&ca.actorId===p.id;const blocker=(ca.type==="attack"&&[ca.blocker1Id,ca.blocker2Id].includes(p.id))||(ca.type==="block"&&[ca.actorId,ca.helperId].includes(p.id));let armL="M-9 -44 L-20 -25",armR="M9 -44 L20 -25";if(upper){armL="M-9 -44 Q-26 -88 -7 -152";armR="M9 -44 Q26 -88 7 -152"}else if(lower){armL="M-9 -42 Q-14 -30 -8 -19";armR="M9 -42 Q14 -30 8 -19"}else if(blocker){armL="M-9 -44 Q-17 -86 -12 -128";armR="M9 -44 Q17 -86 12 -128"}else if(attackActor){armL="M-9 -44 Q-2 -60 8 -90";armR="M9 -44 Q20 -84 26 -130"}node.querySelector("[data-arm-left]").setAttribute("d",armL);node.querySelector("[data-arm-right]").setAttribute("d",armR)});
+  const sustain=sustainedAttackBlockState(state.step),ca=actionData();
+  allPlayers.forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`),pos=sd().positions[p.id],P=project25(pos),role=effectiveRole(p),contactLift=contactLift25(sd(),p.id,state.step);node.setAttribute("transform",`translate(${P.x} ${P.y-contactLift*P.scale}) scale(${P.scale})`);node.querySelector("[data-role25]").textContent=role;const isLib=role==="L";node.querySelector("[data-body]").setAttribute("fill",p.team==="opponent"?"#e32828":isLib?"#111827":"#0b4fc6");node.querySelector("[data-badge]").setAttribute("fill",p.team==="opponent"?"#b91c1c":isLib?"#111827":"#073b9a");const active=ca.actorId===p.id&&supportsTechnique(ca.type);const upper=active&&ca.technique==="upper",lower=active&&ca.technique==="lower";const attackActor=(ca.type==="attack"&&ca.actorId===p.id)||(sustain&&sustain.attackerId===p.id);const blocker=(ca.type==="attack"&&[ca.blocker1Id,ca.blocker2Id].includes(p.id))||(ca.type==="block"&&[ca.actorId,ca.helperId].includes(p.id))||(sustain&&sustain.blockerIds.includes(p.id));let armL="M-9 -44 L-20 -25",armR="M9 -44 L20 -25";if(upper){armL="M-9 -44 Q-28 -96 -6 -166";armR="M9 -44 Q28 -96 6 -166"}else if(lower){armL="M-9 -42 Q-14 -30 -8 -19";armR="M9 -42 Q14 -30 8 -19"}else if(blocker){armL="M-9 -44 Q-17 -86 -12 -128";armR="M9 -44 Q17 -86 12 -128"}else if(attackActor){armL="M-9 -44 Q-2 -60 8 -90";armR="M9 -44 Q20 -84 26 -130"}node.querySelector("[data-arm-left]").setAttribute("d",armL);node.querySelector("[data-arm-right]").setAttribute("d",armR)});
   const bp=ballVisual25(sd());e.ball25Object.setAttribute("transform",`translate(${bp.x} ${bp.y}) scale(${bp.scale})`);e.ball25Object.setAttribute("visibility","visible");
   if(state.step>0){const a=rd().steps[state.step-1],b=sd();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line25(e.movement25Layer,A,B,"movement25-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPath25Layer,a.ball,b.ball,"ball25-path",true,motionFor(a),a,b)}
 }

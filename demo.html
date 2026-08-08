@@ -10,19 +10,16 @@ body{margin:0;background:#edf4fb;color:#17324d;font-family:system-ui,-apple-syst
 .wrap{max-width:980px;margin:auto;padding:16px}
 .top{background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 28px #10253b1a;margin-bottom:16px}
 h1{margin:0 0 6px;font-size:27px}.sub{margin:0;color:#60758d;line-height:1.4}
-.panel{background:#fff;border-radius:18px;padding:16px;box-shadow:0 8px 28px #10253b16;margin:0 0 16px}
-.panel h2{margin:0 0 6px}.panel p{margin:0 0 12px;color:#60758d}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:700px){.grid{grid-template-columns:1fr}}
-.card{border:1px solid #d5e1ed;border-radius:14px;overflow:hidden}
-.head{padding:10px 12px;font-weight:800;background:#f4f8fc}
+.panel{background:#fff;border-radius:18px;padding:16px;box-shadow:0 8px 28px #10253b16;margin:0 0 16px}.panel h2{margin:0 0 6px}.panel p{margin:0 0 12px;color:#60758d}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.card{border:1px solid #d5e1ed;border-radius:14px;overflow:hidden}.head{padding:10px 12px;font-weight:800;background:#f4f8fc}
 svg{display:block;width:100%;height:auto;background:linear-gradient(#dceafb,#c8def4)}
 .body{fill:#0b4fc6;stroke:#fff;stroke-width:2}.redbody{fill:#d92b2b;stroke:#fff;stroke-width:2}
 .skin{stroke:#f2c69e;stroke-width:8;fill:none;stroke-linecap:round}.headc{fill:#f2c69e;stroke:#fff;stroke-width:2}
-.ball{fill:#ffd400;stroke:#1648b8;stroke-width:4}.foot{fill:none;stroke:#0b4fc6;stroke-width:3;opacity:.55}.redfoot{fill:none;stroke:#d92b2b;stroke-width:3;opacity:.55}
+.ball{fill:#ffd400;stroke:#1648b8;stroke-width:4}.foot{fill:none;stroke:#0b4fc6;stroke-width:3;opacity:.55}
 .guide{stroke:#ff3b30;stroke-width:2;stroke-dasharray:6 6;opacity:.75}.lbl{font-size:14px;font-weight:700;fill:#17324d}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0 12px}button{border:0;border-radius:11px;padding:10px 15px;font-size:15px;font-weight:800;background:#f4b400;color:#17324d}
-button.secondary{background:#e6eef7}.phase{font-weight:750;margin-top:10px}.note{padding:10px 12px;font-size:13px;color:#60758d}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0 12px}button{border:0;border-radius:11px;padding:10px 15px;font-size:15px;font-weight:800;background:#f4b400;color:#17324d}button.secondary{background:#e6eef7}
+.phase{font-weight:750;margin-top:10px}.note{padding:10px 12px;font-size:13px;color:#60758d}
 .upperBall{animation:upperBall 2.5s ease-in-out infinite}.upperArms{animation:upperArms 2.5s ease-in-out infinite}.lowerBall{animation:lowerBall 2.5s ease-in-out infinite}.lowerArms{animation:lowerArms 2.5s ease-in-out infinite}
 @keyframes upperBall{0%,18%{transform:translate(0,0)}48%,60%{transform:translate(0,-18px)}100%{transform:translate(82px,-145px)}}
 @keyframes upperArms{0%,18%{transform:translateY(8px)}45%,63%{transform:translateY(-7px)}100%{transform:translateY(0)}}
@@ -48,20 +45,28 @@ button.secondary{background:#e6eef7}.phase{font-weight:750;margin-top:10px}.note
 
 <section class="panel">
 <h2>2. Angriff mit Doppelblock</h2>
-<p>Der Ball kommt von oben zum Angreifer, der Angriff erfolgt schnell in den Doppelblock, und der geblockte Ball kommt über das Netz zurück auf die Angreiferseite.</p>
+<p>Der Ball kommt von einem links angedeuteten Zuspieler in einem hohen Bogen zum Angreifer. Die beiden Blocker stehen auf der gegnerischen Seite des Netzes. Der Angriff geht direkt in den Doppelblock, und der geblockte Ball kommt übers Netz zurück.</p>
 <div class="toolbar"><button id="play">▶ Animation starten</button><button id="loop" class="secondary">Loop: an</button></div>
 <svg id="attackScene" viewBox="0 0 900 520">
 <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f58b62"/><stop offset="1" stop-color="#d96138"/></linearGradient></defs>
 <polygon points="90,470 810,470 690,90 210,90" fill="url(#cg)" stroke="#fff" stroke-width="4"/>
-<line x1="450" y1="105" x2="450" y2="450" stroke="#fff" stroke-width="5" opacity=".9"/>
-<line x1="205" y1="280" x2="695" y2="280" stroke="#fff" stroke-width="2" opacity=".7"/>
-<line x1="135" y1="375" x2="765" y2="375" stroke="#fff" stroke-width="2" opacity=".7"/>
 <line x1="185" y1="260" x2="715" y2="260" stroke="#fff" stroke-width="4"/>
 <line x1="185" y1="198" x2="715" y2="198" stroke="#fff" stroke-width="4"/>
 <line x1="175" y1="274" x2="175" y2="178" stroke="#2d4054" stroke-width="7"/>
 <line x1="725" y1="274" x2="725" y2="178" stroke="#2d4054" stroke-width="7"/>
-<path id="flight1" d="M 282 180 Q 330 125 392 140 Q 426 150 390 214" fill="none" stroke="#ffd400" stroke-width="4" stroke-dasharray="8 7" opacity=".5"/>
-<path id="flight2" d="M 392 214 Q 463 184 520 208 Q 496 178 422 154" fill="none" stroke="#ffd400" stroke-width="4" stroke-dasharray="8 7" opacity=".75"/>
+<line x1="450" y1="105" x2="450" y2="450" stroke="#fff" stroke-width="5" opacity=".35"/>
+<line x1="205" y1="280" x2="695" y2="280" stroke="#fff" stroke-width="2" opacity=".55"/>
+<line x1="135" y1="375" x2="765" y2="375" stroke="#fff" stroke-width="2" opacity=".55"/>
+<path d="M 250 250 Q 305 120 392 188" fill="none" stroke="#ffd400" stroke-width="4" stroke-dasharray="8 7" opacity=".55"/>
+<path d="M 392 188 Q 470 165 520 170 Q 485 158 418 148" fill="none" stroke="#ffd400" stroke-width="4" stroke-dasharray="8 7" opacity=".8"/>
+
+<ellipse id="ss" cx="250" cy="388" rx="20" ry="8" fill="#000" opacity=".15"/>
+<g id="setter" transform="translate(250 388)">
+  <path class="body" d="M-10 -12 Q0 -20 10 -12 L14 -50 Q0 -64 -14 -50 Z"/>
+  <path class="skin" d="M-10 -46 Q-22 -78 -7 -126"/>
+  <path class="skin" d="M10 -46 Q22 -78 7 -126"/>
+  <circle class="headc" cx="0" cy="-65" r="13"/>
+</g>
 
 <ellipse id="as" cx="350" cy="380" rx="22" ry="8" fill="#000" opacity=".17"/>
 <g id="att" transform="translate(350 380)">
@@ -71,150 +76,76 @@ button.secondary{background:#e6eef7}.phase{font-weight:750;margin-top:10px}.note
   <circle class="headc" cx="0" cy="-65" r="13"/>
 </g>
 
-<ellipse id="b1s" cx="520" cy="330" rx="22" ry="8" fill="#000" opacity=".17"/>
-<g id="b1" transform="translate(520 330)">
+<ellipse id="b1s" cx="520" cy="228" rx="20" ry="7" fill="#000" opacity=".16"/>
+<g id="b1" transform="translate(520 228)">
   <path class="redbody" d="M-10 -12 Q0 -20 10 -12 L14 -50 Q0 -64 -14 -50 Z"/>
   <path class="skin" d="M-10 -46 Q-18 -86 -12 -126"/>
   <path class="skin" d="M10 -46 Q18 -86 12 -126"/>
   <circle class="headc" cx="0" cy="-65" r="13"/>
 </g>
 
-<ellipse id="b2s" cx="580" cy="330" rx="22" ry="8" fill="#000" opacity=".17"/>
-<g id="b2" transform="translate(580 330)">
+<ellipse id="b2s" cx="580" cy="214" rx="20" ry="7" fill="#000" opacity=".16"/>
+<g id="b2" transform="translate(580 214)">
   <path class="redbody" d="M-10 -12 Q0 -20 10 -12 L14 -50 Q0 -64 -14 -50 Z"/>
   <path class="skin" d="M-10 -46 Q-18 -86 -12 -126"/>
   <path class="skin" d="M10 -46 Q18 -86 12 -126"/>
   <circle class="headc" cx="0" cy="-65" r="13"/>
 </g>
 
-<g id="aball"><circle class="ball" cx="282" cy="180" r="18"/></g>
+<g id="aball"><circle class="ball" cx="250" cy="250" r="18"/></g>
+<text x="210" y="430" class="lbl" style="font-size:13px">Zuspieler</text>
+<text x="328" y="425" class="lbl" style="font-size:13px">Angreifer</text>
+<text x="495" y="170" class="lbl" style="font-size:13px">Blocker 1</text>
+<text x="560" y="156" class="lbl" style="font-size:13px">Blocker 2</text>
 </svg>
 <div id="phase" class="phase">Phase: bereit</div>
+<div class="note">Demo-Version 1.1</div>
 </section>
 </div>
-
 <script>
 (() => {
   const play = document.getElementById('play');
   const loopBtn = document.getElementById('loop');
+  const setter = document.getElementById('setter');
   const att = document.getElementById('att');
   const b1 = document.getElementById('b1');
   const b2 = document.getElementById('b2');
+  const ss = document.getElementById('ss');
   const as = document.getElementById('as');
   const b1s = document.getElementById('b1s');
   const b2s = document.getElementById('b2s');
   const ball = document.getElementById('aball');
   const phase = document.getElementById('phase');
-
-  let loop = true;
-  let raf = 0;
-  let start = 0;
-  const D = 3200;
-
-  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-  const smooth = (a, b, t) => {
-    t = clamp((t - a) / (b - a), 0, 1);
-    return t * t * (3 - 2 * t);
-  };
-  const lerp = (a, b, t) => a + (b - a) * t;
-
-  function pose(node, x, y, lift) {
-    node.setAttribute('transform', `translate(${x} ${y - lift})`);
+  let loop = true, raf = 0, start = 0;
+  const D = 3400;
+  const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+  const smooth = (a,b,t)=>{t=clamp((t-a)/(b-a),0,1);return t*t*(3-2*t)};
+  const lerp = (a,b,t)=>a+(b-a)*t;
+  function pose(node,x,y,lift){node.setAttribute('transform',`translate(${x} ${y-lift})`)}
+  function shadow(node,x,y,lift,baseRx=22,baseOp=.17){node.setAttribute('cx',x);node.setAttribute('cy',y);node.setAttribute('rx',Math.max(10,baseRx-lift*.06));node.setAttribute('opacity',Math.max(.05,baseOp-lift*.0015))}
+  function q(p0,p1,p2,t){return{x:(1-t)*(1-t)*p0.x+2*(1-t)*t*p1.x+t*t*p2.x,y:(1-t)*(1-t)*p0.y+2*(1-t)*t*p1.y+t*t*p2.y}}
+  function render(t){
+    t=clamp(t,0,1);
+    const setterLift = 18 * (1 - smooth(.18,.34,t));
+    const riseA=smooth(.20,.40,t), riseB=smooth(.22,.42,t), holdThenLand=1-smooth(.66,.94,t);
+    const attackerAir=t<.66?riseA:holdThenLand, blockerAir=t<.66?riseB:holdThenLand;
+    const al=42*attackerAir, bl=34*blockerAir;
+    const sx=250, sy=388, ax=lerp(346,370,smooth(.06,.34,t)), ay=lerp(388,366,smooth(.06,.34,t)), b1x=520, b1y=228, b2x=580, b2y=214;
+    pose(setter,sx,sy,setterLift); pose(att,ax,ay,al); pose(b1,b1x,b1y,bl); pose(b2,b2x,b2y,bl);
+    shadow(ss,sx,sy,setterLift,20,.15); shadow(as,ax,ay,al,22,.17); shadow(b1s,b1x,b1y,bl,20,.16); shadow(b2s,b2x,b2y,bl,20,.16);
+    const setStart={x:250,y:250}, setApex={x:305,y:120}, attackContact={x:ax+18,y:ay-al-122}, attackApex={x:458,y:164}, blockContact={x:b1x,y:b1y-bl-112}, reboundApex={x:490,y:156}, reboundEnd={x:418,y:148};
+    let p; if(t<.34){const u=smooth(0,.34,t); p=q(setStart,setApex,attackContact,u)} else if(t<.60){const u=smooth(.34,.60,t); p=q(attackContact,attackApex,blockContact,u)} else {const u=smooth(.60,.84,t); p=q(blockContact,reboundApex,reboundEnd,u)}
+    ball.setAttribute('transform',`translate(${p.x-250} ${p.y-250})`);
+    if(t<.18) phase.textContent='Phase: oberes Zuspiel kommt zum Angreifer';
+    else if(t<.40) phase.textContent='Phase: Angreifer und Doppelblock steigen hoch';
+    else if(t<.60) phase.textContent='Phase: Angriff geht direkt in den Doppelblock';
+    else if(t<.82) phase.textContent='Phase: Block lenkt den Ball übers Netz zurück';
+    else phase.textContent='Phase: gemeinsames Landen';
   }
-
-  function shadow(node, x, y, lift) {
-    node.setAttribute('cx', x);
-    node.setAttribute('cy', y);
-    node.setAttribute('rx', Math.max(12, 22 - lift * 0.06));
-    node.setAttribute('opacity', Math.max(0.05, 0.17 - lift * 0.0015));
-  }
-
-  function q(p0, p1, p2, t) {
-    return {
-      x: (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * p1.x + t * t * p2.x,
-      y: (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * p1.y + t * t * p2.y,
-    };
-  }
-
-  function render(t) {
-    t = clamp(t, 0, 1);
-
-    const riseA = smooth(0.20, 0.40, t);
-    const riseB = smooth(0.22, 0.42, t);
-    const holdThenLand = 1 - smooth(0.66, 0.94, t);
-
-    const attackerAir = t < 0.66 ? riseA : holdThenLand;
-    const blockerAir = t < 0.66 ? riseB : holdThenLand;
-
-    const al = 42 * attackerAir;
-    const bl = 36 * blockerAir;
-
-    const ax = lerp(346, 370, smooth(0.02, 0.32, t));
-    const ay = lerp(388, 366, smooth(0.02, 0.32, t));
-
-    pose(att, ax, ay, al);
-    pose(b1, 520, 330, bl);
-    pose(b2, 580, 330, bl);
-    shadow(as, ax, ay, al);
-    shadow(b1s, 520, 330, bl);
-    shadow(b2s, 580, 330, bl);
-
-    const setStart = { x: 282, y: 180 };
-    const setApex = { x: 334, y: 124 };
-    const attackContact = { x: ax + 18, y: ay - al - 122 };
-    const attackApex = { x: 455, y: 182 };
-    const blockContact = { x: 520, y: 330 - bl - 116 };
-    const reboundApex = { x: 494, y: 176 };
-    const reboundEnd = { x: 422, y: 154 };
-
-    let p;
-    if (t < 0.34) {
-      const u = smooth(0.00, 0.34, t);
-      p = q(setStart, setApex, attackContact, u);
-    } else if (t < 0.60) {
-      const u = smooth(0.34, 0.60, t);
-      p = q(attackContact, attackApex, blockContact, u);
-    } else {
-      const u = smooth(0.60, 0.84, t);
-      p = q(blockContact, reboundApex, reboundEnd, u);
-    }
-
-    ball.setAttribute('transform', `translate(${p.x - 282} ${p.y - 180})`);
-
-    if (t < 0.18) phase.textContent = 'Phase: Zuspiel kommt zum Angreifer';
-    else if (t < 0.40) phase.textContent = 'Phase: Angreifer und Doppelblock steigen hoch';
-    else if (t < 0.60) phase.textContent = 'Phase: Angriff geht direkt in den Doppelblock';
-    else if (t < 0.82) phase.textContent = 'Phase: Block lenkt den Ball über das Netz zurück';
-    else phase.textContent = 'Phase: gemeinsames Landen';
-  }
-
-  function tick(ts) {
-    if (!start) start = ts;
-    const p = (ts - start) / D;
-    render(p);
-    if (p < 1) {
-      raf = requestAnimationFrame(tick);
-    } else if (loop) {
-      start = 0;
-      raf = requestAnimationFrame(tick);
-    }
-  }
-
-  function run() {
-    cancelAnimationFrame(raf);
-    start = 0;
-    raf = requestAnimationFrame(tick);
-  }
-
-  play.addEventListener('click', run);
-  loopBtn.addEventListener('click', () => {
-    loop = !loop;
-    loopBtn.textContent = 'Loop: ' + (loop ? 'an' : 'aus');
-  });
-
-  render(0);
-  run();
+  function tick(ts){if(!start) start=ts; const p=(ts-start)/D; render(p); if(p<1) raf=requestAnimationFrame(tick); else if(loop){start=0; raf=requestAnimationFrame(tick);}}
+  function run(){cancelAnimationFrame(raf); start=0; raf=requestAnimationFrame(tick)}
+  play.addEventListener('click',run); loopBtn.addEventListener('click',()=>{loop=!loop; loopBtn.textContent='Loop: '+(loop?'an':'aus')});
+  render(0); run();
 })();
 </script>
-</body>
-</html>
+</body></html>

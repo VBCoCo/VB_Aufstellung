@@ -57,8 +57,8 @@ svg{display:block;width:100%;height:auto;background:linear-gradient(#dceafb,#c8d
 <line x1="450" y1="105" x2="450" y2="450" stroke="#fff" stroke-width="5" opacity=".35"/>
 <line x1="205" y1="280" x2="695" y2="280" stroke="#fff" stroke-width="2" opacity=".55"/>
 <line x1="135" y1="375" x2="765" y2="375" stroke="#fff" stroke-width="2" opacity=".55"/>
-<path d="M 250 250 Q 310 90 392 188" fill="none" stroke="#ffd400" stroke-width="4" stroke-dasharray="8 7" opacity=".55"/>
-<path d="M 392 188 L 520 170 L 390 235" fill="none" stroke="#ffd400" stroke-width="4" stroke-dasharray="8 7" opacity=".8"/>
+<path d="M 250 250 Q 300 95 392 188" fill="none" stroke="#ffd400" stroke-width="4" stroke-dasharray="8 7" opacity=".55"/>
+<path d="M 392 188 L 520 170 L 505 305" fill="none" stroke="#ffd400" stroke-width="4" stroke-dasharray="8 7" opacity=".8"/>
 
 <ellipse id="ss" cx="250" cy="388" rx="20" ry="8" fill="#000" opacity=".15"/>
 <g id="setter" transform="translate(250 388)">
@@ -99,7 +99,7 @@ svg{display:block;width:100%;height:auto;background:linear-gradient(#dceafb,#c8d
 <text x="560" y="156" class="lbl" style="font-size:13px">Blocker 2</text>
 </svg>
 <div id="phase" class="phase">Phase: bereit</div>
-<div class="note">Demo-Version 1.3</div>
+<div class="note">Demo-Version 1.4</div>
 </section>
 </div>
 <script>
@@ -134,22 +134,20 @@ svg{display:block;width:100%;height:auto;background:linear-gradient(#dceafb,#c8d
     const sx=250, sy=388, ax=lerp(346,370,smooth(.06,.34,t)), ay=lerp(388,366,smooth(.06,.34,t)), b1x=520, b1y=228, b2x=580, b2y=214;
     pose(setter,sx,sy,setterLift); pose(att,ax,ay,al); pose(b1,b1x,b1y,bl); pose(b2,b2x,b2y,bl);
     shadow(ss,sx,sy,setterLift,20,.15); shadow(as,ax,ay,al,22,.17); shadow(b1s,b1x,b1y,bl,20,.16); shadow(b2s,b2x,b2y,bl,20,.16);
-    const setStart={x:250,y:250}, setApex={x:310,y:90}, attackContact={x:ax+18,y:ay-al-122}, blockContact={x:b1x,y:b1y-bl-112}, reboundEnd={x:390,y:235};
+    const setStart={x:250,y:250}, setApex={x:300,y:95}, attackContact={x:ax+18,y:ay-al-122}, blockContact={x:b1x,y:b1y-bl-112}, reboundEnd={x:505,y:305};
     let p;
-    if(t<.20){
-      const u=smooth(0,.20,t); p=line(setStart,setApex,u)
-    } else if(t<.34){
-      const u=smooth(.20,.34,t); p=line(setApex,attackContact,u)
+    if(t<.34){
+      const u=smooth(0,.34,t); p=q(setStart,setApex,attackContact,u)
     } else if(t<.60){
       const u=smooth(.34,.60,t); p=line(attackContact,blockContact,u)
     } else {
       const u=smooth(.60,.84,t); p=line(blockContact,reboundEnd,u)
     }
     ball.setAttribute('transform',`translate(${p.x-250} ${p.y-250})`);
-    if(t<.18) phase.textContent='Phase: hohes oberes Zuspiel kommt zum Angreifer';
+    if(t<.18) phase.textContent='Phase: hohes Zuspiel fliegt im Bogen zum Angreifer';
     else if(t<.40) phase.textContent='Phase: Angreifer und Doppelblock steigen hoch';
     else if(t<.60) phase.textContent='Phase: Angriff fliegt gerade in den Doppelblock';
-    else if(t<.82) phase.textContent='Phase: Block spielt den Ball gerade übers Netz und nach unten';
+    else if(t<.82) phase.textContent='Phase: Block spielt den Ball gerade Richtung Kamera zurück';
     else phase.textContent='Phase: gemeinsames Landen';
   }
   function tick(ts){if(!start) start=ts; const p=(ts-start)/D; render(p); if(p<1) raf=requestAnimationFrame(tick); else if(loop){start=0; raf=requestAnimationFrame(tick);}}

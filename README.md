@@ -83,3 +83,8 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Angriff zum Block fliegt geradlinig.
 - Blockflug zum Folgeschritt fliegt geradlinig; Angriff und Doppelblock bleiben ueber den Blockschritt gemeinsam in der Luft und landen anschliessend.
 - Cache-sichere Dateinamen app-2.6.3.js, style-2.6.3.css und config-2.6.3.js.
+
+
+## Version 2.6.4
+- 2,5D-Feinjustierung: oberes Zuspiel klarer über dem Kopf.
+- Angriffs- und Blockkontakt in 2,5D deutlich abgesenkt.

@@ -47,7 +47,13 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Aktionen ergänzen die freie 2D-Positionsplanung und verändern sie nicht automatisch.
 
 
-## Neu in 2.5.4
+## Neu in 2.5.5
 - Ein an den Kontaktspieler gekoppelter Ball fängt im Bearbeitungsmodus keine Touch-/Pointer-Ereignisse mehr ab. Der Spieler bleibt dadurch auch direkt unter dem Ball zuverlässig verschiebbar.
 - Der Ballflug zwischen zwei Schritten verwendet je nach Ballkontakt unterschiedliche Kurven und Geschwindigkeiten. Zuspiel ist höher, Angriff schneller/flacher; Aufschlag, Annahme, Block und Abwehr haben eigene Bewegungsprofile.
 - Die gelbe Ballflug-Markierung wird als Kurve statt als Gerade dargestellt.
+
+
+## Neu in 2.5.5
+- Technik-Auswahl „oben“ / „unten“ bei Annahme, Zuspiel und Abwehr.
+- 2,5D-Kontaktpunkt berücksichtigt die Technik: oben über Kopf, unten tiefer vor dem Körper.
+- Ballflug startet und endet an den jeweiligen visuellen Kontaktpunkten.

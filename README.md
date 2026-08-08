@@ -119,3 +119,9 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Schalter 'Positionen: an/aus' für 2D und 2,5D.
 - 2,5D zeigt bei aktivierter Option die Positionsnummer unter jedem Spieler.
 - Einstellung wird lokal im Browser gespeichert.
+
+
+## Version 2.6.11
+- 2,5D-Ansicht vertikal enger zugeschnitten.
+- Deutlich weniger Leerraum über dem Spielfeld auf mobilen Geräten.
+- Spielfeldgeometrie und gespeicherte Positionen bleiben unverändert.

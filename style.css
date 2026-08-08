@@ -1,4 +1,4 @@
-/* Volleyball Trainer 2.5.2 */
+/* Volleyball Trainer 2.5.0 */
 :root{
   --bg:#07111d;--panel:#10233a;--panel2:#0b1a2b;--line:#294766;--text:#f8fafc;--muted:#aebed0;
   --club-blue:#0b4fc6;--club-blue-2:#073b9a;--club-white:#ffffff;--club-black:#0b0d10;
@@ -39,14 +39,3 @@ dialog{border:0;padding:0;background:transparent;color:var(--text);max-width:100
 #court25d{width:min(100%,720px);height:auto;display:block;border-radius:14px;touch-action:none;user-select:none;-webkit-user-select:none}.movement25-path{fill:none;stroke:#fff;stroke-width:4;stroke-dasharray:10 9;marker-end:url(#arrowWhite25)}.ball25-path{fill:none;stroke:var(--yellow);stroke-width:4;stroke-dasharray:10 9;marker-end:url(#arrowYellow25)}
 .player25-object{transform-box:fill-box;transform-origin:center}.player25-object [data-footprint]{vector-effect:non-scaling-stroke}.player25-object text{paint-order:stroke;stroke:#0004;stroke-width:1px}
 @media(max-width:680px){#court25d{width:100%;max-width:100%;height:auto}.view-toggle button{padding:0 8px;font-size:.78rem}.court-head{min-height:52px}}
-
-/* 2.5.2 action links and editor */
-.action-panel{margin-top:14px;padding:12px;border:1px solid #315174;border-radius:12px;background:#081522;display:grid;gap:10px}.action-panel-title{min-height:auto;border:0;background:transparent;padding:0;display:flex;justify-content:space-between;align-items:center;text-align:left;cursor:default}.action-panel-title span{font-weight:800;color:#fff}.action-panel-title small{color:var(--muted)}.action-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}.action-buttons button{padding:0 10px}.action-summary{margin-top:3px;color:#8fe9ff;font-size:.72rem;font-weight:700;line-height:1.25}.action-link,.action25-link{fill:none;stroke:#33d4ff;stroke-width:3;stroke-dasharray:7 6;opacity:.9;pointer-events:none}.action-link.helper,.action25-link.helper{stroke:#9be8ff;stroke-dasharray:3 5;opacity:.72}.action25-link{stroke-width:3.5}.editing-mode .action-link{display:block}@media(max-width:430px){.action-buttons{grid-template-columns:1fr}.action-summary{font-size:.66rem}}
-
-.attack-block-wrap{margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(11,79,198,.08)}
-.attack-block-wrap>strong{display:block;margin-bottom:8px}
-.block-attempt-link{stroke-dasharray:7 6;opacity:.75}
-
-/* 2.5.4: gekoppelte Baelle fangen beim Bearbeiten keine Touch-Ereignisse ab */
-.editing-mode .ball-object.linked-contact{pointer-events:none;cursor:default}
-.ball-path,.ball25-path{stroke-linecap:round;stroke-linejoin:round}

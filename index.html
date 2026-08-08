@@ -8,13 +8,13 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>Volleyball Trainer 2.4.2</title>
-  <link rel="stylesheet" href="style.css?v=2.4.2">
+  <link rel="stylesheet" href="style.css?v=2.4.7">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.4.2" alt="TTC Geltendorf e.V." class="brand-logo"></div>
+        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.4.7" alt="TTC Geltendorf e.V." class="brand-logo"></div>
         <div class="brand-copy"><h1>Volleyball Trainer</h1><p>TTC Geltendorf e.V.</p></div>
       </div>
       <div class="top-actions"><button id="infoButton" class="ghost" type="button">ⓘ Info</button><button id="editButton" class="primary" type="button">✎ Bearbeiten</button></div>
@@ -46,7 +46,7 @@
         </section>
 
         <section id="helpPanel" class="panel edit-help"><h2>So funktioniert es</h2><ol><li>Bearbeiten freischalten</li><li>Spieler oder Ball verschieben</li><li>Optional Aufstellung/Rollen ändern</li><li>Neuen Schritt anlegen</li><li>Im Bearbeiten-Modus je Schritt feste Positionen setzen</li><li>Speichern übernimmt Änderungen dauerhaft</li><li>Im Anzeigemodus zwischen Schritten animieren</li></ol></section>
-        <section class="panel version-panel"><div><span>Version 2.4.6</span><span>08.08.2026</span></div><button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button><div id="syncBadge" class="sync-badge">Speicherung: Browser</div></section>
+        <section class="panel version-panel"><div><span>Version 2.4.7</span><span>08.08.2026</span></div><button id="infoButtonBottom" class="ghost full" type="button">ⓘ Versionsdetails</button><div id="syncBadge" class="sync-badge">Speicherung: Browser</div></section>
       </aside>
 
       <section class="court-section">
@@ -71,7 +71,7 @@
   </main>
 
   <dialog id="passwordDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Bearbeitungsmodus</span><h2>Passwort eingeben</h2></div><button id="closePassword" type="button">✕</button></div><label class="password-field">Passwort<input id="passwordInput" type="password" autocomplete="current-password" placeholder="Aktuell kein Passwort erforderlich"></label><div class="dialog-actions"><button id="cancelPassword" class="ghost" type="button">Abbrechen</button><button id="confirmPassword" class="primary" type="button">OK</button></div><p id="passwordStatus" class="status"></p></div></dialog>
-  <dialog id="infoDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.4.6</h2></div><button id="closeInfo" type="button">✕</button></div><ul><li>Spielsituation und Schrittsteuerung kompakt über dem Spielfeld</li><li>Neue Spielsituationen können im Bearbeitungsmodus angelegt und benannt werden</li><li>Hinweisbox „So funktioniert es“ erscheint nur beim Bearbeiten</li><li>Schritte enthalten feste Spielerpositionen; Pfeile animieren jeweils einen Schritt</li><li>Play startet immer bei Schritt 1 und spielt alle Schritte bis zum Ende ab</li><li>Abgeschlossene Animationen blockieren die Spielerpositionen im Bearbeitungsmodus nicht mehr</li><li>Ungespeicherte Bearbeitungen werden beim Verlassen verworfen</li><li>Passwortabfrage bleibt sichtbar, aktuell genügt OK ohne Eingabe</li><li>Optionale Supabase-Synchronisation vorbereitet</li></ul><p id="infoSituation"></p><button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
-  <script src="config.js?v=2.4.2"></script><script defer src="app.js?v=2.4.2"></script>
+  <dialog id="infoDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.4.7</h2></div><button id="closeInfo" type="button">✕</button></div><ul><li>Spielsituation und Schrittsteuerung kompakt über dem Spielfeld</li><li>Neue Spielsituationen können im Bearbeitungsmodus angelegt und benannt werden</li><li>Hinweisbox „So funktioniert es“ erscheint nur beim Bearbeiten</li><li>Schritte enthalten feste Spielerpositionen; Pfeile animieren jeweils einen Schritt</li><li>Play startet immer bei Schritt 1 und spielt alle Schritte bis zum Ende ab</li><li>Abgeschlossene Animationen blockieren die Spielerpositionen im Bearbeitungsmodus nicht mehr</li><li>Ungespeicherte Bearbeitungen werden beim Verlassen verworfen</li><li>Passwortabfrage bleibt sichtbar, aktuell genügt OK ohne Eingabe</li><li>Supabase-Konfiguration wird mit Publishable Key geladen und die Dateien werden versionssicher ohne alten Browser-Cache geladen</li></ul><p id="infoSituation"></p><button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
+  <script src="config.js?v=2.4.7"></script><script defer src="app.js?v=2.4.7"></script>
 </body>
 </html>

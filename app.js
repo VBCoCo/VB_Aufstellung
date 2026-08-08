@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const VERSION="2.4.6",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
+const VERSION="2.4.7",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
 const ownRoster=[{id:"a1",base:1,team:"own"},{id:"z1",base:2,team:"own"},{id:"m1",base:3,team:"own"},{id:"a2",base:4,team:"own"},{id:"z2",base:5,team:"own"},{id:"m2",base:6,team:"own"}];
 const defaultRoles={a1:"AA",z1:"Z",m1:"MB",a2:"AA",z2:"Z",m2:"MB"};
 const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role:"Z",base:2,team:"opponent"},{id:"om1",role:"MB",base:3,team:"opponent"},{id:"oa2",role:"AA",base:4,team:"opponent"},{id:"oz2",role:"Z",base:5,team:"opponent"},{id:"om2",role:"MB",base:6,team:"opponent"}];
@@ -24,8 +24,9 @@ function migrate(){
 migrate();
 let editing=false,selected=null,dragging=null,playing=false,animations=[],editorPassword=null,lineupOpen=false,committedState=structuredClone(state),dirty=false;
 const rd=()=>state.rotations[state.rotation],sd=()=>rd().steps[state.step],rname=n=>state.rotations[n]?.name||defaultSituationName(n),prot=p=>rot(p.base,rd().rotationOffset||0),pat=n=>ownRoster.find(p=>prot(p)===n);
-const supabaseConfigured=()=>Boolean(window.APP_CONFIG?.SUPABASE_URL&&window.APP_CONFIG?.SUPABASE_ANON_KEY);
-function rpcHeaders(){return{"Content-Type":"application/json",apikey:window.APP_CONFIG.SUPABASE_ANON_KEY,Authorization:`Bearer ${window.APP_CONFIG.SUPABASE_ANON_KEY}`}}
+const supabaseKey=()=>window.APP_CONFIG?.SUPABASE_PUBLISHABLE_KEY||window.APP_CONFIG?.SUPABASE_ANON_KEY||"";
+const supabaseConfigured=()=>Boolean(window.APP_CONFIG?.SUPABASE_URL&&supabaseKey());
+function rpcHeaders(){const key=supabaseKey();return{"Content-Type":"application/json",apikey:key,Authorization:`Bearer ${key}`}}
 async function rpc(name,body={}){const base=window.APP_CONFIG.SUPABASE_URL.replace(/\/$/,"");const res=await fetch(`${base}/rest/v1/rpc/${name}`,{method:"POST",headers:rpcHeaders(),body:JSON.stringify(body)});if(!res.ok)throw new Error((await res.text())||`HTTP ${res.status}`);const text=await res.text();return text?JSON.parse(text):null}
 async function loadRemote(){
   if(!supabaseConfigured()){e.syncBadge.textContent="Speicherung: Browser (Supabase noch nicht konfiguriert)";return}

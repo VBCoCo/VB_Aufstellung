@@ -1,17 +1,17 @@
 (() => {
 "use strict";
-const VERSION="2.5.0",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
+const VERSION="2.5.1",KEY="volleyball-trainer-v2-2",TEST_PASSWORD="";
 const ownRoster=[{id:"a1",base:1,team:"own"},{id:"z1",base:2,team:"own"},{id:"m1",base:3,team:"own"},{id:"a2",base:4,team:"own"},{id:"z2",base:5,team:"own"},{id:"m2",base:6,team:"own"}];
 const defaultRoles={a1:"AA",z1:"Z",m1:"MB",a2:"AA",z2:"Z",m2:"MB"};
 const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role:"Z",base:2,team:"opponent"},{id:"om1",role:"MB",base:3,team:"opponent"},{id:"oa2",role:"AA",base:4,team:"opponent"},{id:"oz2",role:"Z",base:5,team:"opponent"},{id:"om2",role:"MB",base:6,team:"opponent"}];
 const allPlayers=[...ownRoster,...opponentRoster];
 const ownSlots={1:{x:520,y:735},2:{x:520,y:545},3:{x:350,y:545},4:{x:180,y:545},5:{x:180,y:735},6:{x:350,y:735}};
 const opponentSlots={1:{x:180,y:165},2:{x:180,y:355},3:{x:350,y:355},4:{x:520,y:355},5:{x:520,y:165},6:{x:350,y:165}};
-const ids=["infoButton","infoButtonBottom","editButton","rotationSelect","situationNameInput","saveSituation","addSituation","deleteSituation","stepNumber","stepTotal","prevStep","playButton","nextStep","stepEditPanel","stepNameWrap","stepNamePreset","stepNameInput","saveStep","addStep","deleteStep","editPanel","situationSelect","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","status","infoDialog","closeInfo","closeInfoBottom","infoSituation","lineupToggle","lineupChevron","lineupEditor","lineupGrid","liberoToggle","syncBadge","passwordDialog","closePassword","cancelPassword","confirmPassword","passwordInput","passwordStatus","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint","viewToggle","view2d","view25d","court25d","court25Floor","movement25Layer","ballPath25Layer","player25Layer","ball25Object"];
+const ids=["infoButton","infoButtonBottom","editButton","rotationSelect","situationNameInput","saveSituation","addSituation","deleteSituation","stepNumber","stepTotal","prevStep","playButton","nextStep","stepEditPanel","stepNameWrap","stepNamePreset","stepNameInput","saveStep","addStep","deleteStep","editPanel","situationSelect","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","status","infoDialog","closeInfo","closeInfoBottom","infoSituation","lineupToggle","lineupChevron","lineupEditor","lineupGrid","liberoToggle","syncBadge","passwordDialog","closePassword","cancelPassword","confirmPassword","passwordInput","passwordStatus","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint","viewToggle","view2d","view25d","court25d","court25Floor","movement25Layer","ballPath25Layer","action25Layer","player25Layer","ball25Object","actionPanel","actionType","actionActor","actionTarget","actionHelperWrap","actionHelper","snapBallToActor","clearAction","actionHint","actionSummary","actionLayer"];
 const e=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
 const roleNames={AA:"Außen",MB:"Mitte",Z:"Zuspiel",D:"Diagonal",L:"Libero"};
 const rot=(p,n)=>{let r=p;for(let i=0;i<n;i++)r=r===1?6:r-1;return r};
-const initialStep=r=>{const positions={};ownRoster.forEach(p=>positions[p.id]={...ownSlots[rot(p.base,r)]});opponentRoster.forEach(p=>positions[p.id]={...opponentSlots[p.base]});return{name:"Grundposition",situation:"serveReceive",positions,ball:{x:450,y:650}}};
+const initialStep=r=>{const positions={};ownRoster.forEach(p=>positions[p.id]={...ownSlots[rot(p.base,r)]});opponentRoster.forEach(p=>positions[p.id]={...opponentSlots[p.base]});return{name:"Grundposition",situation:"serveReceive",positions,ball:{x:450,y:650},action:{type:"",actorId:"",targetId:"",helperId:""}}};
 const defaultSituationName=i=>i===0?"Grundaufstellung":`Grundaufstellung +${i}`;
 const fresh=()=>({rotation:0,step:0,teamConfig:{roles:{...defaultRoles},libero:false},rotations:Array.from({length:6},(_,r)=>({name:defaultSituationName(r),rotationOffset:r,steps:[initialStep(r)]}))});
 const hadLocalStateAtStartup=Boolean(localStorage.getItem(KEY));
@@ -19,7 +19,7 @@ let state;try{state=JSON.parse(localStorage.getItem(KEY)||"null")||fresh()}catch
 function migrate(){
   if(!state||!Array.isArray(state.rotations)||!state.rotations.length){state=fresh();return}
   state.teamConfig=state.teamConfig||{roles:{...defaultRoles},libero:false};state.teamConfig.roles={...defaultRoles,...(state.teamConfig.roles||{})};state.teamConfig.libero=Boolean(state.teamConfig.libero);
-  state.rotations.forEach((rotation,r)=>{rotation.name=rotation.name||defaultSituationName(r);rotation.rotationOffset=Number.isFinite(Number(rotation.rotationOffset))?Number(rotation.rotationOffset)%6:r%6;if(!Array.isArray(rotation.steps)||!rotation.steps.length)rotation.steps=[initialStep(rotation.rotationOffset)];rotation.steps.forEach(step=>{step.positions=step.positions||{};ownRoster.forEach(p=>{if(!step.positions[p.id])step.positions[p.id]={...ownSlots[rot(p.base,rotation.rotationOffset)]}});opponentRoster.forEach(p=>{if(!step.positions[p.id])step.positions[p.id]={...opponentSlots[p.base]}});if(!step.ball)step.ball={x:450,y:650};if(!step.situation)step.situation="serveReceive";if(!step.name)step.name="Grundposition"})});
+  state.rotations.forEach((rotation,r)=>{rotation.name=rotation.name||defaultSituationName(r);rotation.rotationOffset=Number.isFinite(Number(rotation.rotationOffset))?Number(rotation.rotationOffset)%6:r%6;if(!Array.isArray(rotation.steps)||!rotation.steps.length)rotation.steps=[initialStep(rotation.rotationOffset)];rotation.steps.forEach(step=>{step.positions=step.positions||{};ownRoster.forEach(p=>{if(!step.positions[p.id])step.positions[p.id]={...ownSlots[rot(p.base,rotation.rotationOffset)]}});opponentRoster.forEach(p=>{if(!step.positions[p.id])step.positions[p.id]={...opponentSlots[p.base]}});if(!step.ball)step.ball={x:450,y:650};if(!step.situation)step.situation="serveReceive";if(!step.name)step.name="Grundposition";if(!step.action)step.action={type:"",actorId:"",targetId:"",helperId:""}})});
   state.rotation=Math.max(0,Math.min(state.rotations.length-1,Number(state.rotation)||0));state.step=Math.max(0,Math.min(state.rotations[state.rotation].steps.length-1,Number(state.step)||0));
 }
 migrate();
@@ -63,20 +63,25 @@ function svg(name,a={}){const x=document.createElementNS("http://www.w3.org/2000
 
 const METRE_2D=510/9;
 function project25(pos){
-  const t=clamp((850-pos.y)/800,0,1),scale=1-.46*t;
-  return{x:350+(pos.x-350)*scale,y:805-650*Math.pow(t,.86),scale};
+  const d=clamp((850-pos.y)/800,0,1);
+  const xScale=1.08-.50*d;
+  let y;
+  if(pos.y>=450){const u=(pos.y-450)/400;y=472+338*Math.pow(clamp(u,0,1),.92)}
+  else{const u=(450-pos.y)/400;y=472-218*Math.pow(clamp(u,0,1),.78)}
+  const scale=1.02-.43*d;
+  return{x:350+(pos.x-350)*xScale,y,scale};
 }
 function create25Floor(){
   const q=(x,y)=>project25({x,y}), pts=(arr)=>arr.map(([x,y])=>{const z=q(x,y);return `${z.x},${z.y}`}).join(" ");
   e.court25Floor.innerHTML="";
   e.court25Floor.appendChild(svg("polygon",{points:pts([[95,850],[605,850],[605,50],[95,50]]),fill:"url(#court25Gradient)",stroke:"#fff","stroke-width":4}));
   [583.333,450,316.667].forEach((y,i)=>{const a=q(95,y),b=q(605,y);e.court25Floor.appendChild(svg("line",{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:"#fff","stroke-width":i===1?5:2,opacity:i===1?1:.8}))});
-  const n1=q(95,450),n2=q(605,450),netTopY=n1.y-58;
-  e.court25Floor.appendChild(svg("polygon",{points:`${n1.x},${n1.y} ${n2.x},${n2.y} ${n2.x},${netTopY} ${n1.x},${netTopY}`,fill:"#f8fafc",opacity:.22,stroke:"#fff","stroke-width":2}));
-  for(let i=1;i<7;i++){const x=n1.x+(n2.x-n1.x)*i/7;e.court25Floor.appendChild(svg("line",{x1:x,y1:n1.y,x2:x,y2:netTopY,stroke:"#fff","stroke-width":1,opacity:.55}))}
-  e.court25Floor.appendChild(svg("line",{x1:n1.x,y1:netTopY,x2:n2.x,y2:netTopY,stroke:"#fff","stroke-width":4}));
-  e.court25Floor.appendChild(svg("line",{x1:n1.x,y1:n1.y+8,x2:n1.x,y2:netTopY-10,stroke:"#26384b","stroke-width":6}));
-  e.court25Floor.appendChild(svg("line",{x1:n2.x,y1:n2.y+8,x2:n2.x,y2:netTopY-10,stroke:"#26384b","stroke-width":6}));
+  const n1=q(95,450),n2=q(605,450),netTopY=n1.y-58,postL=n1.x-20,postR=n2.x+20;
+  e.court25Floor.appendChild(svg("polygon",{points:`${postL},${n1.y} ${postR},${n2.y} ${postR},${netTopY} ${postL},${netTopY}`,fill:"#f8fafc",opacity:.22,stroke:"#fff","stroke-width":2}));
+  for(let i=1;i<7;i++){const x=postL+(postR-postL)*i/7;e.court25Floor.appendChild(svg("line",{x1:x,y1:n1.y,x2:x,y2:netTopY,stroke:"#fff","stroke-width":1,opacity:.55}))}
+  e.court25Floor.appendChild(svg("line",{x1:postL,y1:netTopY,x2:postR,y2:netTopY,stroke:"#fff","stroke-width":4}));
+  e.court25Floor.appendChild(svg("line",{x1:postL,y1:n1.y+10,x2:postL,y2:netTopY-12,stroke:"#26384b","stroke-width":6}));
+  e.court25Floor.appendChild(svg("line",{x1:postR,y1:n2.y+10,x2:postR,y2:netTopY-12,stroke:"#26384b","stroke-width":6}));
 }
 function create25Players(){
   e.player25Layer.innerHTML="";
@@ -92,12 +97,34 @@ function create25Players(){
   })
 }
 function line25(layer,a,b,cls){const A=project25(a),B=project25(b);layer.appendChild(svg("line",{x1:A.x,y1:A.y,x2:B.x,y2:B.y,class:cls}))}
+const actionNames={serve:"Aufschlag",receive:"Annahme",set:"Zuspiel",attack:"Angriff",block:"Block"};
+function actionData(){const a=sd().action||{};return{type:a.type||"",actorId:a.actorId||"",targetId:a.targetId||"",helperId:a.helperId||""}}
+function playerLabel(p){if(!p)return"";const role=effectiveRole(p);return p.team==="opponent"?`Gegner ${role} · P${p.base}`:`${roleNames[role]||role} · Position ${prot(p)}`}
+function renderActionLinks(){
+  e.actionLayer.innerHTML="";e.action25Layer.innerHTML="";const a=actionData();if(!a.type||!a.actorId)return;
+  const actor=allPlayers.find(p=>p.id===a.actorId),target=allPlayers.find(p=>p.id===a.targetId),helper=allPlayers.find(p=>p.id===a.helperId);if(!actor)return;
+  const A=sd().positions[actor.id];
+  if(target){const B=sd().positions[target.id];line(e.actionLayer,A,B,"action-link");line25(e.action25Layer,A,B,"action25-link")}
+  if(helper){const B=sd().positions[helper.id];line(e.actionLayer,A,B,"action-link helper");line25(e.action25Layer,A,B,"action25-link helper")}
+}
+function populatePlayerSelect(select,{allowNone=true,label="– auswählen –"}={}){
+  const current=select.value;select.innerHTML="";if(allowNone){const o=document.createElement("option");o.value="";o.textContent=label;select.appendChild(o)}
+  [ownRoster,opponentRoster].forEach((group,gi)=>{const og=document.createElement("optgroup");og.label=gi===0?"Eigene Mannschaft":"Gegner";group.forEach(p=>{const o=document.createElement("option");o.value=p.id;o.textContent=playerLabel(p);og.appendChild(o)});select.appendChild(og)});if([...select.options].some(o=>o.value===current))select.value=current
+}
+function renderActionEditor(){
+  if(!e.actionType)return;const a=actionData();populatePlayerSelect(e.actionActor);populatePlayerSelect(e.actionTarget,{label:"– freier Ballpunkt / kein Zielspieler –"});populatePlayerSelect(e.actionHelper,{label:"– kein zweiter Spieler –"});
+  e.actionType.value=a.type;e.actionActor.value=a.actorId;e.actionTarget.value=a.targetId;e.actionHelper.value=a.helperId;e.actionHelperWrap.classList.toggle("hidden",a.type!=="block");
+  const actor=allPlayers.find(p=>p.id===a.actorId),target=allPlayers.find(p=>p.id===a.targetId),helper=allPlayers.find(p=>p.id===a.helperId);
+  let txt=a.type?`${actionNames[a.type]||a.type}`:"Keine Aktion verknüpft";if(actor)txt+=` · ${playerLabel(actor)}`;if(target)txt+=` → ${playerLabel(target)}`;if(helper)txt+=` + ${playerLabel(helper)}`;
+  e.actionHint.textContent=a.type?"Diese Verknüpfung wird mit dem aktuellen Schritt gespeichert. Die Positionen bleiben weiterhin frei bearbeitbar.":"Optional: Spieler und Ballkontakt logisch miteinander verknüpfen.";
+  e.actionSummary.textContent=a.type?txt:"";e.actionSummary.classList.toggle("hidden",!a.type);
+}
 function render25(){
   const visible=!editing&&preferredView==="25d";
   e.court.classList.toggle("hidden",visible);e.court25d.classList.toggle("hidden",!visible);
   e.view2d.classList.toggle("active",preferredView==="2d");e.view25d.classList.toggle("active",preferredView==="25d");
   if(!visible)return;
-  e.movement25Layer.innerHTML="";e.ballPath25Layer.innerHTML="";
+  e.movement25Layer.innerHTML="";e.ballPath25Layer.innerHTML="";e.action25Layer.innerHTML="";
   [...allPlayers].sort((a,b)=>sd().positions[a.id].y-sd().positions[b.id].y).forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`);e.player25Layer.appendChild(node)});
   allPlayers.forEach(p=>{const node=e.player25Layer.querySelector(`[data-id25="${p.id}"]`),pos=sd().positions[p.id],P=project25(pos),role=effectiveRole(p);node.setAttribute("transform",`translate(${P.x} ${P.y}) scale(${P.scale})`);node.querySelector("[data-role25]").textContent=role;const isLib=role==="L";node.querySelector("[data-body]").setAttribute("fill",p.team==="opponent"?"#e32828":isLib?"#111827":"#0b4fc6");node.querySelector("[data-badge]").setAttribute("fill",p.team==="opponent"?"#b91c1c":isLib?"#111827":"#073b9a")});
   const bp=project25(sd().ball);e.ball25Object.setAttribute("transform",`translate(${bp.x} ${bp.y-25*bp.scale}) scale(${bp.scale})`);e.ball25Object.setAttribute("visibility","visible");
@@ -112,10 +139,10 @@ function renderSituationOptions(){
   const current=String(state.rotation);e.rotationSelect.innerHTML="";state.rotations.forEach((situation,i)=>{const o=document.createElement("option");o.value=String(i);o.textContent=situation.name||defaultSituationName(i);e.rotationSelect.appendChild(o)});e.rotationSelect.value=current;e.situationNameInput.value=rd().name||defaultSituationName(state.rotation)
 }
 function render(){
-  renderSituationOptions();e.stepNumber.textContent=state.step+1;e.stepTotal.textContent=rd().steps.length;e.stepNameInput.value=sd().name;e.stepNamePreset.value=["Aufschlag","Annahme","Angriff","Block","Abwehr"].includes(sd().name)?sd().name:"";e.currentStepTitle.textContent=sd().name;e.situationSelect.value=sd().situation;e.liberoToggle.checked=state.teamConfig.libero;document.body.classList.toggle("editing-mode",editing);updateMigrationUI();document.querySelectorAll(".mode-card").forEach(c=>c.classList.toggle("active",c.querySelector("input").checked));paths();const bad=validate();
+  renderSituationOptions();e.stepNumber.textContent=state.step+1;e.stepTotal.textContent=rd().steps.length;e.stepNameInput.value=sd().name;e.stepNamePreset.value=["Aufschlag","Annahme","Angriff","Block","Abwehr"].includes(sd().name)?sd().name:"";e.currentStepTitle.textContent=sd().name;e.situationSelect.value=sd().situation;e.liberoToggle.checked=state.teamConfig.libero;document.body.classList.toggle("editing-mode",editing);updateMigrationUI();document.querySelectorAll(".mode-card").forEach(c=>c.classList.toggle("active",c.querySelector("input").checked));renderActionEditor();paths();const bad=validate();
   allPlayers.forEach(p=>{const g=e.playerLayer.querySelector(`[data-id="${p.id}"]`),pos=sd().positions[p.id],role=effectiveRole(p);g.setAttribute("transform",`translate(${pos.x} ${pos.y})`);g.classList.toggle("editable",editing);g.classList.toggle("selected",selected?.type==="player"&&selected.id===p.id);g.classList.toggle("position-warning",bad.has(p.id)&&p.team==="own");g.querySelector("[data-role]").textContent=role;g.querySelector("circle").setAttribute("fill",p.team==="opponent"?"#e32828":role==="L"?"#111827":"#0b4fc6");g.querySelector("[data-label]").textContent=p.team==="opponent"?`Gegner · P${p.base}`:role==="L"?`Libero · Position ${prot(p)}`:`${roleNames[role]||role} · Position ${prot(p)}`});
   e.ballObject.setAttribute("visibility","visible");e.ballObject.setAttribute("transform",`translate(${sd().ball.x} ${sd().ball.y})`);e.ballObject.classList.toggle("editable",editing);e.ballObject.classList.toggle("selected",selected?.type==="ball");
-  render25();
+  render25();renderActionLinks();
 }
 function buildLineupEditor(){
   e.lineupGrid.innerHTML="";ownRoster.forEach((p,i)=>{const label=document.createElement("label");label.className="player-role";label.textContent=`Spieler ${i+1} · Startposition ${p.base}`;const select=document.createElement("select");select.dataset.playerId=p.id;[["AA","Außen (AA)"],["MB","Mitte (MB)"],["Z","Zuspiel (Z)"],["D","Diagonal (D)"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;select.appendChild(o)});select.value=ownRole(p);select.addEventListener("change",()=>{state.teamConfig.roles[p.id]=select.value;dirty=true;render()});label.appendChild(select);e.lineupGrid.appendChild(label)});e.liberoToggle.checked=state.teamConfig.libero
@@ -181,8 +208,15 @@ e.prevStep.addEventListener("click",()=>goStep(state.step-1));e.nextStep.addEven
 e.view2d.addEventListener("click",()=>{preferredView="2d";localStorage.setItem("volleyball-trainer-view",preferredView);clearVisualAnimations();render()});e.view25d.addEventListener("click",()=>{if(editing)return;preferredView="25d";localStorage.setItem("volleyball-trainer-view",preferredView);clearVisualAnimations();render()});
 e.editButton.addEventListener("click",requestEdit);e.rotationSelect.addEventListener("change",x=>{state.rotation=Number(x.target.value);state.step=0;buildLineupEditor();render()});e.situationNameInput.addEventListener("input",()=>{dirty=true});e.stepNamePreset.addEventListener("change",()=>{if(e.stepNamePreset.value){e.stepNameInput.value=e.stepNamePreset.value;dirty=true}});e.stepNameInput.addEventListener("input",()=>{e.stepNamePreset.value=["Aufschlag","Annahme","Angriff","Block","Abwehr"].includes(e.stepNameInput.value.trim())?e.stepNameInput.value.trim():"";dirty=true});e.saveSituation.addEventListener("click",()=>{rd().name=e.situationNameInput.value.trim()||defaultSituationName(state.rotation);save("Spielsituation gespeichert.");render()});e.addSituation.addEventListener("click",()=>{const copy=structuredClone(rd());copy.name=`Neue Spielsituation ${state.rotations.length+1}`;state.rotations.splice(state.rotation+1,0,copy);state.rotation++;state.step=0;dirty=true;render()});e.deleteSituation.addEventListener("click",()=>{if(state.rotations.length===1){e.status.textContent="Die einzige Spielsituation kann nicht gelöscht werden.";return}state.rotations.splice(state.rotation,1);state.rotation=Math.max(0,state.rotation-1);state.step=0;dirty=true;render()});e.situationSelect.addEventListener("change",x=>{sd().situation=x.target.value;keepServeReceiveInside();dirty=true;render()});
 e.saveStep.addEventListener("click",()=>{sd().name=e.stepNameInput.value.trim()||`Schritt ${state.step+1}`;keepServeReceiveInside();save("Schritt gespeichert.");render()});
-e.addStep.addEventListener("click",()=>{sd().name=e.stepNameInput.value.trim()||`Schritt ${state.step+1}`;keepServeReceiveInside();const s=sd();rd().steps.splice(state.step+1,0,{name:`Schritt ${state.step+2}`,situation:s.situation,positions:structuredClone(s.positions),ball:structuredClone(s.ball)});state.step++;dirty=true;render()});
+e.addStep.addEventListener("click",()=>{sd().name=e.stepNameInput.value.trim()||`Schritt ${state.step+1}`;keepServeReceiveInside();const s=sd();rd().steps.splice(state.step+1,0,{name:`Schritt ${state.step+2}`,situation:s.situation,positions:structuredClone(s.positions),ball:structuredClone(s.ball),action:{type:"",actorId:"",targetId:"",helperId:""}});state.step++;dirty=true;render()});
 e.deleteStep.addEventListener("click",()=>{if(rd().steps.length===1){e.status.textContent="Der einzige Schritt kann nicht gelöscht werden.";return}rd().steps.splice(state.step,1);state.step=Math.max(0,state.step-1);dirty=true;render()});
+
+e.actionType.addEventListener("change",()=>{sd().action={...actionData(),type:e.actionType.value};if(sd().action.type!=="block")sd().action.helperId="";dirty=true;render()});
+e.actionActor.addEventListener("change",()=>{sd().action={...actionData(),actorId:e.actionActor.value};dirty=true;render()});
+e.actionTarget.addEventListener("change",()=>{sd().action={...actionData(),targetId:e.actionTarget.value};dirty=true;render()});
+e.actionHelper.addEventListener("change",()=>{sd().action={...actionData(),helperId:e.actionHelper.value};dirty=true;render()});
+e.snapBallToActor.addEventListener("click",()=>{const a=actionData();if(!a.actorId){e.actionHint.textContent="Bitte zuerst einen Akteur auswählen.";return}const pos=sd().positions[a.actorId];sd().ball={x:pos.x,y:pos.y};dirty=true;render()});
+e.clearAction.addEventListener("click",()=>{sd().action={type:"",actorId:"",targetId:"",helperId:""};dirty=true;render()});
 document.querySelectorAll('input[name="moveMode"]').forEach(i=>i.addEventListener("change",()=>{selected=null;e.tapNotice.classList.add("hidden");render()}));
 e.lineupToggle.addEventListener("click",()=>{lineupOpen=!lineupOpen;e.lineupEditor.classList.toggle("hidden",!lineupOpen);e.lineupChevron.textContent=lineupOpen?"▴":"▾"});e.liberoToggle.addEventListener("change",()=>{state.teamConfig.libero=e.liberoToggle.checked;dirty=true;render()});
 e.confirmPassword.addEventListener("click",confirmPassword);e.passwordInput.addEventListener("keydown",ev=>{if(ev.key==="Enter")confirmPassword()});[e.closePassword,e.cancelPassword].forEach(x=>x.addEventListener("click",()=>e.passwordDialog.close()));

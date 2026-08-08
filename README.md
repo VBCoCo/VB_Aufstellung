@@ -1,13 +1,13 @@
-# Volleyball Trainer 2.5.0
+# Volleyball Trainer 2.5.1
 
-## Neu in 2.5.0
+## Neu in 2.5.1
 
 - Feste Schritt-Vorlagen im Bearbeitungsmodus: **Aufschlag, Annahme, Angriff, Block, Abwehr**.
 - Eine Vorlage setzt nur den Ausgangsnamen. Das Namensfeld bleibt editierbar, z. B. **Block → Doppelblock**.
 - Eigene Namen werden exakt so am Schritt gespeichert; die fünf Standardvorlagen bleiben unverändert erhalten.
 - Supabase Project URL und Publishable Key sind bereits in `config.js` eingetragen.
 - Die App liest jetzt ausdrücklich `SUPABASE_PUBLISHABLE_KEY` (mit Fallback auf den alten `SUPABASE_ANON_KEY`).
-- Alle CSS-, Logo-, Config- und App-Dateien tragen `?v=2.5.0`, damit GitHub Pages/Safari keine alte 2.4.2-Datei aus dem Cache verwenden.
+- Alle CSS-, Logo-, Config- und App-Dateien tragen `?v=2.5.1`, damit GitHub Pages/Safari keine alte 2.4.2-Datei aus dem Cache verwenden.
 - Supabase: `pgcrypto`-Funktionen werden schemaqualifiziert über `extensions.crypt` und `extensions.gen_salt` aufgerufen; behebt den Fehler `function crypt(text, text) does not exist` in SECURITY-DEFINER-Funktionen.
 
 - Fehler beim Verschieben von Spielern behoben: abgeschlossene Schrittanimationen werden sauber entfernt und überdecken die im Bearbeitungsmodus gesetzten SVG-Positionen nicht mehr.
@@ -27,13 +27,21 @@ Alle Dateien dieses Ordners in das Repository kopieren und GitHub Pages wie bish
 Die Supabase-Anbindung ist in dieser Version bereits vorkonfiguriert. Nach dem Upload sollte unten `Speicherung: Supabase verbunden` erscheinen. Falls noch eine alte Seite im Safari-Cache liegt, die Seite einmal vollständig neu laden oder den Tab schließen und erneut öffnen.
 
 
-## Version 2.5.0
+## Version 2.5.1
 Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertragen werden. Im Anzeigemodus wird keine Migrationsfunktion angezeigt.
 
 
-## 2,5D-Anzeige (ab 2.5.0)
+## 2,5D-Anzeige (ab 2.5.1)
 - Im Anzeigemodus kann zwischen 2D und 2,5D gewechselt werden.
 - Der Bearbeitungsmodus bleibt immer 2D.
 - Die 2,5D-Kamera blickt erhöht von hinter der eigenen Grundlinie auf das Netz.
 - Die gespeicherten Spielerkoordinaten sind in beiden Ansichten identisch.
 - Jeder Spieler wird mit einer perspektivischen Standfläche von ungefähr 1 x 1 Meter dargestellt, damit Abstände und Überlappungen insbesondere in der Annahme sichtbar bleiben.
+
+
+## Neu in 2.5.1
+- 2,5D-Perspektive: eigenes Feld breiter, gegnerisches Hinterfeld kompakter, Netzpfosten weiter außen.
+- Optionale Aktionsverknüpfungen pro Schritt: Aufschlag, Annahme, Zuspiel, Angriff, Block.
+- Akteur, Zielspieler und bei Block ein zweiter Blockspieler können gespeichert werden.
+- Der Ball kann im Bearbeitungsmodus explizit an die Position des Akteurs gesetzt werden.
+- Aktionen ergänzen die freie 2D-Positionsplanung und verändern sie nicht automatisch.

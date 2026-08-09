@@ -139,3 +139,7 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Fehler: Ballkontakt ohne Kontaktspieler, Aufschläger nicht hinter Grundlinie, Blocker falsche Mannschaft/Netzseite, mehr als drei reguläre Kontakte einer Mannschaft in Folge.
 - Warnungen: Blocker zu weit vom Netz, Doppelblock zu weit auseinander, Angriff→Block inkonsistent, Ballkontakt weit vom Akteur.
 - Block zählt bei der 3-Kontakt-Regel nicht als Ballkontakt.
+
+
+## Version 2.6.14
+- Korrigierte 3-Kontakt-Regel: Block zählt nicht als regulärer Ballkontakt, setzt als Berührung der blockenden Mannschaft die Kontaktzählung aber neu.

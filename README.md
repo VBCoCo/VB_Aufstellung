@@ -161,3 +161,10 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Name wird beim Anlegen abgefragt.
 - Spielsituation direkt oben per 🗑 löschen, mit Sicherheitsabfrage.
 - Separate Situation-Bearbeitung im unteren Bereich entfernt.
+
+
+## Version 2.6.19
+- Aktionen werden über ein kompaktes Zahnrad-Menü direkt über dem Spielfeld konfiguriert.
+- Neue Aktion „Punkt / Fehler“ beendet den Ballwechsel und verlangt keinen Kontaktspieler.
+- Punkt/Fehler kann Punktgewinner und Fehlergrund speichern.
+- Die Drei-Kontakt-Zählung wird beim Rallye-Ende zurückgesetzt.

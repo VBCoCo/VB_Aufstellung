@@ -149,3 +149,8 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Stabiler Neuaufbau des kompakten Bearbeitungsmodus auf Basis 2.6.14.
 - Regelhinweise nur bei Problemen und nur im Bearbeitungsmodus.
 - Antippen-only, Plus in der Schrittsteuerung, Speichern nur bei Änderungen.
+
+
+## Version 2.6.17
+- Regelbox wird nur im Bearbeitungsmodus und nur bei echten Warnungen/Fehlern angezeigt.
+- Papierkorb zum Löschen eines Schritts sitzt direkt in der oberen Schrittsteuerung neben dem Plus.

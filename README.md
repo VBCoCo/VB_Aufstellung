@@ -182,3 +182,9 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 ## Version 2.7.1
 - Teamaufstellungs-Konfiguration wird zuverlässig eingeblendet.
 - Rollen- und Libero-Auswahl direkt unter Teamaufstellung.
+
+
+## Version 2.7.2
+- Aktionsmenü nochmals kompakter für iPhone-Bedienung.
+- Horizontale Schrittübersicht mit direktem Sprung zu jedem Schritt.
+- Aktueller Schritt wird in der Übersicht hervorgehoben.

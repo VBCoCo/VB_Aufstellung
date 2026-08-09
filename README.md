@@ -154,3 +154,10 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 ## Version 2.6.17
 - Regelbox wird nur im Bearbeitungsmodus und nur bei echten Warnungen/Fehlern angezeigt.
 - Papierkorb zum Löschen eines Schritts sitzt direkt in der oberen Schrittsteuerung neben dem Plus.
+
+
+## Version 2.6.18
+- Spielsituation direkt oben per ＋ hinzufügen.
+- Name wird beim Anlegen abgefragt.
+- Spielsituation direkt oben per 🗑 löschen, mit Sicherheitsabfrage.
+- Separate Situation-Bearbeitung im unteren Bereich entfernt.

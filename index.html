@@ -9,19 +9,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Volleyball Trainer">
   <meta name="format-detection" content="telephone=no">
-  <link rel="manifest" href="manifest.webmanifest?v=2.7.4">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2.7.4">
+  <link rel="manifest" href="manifest.webmanifest?v=2.7.5">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2.7.5">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Volleyball Trainer 2.7.4</title>
-  <link rel="stylesheet" href="style-2.7.4.css">
+  <title>Volleyball Trainer 2.7.5</title>
+  <link rel="stylesheet" href="style-2.7.5.css">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.7.4" alt="TTC Geltendorf e.V." class="brand-logo"></div>
+        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.7.5" alt="TTC Geltendorf e.V." class="brand-logo"></div>
         <div class="brand-copy"><h1>Volleyball Trainer</h1><p>TTC Geltendorf e.V.</p></div>
       </div>
       <div class="top-actions"><button id="infoButton" class="ghost icon-action" type="button" aria-label="Info und Neuigkeiten" title="Info und Neuigkeiten">ⓘ</button><button id="editButton" class="primary icon-action" type="button" aria-label="Bearbeiten" title="Bearbeiten">✎</button></div>
@@ -35,9 +35,9 @@
           <div id="newStepNaming" class="new-step-naming hidden"><strong>Neuen Schritt benennen</strong><label class="field">Schritt-Vorlage<select id="stepNamePreset"><option value="">– frei benennen –</option><option value="Aufschlag">Aufschlag</option><option value="Annahme">Annahme</option><option value="Zuspiel">Zuspiel</option><option value="Angriff">Angriff</option><option value="Angriffssicherung">Angriffssicherung</option><option value="Block">Block</option><option value="Doppelblock">Doppelblock</option><option value="Abwehr">Abwehr</option></select></label><label id="stepNameWrap" class="field">Name des Schritts<input id="stepNameInput" type="text" placeholder="z. B. Doppelblock"></label></div>
         </section>
 
-        <section id="editPanel" class="panel hidden">
-          <div id="migrationPanel" class="migration-panel">
-            <div><strong>Datenquelle</strong><div id="dataSourceStatus" class="hint">Wird geprüft …</div></div>
+        <section id="editPanel" class="data-source-panel hidden">
+          <div id="migrationPanel" class="migration-panel compact-source">
+            <div class="source-line"><strong>Datenquelle:</strong> <span id="dataSourceStatus">Wird geprüft …</span></div>
             <button id="migrateLocalButton" class="blue hidden" type="button">Lokale Daten nach Supabase übertragen</button>
             <p id="migrationHint" class="hint hidden">Supabase ist verbunden, enthält aber noch keinen gespeicherten Trainer-Stand. Die vorhandenen Daten dieses Browsers können einmalig übernommen werden.</p>
           </div>
@@ -104,11 +104,11 @@
   </main>
 
   <dialog id="passwordDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Bearbeitungsmodus</span><h2>Passwort eingeben</h2></div><button id="closePassword" type="button">✕</button></div><label class="password-field">Passwort<input id="passwordInput" type="password" autocomplete="current-password" placeholder="Aktuell kein Passwort erforderlich"></label><div class="dialog-actions"><button id="cancelPassword" class="ghost" type="button">Abbrechen</button><button id="confirmPassword" class="primary" type="button">OK</button></div><p id="passwordStatus" class="status"></p></div></dialog>
-  <dialog id="infoDialog"><div class="dialog-card info-dialog-compact"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.7.4</h2></div><button id="closeInfo" type="button">✕</button></div>
-    <section class="info-section"><h3>Was ist neu?</h3><ul class="info-news"><li>Kompakter Kopfbereich mit kleinen Info- und Bearbeiten-Symbolen.</li><li>Versionsinformationen gibt es nur noch an dieser Stelle.</li><li>Die bisherige untere Versionsbox wurde entfernt – dadurch bleibt mehr Platz für das Spielfeld.</li><li>Schritt- und Spielsituationsfarben zeigen weiterhin direkt, wo noch Bearbeitung nötig ist.</li></ul></section>
+  <dialog id="infoDialog"><div class="dialog-card info-dialog-compact"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.7.5</h2></div><button id="closeInfo" type="button">✕</button></div>
+    <section class="info-section"><h3>Was ist neu?</h3><ul class="info-news"><li>Bearbeiten/Fertig wird jetzt ausschließlich über die Symbole ✎ und ✓ angezeigt.</li><li>Die Datenquelle wird im Bearbeitungsmodus kompakt angezeigt.</li><li>Die bisherige untere Versionsbox wurde entfernt – dadurch bleibt mehr Platz für das Spielfeld.</li><li>Schritt- und Spielsituationsfarben zeigen weiterhin direkt, wo noch Bearbeitung nötig ist.</li></ul></section>
     <section class="info-section info-how"><h3>So funktioniert es</h3><ol><li><strong>Teamaufstellung</strong> und <strong>Spielsituation</strong> wählen.</li><li>Schritte direkt in der horizontalen Leiste öffnen; ＋ legt neue Schritte an.</li><li>Über ⚙ die Aktion des aktuellen Schritts konfigurieren.</li><li>Spieler oder freien Ball antippen und anschließend die Zielposition wählen.</li><li><strong>Gelb</strong> bedeutet noch offen, <strong>Rot</strong> bedeutet Regelproblem.</li><li>💾 erscheint nur bei ungespeicherten Änderungen; ▶ spielt die Rallye ab.</li></ol></section>
     <p id="infoSituation" class="info-meta"></p><p id="infoDataSource" class="info-meta">Datenquelle: wird geprüft …</p>
     <button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
-  <script src="config-2.7.4.js"></script><script defer src="app-2.7.4.js"></script>
+  <script src="config-2.7.5.js"></script><script defer src="app-2.7.5.js"></script>
 </body>
 </html>

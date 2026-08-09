@@ -205,3 +205,9 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Doppelte Versionsanzeige entfernt.
 - Info-Dialog auf aktuelle Neuigkeiten und eine kurze Bedienhilfe reduziert.
 - Datenquelle bleibt im Info-Dialog sichtbar.
+
+
+## Version 2.7.5
+- Bearbeiten/Fertig nur noch als Symbol (✎ / ✓).
+- Leerer Schritt-Bearbeitungsbereich nur noch sichtbar, wenn ein neuer Schritt benannt wird.
+- Datenquelle im Bearbeitungsmodus kompakt dargestellt.

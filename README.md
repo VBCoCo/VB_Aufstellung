@@ -188,3 +188,13 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Aktionsmenü nochmals kompakter für iPhone-Bedienung.
 - Horizontale Schrittübersicht mit direktem Sprung zu jedem Schritt.
 - Aktueller Schritt wird in der Übersicht hervorgehoben.
+
+
+## Version 2.7.3
+- Schrittstatus farbig: gelb bei unvollständig/Warnung, rot bei Regelfehler.
+- Spielsituation übernimmt den aggregierten Status ihrer Schritte.
+- Punkt/Fehler beendet Play am Rallye-Ende.
+- Schritt löschen mit Sicherheitsabfrage.
+- Aktionsmenü öffnet nach Wahl einer neuen Schrittvorlage automatisch.
+- Datenquelle in den Versionsdetails und aktualisierte „So funktioniert es“-Hilfe.
+- Web-App zeigt vor einem automatischen Versionswechsel einen kurzen Update-Hinweis.

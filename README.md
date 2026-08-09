@@ -145,10 +145,7 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Korrigierte 3-Kontakt-Regel: Block zählt nicht als regulärer Ballkontakt, setzt als Berührung der blockenden Mannschaft die Kontaktzählung aber neu.
 
 
-## Version 2.6.15
-- Regelprobleme nur noch im Bearbeitungsmodus und nur wenn tatsächlich Probleme vorhanden sind.
-- Regelhinweise stehen direkt bei Spielsituation/Schrittsteuerung.
-- Objektbewegung vereinfacht auf Antippen; Ziehen-Auswahl entfernt.
-- Plus für neue Schritte direkt in der Schrittsteuerung.
-- Namensvorlagen werden nur beim Anlegen eines neuen Schritts eingeblendet.
-- Speichern-Symbol erscheint nur bei ungespeicherten Änderungen.
+## Version 2.6.16
+- Stabiler Neuaufbau des kompakten Bearbeitungsmodus auf Basis 2.6.14.
+- Regelhinweise nur bei Problemen und nur im Bearbeitungsmodus.
+- Antippen-only, Plus in der Schrittsteuerung, Speichern nur bei Änderungen.

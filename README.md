@@ -211,3 +211,11 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Bearbeiten/Fertig nur noch als Symbol (✎ / ✓).
 - Leerer Schritt-Bearbeitungsbereich nur noch sichtbar, wenn ein neuer Schritt benannt wird.
 - Datenquelle im Bearbeitungsmodus kompakt dargestellt.
+
+
+## Version 2.8.0 – Offline Stufe 1
+- App-Shell wird per Service Worker lokal gespeichert; nach einem erfolgreichen Online-Start ist die Web-App offline startbar.
+- Explizites Speichern funktioniert offline in localStorage.
+- Zeitstempel für letzten lokalen Speicherzeitpunkt, letzten Online-Ladevorgang und letzten erfolgreichen Supabase-Sync.
+- Offline gespeicherte Änderungen werden bei erneutem Online-Start nicht automatisch durch Supabase überschrieben.
+- Konfliktvergleich und gezielte Zusammenführung folgen in Stufe 2.

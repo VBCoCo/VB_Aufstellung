@@ -1,7 +1,7 @@
 {
   "name": "Volleyball Trainer – TTC Geltendorf",
   "short_name": "Volleyball Trainer",
-  "description": "Volleyball-Aufstellungen, Spielschritte und Animationen für TTC Geltendorf e.V.",
+  "description": "Volleyball-Aufstellungen, Spielschritte und Animationen für TTC Geltendorf e.V. – offline nutzbar.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

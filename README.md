@@ -168,3 +168,12 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Neue Aktion „Punkt / Fehler“ beendet den Ballwechsel und verlangt keinen Kontaktspieler.
 - Punkt/Fehler kann Punktgewinner und Fehlergrund speichern.
 - Die Drei-Kontakt-Zählung wird beim Rallye-Ende zurückgesetzt.
+
+
+## Version 2.7.0
+- Neue Ebene **Teamaufstellung** über den Spielsituationen.
+- Bestehende 2.6.x-Daten werden automatisch als **Hauptaufstellung** migriert.
+- Teamaufstellungen besitzen eigene Rollen/Libero-Konfiguration und eigene Spielsituationen.
+- Spielphase entfernt; Aufstellungs-/Rotationsprüfung wird aus der Aktion **Aufschlag** abgeleitet.
+- Außerhalb eines Aufschlags sind Spielerpositionen frei.
+- Automatischer Web-App-Versionscheck über `version.json` mit `cache: no-store`.

@@ -198,3 +198,10 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Aktionsmenü öffnet nach Wahl einer neuen Schrittvorlage automatisch.
 - Datenquelle in den Versionsdetails und aktualisierte „So funktioniert es“-Hilfe.
 - Web-App zeigt vor einem automatischen Versionswechsel einen kurzen Update-Hinweis.
+
+
+## Version 2.7.4
+- Kopfbereich auf kleine Info- und Bearbeiten-Symbole reduziert.
+- Doppelte Versionsanzeige entfernt.
+- Info-Dialog auf aktuelle Neuigkeiten und eine kurze Bedienhilfe reduziert.
+- Datenquelle bleibt im Info-Dialog sichtbar.

@@ -177,3 +177,8 @@ Lokale Browserdaten können im Bearbeitungsmodus einmalig nach Supabase übertra
 - Spielphase entfernt; Aufstellungs-/Rotationsprüfung wird aus der Aktion **Aufschlag** abgeleitet.
 - Außerhalb eines Aufschlags sind Spielerpositionen frei.
 - Automatischer Web-App-Versionscheck über `version.json` mit `cache: no-store`.
+
+
+## Version 2.7.1
+- Teamaufstellungs-Konfiguration wird zuverlässig eingeblendet.
+- Rollen- und Libero-Auswahl direkt unter Teamaufstellung.

@@ -9,19 +9,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Volleyball Trainer">
   <meta name="format-detection" content="telephone=no">
-  <link rel="manifest" href="manifest.webmanifest?v=2.8.0">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2.8.0">
+  <link rel="manifest" href="manifest.webmanifest?v=2.8.1">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2.8.1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Volleyball Trainer 2.8.0</title>
-  <link rel="stylesheet" href="style-2.8.0.css">
+  <title>Volleyball Trainer 2.8.1</title>
+  <link rel="stylesheet" href="style-2.8.1.css">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.8.0" alt="TTC Geltendorf e.V." class="brand-logo"></div>
+        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.8.1" alt="TTC Geltendorf e.V." class="brand-logo"></div>
         <div class="brand-copy"><h1>Volleyball Trainer</h1><p>TTC Geltendorf e.V.</p></div>
       </div>
       <div class="top-actions"><button id="infoButton" class="ghost icon-action" type="button" aria-label="Info und Neuigkeiten" title="Info und Neuigkeiten">ⓘ</button><button id="editButton" class="primary icon-action" type="button" aria-label="Bearbeiten" title="Bearbeiten">✎</button></div>
@@ -49,8 +49,8 @@
         <div class="court-toolbar">
           <div class="situation-compact"><span>Teamaufstellung</span><div class="team-row"><select id="teamSelect" aria-label="Teamaufstellung auswählen"></select><button id="teamConfigToggle" class="team-config hidden" type="button" aria-label="Teamaufstellung konfigurieren" title="Teamaufstellung konfigurieren">⚙</button><button id="addTeam" class="team-add hidden" type="button" aria-label="Neue Teamaufstellung hinzufügen" title="Neue Teamaufstellung">＋</button><button id="deleteTeam" class="team-delete hidden" type="button" aria-label="Aktuelle Teamaufstellung löschen" title="Teamaufstellung löschen">🗑</button></div></div>
 
-        <div id="teamConfigPanel" class="team-config-panel hidden"><div class="team-config-head"><strong>⚙ Teamaufstellung konfigurieren</strong><button id="teamConfigClose" type="button" aria-label="Teamaufstellung schließen">✕</button></div><div id="lineupEditor" class="lineup-editor"><div id="lineupGrid" class="lineup-grid"></div><label class="libero-row"><input id="liberoToggle" type="checkbox"><span><strong>Mit Libero spielen</strong><br><small>Ein hinterer Mittelblocker wird automatisch als Libero dargestellt.</small></span></label><p class="hint">Diese Rollen gelten für alle Spielsituationen dieser Teamaufstellung.</p></div></div>
-          <div class="situation-compact"><span>Spielsituation</span><div class="situation-row"><select id="rotationSelect" aria-label="Spielsituation auswählen"></select><button id="addSituation" class="situation-add hidden" type="button" aria-label="Neue Spielsituation hinzufügen" title="Neue Spielsituation">＋</button><button id="deleteSituation" class="situation-delete hidden" type="button" aria-label="Aktuelle Spielsituation löschen" title="Spielsituation löschen">🗑</button></div></div>
+        <div id="teamConfigPanel" class="team-config-panel hidden"><div class="team-config-head"><strong>⚙ Teamaufstellung konfigurieren</strong><button id="teamConfigClose" type="button" aria-label="Teamaufstellung schließen">✕</button></div><label class="config-name-field">Name der Teamaufstellung<input id="teamNameInput" type="text" maxlength="80" placeholder="z. B. Hauptaufstellung"></label><div id="lineupEditor" class="lineup-editor"><div id="lineupGrid" class="lineup-grid"></div><label class="libero-row"><input id="liberoToggle" type="checkbox"><span><strong>Mit Libero spielen</strong><br><small>Ein hinterer Mittelblocker wird automatisch als Libero dargestellt.</small></span></label><p class="hint">Diese Rollen gelten für alle Spielsituationen dieser Teamaufstellung.</p></div></div>
+          <div class="situation-compact"><span>Spielsituation</span><div class="situation-row"><select id="rotationSelect" aria-label="Spielsituation auswählen"></select><button id="situationConfigToggle" class="situation-config hidden" type="button" aria-label="Spielsituation konfigurieren" title="Spielsituation konfigurieren">⚙</button><button id="addSituation" class="situation-add hidden" type="button" aria-label="Neue Spielsituation hinzufügen" title="Neue Spielsituation">＋</button><button id="deleteSituation" class="situation-delete hidden" type="button" aria-label="Aktuelle Spielsituation löschen" title="Spielsituation löschen">🗑</button></div></div><div id="situationConfigPanel" class="situation-config-panel hidden"><div class="team-config-head"><strong>⚙ Spielsituation konfigurieren</strong><button id="situationConfigClose" type="button" aria-label="Spielsituation schließen">✕</button></div><div id="situationBaseNameWrap" class="config-base-row hidden"><span>Grundname</span><strong id="situationBaseName"></strong></div><label class="config-name-field"><span id="situationNameLabel">Name der Spielsituation</span><input id="situationNameEdit" type="text" maxlength="80" placeholder="z. B. Läufer 1"></label><p id="situationNameHint" class="hint">Der Name wird in der Auswahl angezeigt.</p></div>
           <div class="step-compact"><span class="step-label">Schritt <strong><span id="stepNumber">1</span>/<span id="stepTotal">1</span></strong></span><div class="step-nav"><button id="prevStep" type="button" aria-label="Vorheriger Schritt">←</button><button id="playButton" type="button" aria-label="Animation abspielen">▶</button><button id="nextStep" type="button" aria-label="Nächster Schritt">→</button><button id="addStep" class="step-add hidden" type="button" aria-label="Neuen Schritt hinzufügen" title="Neuer Schritt">＋</button><button id="deleteStep" class="step-delete hidden" type="button" aria-label="Aktuellen Schritt löschen" title="Schritt löschen">🗑</button><button id="actionMenuToggle" class="step-action hidden" type="button" aria-label="Schritt konfigurieren" title="Schritt konfigurieren" aria-expanded="false">⚙</button><button id="saveStep" class="step-save hidden" type="button" aria-label="Änderungen speichern" title="Speichern">💾</button></div></div>
           <div id="stepStrip" class="step-strip" aria-label="Schrittübersicht"></div>
                   <div id="ruleCheck" class="rule-check rule-ok"><button id="ruleCheckToggle" type="button" aria-expanded="false"><span id="ruleCheckSummary">✓ Keine Regelprobleme</span><span id="ruleCheckChevron">▾</span></button><div id="ruleCheckDetails" class="rule-check-details hidden"></div></div>
@@ -104,11 +104,11 @@
   </main>
 
   <dialog id="passwordDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Bearbeitungsmodus</span><h2>Passwort eingeben</h2></div><button id="closePassword" type="button">✕</button></div><label class="password-field">Passwort<input id="passwordInput" type="password" autocomplete="current-password" placeholder="Aktuell kein Passwort erforderlich"></label><div class="dialog-actions"><button id="cancelPassword" class="ghost" type="button">Abbrechen</button><button id="confirmPassword" class="primary" type="button">OK</button></div><p id="passwordStatus" class="status"></p></div></dialog>
-  <dialog id="infoDialog"><div class="dialog-card info-dialog-compact"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.8.0</h2></div><button id="closeInfo" type="button">✕</button></div>
-    <section class="info-section"><h3>Was ist neu?</h3><ul class="info-news"><li>Die Web-App kann nach einem Online-Start auch ohne Internet geöffnet werden.</li><li>Änderungen lassen sich offline lokal speichern.</li><li>Letzter lokaler Speicherzeitpunkt und letzter erfolgreicher Supabase-Sync werden protokolliert.</li><li>Offline gespeicherte Änderungen werden beim nächsten Online-Start geschützt und nicht automatisch überschrieben.</li></ul></section>
+  <dialog id="infoDialog"><div class="dialog-card info-dialog-compact"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.8.1</h2></div><button id="closeInfo" type="button">✕</button></div>
+    <section class="info-section"><h3>Was ist neu?</h3><ul class="info-news"><li>Offline bleibt die zuletzt geladene Aufstellung vollständig zur Ansicht verfügbar.</li><li>Bearbeiten ist nur mit Internet- und Supabase-Verbindung möglich.</li><li>Teamaufstellungen und Spielsituationen können über ⚙ umbenannt werden.</li><li>Bei den sechs festen Grundaufstellungen bleibt der Grundname erhalten; ein Zusatz kann ergänzt werden.</li></ul></section>
     <section class="info-section info-how"><h3>So funktioniert es</h3><ol><li><strong>Teamaufstellung</strong> und <strong>Spielsituation</strong> wählen.</li><li>Schritte direkt in der horizontalen Leiste öffnen; ＋ legt neue Schritte an.</li><li>Über ⚙ die Aktion des aktuellen Schritts konfigurieren.</li><li>Spieler oder freien Ball antippen und anschließend die Zielposition wählen.</li><li><strong>Gelb</strong> bedeutet noch offen, <strong>Rot</strong> bedeutet Regelproblem.</li><li>💾 erscheint nur bei ungespeicherten Änderungen; ▶ spielt die Rallye ab.</li></ol></section>
     <p id="infoSituation" class="info-meta"></p><p id="infoDataSource" class="info-meta">Datenquelle: wird geprüft …</p><p id="infoSyncStatus" class="info-meta">Synchronisierung: wird geprüft …</p>
     <button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
-  <script src="config-2.8.0.js"></script><script defer src="app-2.8.0.js"></script>
+  <script src="config-2.8.1.js"></script><script defer src="app-2.8.1.js"></script>
 </body>
 </html>

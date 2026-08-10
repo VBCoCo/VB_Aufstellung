@@ -9,19 +9,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Volleyball Trainer">
   <meta name="format-detection" content="telephone=no">
-  <link rel="manifest" href="manifest.webmanifest?v=2.9.1">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2.9.1">
+  <link rel="manifest" href="manifest.webmanifest?v=2.9.2">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2.9.2">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Volleyball Trainer 2.9.1</title>
-  <link rel="stylesheet" href="style-2.9.1.css">
+  <title>Volleyball Trainer 2.9.2</title>
+  <link rel="stylesheet" href="style-2.9.2.css">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.9.1" alt="TTC Geltendorf e.V." class="brand-logo"></div>
+        <div class="brand-logo-wrap"><img src="assets/ttc-logo.png?v=2.9.2" alt="TTC Geltendorf e.V." class="brand-logo"></div>
         <div class="brand-copy"><h1>Volleyball Trainer</h1><p>TTC Geltendorf e.V.</p></div>
       </div>
       <div class="top-actions"><button id="infoButton" class="ghost icon-action" type="button" aria-label="Info und Neuigkeiten" title="Info und Neuigkeiten">ⓘ</button><button id="editButton" class="primary icon-action" type="button" aria-label="Bearbeiten" title="Bearbeiten">✎</button></div>
@@ -111,11 +111,11 @@
   </main>
 
   <dialog id="passwordDialog"><div class="dialog-card"><div class="dialog-head"><div><span class="eyebrow">Bearbeitungsmodus</span><h2>Passwort eingeben</h2></div><button id="closePassword" type="button">✕</button></div><label class="password-field">Passwort<input id="passwordInput" type="password" autocomplete="current-password" placeholder="Aktuell kein Passwort erforderlich"></label><div class="dialog-actions"><button id="cancelPassword" class="ghost" type="button">Abbrechen</button><button id="confirmPassword" class="primary" type="button">OK</button></div><p id="passwordStatus" class="status"></p></div></dialog>
-  <dialog id="infoDialog"><div class="dialog-card info-dialog-compact"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.9.1</h2></div><button id="closeInfo" type="button">✕</button></div>
-    <section class="info-section"><h3>Was ist neu?</h3><ul class="info-news"><li>Die <strong>Taktiktafel</strong> nutzt den verfügbaren Bildschirm deutlich besser aus.</li><li>Teamaufstellung, Spielsituation und <strong>Schrittname</strong> bleiben oben kompakt sichtbar.</li><li>Die Bedienleiste ist flacher; bewegte Spieler oder der Ball werden beim Ziehen hervorgehoben.</li><li>Zurücksetzen wird erst aktiv, sobald etwas auf der Taktiktafel verschoben wurde.</li></ul></section>
-    <section class="info-section info-how"><h3>So funktioniert es</h3><ol><li><strong>Teamaufstellung</strong>, <strong>Spielsituation</strong> und Schritt wählen.</li><li>▶ spielt die gespeicherte Rallye ab; 2D/2,5D wechseln die Darstellung.</li><li>Über ✎ wird online bearbeitet und gespeichert.</li><li><strong>Taktiktafel</strong> unter dem Spielfeld öffnet eine freie Traineransicht ohne Speicherung.</li><li>In der Taktiktafel Spieler oder Ball direkt ziehen; ↺ stellt den gespeicherten Schritt wieder her.</li></ol></section>
+  <dialog id="infoDialog"><div class="dialog-card info-dialog-compact"><div class="dialog-head"><div><span class="eyebrow">Volleyball Trainer</span><h2>Version 2.9.2</h2></div><button id="closeInfo" type="button">✕</button></div>
+    <section class="info-section"><h3>Was ist neu?</h3><ul class="info-news"><li>Die <strong>Taktiktafel</strong> ist jetzt bewusst Teil des Bearbeitungsmodus.</li><li>Sie erscheint erst nach dem Wechsel über ✎ und bleibt weiterhin eine freie, nicht gespeicherte Trainerfläche.</li><li>Damit ist die normale Anzeige noch aufgeräumter und die Taktiktafel für spätere speicherbare Taktiken vorbereitet.</li></ul></section>
+    <section class="info-section info-how"><h3>So funktioniert es</h3><ol><li><strong>Teamaufstellung</strong>, <strong>Spielsituation</strong> und Schritt wählen.</li><li>▶ spielt die gespeicherte Rallye ab; 2D/2,5D wechseln die Darstellung.</li><li>Über ✎ wird online bearbeitet und gespeichert.</li><li>Im <strong>Bearbeitungsmodus</strong> öffnet <strong>Taktiktafel</strong> unter dem Spielfeld eine freie Traineransicht ohne Speicherung.</li><li>In der Taktiktafel Spieler oder Ball direkt ziehen; ↺ stellt den gespeicherten Schritt wieder her.</li></ol></section>
     <p id="infoSituation" class="info-meta"></p><p id="infoDataSource" class="info-meta">Datenquelle: wird geprüft …</p><p id="infoSyncStatus" class="info-meta">Synchronisierung: wird geprüft …</p>
     <button id="closeInfoBottom" class="primary full" type="button">Schließen</button></div></dialog>
-  <script src="config-2.9.1.js"></script><script defer src="app-2.9.1.js"></script>
+  <script src="config-2.9.2.js"></script><script defer src="app-2.9.2.js"></script>
 </body>
 </html>

@@ -8,16 +8,14 @@ Web-App für TTC Geltendorf e.V. zur Planung, Darstellung und Erklärung von Vol
 - Gespeicherte Situationen lassen sich in 2D oder 2,5D ansehen und als Rallye abspielen.
 - Bearbeiten und Speichern erfolgt online über Supabase.
 - Nach einem erfolgreichen Online-Start bleibt die zuletzt geladene Version für die **Offline-Anzeige** verfügbar; offline ist die App schreibgeschützt.
-- Die **Taktiktafel** erlaubt freies Verschieben von eigenen Spielern, Gegnern und Ball, ohne Änderungen zu speichern.
+- Die **Taktiktafel** gehört jetzt zum Bearbeitungsmodus und erlaubt dort das freie Verschieben von eigenen Spielern, Gegnern und Ball, ohne Änderungen zu speichern.
 
-## Neu in 2.9.1
+## Neu in 2.9.2
 
-- Die Taktiktafel nutzt die verfügbare Bildschirmhöhe deutlich besser aus.
-- Teamaufstellung, Spielsituation und **Schrittname** bleiben oben kompakt sichtbar.
-- Die untere Steuerung ist flacher.
-- Der gerade gezogene Spieler bzw. Ball wird hervorgehoben.
-- **Zurücksetzen** wird erst aktiv, wenn auf der Taktiktafel etwas verschoben wurde.
-- Auf Tablets wächst die Taktiktafel stärker mit dem verfügbaren Platz.
+- Die Taktiktafel wird in der normalen Anzeige nicht mehr angeboten.
+- Sie erscheint erst nach dem Wechsel in den **Bearbeitungsmodus** über ✎.
+- Die Taktiktafel bleibt vorerst bewusst temporär: Beim Beenden werden ihre Verschiebungen verworfen.
+- Damit ist die Struktur für einen späteren eigenen, speicherbaren Taktikmodus vorbereitet.
 
 ## GitHub Pages
 

@@ -10,12 +10,12 @@ Web-App für TTC Geltendorf e.V. zur Planung, Darstellung und Erklärung von Vol
 - Offline bleibt die zuletzt geladene Version zur **Anzeige** verfügbar; offline ist die App schreibgeschützt.
 - Die **Taktiktafel** ist im Bearbeitungsmodus verfügbar und bleibt vorerst nicht speichernd.
 
-## Neu in 2.9.4
+## Neu in 2.9.5
 
-- Aufstellungsprüfung beim Aufschlag berücksichtigt jetzt die Standbreite der Spieler.
-- Gleiche Höhe bzw. überlappende Standbereiche gelten weiterhin als rotationsgerecht.
-- Rot wird erst angezeigt, wenn zwei relevante Spieler eindeutig in der falschen Reihenfolge stehen.
-- Rote Hilfslinien werden nur noch für die tatsächlich verletzte Spielerbeziehung gezeichnet.
+- Teamaufstellungsnamen sind auf 16 Zeichen begrenzt; „Hauptaufstellung“ passt vollständig.
+- Das Teamaufstellungsfeld ist in der Anzeige schmaler, die Spielsituation erhält mehr Platz.
+- Die festen Spielsituationen heißen kompakt **GA**, **GA +1** bis **GA +5**.
+- Längere frei vergebene Situationsnamen werden im Auswahlfeld automatisch kleiner dargestellt.
 
 ## GitHub Pages
 

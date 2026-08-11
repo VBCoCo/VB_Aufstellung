@@ -1,22 +1,13 @@
-# Volleyball Trainer
+# Volleyball Trainer 3.0.0
 
-Web-App für TTC Geltendorf e.V. zur Planung, Darstellung und Erklärung von Volleyball-Aufstellungen und Spielsituationen.
+Version 3 führt die Grundlage für eine geschützte Vereins-/Mannschafts-App ein:
 
-## Aktuell
+- Login mit persönlicher E-Mail und Passwort
+- Rollen Viewer, Bearbeiter, Vereinsadmin und Superadmin
+- ein Benutzer kann mehrere Rollen gleichzeitig haben
+- Superadmins erhalten dadurch keinen automatischen Zugriff auf Volleyball-Inhalte anderer Vereine
+- mandantenfähiges Datenmodell: Verein → Mannschaft → Inhalte
+- bestehende TTC-Geltendorf-Daten werden per Migration übernommen
+- Offline bleibt nach erfolgreichem Login als reine Anzeige möglich
 
-- Struktur: **Teamaufstellung → Spielsituation → Schritt → Aktion**.
-- Anzeige in 2D oder 2,5D, inklusive Rallye-Wiedergabe.
-- Bearbeiten und Speichern erfolgt online über Supabase.
-- Offline bleibt die zuletzt geladene Version zur **Anzeige** verfügbar; offline ist die App schreibgeschützt.
-- Die **Taktiktafel** ist im Bearbeitungsmodus verfügbar und bleibt vorerst nicht speichernd.
-
-## Neu in 2.9.5
-
-- Teamaufstellungsnamen sind auf 16 Zeichen begrenzt; „Hauptaufstellung“ passt vollständig.
-- Das Teamaufstellungsfeld ist in der Anzeige schmaler, die Spielsituation erhält mehr Platz.
-- Die festen Spielsituationen heißen kompakt **GA**, **GA +1** bis **GA +5**.
-- Längere frei vergebene Situationsnamen werden im Auswahlfeld automatisch kleiner dargestellt.
-
-## GitHub Pages
-
-Alle Dateien aus dem Release-ZIP in das Repository kopieren und GitHub Pages wie bisher aus `/root` veröffentlichen.
+Die einmalige Einrichtung steht in `SETUP_V3.md`.

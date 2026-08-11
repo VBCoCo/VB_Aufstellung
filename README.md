@@ -1,13 +1,13 @@
-# Volleyball Trainer 3.0.0
+# Volleyball Trainer 3.0.1
 
-Version 3 führt die Grundlage für eine geschützte Vereins-/Mannschafts-App ein:
+Aktueller Stand:
 
-- Login mit persönlicher E-Mail und Passwort
+- geschützter Login mit persönlicher E-Mail und Passwort
 - Rollen Viewer, Bearbeiter, Vereinsadmin und Superadmin
-- ein Benutzer kann mehrere Rollen gleichzeitig haben
-- Superadmins erhalten dadurch keinen automatischen Zugriff auf Volleyball-Inhalte anderer Vereine
-- mandantenfähiges Datenmodell: Verein → Mannschaft → Inhalte
-- bestehende TTC-Geltendorf-Daten werden per Migration übernommen
-- Offline bleibt nach erfolgreichem Login als reine Anzeige möglich
+- Verein → Mannschaft → Volleyball-Inhalte
+- Offline nach erfolgreichem Login nur zur Ansicht
+- klar lesbare Rollenanzeige im Konto
+- Plattformübersicht für Superadmins: Vereine, Benutzer, Rollen und Superadmins – ohne Volleyball-Inhalte fremder Vereine
+- Vereinsübersicht für Vereinsadmins: eigener Verein, Mannschaften, Benutzer und Rollen
 
-Die einmalige Einrichtung steht in `SETUP_V3.md`.
+Vor dem Deploy von 3.0.1 einmal `admin_overview_v3_0_1.sql` im Supabase SQL Editor ausführen.

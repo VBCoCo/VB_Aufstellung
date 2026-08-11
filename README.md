@@ -10,14 +10,12 @@ Web-App für TTC Geltendorf e.V. zur Planung, Darstellung und Erklärung von Vol
 - Offline bleibt die zuletzt geladene Version zur **Anzeige** verfügbar; offline ist die App schreibgeschützt.
 - Die **Taktiktafel** ist im Bearbeitungsmodus verfügbar und bleibt vorerst nicht speichernd.
 
-## Neu in 2.9.3
+## Neu in 2.9.4
 
-- Tablet- und Querformatdarstellung nutzt die verfügbare Fläche besser.
-- 2D und 2,5D skalieren nach der tatsächlich verfügbaren Bildschirmhöhe.
-- Auf Touch-Geräten wird die Einspaltenansicht früher verwendet, damit das Spielfeld nicht durch eine Desktop-Seitenleiste verkleinert wird.
-- Kopfbereich wird bei geringer Höhe automatisch kompakter.
-- Doppeltipp-Zoom auf Spielfeld und Taktiktafel wird verhindert; Drag & Drop bleibt erhalten.
-- Die Web-App darf auf Tablets zwischen Hoch- und Querformat wechseln.
+- Aufstellungsprüfung beim Aufschlag berücksichtigt jetzt die Standbreite der Spieler.
+- Gleiche Höhe bzw. überlappende Standbereiche gelten weiterhin als rotationsgerecht.
+- Rot wird erst angezeigt, wenn zwei relevante Spieler eindeutig in der falschen Reihenfolge stehen.
+- Rote Hilfslinien werden nur noch für die tatsächlich verletzte Spielerbeziehung gezeichnet.
 
 ## GitHub Pages
 

@@ -1,12 +1,10 @@
-# Volleyball Trainer 3.0.4
+# Volleyball Trainer
 
-Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Schritte und Aktionen mit rollenbasierter Vereins-/Plattformverwaltung.
+Mobile Web-App zur Verwaltung und Darstellung von Volleyball-Aufstellungen, Spielsituationen und Schritten mit Supabase-Login, Rollenmodell und mandantenfähiger Vereinsverwaltung.
 
-## Neu in 3.0.4
-- Gespeicherte Einladungsvorlagen: Verein, neuer Vereinsadmin und neuer Superadmin.
-- Name des Empfängers, Absendername, Verein und Rollen werden automatisch in die Vorlage eingesetzt.
-- Vorschau vor dem Versand; Betreff und Nachricht können für die einzelne Mail noch geändert werden.
-- Superadmins können weitere Superadmins einladen.
-- Vereinszugang entfernen und dauerhaftes Löschen eines Auth-Benutzers bleiben bewusst getrennte Aktionen.
+## Version 3.0.4.2
+- Vereinsadmins können weitere Vereinsadmins im eigenen Verein einladen oder ernennen.
+- Superadmins können neue Vereine anlegen und danach direkt den ersten Vereinsadmin einladen.
+- Einladungsvorlagen bleiben je nach Absenderbereich getrennt: Vereinsvorlagen pro Verein, Plattformvorlagen für neue Vereins- und Superadmins.
 
-Für das Upgrade sind `migration_3_0_4.sql`, ein einmaliges Update des Supabase-Invite-Mailtemplates und ein Redeploy der Edge Function `admin-invite` erforderlich. Details: `UPGRADE_3_0_4.md`.
+Backup/Restore folgt separat in 3.0.5.

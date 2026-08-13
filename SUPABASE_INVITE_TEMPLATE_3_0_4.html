@@ -1,0 +1,9 @@
+<!doctype html>
+<html><body style="font-family:Arial,sans-serif;line-height:1.5;color:#172033">
+  <div style="max-width:620px;margin:0 auto;padding:24px">
+    <h2 style="margin:0 0 18px">{{ .Data.invite_subject }}</h2>
+    <div style="white-space:pre-line;margin-bottom:24px">{{ .Data.invite_body }}</div>
+    <p style="margin:24px 0"><a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:12px 18px;border-radius:8px;background:#163d68;color:#ffffff;text-decoration:none;font-weight:bold">Einladung annehmen</a></p>
+    <p style="font-size:12px;color:#667085">Dieser Einladungslink ist nur einmal verwendbar und läuft nach der in Supabase eingestellten Zeit ab.</p>
+  </div>
+</body></html>

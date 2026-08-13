@@ -1,10 +1,8 @@
 # Volleyball Trainer
 
-Mobile Web-App zur Verwaltung und Darstellung von Volleyball-Aufstellungen, Spielsituationen und Schritten mit Supabase-Login, Rollenmodell und mandantenfähiger Vereinsverwaltung.
+Mobile Web-App für Aufstellungen, Spielsituationen, Animationen und Vereinsverwaltung.
 
-## Version 3.0.4.2
-- Vereinsadmins können weitere Vereinsadmins im eigenen Verein einladen oder ernennen.
-- Superadmins können neue Vereine anlegen und danach direkt den ersten Vereinsadmin einladen.
-- Einladungsvorlagen bleiben je nach Absenderbereich getrennt: Vereinsvorlagen pro Verein, Plattformvorlagen für neue Vereins- und Superadmins.
-
-Backup/Restore folgt separat in 3.0.5.
+## Version 3.0.4.3
+- Kompakte, gruppierte Benutzerverwaltung mit Zahnrad-Bearbeitung.
+- Superadmins sehen bei Vereinen nur noch die Vereinsadmins; normale Viewer/Bearbeiter bleiben in der Vereinsverwaltung.
+- Unter Info wird die komplette aktuelle 3.0.4.x-Release-Linie angezeigt.

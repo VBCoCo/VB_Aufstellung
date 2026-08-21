@@ -27,3 +27,7 @@ Stabile/kompakte Fragenansicht, korrigierter Nachrichten-Badge und robuster ⓘ-
 - Name und Zeit stehen bei Bearbeitern in einer Zeile.
 - Rückfrage-/Antwortfeld und Senden stehen nebeneinander.
 - Bearbeiteraktionen stehen kompakt in einer Zeile.
+
+### 3.0.4.13
+- Kompakte auf-/zuklappbare Fragen am Spielfeld in View und Bearbeiten.
+- Antwort-Pfeil, kleineres X und keine neue Frage im Bearbeitungsmodus.

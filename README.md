@@ -1,4 +1,4 @@
-## Aktuelle Version 3.0.4.9
+## Aktuelle Version 3.0.4.10
 
 Neu: Fragen-Badges aktualisieren sich automatisch, die ursprüngliche Frage bleibt in der Vorschau sichtbar und Bearbeiter können Spielerpositionen aus dem vorherigen Schritt übernehmen. Siehe `UPGRADE_3_0_4_9.md`.
 
@@ -12,6 +12,6 @@ Mobile Web-App für Aufstellungen, Spielsituationen, Animationen und Vereinsverw
 - Unter Info wird die komplette aktuelle 3.0.4.x-Release-Linie angezeigt.
 
 
-## 3.0.4.9
+## 3.0.4.10
 
 Fragen-Badges aktualisieren sich automatisch, Fragevorschauen zeigen die urspruengliche Frage, Viewer sehen keine Namen der Fragesteller, aktive Fragen markieren den Schritt mit demselben Info-Symbol wie Schrittinfos. Bearbeiter sehen Laufwege dauerhaft und koennen Spielerpositionen einzeln oder komplett aus dem vorherigen Schritt uebernehmen.

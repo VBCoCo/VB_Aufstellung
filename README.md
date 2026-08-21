@@ -17,5 +17,13 @@ Mobile Web-App für Aufstellungen, Spielsituationen, Animationen und Vereinsverw
 Fragen-Badges aktualisieren sich automatisch, Fragevorschauen zeigen die urspruengliche Frage, Viewer sehen keine Namen der Fragesteller, aktive Fragen markieren den Schritt mit demselben Info-Symbol wie Schrittinfos. Bearbeiter sehen Laufwege dauerhaft und koennen Spielerpositionen einzeln oder komplett aus dem vorherigen Schritt uebernehmen.
 
 
-## Aktueller Hotfix 3.0.4.11
+## Aktueller Hotfix 3.0.4.12
 Stabile/kompakte Fragenansicht, korrigierter Nachrichten-Badge und robuster ⓘ-Marker in der Schrittleiste.
+
+
+### 3.0.4.12
+- Fragenkontext über dem Spielfeld deutlich kompakter.
+- Ursprüngliche Frage wird nur einmal angezeigt.
+- Name und Zeit stehen bei Bearbeitern in einer Zeile.
+- Rückfrage-/Antwortfeld und Senden stehen nebeneinander.
+- Bearbeiteraktionen stehen kompakt in einer Zeile.

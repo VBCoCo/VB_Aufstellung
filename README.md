@@ -31,3 +31,6 @@ Stabile/kompakte Fragenansicht, korrigierter Nachrichten-Badge und robuster ⓘ-
 ### 3.0.4.13
 - Kompakte auf-/zuklappbare Fragen am Spielfeld in View und Bearbeiten.
 - Antwort-Pfeil, kleineres X und keine neue Frage im Bearbeitungsmodus.
+
+## 3.0.4.14
+Positionsnummern vereinfacht, Gegner-System 4-2/5-1 mit optionalem Libero, bestehende Schritte umbenennbar, kompakter Header und rollenabhaengige Info-Kurzanleitung.

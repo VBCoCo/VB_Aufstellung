@@ -1,5 +1,5 @@
-const CACHE_NAME="volleyball-trainer-shell-3.0.4.15";
-const APP_SHELL=["./","./index.html","./style-3.0.4.15.css","./app-3.0.4.15.js","./config-3.0.4.js","./manifest.webmanifest","./assets/ttc-logo.png","./assets/volleyball.png","./assets/apple-touch-icon.png","./assets/icon-192.png","./assets/icon-512.png"];
+const CACHE_NAME="volleyball-trainer-shell-3.0.4.16";
+const APP_SHELL=["./","./index.html","./style-3.0.4.16.css","./app-3.0.4.16.js","./config-3.0.4.js","./manifest.webmanifest","./assets/ttc-logo.png","./assets/volleyball.png","./assets/apple-touch-icon.png","./assets/icon-192.png","./assets/icon-512.png"];
 self.addEventListener("install",event=>{event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_SHELL)));self.skipWaiting()});
 self.addEventListener("activate",event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k)))));self.clients.claim()});
 self.addEventListener("fetch",event=>{if(event.request.method!=="GET")return;const url=new URL(event.request.url);if(url.origin!==self.location.origin)return;if(event.request.mode==="navigate"){event.respondWith(fetch(event.request).then(res=>{const copy=res.clone();caches.open(CACHE_NAME).then(c=>c.put("./index.html",copy));return res}).catch(()=>caches.match("./index.html")));return}event.respondWith(caches.match(event.request).then(hit=>hit||fetch(event.request).then(res=>{if(res.ok){const copy=res.clone();caches.open(CACHE_NAME).then(c=>c.put(event.request,copy))}return res}))) });

@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.0.4.20  
+**Aktueller Frontend-Stand:** 3.0.4.21  
 **Veröffentlichung:** GitHub Pages  
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -13,9 +13,9 @@ Die aktuell veröffentlichte Web-App besteht im Kern aus:
 | Datei | Aufgabe |
 | --- | --- |
 | `index.html` | Einstiegspunkt und vollständige HTML-Oberfläche |
-| `app-3.0.4.20.js` | aktuelle Anwendungslogik |
-| `style-3.0.4.20.css` | aktuelles Layout und Design |
-| `config-3.0.4.js` | öffentliche Supabase-URL und Publishable/Anon-Key für den Browser |
+| `app.js` | aktuelle Anwendungslogik; Cache-Busting über den Release-Parameter in `index.html` |
+| `style.css` | aktuelles Layout und Design; Cache-Busting über den Release-Parameter in `index.html` |
+| `config.js` | öffentliche Supabase-URL und Publishable/Anon-Key für den Browser |
 | `version.json` | maschinenlesbare aktuelle Release-Version |
 | `sw.js` | Service Worker und Offline-Cache |
 | `manifest.webmanifest` | PWA-Metadaten und App-Icons |
@@ -89,7 +89,7 @@ supabase link --project-ref <PROJECT_REF>
 supabase functions deploy admin-invite
 ```
 
-Die Funktion erwartet ihre Supabase-Schlüssel aus den serverseitigen Umgebungsvariablen. Keine Secret- oder Service-Role-Schlüssel ins Repository oder in `config-3.0.4.js` eintragen.
+Die Funktion erwartet ihre Supabase-Schlüssel aus den serverseitigen Umgebungsvariablen. Keine Secret- oder Service-Role-Schlüssel ins Repository oder in `config.js` eintragen.
 
 ## Rollenmodell
 
@@ -108,6 +108,18 @@ Für die Wiederherstellung eines produktiven Systems sollte vorrangig ein aktuel
 
 ## Releases und Cache
 
-Die Version 3.0.4.20 verwendet derzeit versionshaltige JavaScript- und CSS-Dateinamen sowie einen versionierten Service-Worker-Cache. `version.json` wird beim App-Start ohne Cache abgefragt. Eine spätere Umstellung auf stabile Dateinamen mit Release-Query-String ist vorgesehen, sollte aber als eigener getesteter Release erfolgen.
+Seit Version 3.0.4.21 besitzen JavaScript, CSS und Browser-Konfiguration stabile Dateinamen. Cache-Busting erfolgt über den Release-Parameter, beispielsweise `app.js?v=3.0.4.21`. Dadurch werden neue Inhalte zuverlässig unter einer neuen URL geladen, ohne für jedes Release weitere Dateikopien im Repository anzulegen.
+
+`version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
+
+Für ein neues Frontend-Release sind folgende Stellen auf dieselbe Versionsnummer zu setzen:
+
+1. `VERSION` in `app.js`
+2. `version` und `released` in `version.json`
+3. `VERSION` in `sw.js`
+4. die `?v=`-Parameter, der Seitentitel und die sichtbare Versionsangabe in `index.html`
+5. die Icon-Parameter in `manifest.webmanifest`
+
+Die Dateien `app.js`, `style.css` und `config.js` werden dabei nur überschrieben und nicht umbenannt. Vor der Veröffentlichung müssen alle oben genannten Versionsangaben übereinstimmen.
 
 Der unveränderte Stand vor der Repository-Bereinigung ist über den Git-Tag beziehungsweise Release `v3.0.4.20` wiederherstellbar.

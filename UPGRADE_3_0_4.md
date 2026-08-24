@@ -24,12 +24,14 @@ supabase functions deploy admin-invite --project-ref mvwwwkigsoaodllbtifj
 ## 4. GitHub Pages
 Im ROOT ersetzen/hochladen:
 - `index.html`
-- `app-3.0.4.js`
-- `style-3.0.4.css`
-- `config-3.0.4.js`
+- `app.js`
+- `style.css`
+- `config.js`
 - `version.json`
 - `sw.js`
 - optional `README.md`
+
+Seit Release 3.0.4.21 werden für diese Dateien stabile Namen verwendet. Die jeweilige Release-Version wird über die in `README.md` dokumentierten Versionsangaben und `?v=`-Parameter aktualisiert.
 
 ### Unterordner
 - `assets/`: unverändert, NICHT erneut hochladen.

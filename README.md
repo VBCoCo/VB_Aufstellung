@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.0.4.21  
+**Aktueller Frontend-Stand:** 3.0.4.22  
 **Veröffentlichung:** GitHub Pages  
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -109,6 +109,8 @@ Für die Wiederherstellung eines produktiven Systems sollte vorrangig ein aktuel
 ## Releases und Cache
 
 Seit Version 3.0.4.21 besitzen JavaScript, CSS und Browser-Konfiguration stabile Dateinamen. Cache-Busting erfolgt über den Release-Parameter, beispielsweise `app.js?v=3.0.4.21`. Dadurch werden neue Inhalte zuverlässig unter einer neuen URL geladen, ohne für jedes Release weitere Dateikopien im Repository anzulegen.
+
+Version 3.0.4.22 bereinigt den aktiven Frontend-Code ohne fachliche Funktionsänderung. Entfernt wurden vollständig überschriebene oder nicht mehr referenzierte CSS-Selektoren, ungenutzte CSS-Variablen, die frühere lokale Passwortprüfung für den Bearbeitungsmodus sowie die durch die Inline-Schrittbenennung ersetzte alte Bedienoberfläche. Die zuvor tatsächlich wirksame Darstellung des App-Kopfs wurde in einer eindeutigen Regel zusammengeführt.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

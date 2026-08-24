@@ -1,4 +1,4 @@
--- Volleyball Trainer 3.0.1
+-- Volleyball Trainer 3.0.4.3
 -- Lese-RPCs fuer Plattform- und Vereinsverwaltung.
 -- Keine Volleyball-Inhalte werden an Superadmins freigegeben.
 
@@ -47,6 +47,7 @@ begin
         'primary_color', c.primary_color,
         'accent_color', c.accent_color,
         'team_count', (select count(*) from public.vt_teams t where t.club_id=c.id and t.active),
+        'member_count', (select count(*) from public.vt_club_memberships m_count where m_count.club_id=c.id),
         'members', coalesce((
           select jsonb_agg(jsonb_build_object(
             'membership_id', m.id,
@@ -64,6 +65,10 @@ begin
           join auth.users u on u.id=m.user_id
           left join public.vt_profiles p on p.user_id=m.user_id
           where m.club_id=c.id
+            and exists (
+              select 1 from public.vt_club_member_roles r_admin
+              where r_admin.membership_id=m.id and r_admin.role='club_admin'
+            )
         ), '[]'::jsonb)
       ) order by c.name)
       from public.vt_clubs c

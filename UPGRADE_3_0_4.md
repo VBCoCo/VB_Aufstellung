@@ -1,7 +1,7 @@
 # Upgrade auf 3.0.4
 
 ## 1. SQL einmal ausführen
-Im Supabase SQL Editor `migration_3_0_4.sql` ausführen. Es wird nur die neue Tabelle `vt_invite_templates` angelegt.
+Im Supabase SQL Editor `database/upgrades/migration_3_0_4.sql` ausführen. Es wird nur die neue Tabelle `vt_invite_templates` angelegt.
 
 ## 2. Supabase Invite-Template einmal anpassen
 Authentication → Email Templates → Invite user

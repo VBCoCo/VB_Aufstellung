@@ -1,4 +1,4 @@
-/* Volleyball Trainer 3.0.4.22 */
+/* Volleyball Trainer 3.0.5.0 */
 :root{
   --panel:#10233a;--panel2:#0b1a2b;--text:#f8fafc;--muted:#aebed0;
   --club-blue:#0b4fc6;--club-blue-2:#073b9a;
@@ -238,8 +238,6 @@ body:not(.editing-mode):not(.tactic-mode) .team-row,
 body:not(.editing-mode):not(.tactic-mode) .situation-row{grid-template-columns:minmax(0,1fr)}
 .tactic-launch{margin-top:10px;min-height:38px;height:38px;padding:0 16px;background:#173d67;color:#fff;border-color:#416b96;font-weight:800}
 .tactic-title{width:min(100%,720px);margin:0 0 8px;padding:7px 10px;border-radius:10px;background:#071522;color:#dceaff;font-size:.78rem;font-weight:700;text-align:center;line-height:1.25}
-.tactic-controls{display:grid;grid-template-columns:44px minmax(110px,1fr) 44px minmax(100px,1fr);gap:7px;width:min(100%,720px);margin-top:10px}
-.tactic-controls button{min-height:40px;height:40px;padding:0 10px;border-radius:10px;font-size:.82rem;font-weight:800}
 body.tactic-mode{background:#06111e}
 
 body.tactic-mode .topbar,body.tactic-mode .sidebar,body.tactic-mode .court-toolbar,body.tactic-mode .court-head,body.tactic-mode #actionPanel,body.tactic-mode .legend,body.tactic-mode #tapNotice{display:none!important}
@@ -253,8 +251,6 @@ body.tactic-mode .court-status{margin-top:5px;text-align:center;font-size:.72rem
 @media(max-width:680px){
   body:not(.editing-mode):not(.tactic-mode) .court-toolbar{gap:5px 6px}
   body:not(.editing-mode):not(.tactic-mode) .situation-compact select{font-size:.72rem;padding-left:6px;padding-right:24px}
-  .tactic-controls{grid-template-columns:40px minmax(100px,1fr) 40px minmax(90px,1fr);gap:5px}
-  .tactic-controls button{min-height:38px;height:38px;font-size:.74rem;padding:0 6px}
   body.tactic-mode #court{max-height:none;width:100%}
 }
 @media(max-width:430px){
@@ -271,9 +267,6 @@ body.tactic-mode .court-status{margin-top:5px;text-align:center;font-size:.72rem
 .tactic-title span{font-size:.62rem;color:#b9cde2;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tactic-title strong{font-size:.78rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tactic-title small{font-size:.56rem;color:#91aac4;font-weight:600}
-.tactic-controls{width:min(100%,820px);margin-top:0;grid-template-columns:38px minmax(100px,1fr) 38px minmax(92px,1fr);gap:5px}
-.tactic-controls button{min-height:34px;height:34px;padding:0 8px;border-radius:9px;font-size:.74rem}
-.tactic-controls button:disabled{opacity:.38;filter:saturate(.45)}
 body.tactic-mode{overflow:hidden}
 body.tactic-mode .app{height:100dvh;max-width:1200px;padding:4px}
 body.tactic-mode .layout,body.tactic-mode .court-section{height:100%;min-height:0}
@@ -284,13 +277,11 @@ body.tactic-mode .player-object.tactic-dragging circle,body.tactic-mode .ball-ob
   body.tactic-mode .app{max-width:1400px;padding:6px}
   body.tactic-mode .court-wrap{padding:7px 10px 8px}
   body.tactic-mode #court{max-width:min(100%,1000px)}
-  .tactic-title,.tactic-controls{width:min(100%,1000px)}
+  .tactic-title,.tactic-tools{width:min(100%,1000px)}
   .tactic-title span{font-size:.7rem}.tactic-title strong{font-size:.9rem}.tactic-title small{font-size:.62rem}
 }
 @media(max-width:430px){
   .tactic-title{padding:3px 6px}.tactic-title span{font-size:.55rem}.tactic-title strong{font-size:.7rem}.tactic-title small{font-size:.5rem}
-  .tactic-controls{grid-template-columns:34px 1fr 34px 1fr;gap:4px}
-  .tactic-controls button{min-height:32px;height:32px;font-size:.66rem;padding:0 5px}
   body.tactic-mode .court-wrap{padding:4px;gap:3px}
 }
 
@@ -723,3 +714,65 @@ body.editing-mode .situation-row .editor-action-button{flex-basis:var(--editor-a
 .top-actions{display:grid;grid-template-columns:repeat(2,32px);grid-template-rows:repeat(2,30px);gap:4px;align-items:center;align-self:start;width:auto;flex:0 0 auto}
 .top-actions .icon-action{flex:none;width:32px;height:32px;min-height:32px;padding:0;border-radius:8px;font-size:.86rem;line-height:1;display:grid;place-items:center;overflow:hidden;text-indent:0;white-space:nowrap}
 @media(max-width:680px){.top-actions{grid-template-columns:repeat(2,30px);grid-template-rows:repeat(2,28px);gap:3px}.top-actions .icon-action{width:30px;height:30px;min-height:30px;font-size:.8rem}}
+
+/* 3.0.5.0 – plastische Tasten und erweiterte Taktiktafel */
+button:not(.link-button):not(.action-panel-title){
+  background-image:linear-gradient(180deg,#1b3047 0%,#0d1d2e 62%,#09131f 100%);
+  border-top-color:#55708d;
+  border-bottom-color:#030a12;
+  box-shadow:inset 0 1px 0 #ffffff24,0 2px 0 #040a11,0 4px 7px #0004;
+  transform:translateY(0);
+  transition:transform .08s ease,box-shadow .08s ease,filter .12s ease;
+}
+button.primary,button.blue,.team-add,.situation-add,.step-nav .step-add,.step-strip button.active,.tactic-mode-group button.active{
+  background-image:linear-gradient(180deg,#2474ec 0%,var(--club-blue) 58%,var(--club-blue-2) 100%);
+  border-top-color:#72a8f6;
+  border-bottom-color:#052b70;
+  box-shadow:inset 0 1px 0 #ffffff48,0 2px 0 #052b70,0 4px 8px #0005;
+}
+.team-delete,.situation-delete,.step-nav .step-delete,.admin-delete-user,.admin-member-buttons .danger,.question-delete.danger{
+  background-image:linear-gradient(180deg,#ba3434 0%,#7f1d1d 62%,#541010 100%)!important;
+  border-top-color:#df6969!important;
+  border-bottom-color:#3b0909!important;
+  box-shadow:inset 0 1px 0 #ffffff35,0 2px 0 #3b0909,0 4px 8px #0005!important;
+}
+button:not(.link-button):not(.action-panel-title):active:not(:disabled){
+  transform:translateY(2px);
+  box-shadow:inset 0 2px 4px #0006,0 0 0 #040a11,0 1px 3px #0004;
+}
+button:focus-visible{outline:3px solid #8bc7ef;outline-offset:2px}
+button:disabled{cursor:not-allowed}
+.action-panel-title,.link-button{box-shadow:none!important;transform:none!important}
+
+.tactic-tools{display:grid;gap:5px;width:min(100%,820px);padding:5px;border:1px solid #315a82;border-radius:10px;background:#071522f2}
+.tactic-history-controls{display:grid;grid-template-columns:minmax(88px,1fr) minmax(94px,1fr) 36px 36px minmax(78px,1fr);gap:5px}
+.tactic-history-controls button{height:34px;min-height:34px;padding:0 7px;border-radius:8px;font-size:.7rem;font-weight:850;white-space:nowrap}
+.tactic-mode-controls{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.tactic-mode-group{display:grid;grid-template-columns:auto 1fr 1fr;align-items:center;gap:3px;padding:3px;border:1px solid #294766;border-radius:8px;background:#0c2035}
+.tactic-mode-group>span{padding:0 4px;color:#b9cde2;font-size:.62rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em}
+.tactic-mode-group button{height:30px;min-height:30px;padding:0 6px;border-radius:6px;font-size:.66rem;font-weight:800;white-space:nowrap}
+.tactic-mode-group button.active{color:#fff}
+.tactic-tools button:disabled{opacity:.38;filter:saturate(.45)}
+.tactic-drawn-path{fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.tactic-player-path{stroke:#fff;stroke-width:5;stroke-dasharray:11 9;marker-end:url(#arrowWhite)}
+.tactic-ball-path{stroke:var(--yellow);stroke-width:5;stroke-dasharray:11 9;marker-end:url(#arrowYellow)}
+body.tactic-mode .court-wrap{grid-template-rows:auto auto minmax(0,1fr)}
+
+@media(min-width:760px){.tactic-tools{width:min(100%,1000px)}.tactic-mode-group>span{font-size:.68rem}.tactic-mode-group button{font-size:.72rem}}
+@media(max-width:430px){
+  .tactic-tools{gap:4px;padding:4px}
+  .tactic-history-controls{grid-template-columns:minmax(78px,1fr) minmax(84px,1fr) 32px 32px minmax(68px,.9fr);gap:3px}
+  .tactic-history-controls button{height:31px;min-height:31px;padding:0 4px;font-size:.61rem}
+  .tactic-mode-controls{gap:3px}
+  .tactic-mode-group{grid-template-columns:1fr 1fr;padding:3px;gap:3px}
+  .tactic-mode-group>span{grid-column:1/-1;padding:0;text-align:center;font-size:.54rem;line-height:1}
+  .tactic-mode-group button{height:27px;min-height:27px;padding:0 3px;font-size:.59rem}
+}
+@media(max-height:620px) and (orientation:landscape){
+  .tactic-title small{display:none}
+  .tactic-tools{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center;padding:3px}
+  .tactic-history-controls{grid-template-columns:minmax(72px,1fr) minmax(80px,1fr) 30px 30px minmax(64px,.8fr);gap:3px}
+  .tactic-history-controls button,.tactic-mode-group button{height:27px;min-height:27px;font-size:.58rem;padding:0 3px}
+  .tactic-mode-group>span{display:none}
+  .tactic-mode-group{grid-template-columns:1fr 1fr;padding:2px}
+}

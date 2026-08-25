@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const VERSION="3.0.4.22",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
+const VERSION="3.0.5.0",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
 const OFFLINE_META_KEY=`${KEY}-offline-meta`;
 function loadOfflineMeta(){try{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false,...JSON.parse(localStorage.getItem(OFFLINE_META_KEY)||"{}")}}catch{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false}}}
 let offlineMeta=loadOfflineMeta();
@@ -15,7 +15,7 @@ const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role
 const allPlayers=[...ownRoster,...opponentRoster];
 const ownSlots={1:{x:520,y:735},2:{x:520,y:545},3:{x:350,y:545},4:{x:180,y:545},5:{x:180,y:735},6:{x:350,y:735}};
 const opponentSlots={1:{x:180,y:165},2:{x:180,y:355},3:{x:350,y:355},4:{x:520,y:355},5:{x:520,y:165},6:{x:350,y:165}};
-const ids=["authGate","appMain","loginForm","loginEmail","loginPassword","loginSubmit","invitePasswordForm","invitePassword","invitePasswordRepeat","forgotPassword","authStatus","platformOnlyGate","platformOnlyAdminOpen","platformOnlyLogout","accountButton","accountDialog","closeAccount","accountName","accountEmail","accountRoles","clubSwitcherWrap","teamContextSelect","platformAdminOpen","clubAdminOpen","platformAdminDialog","closePlatformAdmin","platformAdminContent","platformAdminRefresh","clubAdminDialog","closeClubAdmin","clubAdminContent","clubAdminRefresh","logoutButton","teamNameInput","teamConfigClose","teamConfigPanel","teamConfigToggle","deleteTeam","addTeam","teamSelect","infoButton","editButton","brandClubName","rotationSelect","situationConfigToggle","situationConfigPanel","situationConfigClose","situationBaseNameWrap","situationBaseName","situationNameLabel","situationNameEdit","situationNameHint","addSituation","deleteSituation","stepNumber","stepTotal","stepNameEdit","stepNameInlineEditor","stepNameInlineInput","stepNameSuggestions","prevStep","playButton","nextStep","resetStepPositions","saveStep","addStep","deleteStep","actionMenuToggle","actionMenuClose","editPanel","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","tapNoticeText","resetSelectedPlayer","status","infoDialog","closeInfo","closeInfoBottom","infoGuideTitle","infoGuideList","infoSituation","infoDataSource","lineupEditor","lineupGrid","liberoToggle","opponentSystem","opponentLiberoToggle","syncBadge","jsBuildBadge","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint","invitePreviewDialog","closeInvitePreview","invitePreviewTitle","invitePreviewMeta","invitePreviewSubject","invitePreviewBody","inviteTemplateHint","invitePreviewStatus","invitePreviewCancel","invitePreviewSave","invitePreviewSend","syncTimeStatus","infoSyncStatus","viewToggle","view2d","view25d","positionInfoToggle","court25d","court25Floor","movement25Layer","ballPath25Layer","action25Layer","player25Layer","ball25Object","actionPanel","actionType","actionActorWrap","actionActor","actionTechniqueWrap","actionTechnique","actionHelperWrap","actionHelper","actionOutcomeWrap","actionOutcome","actionReasonWrap","actionReason","attackBlockWrap","attackBlocker1","attackBlocker2","snapBallToActor","clearAction","actionHint","actionSummary","actionLayer","ruleCheck","ruleCheckToggle","ruleCheckSummary","ruleCheckChevron","ruleCheckDetails","stepStrip","tacticLaunch","tacticPanel","tacticPrev","tacticNext","tacticReset","tacticExit","tacticTitle","tacticContext","tacticStepTitle","questionsButton","questionsBadge","courtQuestionButton","courtQuestionBadge","questionContextPanel","questionsDialog","closeQuestions","questionsContent","questionNewButton","questionComposer","questionText","questionCancel","questionSend","situationInfoButton","stepInfoButton","situationInfoInline","situationInfoEdit","stepInfoEdit","publishSituation","publishState","contextInfoDialog","closeContextInfo","contextInfoTitle","contextInfoBody","noPublishedNotice"];
+const ids=["authGate","appMain","loginForm","loginEmail","loginPassword","loginSubmit","invitePasswordForm","invitePassword","invitePasswordRepeat","forgotPassword","authStatus","platformOnlyGate","platformOnlyAdminOpen","platformOnlyLogout","accountButton","accountDialog","closeAccount","accountName","accountEmail","accountRoles","clubSwitcherWrap","teamContextSelect","platformAdminOpen","clubAdminOpen","platformAdminDialog","closePlatformAdmin","platformAdminContent","platformAdminRefresh","clubAdminDialog","closeClubAdmin","clubAdminContent","clubAdminRefresh","logoutButton","teamNameInput","teamConfigClose","teamConfigPanel","teamConfigToggle","deleteTeam","addTeam","teamSelect","infoButton","editButton","brandClubName","rotationSelect","situationConfigToggle","situationConfigPanel","situationConfigClose","situationBaseNameWrap","situationBaseName","situationNameLabel","situationNameEdit","situationNameHint","addSituation","deleteSituation","stepNumber","stepTotal","stepNameEdit","stepNameInlineEditor","stepNameInlineInput","stepNameSuggestions","prevStep","playButton","nextStep","resetStepPositions","saveStep","addStep","deleteStep","actionMenuToggle","actionMenuClose","editPanel","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","tapNoticeText","resetSelectedPlayer","status","infoDialog","closeInfo","closeInfoBottom","infoGuideTitle","infoGuideList","infoSituation","infoDataSource","lineupEditor","lineupGrid","liberoToggle","opponentSystem","opponentLiberoToggle","syncBadge","jsBuildBadge","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint","invitePreviewDialog","closeInvitePreview","invitePreviewTitle","invitePreviewMeta","invitePreviewSubject","invitePreviewBody","inviteTemplateHint","invitePreviewStatus","invitePreviewCancel","invitePreviewSave","invitePreviewSend","syncTimeStatus","infoSyncStatus","viewToggle","view2d","view25d","positionInfoToggle","court25d","court25Floor","movement25Layer","ballPath25Layer","action25Layer","player25Layer","ball25Object","actionPanel","actionType","actionActorWrap","actionActor","actionTechniqueWrap","actionTechnique","actionHelperWrap","actionHelper","actionOutcomeWrap","actionOutcome","actionReasonWrap","actionReason","attackBlockWrap","attackBlocker1","attackBlocker2","snapBallToActor","clearAction","actionHint","actionSummary","actionLayer","ruleCheck","ruleCheckToggle","ruleCheckSummary","ruleCheckChevron","ruleCheckDetails","stepStrip","tacticLaunch","tacticPanel","tacticPrev","tacticNext","tacticReset","tacticUndo","tacticPlayerMove","tacticPlayerPath","tacticBallMove","tacticBallPath","tacticExit","tacticTitle","tacticContext","tacticStepTitle","questionsButton","questionsBadge","courtQuestionButton","courtQuestionBadge","questionContextPanel","questionsDialog","closeQuestions","questionsContent","questionNewButton","questionComposer","questionText","questionCancel","questionSend","situationInfoButton","stepInfoButton","situationInfoInline","situationInfoEdit","stepInfoEdit","publishSituation","publishState","contextInfoDialog","closeContextInfo","contextInfoTitle","contextInfoBody","noPublishedNotice"];
 const e=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
 if(e.jsBuildBadge)e.jsBuildBadge.textContent=`JS ${VERSION} geladen`;window.addEventListener("error",ev=>{if(e.jsBuildBadge)e.jsBuildBadge.textContent=`JS-Fehler ${VERSION}: ${ev.message||"unbekannt"}`});
 const roleNames={AA:"Außen",MB:"Mitte",Z:"Zuspiel",D:"Diagonal",L:"Libero"};
@@ -70,7 +70,7 @@ function migrate(){
   return changed;
 }
 const localMigrationApplied=migrate();if(localMigrationApplied)localStorage.setItem(KEY,JSON.stringify(state));
-let editing=false,selected=null,dragging=null,playing=false,animations=[],teamConfigOpen=false,situationConfigOpen=false,committedState=structuredClone(state),dirty=false,renamingStep=false,actionMenuOpen=false,tacticMode=false,tacticSourceState=null,tacticPreviousView="2d",tacticChanged=false;
+let editing=false,selected=null,dragging=null,playing=false,animations=[],teamConfigOpen=false,situationConfigOpen=false,committedState=structuredClone(state),dirty=false,renamingStep=false,actionMenuOpen=false,tacticMode=false,tacticSourceState=null,tacticPreviousView="2d",tacticChanged=false,tacticUndoStack=[],tacticPaths=[],tacticPlayerMode="move",tacticBallMode="move";
 let remoteHasData=false,dataSource=hadLocalStateAtStartup?"browser":"default";
 let preferredView=localStorage.getItem("volleyball-trainer-view")||"2d";if(!["2d","25d"].includes(preferredView))preferredView="2d";
 let showPositionInfo=localStorage.getItem("volleyball-trainer-position-info")!=="off";
@@ -544,7 +544,41 @@ function validate(){
   check.vertical.forEach(([f,b])=>{const F=pos(f),B=pos(b);if(!F||!B)return;const y=(F.y+B.y)/2;e.validationLayer.appendChild(svg("line",{x1:105,y1:y,x2:595,y2:y,class:"validation-invalid"}))});
   return bad;
 }
-function paths(){e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";if(tacticMode||state.step===0)return;const a=rd().steps[state.step-1],b=sd();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line(e.movementLayer,A,B,"movement-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPathLayer,a.ball,b.ball,"ball-path",false,motionFor(a))}
+function shortenTacticPoints(rawPoints,distance){
+  const points=rawPoints.map(p=>({...p}));let total=0;
+  for(let i=1;i<points.length;i++)total+=Math.hypot(points[i].x-points[i-1].x,points[i].y-points[i-1].y);
+  if(total<=distance)return points;
+  let remaining=distance;
+  for(let i=points.length-2;i>=0;i--){
+    const a=points[i],b=points[i+1],dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy);if(!len)continue;
+    if(len>=remaining)return[...points.slice(0,i+1),{x:b.x-dx/len*remaining,y:b.y-dy/len*remaining}];
+    remaining-=len;
+  }
+  return points;
+}
+function tacticPathD(rawPoints,kind){
+  let points=(rawPoints||[]).map(p=>({x:Number(p.x)||0,y:Number(p.y)||0}));
+  if(points.length<2)return"";
+  points=shortenTacticPoints(points,kind==="player"?42:28);
+  if(points.length===2)return`M ${points[0].x} ${points[0].y} L ${points[1].x} ${points[1].y}`;
+  let d=`M ${points[0].x} ${points[0].y}`;
+  for(let i=1;i<points.length-2;i++){
+    const p=points[i],next=points[i+1],mid={x:(p.x+next.x)/2,y:(p.y+next.y)/2};
+    d+=` Q ${p.x} ${p.y} ${mid.x} ${mid.y}`;
+  }
+  const control=points[points.length-2],end=points[points.length-1];
+  return`${d} Q ${control.x} ${control.y} ${end.x} ${end.y}`;
+}
+function renderTacticPaths(){
+  let active=null;
+  if(dragging?.pathMode){const points=[...(dragging.points||[])];const live=dragging.livePoint,last=points[points.length-1];if(live&&(!last||live.x!==last.x||live.y!==last.y))points.push(live);if(points.length>1)active={kind:dragging.type,points}}
+  [...tacticPaths,...(active?[active]:[])].forEach(item=>{
+    const d=tacticPathD(item.points,item.kind);if(!d)return;
+    const layer=item.kind==="ball"?e.ballPathLayer:e.movementLayer;
+    layer.appendChild(svg("path",{d,class:`tactic-drawn-path tactic-${item.kind}-path`}));
+  });
+}
+function paths(){e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";if(tacticMode){renderTacticPaths();return}if(state.step===0)return;const a=rd().steps[state.step-1],b=sd();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line(e.movementLayer,A,B,"movement-path")});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPathLayer,a.ball,b.ball,"ball-path",false,motionFor(a))}
 function applySelectTextFit(select,text){
   if(!select)return;const len=Array.from(text||"").length;select.classList.remove("text-fit-medium","text-fit-small");
   if(len>28)select.classList.add("text-fit-small");else if(len>20)select.classList.add("text-fit-medium");
@@ -651,6 +685,8 @@ function render(){
     if(e.tacticPrev)e.tacticPrev.disabled=state.step<=0;
     if(e.tacticNext)e.tacticNext.disabled=state.step>=rd().steps.length-1;
     if(e.tacticReset)e.tacticReset.disabled=!tacticChanged;
+    if(e.tacticUndo)e.tacticUndo.disabled=!tacticUndoStack.length;
+    [[e.tacticPlayerMove,tacticPlayerMode==="move"],[e.tacticPlayerPath,tacticPlayerMode==="path"],[e.tacticBallMove,tacticBallMode==="move"],[e.tacticBallPath,tacticBallMode==="path"]].forEach(([button,active])=>{if(!button)return;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active))});
   }
   renderSituationOptions();renderStepStrip();e.stepNumber.textContent=state.step+1;e.stepTotal.textContent=rd().steps.length;e.currentStepTitle.textContent=sd().name;if(e.stepNameInlineEditor)e.stepNameInlineEditor.classList.toggle("hidden",!editing||!renamingStep);if(e.currentStepTitle)e.currentStepTitle.classList.toggle("hidden",editing&&renamingStep);if(e.stepNameInlineInput&&renamingStep&&document.activeElement!==e.stepNameInlineInput)e.stepNameInlineInput.value=sd().name||"";if(e.stepNameSuggestions&&renamingStep)e.stepNameSuggestions.innerHTML=stepNameSuggestionHtml();e.liberoToggle.checked=td().teamConfig.libero;if(e.opponentSystem)e.opponentSystem.value=td().teamConfig.opponentSystem||"42";if(e.opponentLiberoToggle)e.opponentLiberoToggle.checked=Boolean(td().teamConfig.opponentLibero);if(e.brandClubName){const club=currentClub();e.brandClubName.textContent=club?.name||"TTC Geltendorf e.V.";e.brandClubName.title=e.brandClubName.textContent}if(e.stepNameEdit)e.stepNameEdit.classList.toggle("hidden",!editing||renamingStep);document.body.classList.toggle("editing-mode",editing);e.editButton?.classList.toggle("hidden",!canEdit());e.questionNewButton?.classList.toggle("hidden",editing);updateMigrationUI();e.addTeam?.classList.toggle("hidden",!editing);e.deleteTeam?.classList.toggle("hidden",!editing);e.teamConfigToggle?.classList.toggle("hidden",!editing);e.addSituation.classList.toggle("hidden",!editing);e.deleteSituation.classList.toggle("hidden",!editing);e.addStep.classList.toggle("hidden",!editing);e.deleteStep.classList.toggle("hidden",!editing);if(e.resetStepPositions)e.resetStepPositions.classList.toggle("hidden",!editing||state.step===0);e.actionMenuToggle.classList.toggle("hidden",!editing);e.saveStep.classList.toggle("hidden",!editing||!dirty);e.teamConfigPanel?.classList.toggle("hidden",!editing||!teamConfigOpen);e.lineupEditor?.classList.toggle("hidden",!editing||!teamConfigOpen);e.situationConfigToggle?.classList.toggle("hidden",!editing);e.situationConfigPanel?.classList.toggle("hidden",!editing||!situationConfigOpen);if(e.teamNameInput)e.teamNameInput.value=td().name||"";if(e.situationInfoEdit)e.situationInfoEdit.value=rd().info||"";if(e.stepInfoEdit)e.stepInfoEdit.value=sd().info||"";if(e.publishState){e.publishState.textContent=rd().published?"Freigegeben für Viewer":"In Bearbeitung – für Viewer verborgen";e.publishState.className=`publish-state ${rd().published?"published":"draft"}`;}if(e.publishSituation){e.publishSituation.textContent=rd().published?"Freigabe zurücknehmen":"✓ Für Viewer freigeben";}if(e.situationInfoButton)e.situationInfoButton.classList.add("hidden");if(e.stepInfoButton)e.stepInfoButton.classList.toggle("hidden",!(sd().info||"").trim());if(e.situationInfoInline)e.situationInfoInline.classList.toggle("hidden",!(rd().info||"").trim());if(e.situationNameEdit){const fixed=Boolean(rd().baseName);e.situationBaseNameWrap?.classList.toggle("hidden",!fixed);if(e.situationBaseName)e.situationBaseName.textContent=rd().baseName||"";if(e.situationNameLabel)e.situationNameLabel.textContent=fixed?"Zusatz (optional)":"Name der Spielsituation";e.situationNameEdit.value=fixed?(rd().nameSuffix||""):(rd().name||"");if(e.situationNameHint)e.situationNameHint.textContent=fixed?"Der feste Grundname bleibt erhalten; der Zusatz wird dahinter angezeigt.":"Der Name kann frei geändert werden."}renderQuestionContext();updateCourtQuestionBadge();renderActionEditor();paths();const bad=validate();
   allPlayers.forEach(p=>{const g=e.playerLayer.querySelector(`[data-id="${p.id}"]`),pos=sd().positions[p.id],role=effectiveRole(p);g.setAttribute("transform",`translate(${pos.x} ${pos.y})`);g.classList.toggle("editable",editing||tacticMode);g.classList.toggle("selected",selected?.type==="player"&&selected.id===p.id);g.classList.toggle("tactic-dragging",tacticMode&&dragging?.type==="player"&&dragging.id===p.id);g.classList.toggle("position-warning",editing&&bad.has(p.id));g.querySelector("[data-role]").textContent=role;g.querySelector("circle").setAttribute("fill",p.team==="opponent"?"#e32828":role==="L"?"#111827":"#0b4fc6");const label=g.querySelector("[data-label]");label.textContent=p.team==="opponent"?"":String(prot(p));label.style.display=showPositionInfo&&p.team!=="opponent"?"":"none"});
@@ -669,12 +705,27 @@ function clearVisualAnimations(){
 function stop(){playing=false;animations.forEach(a=>a.cancel());animations=[];clearVisualAnimations();e.playButton.textContent="▶"}
 function edit(v){stop();clearVisualAnimations();if(v&&!editing){state=structuredClone(committedState);dirty=false}if(!v&&editing&&dirty){state=structuredClone(committedState);migrate();dirty=false}editing=v;selected=dragging=null;if(!v){renamingStep=false;actionMenuOpen=false;teamConfigOpen=false;situationConfigOpen=false;}e.editButton.textContent=v?"✓":"✎";e.editButton.setAttribute("aria-label",v?"Bearbeitung beenden":"Bearbeiten");e.editButton.setAttribute("title",v?"Bearbeitung beenden":"Bearbeiten");e.editPanel.classList.toggle("hidden",!v);e.tapNotice.classList.add("hidden");if(!v){teamConfigOpen=false;situationConfigOpen=false;e.lineupEditor.classList.add("hidden");e.teamConfigPanel?.classList.add("hidden");e.situationConfigPanel?.classList.add("hidden")}render()}
 async function requestEdit(){if(editing){edit(false);return}if(!navigator.onLine){e.status.textContent="Offline-Bearbeitung nicht möglich.";window.alert("Offline-Bearbeitung nicht möglich.\n\nZum Bearbeiten wird eine Internetverbindung benötigt.");return}if(!canEdit()){window.alert("Dein Konto hat keine Bearbeitungsberechtigung.");return}edit(true)}
+function resetTacticWorkspace(){tacticUndoStack=[];tacticPaths=[];tacticChanged=false;selected=dragging=null}
+function tacticSnapshot(){return{step:state.step,stepData:structuredClone(sd()),paths:structuredClone(tacticPaths),changed:tacticChanged}}
+function setTacticTool(kind,value){
+  if(!tacticMode||!['move','path'].includes(value))return;
+  if(kind==="player")tacticPlayerMode=value;else if(kind==="ball")tacticBallMode=value;else return;
+  const label=kind==="player"?(value==="path"?"Spieler: Laufweg zeichnen":"Spieler: ohne Laufweg verschieben"):(value==="path"?"Ball: Flugbahn zeichnen":"Ball: ohne Flugbahn verschieben");
+  e.status.textContent=label;render();
+}
+function undoTactic(){
+  if(!tacticMode||!tacticUndoStack.length)return;
+  const previous=tacticUndoStack.pop();
+  if(previous.step!==state.step){tacticUndoStack=[];render();return}
+  rd().steps[state.step]=structuredClone(previous.stepData);tacticPaths=structuredClone(previous.paths);tacticChanged=previous.changed;selected=dragging=null;
+  e.status.textContent="Letzte Änderung rückgängig gemacht.";render();
+}
 function enterTacticMode(){
   if(!editing||playing)return;
   stop();clearVisualAnimations();
   tacticSourceState=structuredClone(state);
   state=structuredClone(state);
-  tacticPreviousView=preferredView;tacticMode=true;tacticChanged=false;selected=dragging=null;preferredView="2d";
+  tacticPreviousView=preferredView;tacticMode=true;tacticPlayerMode="move";tacticBallMode="move";resetTacticWorkspace();preferredView="2d";
   e.status.textContent="Taktiktafel im Bearbeitungsmodus: Änderungen werden nicht gespeichert.";
   render();
 }
@@ -685,14 +736,14 @@ function restoreTacticStep(index=state.step){
   const sourceRotation=tacticSourceState.teams[tacticSourceState.teamIndex].rotations[tacticSourceState.rotation];
   const targetRotation=state.teams[state.teamIndex].rotations[state.rotation];
   targetRotation.steps[next]=structuredClone(sourceRotation.steps[next]);
-  state.step=next;tacticChanged=false;selected=dragging=null;
+  state.step=next;resetTacticWorkspace();
   render();
 }
 function exitTacticMode(){
   if(!tacticMode)return;
   stop();clearVisualAnimations();
   if(tacticSourceState)state=structuredClone(tacticSourceState);
-  tacticSourceState=null;tacticMode=false;tacticChanged=false;selected=dragging=null;preferredView=tacticPreviousView;
+  tacticSourceState=null;tacticMode=false;resetTacticWorkspace();preferredView=tacticPreviousView;
   e.status.textContent="Taktiktafel beendet. Keine Änderung wurde gespeichert.";
   render();
 }
@@ -701,8 +752,53 @@ const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 function playerPoint(p,player){const a=actionData();if(a.type==="serve"&&a.actorId===player.id){if(player.team==="own")return{x:clamp(p.x,124,576),y:clamp(p.y,855,888)};return{x:clamp(p.x,124,576),y:clamp(p.y,12,45)}}if(a.type==="serve"){const yMin=player.team==="own"?479:79,yMax=player.team==="own"?821:421;return{x:clamp(p.x,124,576),y:clamp(p.y,yMin,yMax)}}return{x:clamp(p.x,32,668),y:clamp(p.y,32,868)}}
 function keepServePlayersInside(){if(actionData().type!=="serve")return;const a=actionData();allPlayers.forEach(player=>{if(a.actorId===player.id)return;sd().positions[player.id]=playerPoint(sd().positions[player.id],player)})}
 const cb=p=>({x:clamp(p.x,25,675),y:clamp(p.y,25,875)}),mode=()=>"tap";
-e.court.addEventListener("pointerdown",ev=>{if((!editing&&!tacticMode)||playing)return;ev.preventDefault();const pe=ev.target.closest("[data-id]"),be=ev.target.closest("#ballObject");if(tacticMode){if(pe){dragging={type:"player",id:pe.dataset.id};e.court.setPointerCapture(ev.pointerId)}else if(be){dragging={type:"ball"};e.court.setPointerCapture(ev.pointerId)}return;}if(mode()==="tap"){if(selected){if(selected.type==="player"&&pe?.dataset.id===selected.id){selected=null;e.tapNotice.classList.add("hidden");render();return}const p=point(ev);if(selected.type==="player"){const player=allPlayers.find(x=>x.id===selected.id);sd().positions[selected.id]=playerPoint(p,player);if(actionData().actorId===selected.id)syncContactBall();dirty=true}else{sd().ball=cb(p);dirty=true}selected=null;e.tapNotice.classList.add("hidden");render();return}if(pe){selected={type:"player",id:pe.dataset.id};e.tapNotice.classList.remove("hidden");render();return}if(be){if(actionData().ballLinked){e.status.textContent="Der Ball ist in diesem Schritt an den Kontaktspieler gekoppelt. Zum freien Verschieben zuerst den Ball entkoppeln.";return}selected={type:"ball"};e.tapNotice.classList.remove("hidden");render();return}return}if(pe){dragging={type:"player",id:pe.dataset.id};e.court.setPointerCapture(ev.pointerId)}else if(be){if(actionData().ballLinked){e.status.textContent="Der Ball ist in diesem Schritt an den Kontaktspieler gekoppelt. Zum freien Verschieben zuerst den Ball entkoppeln.";return}dragging={type:"ball"};e.court.setPointerCapture(ev.pointerId)}},{passive:false});
-e.court.addEventListener("pointermove",ev=>{if(!dragging||(!editing&&!tacticMode)||playing)return;ev.preventDefault();const p=point(ev);if(tacticMode){if(dragging.type==="player")sd().positions[dragging.id]={x:clamp(p.x,32,668),y:clamp(p.y,32,868)};else sd().ball=cb(p);tacticChanged=true;render();return;}if(dragging.type==="player"){const player=allPlayers.find(x=>x.id===dragging.id);sd().positions[dragging.id]=playerPoint(p,player);if(actionData().actorId===dragging.id)syncContactBall();dirty=true}else{sd().ball=cb(p);dirty=true}render()},{passive:false});["pointerup","pointercancel"].forEach(n=>e.court.addEventListener(n,()=>{dragging=null;if(tacticMode)render()}));
+function beginTacticDrag(type,id=""){
+  const start=type==="player"?structuredClone(sd().positions[id]):structuredClone(sd().ball);
+  if(!start)return false;
+  const pathMode=type==="player"?tacticPlayerMode==="path":tacticBallMode==="path";
+  dragging={type,id,start,livePoint:start,lastSample:start,points:[start],pathMode,moved:false,before:tacticSnapshot()};
+  return true;
+}
+function moveTacticDrag(p){
+  if(!dragging||!tacticMode)return;
+  const next=dragging.type==="player"?{x:clamp(p.x,32,668),y:clamp(p.y,32,868)}:cb(p);
+  if(dragging.type==="player")sd().positions[dragging.id]=next;else sd().ball=next;
+  dragging.livePoint=next;
+  if(Math.hypot(next.x-dragging.start.x,next.y-dragging.start.y)>.75)dragging.moved=true;
+  if(dragging.pathMode&&Math.hypot(next.x-dragging.lastSample.x,next.y-dragging.lastSample.y)>=8){dragging.points.push(next);dragging.lastSample=next}
+  tacticChanged=tacticChanged||dragging.moved;
+}
+function finishTacticDrag(){
+  if(!dragging)return;
+  const completed=dragging;dragging=null;
+  if(!tacticMode||!completed.moved){render();return}
+  if(completed.pathMode){const points=[...completed.points],last=points[points.length-1],end=completed.livePoint;if(end&&(!last||end.x!==last.x||end.y!==last.y))points.push(end);if(points.length>1)tacticPaths.push({kind:completed.type,points})}
+  tacticUndoStack.push(completed.before);if(tacticUndoStack.length>100)tacticUndoStack.shift();
+  tacticChanged=true;render();
+}
+e.court.addEventListener("pointerdown",ev=>{
+  if((!editing&&!tacticMode)||playing)return;
+  ev.preventDefault();
+  const pe=ev.target.closest("[data-id]"),be=ev.target.closest("#ballObject");
+  if(tacticMode){if(pe&&beginTacticDrag("player",pe.dataset.id))e.court.setPointerCapture(ev.pointerId);else if(be&&beginTacticDrag("ball"))e.court.setPointerCapture(ev.pointerId);return}
+  if(mode()==="tap"){
+    if(selected){
+      if(selected.type==="player"&&pe?.dataset.id===selected.id){selected=null;e.tapNotice.classList.add("hidden");render();return}
+      const p=point(ev);
+      if(selected.type==="player"){const player=allPlayers.find(x=>x.id===selected.id);sd().positions[selected.id]=playerPoint(p,player);if(actionData().actorId===selected.id)syncContactBall();dirty=true}else{sd().ball=cb(p);dirty=true}
+      selected=null;e.tapNotice.classList.add("hidden");render();return;
+    }
+    if(pe){selected={type:"player",id:pe.dataset.id};e.tapNotice.classList.remove("hidden");render();return}
+    if(be){if(actionData().ballLinked){e.status.textContent="Der Ball ist in diesem Schritt an den Kontaktspieler gekoppelt. Zum freien Verschieben zuerst den Ball entkoppeln.";return}selected={type:"ball"};e.tapNotice.classList.remove("hidden");render();return}
+  }
+},{passive:false});
+e.court.addEventListener("pointermove",ev=>{
+  if(!dragging||(!editing&&!tacticMode)||playing)return;
+  ev.preventDefault();const p=point(ev);
+  if(tacticMode){moveTacticDrag(p);render();return}
+  if(dragging.type==="player"){const player=allPlayers.find(x=>x.id===dragging.id);sd().positions[dragging.id]=playerPoint(p,player);if(actionData().actorId===dragging.id)syncContactBall();dirty=true}else{sd().ball=cb(p);dirty=true}render();
+},{passive:false});
+["pointerup","pointercancel"].forEach(n=>e.court.addEventListener(n,()=>{if(tacticMode)finishTacticDrag();else dragging=null}));
 async function animate(target,{sequence=false}={}){
   target=Math.max(0,Math.min(rd().steps.length-1,target));
   if(target===state.step)return true;
@@ -761,9 +857,14 @@ e.editButton.addEventListener("click",requestEdit);e.rotationSelect.addEventList
 });
 
 e.tacticLaunch?.addEventListener("click",enterTacticMode);
+e.tacticUndo?.addEventListener("click",undoTactic);
 e.tacticReset?.addEventListener("click",()=>restoreTacticStep(state.step));
 e.tacticPrev?.addEventListener("click",()=>restoreTacticStep(state.step-1));
 e.tacticNext?.addEventListener("click",()=>restoreTacticStep(state.step+1));
+e.tacticPlayerMove?.addEventListener("click",()=>setTacticTool("player","move"));
+e.tacticPlayerPath?.addEventListener("click",()=>setTacticTool("player","path"));
+e.tacticBallMove?.addEventListener("click",()=>setTacticTool("ball","move"));
+e.tacticBallPath?.addEventListener("click",()=>setTacticTool("ball","path"));
 e.tacticExit?.addEventListener("click",exitTacticMode);
 
 e.saveStep.addEventListener("click",()=>{if(renamingStep)applyInlineStepName(true);keepServePlayersInside();selected=dragging=null;e.tapNotice.classList.add("hidden");save("Änderungen gespeichert.");renamingStep=false;render()});

@@ -1,4 +1,4 @@
-/* Volleyball Trainer 3.0.5.0 */
+/* Volleyball Trainer 3.0.5.1 */
 :root{
   --panel:#10233a;--panel2:#0b1a2b;--text:#f8fafc;--muted:#aebed0;
   --club-blue:#0b4fc6;--club-blue-2:#073b9a;
@@ -48,7 +48,7 @@ dialog{border:0;padding:0;background:transparent;color:var(--text);max-width:100
 .block-attempt-link{stroke-dasharray:7 6;opacity:.75}
 
 /* 2.5.4: gekoppelte Baelle fangen beim Bearbeiten keine Touch-Ereignisse ab */
-.editing-mode .ball-object.linked-contact{pointer-events:none;cursor:default}
+body.editing-mode:not(.tactic-mode) .ball-object.linked-contact{pointer-events:none;cursor:default}
 .ball-path,.ball25-path{stroke-linecap:round;stroke-linejoin:round}
 
 .position-info-toggle{min-height:30px;height:30px;padding:0 8px;border:1px solid #365473;border-radius:8px;background:#071522;color:#cfe0f5;font-size:.72rem;font-weight:750;white-space:nowrap}.position-info-toggle.active{background:#153a62;color:#fff;border-color:#4a78a7}@media(max-width:680px){.position-info-toggle{min-height:28px;height:28px;font-size:.68rem;padding:0 7px}}
@@ -710,10 +710,11 @@ body.editing-mode .situation-row .editor-action-button{flex-basis:var(--editor-a
 }
 
 
-/* 3.0.4.22 – konsolidierter App-Kopf; entspricht der bisher wirksamen Darstellung */
-.top-actions{display:grid;grid-template-columns:repeat(2,32px);grid-template-rows:repeat(2,30px);gap:4px;align-items:center;align-self:start;width:auto;flex:0 0 auto}
+/* 3.0.4.22 – konsolidierter App-Kopf; in 3.0.5.1 als einzeilige Symbolleiste */
+.top-actions{display:grid;grid-template-columns:repeat(4,32px);gap:4px;align-items:center;align-self:center;width:auto;flex:0 0 auto}
 .top-actions .icon-action{flex:none;width:32px;height:32px;min-height:32px;padding:0;border-radius:8px;font-size:.86rem;line-height:1;display:grid;place-items:center;overflow:hidden;text-indent:0;white-space:nowrap}
-@media(max-width:680px){.top-actions{grid-template-columns:repeat(2,30px);grid-template-rows:repeat(2,28px);gap:3px}.top-actions .icon-action{width:30px;height:30px;min-height:30px;font-size:.8rem}}
+@media(max-width:680px){.top-actions{grid-template-columns:repeat(4,29px);gap:3px}.top-actions .icon-action{width:29px;height:29px;min-height:29px;font-size:.78rem}}
+@media(max-width:430px){.brand h1{font-size:clamp(.86rem,4.4vw,1.08rem)}.brand-copy p{font-size:.64rem!important;max-width:calc(100vw - 190px)!important}.brand-logo-wrap{width:45px;height:45px}.brand-logo{width:42px;height:42px}}
 
 /* 3.0.5.0 – plastische Tasten und erweiterte Taktiktafel */
 button:not(.link-button):not(.action-panel-title){
@@ -776,3 +777,10 @@ body.tactic-mode .court-wrap{grid-template-rows:auto auto minmax(0,1fr)}
   .tactic-mode-group>span{display:none}
   .tactic-mode-group{grid-template-columns:1fr 1fr;padding:2px}
 }
+
+/* 3.0.5.1 – Taktiktafel-Hotfix und störungsfreie Bedienfläche */
+body.editing-mode .court-view-toggle,
+body.tactic-mode .court-view-toggle{display:none!important}
+body.tactic-mode .court-question-button,
+body.tactic-mode .court-step-info-button,
+body.tactic-mode #questionContextPanel{display:none!important}

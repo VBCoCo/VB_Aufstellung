@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.0.5.0  
+**Aktueller Frontend-Stand:** 3.0.5.1  
 **Veröffentlichung:** GitHub Pages  
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -113,6 +113,8 @@ Seit Version 3.0.4.21 besitzen JavaScript, CSS und Browser-Konfiguration stabile
 Version 3.0.4.22 bereinigt den aktiven Frontend-Code ohne fachliche Funktionsänderung. Entfernt wurden vollständig überschriebene oder nicht mehr referenzierte CSS-Selektoren, ungenutzte CSS-Variablen, die frühere lokale Passwortprüfung für den Bearbeitungsmodus sowie die durch die Inline-Schrittbenennung ersetzte alte Bedienoberfläche. Die zuvor tatsächlich wirksame Darstellung des App-Kopfs wurde in einer eindeutigen Regel zusammengeführt.
 
 Version 3.0.5.0 erweitert die nicht speichernde Taktiktafel. Spieler und Ball können getrennt entweder ohne Linie verschoben oder mit einem frei gezeichneten Laufweg beziehungsweise einer Flugbahn bewegt werden. Finger- und Mausbewegungen werden zu geglätteten Kurven mit Richtungspfeil aufbereitet. Ein eigener Rückgängig-Verlauf nimmt bis zu 100 abgeschlossene Bewegungen schrittweise zurück; der bisherige vollständige Reset, Schrittwechsel und das Beenden ohne Speicherung bleiben erhalten. Die Schaltflächen erhalten außerdem einen dezenten plastischen Druckeffekt.
+
+Version 3.0.5.1 korrigiert die Ballbedienung der Taktiktafel bei einem an den Kontaktspieler gekoppelten Ball. Die Sperre gegen versehentliches Verschieben bleibt im normalen Editor erhalten, gilt aber nicht mehr in der nur temporären Taktiktafel. Im Bearbeitungsmodus und in der Taktiktafel wird die dort nicht verfügbare Umschaltung 2D/2,5D vollständig ausgeblendet. Frage- und Schritt-Info-Schaltflächen werden in der Taktiktafel ebenfalls ausgeblendet, damit sie keine Werkzeuge oder Feldinhalte überdecken. Die vier Aktionen im App-Kopf stehen nun in einer Zeile; auf schmalen Geräten wird die Überschrift passend verkleinert.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

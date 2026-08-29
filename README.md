@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.1.0  
+**Aktueller Frontend-Stand:** 3.1.1  
 **Veröffentlichung:** GitHub Pages  
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -31,7 +31,7 @@ Historische JavaScript-, CSS- und Config-Kopien werden nicht mehr im aktiven Bra
 - **Supabase PostgreSQL** speichert Vereine, Mannschaften, Rollen, Volleyball-Daten, Fragen und Lesestände.
 - **Row Level Security (RLS)** begrenzt den direkten Datenzugriff entsprechend Verein und Rolle.
 - Die **Edge Function `admin-invite`** führt privilegierte Verwaltungsaktionen serverseitig aus. Der dafür benötigte Secret/Service-Role-Key gehört ausschließlich in die Supabase-Umgebung und niemals in Browserdateien.
-- Der **Trainings-Player** trennt Intervallsteuerung, generative Web-Audio-Musik und Sprach-/Signalausgabe. Eigene Trainingsvorlagen werden in Version 3.1.0 lokal und nach Benutzer sowie Mannschaft getrennt gespeichert.
+- Der **Trainings-Player** trennt Intervallsteuerung, generative Web-Audio-Musik und Sprach-/Signalausgabe. Eigene Trainingsvorlagen werden lokal und nach Benutzer sowie Mannschaft getrennt gespeichert.
 
 ## SQL- und Supabase-Dateien
 
@@ -108,6 +108,8 @@ Der Trainings-Player ist ausschließlich im Bearbeitungsmodus für Benutzer mit 
 
 Mitgeliefert werden die Standardvorlagen `Tabata`, `Volleyball Power` und `Warm-up 105–118 BPM`. Eigene Vorlagen bleiben im aktuellen Browser gespeichert und sind durch Benutzer- und Mannschaftskennung getrennt. Sie werden noch nicht mit Supabase synchronisiert.
 
+Mit `＋ Neue Vorlage` wird ein eigenständiger, noch nicht gespeicherter Ablauf mit einem bearbeitbaren Intervall angelegt. Erst `Speichern` übernimmt ihn dauerhaft in die Liste der eigenen Vorlagen. Das Bearbeiten und Speichern einer Standardvorlage erzeugt weiterhin automatisch eine eigene Kopie.
+
 Die Musik wird prozedural mit der Web Audio API erzeugt. Der erste Start muss wegen der Autoplay-Regeln von iOS/Safari bewusst über Play erfolgen. Verlässt die App während eines laufenden Trainings den Vordergrund, wird der Ablauf automatisch pausiert, damit Timer und Ton nicht unbemerkt auseinanderlaufen.
 
 ## Einrichtung und Betrieb
@@ -129,6 +131,8 @@ Version 3.0.5.1 korrigiert die Ballbedienung der Taktiktafel bei einem an den Ko
 Version 3.0.5.2 macht die Viewer-Legende so kompakt, dass ihre fünf Elemente auch auf dem iPhone in einer Zeile bleiben. Der aktive 2D-/2,5D-Schalter wird eindeutig blau hervorgehoben. Das Fragezeichen am Spielfeld öffnet nur noch Fragen des aktuellen Schritts und legt neue Fragen fest für diesen Schritt an; die Sprechblase im App-Kopf bleibt als separate Gesamtübersicht über alle Fragen erhalten.
 
 Version 3.1.0 ergänzt für Bearbeiter einen kompakten, aufklappbaren Trainings-Player. Eine eigenständige Intervall-Engine steuert fortlaufende Phasen, Action-/Pausenintervalle, Wiederholungen, Blöcke und längere Blockpausen. Davon getrennt erzeugt eine Web-Audio-Engine fortlaufende Musik in vier Stilrichtungen; Browser-Sprachausgabe, Countdown, Signaltöne und automatische Musikabsenkung sind separat angebunden. Eigene Vorlagen werden lokal pro Benutzer und Mannschaft gespeichert. Die Situationsauswahl reserviert außerdem dauerhaft den Platz des Info-Knopfs, damit beim Wechsel zu einer Situation mit Info nichts mehr springt.
+
+Version 3.1.1 ergänzt einen eindeutigen Knopf zum Anlegen einer neuen Trainingsvorlage. Die gesprochenen Countdown-Ziffern laufen ruhiger. Auf unterstützten iPhones setzt die Web-Audio-Engine beim bewussten Start per Play den Audio-Session-Typ `playback`, damit generierte Musik nicht durch den Stummmodus unterdrückt wird.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

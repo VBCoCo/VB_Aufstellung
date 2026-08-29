@@ -1,4 +1,4 @@
-/* Volleyball Trainer 3.1.0 */
+/* Volleyball Trainer 3.1.1 */
 :root{
   --panel:#10233a;--panel2:#0b1a2b;--text:#f8fafc;--muted:#aebed0;
   --club-blue:#0b4fc6;--club-blue-2:#073b9a;
@@ -879,7 +879,7 @@ body:not(.editing-mode):not(.tactic-mode) .situation-row .inline-info.hidden{
 .training-template-row input,.training-template-row select,.training-settings-card input,.training-settings-card select,.training-phase input,.training-phase select{
   box-sizing:border-box;width:100%;height:38px;min-width:0;padding:6px 8px;border:1px solid #416481;border-radius:8px;background:#071421;color:#fff;font:inherit;font-size:.75rem
 }
-.training-template-actions{display:flex;gap:5px}.training-template-actions button{height:38px;min-height:38px;padding:0 10px;font-size:.7rem}
+.training-template-actions{display:flex;gap:5px}.training-template-actions button{height:38px;min-height:38px;padding:0 9px;font-size:.68rem;white-space:nowrap}
 .training-settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
 .training-settings-card{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0;padding:9px;border:1px solid #294b69;border-radius:11px;background:#0d2136;min-width:0}
 .training-settings-card legend{padding:0 5px;color:#eaf4ff;font-size:.74rem;font-weight:900}

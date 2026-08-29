@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.1.0";
+const VERSION = "3.1.1";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -220,6 +220,9 @@ class AudioRuntime {
     this.ducked = false;
   }
   async unlock() {
+    try {
+      if (navigator.audioSession && "type" in navigator.audioSession) navigator.audioSession.type = "playback";
+    } catch {}
     if (!this.context) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       if (!AudioContext) throw new Error("Web Audio wird von diesem Browser nicht unterstützt.");
@@ -234,7 +237,7 @@ class AudioRuntime {
       this.createNoiseBuffer();
       this.applyMusicGain(true);
     }
-    if (this.context.state === "suspended") await this.context.resume();
+    if (this.context.state !== "running") await this.context.resume();
     return this.context;
   }
   createNoiseBuffer() {
@@ -396,7 +399,7 @@ class TrainingCueEngine {
     const utterance = new SpeechSynthesisUtterance(String(text));
     utterance.lang = this.voice?.lang || "de-DE";
     if (this.voice) utterance.voice = this.voice;
-    utterance.rate = /^\d+$/.test(String(text)) ? 1.08 : 1;
+    utterance.rate = /^\d+$/.test(String(text)) ? 0.85 : 1;
     utterance.volume = 1;
     const token = ++this.speechToken;
     this.runtime.setDucked(true);
@@ -416,7 +419,7 @@ class TrainingPlayerController {
   constructor() {
     this.root = document.getElementById("trainingPlayer");
     if (!this.root) return;
-    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateSave","trainingTemplateDelete","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingCountdownEnabled","trainingCountdownSeconds","trainingSpeechEnabled","trainingSignalsEnabled","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
+    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingCountdownEnabled","trainingCountdownSeconds","trainingSpeechEnabled","trainingSignalsEnabled","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
     this.e = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
     this.scope = "anonymous";
     this.customTemplates = [];
@@ -467,6 +470,7 @@ class TrainingPlayerController {
     this.e.trainingPlayerPause.addEventListener("click", () => this.pause());
     this.e.trainingPlayerStop.addEventListener("click", () => this.stop());
     this.e.trainingTemplateSelect.addEventListener("change", () => this.loadTemplate(this.e.trainingTemplateSelect.value));
+    this.e.trainingTemplateNew.addEventListener("click", () => this.newTemplate());
     this.e.trainingTemplateSave.addEventListener("click", () => this.saveTemplate());
     this.e.trainingTemplateDelete.addEventListener("click", () => this.deleteTemplate());
     this.e.trainingPhaseAdd.addEventListener("click", () => { this.readEditor(); this.current.phases.push(continuousPhase()); this.renderPhases(); this.refreshIdleTimeline(); });
@@ -496,8 +500,24 @@ class TrainingPlayerController {
   renderTemplateSelect() {
     const selected = this.currentId;
     const group = (label, rows) => `<optgroup label="${label}">${rows.map(t => `<option value="${esc(t.id)}">${esc(t.name)}</option>`).join("")}</optgroup>`;
-    this.e.trainingTemplateSelect.innerHTML = group("Standardvorlagen", BUILTIN_TEMPLATES) + (this.customTemplates.length ? group("Eigene Vorlagen", this.customTemplates) : "");
+    const known = [...BUILTIN_TEMPLATES, ...this.customTemplates].some(t => t.id === selected);
+    const unsaved = selected && !known ? group("Nicht gespeichert", [{id:selected,name:`${this.current.name} (neu)`}]) : "";
+    this.e.trainingTemplateSelect.innerHTML = unsaved + group("Standardvorlagen", BUILTIN_TEMPLATES) + (this.customTemplates.length ? group("Eigene Vorlagen", this.customTemplates) : "");
     if ([...this.e.trainingTemplateSelect.options].some(o => o.value === selected)) this.e.trainingTemplateSelect.value = selected;
+  }
+  newTemplate() {
+    this.stop();
+    this.current = normalizeTemplate({
+      id:uid(), builtin:false, name:"Neue Trainingsvorlage",
+      music:defaultMusic(), options:defaultOptions(), phases:[intervalPhase("Intervall 1")]
+    });
+    this.currentId = this.current.id;
+    this.renderTemplateSelect();
+    this.writeEditor();
+    this.engine.load(this.current);
+    this.setStatus("Neue Vorlage angelegt. Namen und Ablauf bearbeiten, danach speichern.");
+    this.e.trainingTemplateName.focus();
+    this.e.trainingTemplateName.select();
   }
   loadTemplate(id, announce=true) {
     const source = this.allTemplates().find(t => t.id === id) || normalizeTemplate(BUILTIN_TEMPLATES[0]);
@@ -526,7 +546,7 @@ class TrainingPlayerController {
     this.e.trainingDucking.value = Math.round(options.ducking * 100);
     this.renderPhases();
     this.updateOutputs();
-    this.e.trainingTemplateDelete.disabled = this.current.builtin;
+    this.e.trainingTemplateDelete.disabled = this.current.builtin || !this.customTemplates.some(t => t.id === this.currentId);
     this.e.trainingPlayerTemplateName.textContent = this.current.name;
   }
   readEditor() {
@@ -592,7 +612,7 @@ class TrainingPlayerController {
     const name = this.e.trainingTemplateName.value.trim();
     if (!name) { this.setStatus("Bitte einen Namen für die Vorlage eingeben.", true); this.e.trainingTemplateName.focus(); return; }
     const existingIndex = this.customTemplates.findIndex(t => t.id === this.currentId);
-    const id = existingIndex >= 0 ? this.currentId : uid();
+    const id = existingIndex >= 0 ? this.currentId : (this.current.builtin ? uid() : this.currentId || uid());
     const saved = {...clone(this.current), id, builtin:false, name};
     if (existingIndex >= 0) this.customTemplates[existingIndex] = saved; else this.customTemplates.push(saved);
     this.persist();
@@ -677,7 +697,7 @@ class TrainingPlayerController {
       if ([this.e.trainingPlayerPlay,this.e.trainingPlayerPause,this.e.trainingPlayerStop].includes(control)) return;
       control.disabled = Boolean(locked);
     });
-    if (!locked) this.e.trainingTemplateDelete.disabled = this.current.builtin;
+    if (!locked) this.e.trainingTemplateDelete.disabled = this.current.builtin || !this.customTemplates.some(t => t.id === this.currentId);
     this.e.trainingPlayerEditor.classList.toggle("is-locked", Boolean(locked));
   }
   setStatus(message, error=false) {

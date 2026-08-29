@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.0.5.2  
+**Aktueller Frontend-Stand:** 3.1.0  
 **Veröffentlichung:** GitHub Pages  
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -14,6 +14,7 @@ Die aktuell veröffentlichte Web-App besteht im Kern aus:
 | --- | --- |
 | `index.html` | Einstiegspunkt und vollständige HTML-Oberfläche |
 | `app.js` | aktuelle Anwendungslogik; Cache-Busting über den Release-Parameter in `index.html` |
+| `training-player.js` | getrennte Musik-, Intervall- und Ansagelogik des Trainings-Players |
 | `style.css` | aktuelles Layout und Design; Cache-Busting über den Release-Parameter in `index.html` |
 | `config.js` | öffentliche Supabase-URL und Publishable/Anon-Key für den Browser |
 | `version.json` | maschinenlesbare aktuelle Release-Version |
@@ -30,6 +31,7 @@ Historische JavaScript-, CSS- und Config-Kopien werden nicht mehr im aktiven Bra
 - **Supabase PostgreSQL** speichert Vereine, Mannschaften, Rollen, Volleyball-Daten, Fragen und Lesestände.
 - **Row Level Security (RLS)** begrenzt den direkten Datenzugriff entsprechend Verein und Rolle.
 - Die **Edge Function `admin-invite`** führt privilegierte Verwaltungsaktionen serverseitig aus. Der dafür benötigte Secret/Service-Role-Key gehört ausschließlich in die Supabase-Umgebung und niemals in Browserdateien.
+- Der **Trainings-Player** trennt Intervallsteuerung, generative Web-Audio-Musik und Sprach-/Signalausgabe. Eigene Trainingsvorlagen werden in Version 3.1.0 lokal und nach Benutzer sowie Mannschaft getrennt gespeichert.
 
 ## SQL- und Supabase-Dateien
 
@@ -100,6 +102,14 @@ Die Funktion erwartet ihre Supabase-Schlüssel aus den serverseitigen Umgebungsv
 | Vereinsadmin | Verein, Mannschaften und Mitglieder verwalten; nicht automatisch Editor |
 | Plattformadmin/Superadmin | Plattform und Vereine verwalten; kein automatischer Zugriff auf Volleyball-Inhalte fremder Vereine |
 
+## Trainings-Player
+
+Der Trainings-Player ist ausschließlich im Bearbeitungsmodus für Benutzer mit Bearbeiterrolle sichtbar. Die kompakte Leiste unter dem Spielfeld bietet Play, Pause, Stop/Reset, aktuellen Abschnitt und Restzeit. Die erweiterte Ansicht konfiguriert Musik, Countdown, Sprache, Signaltöne und beliebig viele fortlaufende oder wiederholte Trainingsphasen.
+
+Mitgeliefert werden die Standardvorlagen `Tabata`, `Volleyball Power` und `Warm-up 105–118 BPM`. Eigene Vorlagen bleiben im aktuellen Browser gespeichert und sind durch Benutzer- und Mannschaftskennung getrennt. Sie werden noch nicht mit Supabase synchronisiert.
+
+Die Musik wird prozedural mit der Web Audio API erzeugt. Der erste Start muss wegen der Autoplay-Regeln von iOS/Safari bewusst über Play erfolgen. Verlässt die App während eines laufenden Trainings den Vordergrund, wird der Ablauf automatisch pausiert, damit Timer und Ton nicht unbemerkt auseinanderlaufen.
+
 ## Einrichtung und Betrieb
 
 Die ursprüngliche Schrittfolge für Version 3 steht in [SETUP_V3.md](SETUP_V3.md). Eine zusätzliche, datenbankspezifische Übersicht steht in [database/README.md](database/README.md). Da das produktive Projekt bereits mehrere Migrationen erhalten hat, ist für eine vollständige Neuinstallation zusätzlich die oben dokumentierte SQL-Reihenfolge zu beachten.
@@ -118,15 +128,18 @@ Version 3.0.5.1 korrigiert die Ballbedienung der Taktiktafel bei einem an den Ko
 
 Version 3.0.5.2 macht die Viewer-Legende so kompakt, dass ihre fünf Elemente auch auf dem iPhone in einer Zeile bleiben. Der aktive 2D-/2,5D-Schalter wird eindeutig blau hervorgehoben. Das Fragezeichen am Spielfeld öffnet nur noch Fragen des aktuellen Schritts und legt neue Fragen fest für diesen Schritt an; die Sprechblase im App-Kopf bleibt als separate Gesamtübersicht über alle Fragen erhalten.
 
+Version 3.1.0 ergänzt für Bearbeiter einen kompakten, aufklappbaren Trainings-Player. Eine eigenständige Intervall-Engine steuert fortlaufende Phasen, Action-/Pausenintervalle, Wiederholungen, Blöcke und längere Blockpausen. Davon getrennt erzeugt eine Web-Audio-Engine fortlaufende Musik in vier Stilrichtungen; Browser-Sprachausgabe, Countdown, Signaltöne und automatische Musikabsenkung sind separat angebunden. Eigene Vorlagen werden lokal pro Benutzer und Mannschaft gespeichert. Die Situationsauswahl reserviert außerdem dauerhaft den Platz des Info-Knopfs, damit beim Wechsel zu einer Situation mit Info nichts mehr springt.
+
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 
 Für ein neues Frontend-Release sind folgende Stellen auf dieselbe Versionsnummer zu setzen:
 
 1. `VERSION` in `app.js`
-2. `version` und `released` in `version.json`
-3. `VERSION` in `sw.js`
-4. die `?v=`-Parameter, der Seitentitel und die sichtbare Versionsangabe in `index.html`
-5. die Icon-Parameter in `manifest.webmanifest`
+2. `VERSION` in `training-player.js`
+3. `version` und `released` in `version.json`
+4. `VERSION` in `sw.js`
+5. die `?v=`-Parameter, der Seitentitel und die sichtbare Versionsangabe in `index.html`
+6. die Icon-Parameter in `manifest.webmanifest`
 
 Die Dateien `app.js`, `style.css` und `config.js` werden dabei nur überschrieben und nicht umbenannt. Vor der Veröffentlichung müssen alle oben genannten Versionsangaben übereinstimmen.
 

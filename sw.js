@@ -1,4 +1,4 @@
-const VERSION = "3.3.0";
+const VERSION = "3.4.0";
 const CACHE_PREFIX = "volleyball-trainer-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const APP_SHELL = [
@@ -12,7 +12,14 @@ const APP_SHELL = [
   `./assets/ttc-logo.png?v=${VERSION}`,
   `./assets/apple-touch-icon.png?v=${VERSION}`,
   `./assets/icon-192.png?v=${VERSION}`,
-  `./assets/icon-512.png?v=${VERSION}`
+  `./assets/icon-512.png?v=${VERSION}`,
+  "./assets/audio/kick.wav",
+  "./assets/audio/snare.wav",
+  "./assets/audio/hat-closed.wav",
+  "./assets/audio/hat-open.wav",
+  "./assets/audio/bass-c2.wav",
+  "./assets/audio/bass-c3.wav",
+  "./assets/audio/LICENSE.md"
 ];
 const absoluteUrl = path => new URL(path, self.registration.scope).href;
 const INDEX_URL = absoluteUrl("./index.html");

@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.3.0";
+const VERSION = "3.4.0";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -541,6 +541,10 @@ class ToneMusicEngine {
     }
     await this.Tone.start();
     this.initialize();
+    if (!this.samplesReady && this.Tone.loaded) {
+      await this.Tone.loaded();
+      this.samplesReady = true;
+    }
   }
   initialize() {
     if (this.ready) return;
@@ -555,6 +559,25 @@ class ToneMusicEngine {
     this.delay = new Tone.FeedbackDelay("8n", 0.16);
     this.delay.wet.value = 0.16;
     this.delay.connect(this.master);
+
+    this.sampleDrums = {
+      kick:new Tone.Player("assets/audio/kick.wav").connect(this.drumBus),
+      snare:new Tone.Player("assets/audio/snare.wav").connect(this.drumBus),
+      hat:new Tone.Player("assets/audio/hat-closed.wav").connect(this.drumBus),
+      openHat:new Tone.Player("assets/audio/hat-open.wav").connect(this.drumBus)
+    };
+    this.sampleBass = new Tone.Sampler({
+      urls:{C2:"bass-c2.wav", C3:"bass-c3.wav"},
+      baseUrl:"assets/audio/",
+      release:0.12
+    }).connect(this.bassFilter);
+    this.sampleLead = new Tone.Sampler({
+      urls:{C3:"bass-c3.wav"},
+      baseUrl:"assets/audio/",
+      attack:0.002,
+      release:0.18
+    }).connect(this.musicFilter);
+    this.sampleLead.connect(this.delay);
 
     this.kick = new Tone.MembraneSynth({
       pitchDecay:0.035, octaves:7,
@@ -597,6 +620,9 @@ class ToneMusicEngine {
     this.chords.volume.value = -22;
     this.lead.volume.value = -18;
     this.pluck.volume.value = -24;
+    Object.values(this.sampleDrums).forEach(player => { player.volume.value = -2; });
+    this.sampleBass.volume.value = -10;
+    this.sampleLead.volume.value = -18;
     this.transport = Tone.getTransport ? Tone.getTransport() : Tone.Transport;
     this.eventId = this.transport.scheduleRepeat(time => {
       this.scheduleStep(this.step, time);
@@ -663,6 +689,17 @@ class ToneMusicEngine {
     const value = Math.sin((step + 1 + this.seed) * 12.9898 + salt * 78.233) * 43758.5453;
     return value - Math.floor(value);
   }
+  drum(name,time,velocity=1) {
+    const player = this.sampleDrums?.[name];
+    if (this.samplesReady && player?.loaded) {
+      player.volume.value = -2 + 10 * Math.log10(Math.max(0.05, velocity));
+      player.start(time);
+    }
+    else {
+      const fallback = name === "snare" ? this.clap : this[name];
+      fallback?.triggerAttackRelease(name === "kick" ? "C1" : (name === "openHat" ? "8n" : "16n"), time, velocity);
+    }
+  }
   note(midi) {
     const names = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
     const value = Math.round(midi);
@@ -689,17 +726,19 @@ class ToneMusicEngine {
     const chordRoot = data.root + data.progression[bar] + (phrase % 4 === 2 ? 2 : phrase % 4 === 3 ? -2 : 0);
 
     if (style !== "ambient") {
-      if (local % 4 === 0 && (!breakdown || local === 0)) this.kick.triggerAttackRelease("C1", "8n", time, 0.74 * energy);
-      if (!breakdown && (local === 4 || local === 12)) this.clap.triggerAttackRelease("16n", time, 0.45 * energy);
+      if (local % 4 === 0 && (!breakdown || local === 0)) this.drum("kick", time, 0.82 * energy);
+      if (!breakdown && (local === 4 || local === 12)) this.drum("snare", time, 0.58 * energy);
       const hats = intensity === "low" ? [2,6,10,14] : [2,4,6,10,12,14];
       if (!breakdown && (hats.includes(local) || (intensity === "high" && local % 2 === 1 && this.variation(step,1) > 0.58))) {
-        this.hat.triggerAttackRelease("32n", time, 0.24 * energy);
+        this.drum("hat", time, 0.28 * energy);
       }
-      if (!breakdown && (local === 6 || (local === 14 && bar % 2 === 1))) this.openHat.triggerAttackRelease("8n", time, 0.13 * energy);
+      if (!breakdown && (local === 6 || (local === 14 && bar % 2 === 1))) this.drum("openHat", time, 0.18 * energy);
       const bassPattern = style === "techno" ? [0,3,6,8,10,12,14] : [0,3,6,8,11,14];
       if (!breakdown && bassPattern.includes(local)) {
         const fifth = (local === 6 || local === 14) && bar % 2 ? 7 : 0;
-        this.bass.triggerAttackRelease(this.note(chordRoot - 12 + fifth), local % 4 === 0 ? "8n" : "16n", time, 0.72 * energy);
+        const bassNote = this.note(chordRoot - 12 + fifth);
+        if (this.samplesReady) this.sampleBass.triggerAttackRelease(bassNote, local % 4 === 0 ? "8n" : "16n", time, 0.78 * energy);
+        else this.bass.triggerAttackRelease(bassNote, local % 4 === 0 ? "8n" : "16n", time, 0.72 * energy);
       }
     } else {
       if ([2,6,10,14].includes(local) && !breakdown) this.hat.triggerAttackRelease("32n", time, 0.06 * energy);
@@ -724,7 +763,9 @@ class ToneMusicEngine {
       const scaleNote = data.scale[((degree % data.scale.length) + data.scale.length) % data.scale.length];
       const octave = style === "ambient" ? 12 : 24;
       const melody = chordRoot + octave + scaleNote + (degree >= data.scale.length ? 12 : 0);
-      this.lead.triggerAttackRelease(this.note(melody), style === "ambient" ? "4n" : "8n", time, (style === "techno" ? 0.42 : 0.34) * energy);
+      const melodyNote = this.note(melody);
+      if (this.samplesReady && style !== "ambient") this.sampleLead.triggerAttackRelease(melodyNote, "8n", time, (style === "techno" ? 0.5 : 0.4) * energy);
+      else this.lead.triggerAttackRelease(melodyNote, style === "ambient" ? "4n" : "8n", time, (style === "techno" ? 0.36 : 0.3) * energy);
     }
 
     if (intensity === "high" && !breakdown && bar % 2 === 1 && [1,5,9,13].includes(local)) {
@@ -769,6 +810,7 @@ class TrainingCueEngine {
     this.options = defaultOptions();
     this.voice = null;
     this.speechToken = 0;
+    this.speechTimer = null;
     this.loadVoices();
     if (window.speechSynthesis) window.speechSynthesis.addEventListener?.("voiceschanged", () => this.loadVoices());
   }
@@ -804,20 +846,39 @@ class TrainingCueEngine {
     const token = ++this.speechToken;
     this.runtime.setDucked(true);
     this.music?.setDucked?.(true);
+    try {
+      if (navigator.audioSession && "type" in navigator.audioSession) navigator.audioSession.type = "auto";
+    } catch {}
     const restore = () => {
       if (token !== this.speechToken) return;
+      clearTimeout(this.speechTimer);
+      this.speechTimer = null;
       this.runtime.setDucked(false);
       this.music?.setDucked?.(false);
+      try {
+        if (navigator.audioSession && "type" in navigator.audioSession) navigator.audioSession.type = "playback";
+      } catch {}
     };
     utterance.onend = restore;
     utterance.onerror = restore;
-    window.speechSynthesis.speak(utterance);
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      if (token !== this.speechToken) return;
+      window.speechSynthesis.resume?.();
+      window.speechSynthesis.speak(utterance);
+      this.speechTimer = setTimeout(restore, Math.max(2500, String(text).length * 140));
+    }, 40);
   }
   stop() {
     this.speechToken += 1;
+    clearTimeout(this.speechTimer);
+    this.speechTimer = null;
     window.speechSynthesis?.cancel?.();
     this.runtime.setDucked(false);
     this.music?.setDucked?.(false);
+    try {
+      if (navigator.audioSession && "type" in navigator.audioSession) navigator.audioSession.type = "playback";
+    } catch {}
   }
 }
 

@@ -1,4 +1,4 @@
-/* Volleyball Trainer 3.1.1 */
+/* Volleyball Trainer 3.2.0 */
 :root{
   --panel:#10233a;--panel2:#0b1a2b;--text:#f8fafc;--muted:#aebed0;
   --club-blue:#0b4fc6;--club-blue-2:#073b9a;
@@ -828,6 +828,39 @@ body:not(.editing-mode):not(.tactic-mode) .situation-row .inline-info.hidden{
   display:block!important;
   visibility:hidden;
   pointer-events:none;
+}
+
+/* 3.2.0 – gleich hohe Viewer-Auswahlfelder und integrierter Situations-Info-Knopf */
+body:not(.editing-mode):not(.tactic-mode) .court-toolbar>.situation-compact select{
+  box-sizing:border-box;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+}
+body:not(.editing-mode):not(.tactic-mode) .situation-row{
+  grid-template-columns:minmax(0,1fr) 34px!important;
+  align-items:center;
+}
+body:not(.editing-mode):not(.tactic-mode) .situation-row .inline-info{
+  box-sizing:border-box;
+  width:34px!important;
+  min-width:34px!important;
+  max-width:34px!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  padding:0!important;
+  border:1px solid #365473;
+  border-radius:9px!important;
+  background:linear-gradient(180deg,#173b5e 0%,#0b2239 70%,#071522 100%);
+  color:#dff5ff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 2px 0 #03101d,0 3px 6px rgba(0,0,0,.25);
+  font-size:.88rem;
+  line-height:1;
+}
+body:not(.editing-mode):not(.tactic-mode) .situation-row .inline-info:active{
+  transform:translateY(1px);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.28),0 1px 0 #03101d;
 }
 
 .training-player{

@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.1.1";
+const VERSION = "3.2.0";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -14,7 +14,7 @@ const formatTime = totalSeconds => {
 };
 
 const defaultMusic = () => ({style:"workout", bpm:128, intensity:"medium", volume:0.7});
-const defaultOptions = () => ({countdownEnabled:true, countdownSeconds:3, speechEnabled:true, signalsEnabled:true, ducking:0.35});
+const defaultOptions = () => ({countdownEnabled:true, countdownSeconds:3, speechEnabled:true, speechVolume:0.7, signalsEnabled:true, signalVolume:0.55, ducking:0.6});
 const continuousPhase = (name="Neue Phase") => ({
   id:uid(), name, type:"continuous", durationSeconds:120, announcement:name,
   music:{style:"", bpm:null, intensity:""}
@@ -47,7 +47,7 @@ const BUILTIN_TEMPLATES = [
 ];
 
 function normalizeMusic(music={}) {
-  const styles = ["electronic", "workout", "house", "ambient"];
+  const styles = ["electronic", "workout", "house", "techno", "ambient"];
   const intensities = ["low", "medium", "high"];
   return {
     style:styles.includes(music.style) ? music.style : "workout",
@@ -61,13 +61,15 @@ function normalizeOptions(options={}) {
     countdownEnabled:options.countdownEnabled !== false,
     countdownSeconds:[3,5].includes(Number(options.countdownSeconds)) ? Number(options.countdownSeconds) : 3,
     speechEnabled:options.speechEnabled !== false,
+    speechVolume:clamp(options.speechVolume ?? 0.7, 0.2, 1),
     signalsEnabled:options.signalsEnabled !== false,
-    ducking:clamp(options.ducking ?? 0.35, 0.1, 0.7)
+    signalVolume:clamp(options.signalVolume ?? 0.55, 0.1, 1),
+    ducking:clamp(options.ducking ?? 0.6, 0.2, 0.9)
   };
 }
 function normalizePhase(phase={}, index=0) {
   const music = {
-    style:["electronic", "workout", "house", "ambient"].includes(phase.music?.style) ? phase.music.style : "",
+    style:["electronic", "workout", "house", "techno", "ambient"].includes(phase.music?.style) ? phase.music.style : "",
     bpm:phase.music?.bpm ? clamp(phase.music.bpm, 70, 160) : null,
     intensity:["low", "medium", "high"].includes(phase.music?.intensity) ? phase.music.intensity : ""
   };
@@ -212,11 +214,15 @@ class AudioRuntime {
   constructor() {
     this.context = null;
     this.musicGain = null;
+    this.synthGain = null;
+    this.drumGain = null;
     this.cueGain = null;
     this.compressor = null;
     this.noiseBuffer = null;
+    this.samples = {};
     this.volume = 0.7;
-    this.ducking = 0.35;
+    this.ducking = 0.6;
+    this.signalVolume = 0.55;
     this.ducked = false;
   }
   async unlock() {
@@ -228,26 +234,78 @@ class AudioRuntime {
       if (!AudioContext) throw new Error("Web Audio wird von diesem Browser nicht unterstützt.");
       this.context = new AudioContext();
       this.musicGain = this.context.createGain();
+      this.synthGain = this.context.createGain();
+      this.drumGain = this.context.createGain();
       this.cueGain = this.context.createGain();
       this.compressor = this.context.createDynamicsCompressor();
+      this.synthGain.connect(this.musicGain);
+      this.drumGain.connect(this.musicGain);
       this.musicGain.connect(this.compressor);
       this.cueGain.connect(this.compressor);
       this.compressor.connect(this.context.destination);
-      this.cueGain.gain.value = 0.42;
+      this.synthGain.gain.value = 1;
+      this.drumGain.gain.value = 1;
+      this.cueGain.gain.value = this.signalVolume;
+      this.compressor.threshold.value = -10;
+      this.compressor.knee.value = 12;
+      this.compressor.ratio.value = 4;
+      this.compressor.attack.value = 0.004;
+      this.compressor.release.value = 0.2;
       this.createNoiseBuffer();
+      this.createPercussionSamples();
       this.applyMusicGain(true);
     }
     if (this.context.state !== "running") await this.context.resume();
     return this.context;
   }
   createNoiseBuffer() {
-    const length = Math.max(1, Math.floor(this.context.sampleRate * 0.6));
+    const length = Math.max(1, Math.floor(this.context.sampleRate * 0.8));
     this.noiseBuffer = this.context.createBuffer(1, length, this.context.sampleRate);
     const data = this.noiseBuffer.getChannelData(0);
     for (let i=0; i<length; i++) data[i] = Math.random() * 2 - 1;
   }
+  createPercussionSamples() {
+    const rate = this.context.sampleRate;
+    const make = (name, duration, render) => {
+      const buffer = this.context.createBuffer(1, Math.max(1, Math.floor(rate * duration)), rate);
+      const data = buffer.getChannelData(0);
+      let phase = 0;
+      for (let i=0; i<data.length; i++) data[i] = clamp(render(i / rate, i, () => phase, value => { phase = value; }), -1, 1);
+      this.samples[name] = buffer;
+    };
+    make("kick", 0.52, (t,_i,getPhase,setPhase) => {
+      const frequency = 43 + 125 * Math.exp(-t * 30);
+      const phase = getPhase() + Math.PI * 2 * frequency / rate;
+      setPhase(phase);
+      const body = Math.sin(phase) * Math.exp(-t * 10.5);
+      const click = (Math.random() * 2 - 1) * 0.16 * Math.exp(-t * 75);
+      return body + click;
+    });
+    make("clap", 0.3, t => {
+      const burst = [0.012,0.04,0.072].reduce((sum,center) => sum + Math.exp(-Math.pow((t-center)*52,2)),0);
+      return (Math.random()*2-1) * Math.min(1, burst*0.52 + Math.exp(-t*18)*0.3);
+    });
+    make("hat", 0.09, t => (Math.random()*2-1) * Math.exp(-t*55));
+    make("openHat", 0.34, t => (Math.random()*2-1) * Math.exp(-t*13));
+    make("tom", 0.28, (t,_i,getPhase,setPhase) => {
+      const frequency = 105 - 45 * Math.min(1,t/0.28);
+      const phase = getPhase() + Math.PI * 2 * frequency / rate;
+      setPhase(phase);
+      return Math.sin(phase) * Math.exp(-t*13);
+    });
+  }
+  output(destination) {
+    if (destination === "cue") return this.cueGain;
+    if (destination === "drum") return this.drumGain;
+    return this.synthGain;
+  }
   setVolume(value) { this.volume = clamp(value, 0, 1); this.applyMusicGain(); }
-  setDucking(value) { this.ducking = clamp(value, 0.1, 0.7); this.applyMusicGain(); }
+  setDucking(value) { this.ducking = clamp(value, 0.2, 0.9); this.applyMusicGain(); }
+  setSignalVolume(value) {
+    this.signalVolume = clamp(value, 0.1, 1);
+    if (!this.cueGain || !this.context) return;
+    this.cueGain.gain.setTargetAtTime(this.signalVolume, this.context.currentTime, 0.025);
+  }
   setDucked(value) { this.ducked = Boolean(value); this.applyMusicGain(); }
   applyMusicGain(immediate=false) {
     if (!this.musicGain || !this.context) return;
@@ -255,20 +313,39 @@ class AudioRuntime {
     const now = this.context.currentTime;
     this.musicGain.gain.cancelScheduledValues(now);
     if (immediate) this.musicGain.gain.setValueAtTime(target, now);
-    else this.musicGain.gain.setTargetAtTime(target, now, 0.045);
+    else this.musicGain.gain.setTargetAtTime(target, now, 0.055);
   }
-  tone(freq, time, duration, {type="sine", gain=0.12, destination="music", endFreq=null}={}) {
+  tone(freq, time, duration, {type="sine", gain=0.12, destination="music", endFreq=null, filterFreq=null, filterEndFreq=null, filterQ=1}={}) {
     if (!this.context) return;
     const oscillator = this.context.createOscillator();
     const envelope = this.context.createGain();
     oscillator.type = type;
-    oscillator.frequency.setValueAtTime(freq, time);
+    oscillator.frequency.setValueAtTime(Math.max(20,freq), time);
     if (endFreq) oscillator.frequency.exponentialRampToValueAtTime(Math.max(20,endFreq), time + duration);
     envelope.gain.setValueAtTime(0.0001, time);
-    envelope.gain.exponentialRampToValueAtTime(Math.max(0.0002,gain), time + Math.min(0.015,duration/4));
+    envelope.gain.exponentialRampToValueAtTime(Math.max(0.0002,gain), time + Math.min(0.012,duration/4));
     envelope.gain.exponentialRampToValueAtTime(0.0001, time + duration);
-    oscillator.connect(envelope).connect(destination === "cue" ? this.cueGain : this.musicGain);
-    oscillator.start(time); oscillator.stop(time + duration + 0.03);
+    oscillator.connect(envelope);
+    if (filterFreq) {
+      const filter = this.context.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.Q.value = filterQ;
+      filter.frequency.setValueAtTime(Math.max(80,filterFreq),time);
+      if (filterEndFreq) filter.frequency.exponentialRampToValueAtTime(Math.max(80,filterEndFreq),time+duration);
+      envelope.connect(filter).connect(this.output(destination));
+    } else envelope.connect(this.output(destination));
+    oscillator.start(time);
+    oscillator.stop(time + duration + 0.03);
+  }
+  sample(name, time, {gain=0.2, destination="drum", playbackRate=1}={}) {
+    if (!this.context || !this.samples[name]) return;
+    const source = this.context.createBufferSource();
+    const envelope = this.context.createGain();
+    source.buffer = this.samples[name];
+    source.playbackRate.value = playbackRate;
+    envelope.gain.value = gain;
+    source.connect(envelope).connect(this.output(destination));
+    source.start(time);
   }
   noise(time, duration, {gain=0.05, highpass=3500, destination="music"}={}) {
     if (!this.context || !this.noiseBuffer) return;
@@ -276,11 +353,19 @@ class AudioRuntime {
     const filter = this.context.createBiquadFilter();
     const envelope = this.context.createGain();
     source.buffer = this.noiseBuffer;
-    filter.type = "highpass"; filter.frequency.value = highpass;
+    filter.type = "highpass";
+    filter.frequency.value = highpass;
     envelope.gain.setValueAtTime(Math.max(0.0002,gain), time);
     envelope.gain.exponentialRampToValueAtTime(0.0001, time + duration);
-    source.connect(filter).connect(envelope).connect(destination === "cue" ? this.cueGain : this.musicGain);
-    source.start(time); source.stop(time + duration + 0.02);
+    source.connect(filter).connect(envelope).connect(this.output(destination));
+    source.start(time);
+    source.stop(time + duration + 0.02);
+  }
+  pump(time, depth=0.5, release=0.2) {
+    if (!this.synthGain) return;
+    const gain = this.synthGain.gain;
+    gain.setValueAtTime(Math.max(0.18,depth),time);
+    gain.exponentialRampToValueAtTime(1,time+release);
   }
   cue(kind="short") {
     if (!this.context) return;
@@ -303,6 +388,7 @@ class ProceduralMusicEngine {
     this.nextStepTime = 0;
     this.step = 0;
     this.config = defaultMusic();
+    this.seed = Math.random() * 10000;
   }
   async start(config={}) {
     await this.runtime.unlock();
@@ -314,56 +400,124 @@ class ProceduralMusicEngine {
     this.schedule();
   }
   pause() { this.active = false; if (this.timer) clearInterval(this.timer); this.timer = null; }
-  stop() { this.pause(); this.step = 0; this.nextStepTime = 0; }
+  stop() { this.pause(); this.step = 0; this.nextStepTime = 0; this.seed = Math.random() * 10000; }
   setConfig(config={}) {
     this.config = normalizeMusic({...this.config, ...config});
     this.runtime.setVolume(this.config.volume);
   }
+  variation(step,salt=0) {
+    const value = Math.sin((step+1+this.seed)*12.9898 + salt*78.233) * 43758.5453;
+    return value - Math.floor(value);
+  }
   schedule() {
     if (!this.active || !this.runtime.context) return;
-    const horizon = this.runtime.context.currentTime + 0.16;
+    const horizon = this.runtime.context.currentTime + 0.2;
     while (this.nextStepTime < horizon) {
       this.scheduleStep(this.step, this.nextStepTime);
-      const stepDuration = 60 / this.config.bpm / 4;
-      this.nextStepTime += stepDuration;
+      this.nextStepTime += 60 / this.config.bpm / 4;
       this.step += 1;
     }
   }
   scheduleStep(step, time) {
-    const {style,intensity} = this.config;
+    const {style,intensity,bpm} = this.config;
     const local = step % 16;
     const bar = Math.floor(step / 16);
-    const energy = intensity === "high" ? 1 : intensity === "low" ? 0.52 : 0.76;
-    const progression = [0, 5, 3, 7];
-    const root = 55 * Math.pow(2, progression[bar % progression.length] / 12);
+    const phraseBar = bar % 8;
+    const cycle = Math.floor(bar / 8) % 4;
+    const energy = intensity === "high" ? 1 : intensity === "low" ? 0.55 : 0.78;
+    const sixteenth = 60 / bpm / 4;
+    const progressions = {
+      techno:[0,0,3,5,0,7,5,3],
+      workout:[0,5,3,7,0,5,8,7],
+      electronic:[0,3,7,5,0,8,7,3],
+      house:[0,5,7,3,0,5,8,7],
+      ambient:[0,5,3,7,8,5,3,0]
+    };
+    const rootShift = progressions[style][phraseBar] + (cycle === 2 ? 2 : cycle === 3 ? -2 : 0);
+    const root = 55 * Math.pow(2,rootShift/12);
     if (style === "ambient") {
-      if (local === 0 || local === 8) this.runtime.tone(root, time, 1.2, {type:"sine",gain:0.045*energy});
-      if (local === 0) {
-        [1,1.25,1.5].forEach((ratio,i) => this.runtime.tone(root*2*ratio, time+i*0.025, 2.1, {type:"sine",gain:0.018*energy}));
-      }
-      if (local % 4 === 2 && Math.random() > 0.45) this.runtime.noise(time,0.08,{gain:0.009*energy,highpass:6500});
+      this.scheduleAmbient(local,bar,root,time,energy,sixteenth);
       return;
     }
+
+    const breakdown = phraseBar === 7 && local < 8;
     const fourFloor = local % 4 === 0;
-    if (fourFloor || (style === "workout" && intensity === "high" && local === 14)) {
-      this.runtime.tone(145, time, 0.18, {type:"sine",gain:0.18*energy,endFreq:46});
+    if (fourFloor && (!breakdown || local === 0)) {
+      this.runtime.sample("kick",time,{gain:(style === "techno" ? 0.62 : 0.5)*energy});
+      this.runtime.pump(time,style === "techno" ? 0.34 : 0.5,Math.min(0.28,sixteenth*3.2));
     }
-    if (local === 4 || local === 12) {
-      this.runtime.noise(time, 0.16, {gain:0.075*energy, highpass:900});
-      this.runtime.tone(190, time, 0.09, {type:"triangle",gain:0.035*energy});
+    if ((local === 4 || local === 12) && !breakdown) {
+      this.runtime.sample("clap",time,{gain:(style === "workout" ? 0.25 : 0.2)*energy});
+      this.runtime.tone(185,time,0.08,{type:"triangle",gain:0.025*energy,destination:"drum"});
     }
-    const hatEvery = intensity === "low" ? 4 : 2;
-    if (local % hatEvery === (intensity === "low" ? 2 : 0) || (intensity === "high" && local % 2 === 1 && Math.random() > 0.25)) {
-      this.runtime.noise(time, local === 14 ? 0.12 : 0.045, {gain:0.022*energy, highpass:5200});
+
+    const hatSteps = intensity === "low" ? [2,6,10,14] : [2,4,6,10,12,14];
+    if (!breakdown && (hatSteps.includes(local) || (intensity === "high" && local%2 === 1 && this.variation(step,1)>.38))) {
+      this.runtime.sample("hat",time,{gain:(style === "techno" ? 0.11 : 0.085)*energy,playbackRate:0.92+this.variation(step,2)*0.18});
     }
-    const bassPattern = style === "house" ? [0,3,6,10,14] : style === "electronic" ? [0,3,7,10,12] : [0,2,6,8,11,14];
-    if (bassPattern.includes(local)) {
-      const variation = (bar % 4 === 3 && local === bassPattern[bassPattern.length-1]) ? Math.pow(2,7/12) : 1;
-      this.runtime.tone(root*variation, time, 0.18, {type:style === "electronic" ? "sawtooth" : "square",gain:0.055*energy});
+    if (!breakdown && (local === 6 || (local === 14 && phraseBar%2===1))) {
+      this.runtime.sample("openHat",time,{gain:0.065*energy,playbackRate:0.96+cycle*0.025});
     }
-    if (local === 0 && bar % 2 === 0) {
-      [2,2.5,3].forEach((ratio,i) => this.runtime.tone(root*ratio, time+i*0.012, 0.5, {type:"triangle",gain:0.012*energy}));
+
+    const riffs = {
+      techno:[[0,0],[3,0],[6,3],[7,0],[10,7],[12,5],[14,3]],
+      workout:[[0,0],[2,0],[6,5],[8,0],[11,7],[14,3]],
+      electronic:[[0,0],[3,7],[7,3],[10,0],[12,5],[15,7]],
+      house:[[0,0],[3,0],[6,7],[10,5],[14,3]]
+    };
+    const note = riffs[style].find(([position]) => position === local);
+    if (note && !breakdown) {
+      const semitone = note[1] + ((phraseBar===3 || phraseBar===6) && local>=12 ? 2 : 0);
+      const frequency = root * Math.pow(2,semitone/12);
+      const duration = sixteenth * (style === "techno" ? 1.9 : 1.45);
+      this.runtime.tone(frequency,time,duration,{type:"sine",gain:(style==="techno"?0.11:0.075)*energy});
+      this.runtime.tone(frequency*2,time,duration*0.82,{
+        type:style === "house" ? "square" : "sawtooth",
+        gain:(style==="techno"?0.055:0.032)*energy,
+        filterFreq:style==="techno"?650:900,
+        filterEndFreq:style==="techno"?180:420,
+        filterQ:style==="techno"?8:3
+      });
     }
+
+    const stabSteps = style === "house" ? [2,10] : style === "electronic" ? [4,12] : style === "workout" ? [6,14] : [7,15];
+    if (!breakdown && stabSteps.includes(local) && (intensity !== "low" || phraseBar%2===1)) {
+      const chord = style === "techno" ? [0,3,7] : [0,4,7];
+      chord.forEach((semitone,index) => this.runtime.tone(root*2*Math.pow(2,semitone/12),time+index*0.004,sixteenth*1.7,{
+        type:style==="techno"?"sawtooth":"triangle",gain:0.014*energy,
+        filterFreq:style==="techno"?1250:1700,filterEndFreq:320,filterQ:4
+      }));
+    }
+
+    if (intensity === "high" && !breakdown && phraseBar%2===1 && [1,5,9,13].includes(local)) {
+      const arp = [0,7,12,10][Math.floor(local/4)];
+      this.runtime.tone(root*4*Math.pow(2,arp/12),time,sixteenth*0.8,{type:"square",gain:0.012,filterFreq:2200,filterEndFreq:900,filterQ:2});
+    }
+
+    if (phraseBar === 7 && local >= 12) {
+      const fillIndex = local - 12;
+      this.runtime.sample("tom",time,{gain:(0.14+fillIndex*0.025)*energy,playbackRate:0.8+fillIndex*0.14});
+      if (local === 15) this.runtime.noise(time,0.24,{gain:0.045*energy,highpass:2600,destination:"drum"});
+    }
+    if (breakdown && local === 0) {
+      [0,3,7].forEach((semitone,index) => this.runtime.tone(root*2*Math.pow(2,semitone/12),time+index*0.01,sixteenth*7,{
+        type:"sawtooth",gain:0.018*energy,filterFreq:1800,filterEndFreq:180,filterQ:5
+      }));
+    }
+  }
+  scheduleAmbient(local,bar,root,time,energy,sixteenth) {
+    if (local === 0) {
+      const chord = bar%2 ? [0,3,7] : [0,4,7];
+      chord.forEach((semitone,index) => this.runtime.tone(root*2*Math.pow(2,semitone/12),time+index*0.035,sixteenth*15,{
+        type:index===0?"sine":"triangle",gain:(index===0?0.035:0.018)*energy,
+        filterFreq:1500,filterEndFreq:520,filterQ:1.2
+      }));
+    }
+    if ([2,6,10,14].includes(local)) {
+      const arp = [0,7,12,10][Math.floor(local/4)];
+      this.runtime.tone(root*4*Math.pow(2,arp/12),time,sixteenth*2.5,{type:"sine",gain:0.014*energy});
+    }
+    if (local%4===2 && this.variation(bar*16+local,7)>0.35) this.runtime.sample("openHat",time,{gain:0.012*energy,playbackRate:1.35});
   }
 }
 
@@ -381,7 +535,11 @@ class TrainingCueEngine {
     const voices = window.speechSynthesis?.getVoices?.() || [];
     this.voice = voices.find(v => /^de[-_]/i.test(v.lang)) || voices.find(v => /^de/i.test(v.lang)) || voices.find(v => v.default) || null;
   }
-  configure(options={}) { this.options = normalizeOptions(options); this.runtime.setDucking(this.options.ducking); }
+  configure(options={}) {
+    this.options = normalizeOptions(options);
+    this.runtime.setDucking(this.options.ducking);
+    this.runtime.setSignalVolume(this.options.signalVolume);
+  }
   countdown(number) {
     if (this.options.signalsEnabled) this.runtime.cue("short");
     if (this.options.speechEnabled) this.speak(String(number));
@@ -400,7 +558,7 @@ class TrainingCueEngine {
     utterance.lang = this.voice?.lang || "de-DE";
     if (this.voice) utterance.voice = this.voice;
     utterance.rate = /^\d+$/.test(String(text)) ? 0.85 : 1;
-    utterance.volume = 1;
+    utterance.volume = this.options.speechVolume;
     const token = ++this.speechToken;
     this.runtime.setDucked(true);
     const restore = () => { if (token === this.speechToken) this.runtime.setDucked(false); };
@@ -419,7 +577,7 @@ class TrainingPlayerController {
   constructor() {
     this.root = document.getElementById("trainingPlayer");
     if (!this.root) return;
-    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingCountdownEnabled","trainingCountdownSeconds","trainingSpeechEnabled","trainingSignalsEnabled","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
+    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingCountdownEnabled","trainingCountdownSeconds","trainingSpeechEnabled","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalsEnabled","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
     this.e = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
     this.scope = "anonymous";
     this.customTemplates = [];
@@ -474,7 +632,7 @@ class TrainingPlayerController {
     this.e.trainingTemplateSave.addEventListener("click", () => this.saveTemplate());
     this.e.trainingTemplateDelete.addEventListener("click", () => this.deleteTemplate());
     this.e.trainingPhaseAdd.addEventListener("click", () => { this.readEditor(); this.current.phases.push(continuousPhase()); this.renderPhases(); this.refreshIdleTimeline(); });
-    [this.e.trainingMusicStyle,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingCountdownEnabled,this.e.trainingCountdownSeconds,this.e.trainingSpeechEnabled,this.e.trainingSignalsEnabled,this.e.trainingDucking].forEach(control => control.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
+    [this.e.trainingMusicStyle,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingCountdownEnabled,this.e.trainingCountdownSeconds,this.e.trainingSpeechEnabled,this.e.trainingSpeechVolume,this.e.trainingSignalsEnabled,this.e.trainingSignalVolume,this.e.trainingDucking].forEach(control => control.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
     this.e.trainingPhases.addEventListener("input", event => this.onPhaseInput(event));
     this.e.trainingPhases.addEventListener("change", event => this.onPhaseInput(event));
     this.e.trainingPhases.addEventListener("click", event => this.onPhaseAction(event));
@@ -542,7 +700,9 @@ class TrainingPlayerController {
     this.e.trainingCountdownEnabled.checked = options.countdownEnabled;
     this.e.trainingCountdownSeconds.value = String(options.countdownSeconds);
     this.e.trainingSpeechEnabled.checked = options.speechEnabled;
+    this.e.trainingSpeechVolume.value = Math.round(options.speechVolume * 100);
     this.e.trainingSignalsEnabled.checked = options.signalsEnabled;
+    this.e.trainingSignalVolume.value = Math.round(options.signalVolume * 100);
     this.e.trainingDucking.value = Math.round(options.ducking * 100);
     this.renderPhases();
     this.updateOutputs();
@@ -552,7 +712,7 @@ class TrainingPlayerController {
   readEditor() {
     this.current.name = (this.e.trainingTemplateName.value.trim() || "Training").slice(0,80);
     this.current.music = normalizeMusic({style:this.e.trainingMusicStyle.value,bpm:this.e.trainingBpm.value,intensity:this.e.trainingIntensity.value,volume:Number(this.e.trainingVolume.value)/100});
-    this.current.options = normalizeOptions({countdownEnabled:this.e.trainingCountdownEnabled.checked,countdownSeconds:this.e.trainingCountdownSeconds.value,speechEnabled:this.e.trainingSpeechEnabled.checked,signalsEnabled:this.e.trainingSignalsEnabled.checked,ducking:Number(this.e.trainingDucking.value)/100});
+    this.current.options = normalizeOptions({countdownEnabled:this.e.trainingCountdownEnabled.checked,countdownSeconds:this.e.trainingCountdownSeconds.value,speechEnabled:this.e.trainingSpeechEnabled.checked,speechVolume:Number(this.e.trainingSpeechVolume.value)/100,signalsEnabled:this.e.trainingSignalsEnabled.checked,signalVolume:Number(this.e.trainingSignalVolume.value)/100,ducking:Number(this.e.trainingDucking.value)/100});
     const cards = [...this.e.trainingPhases.querySelectorAll(".training-phase")];
     if (cards.length) this.current.phases = cards.map((card,index) => this.phaseFromCard(card,index));
     this.current = normalizeTemplate(this.current);
@@ -568,7 +728,7 @@ class TrainingPlayerController {
   }
   musicOverrideFields(phase) {
     const style = phase.music?.style || "", intensity = phase.music?.intensity || "", bpm = phase.music?.bpm || "";
-    return `<label>Musikstil<select data-field="musicStyle"><option value="">Vorlagenwert</option><option value="electronic" ${style==="electronic"?"selected":""}>Electronic</option><option value="workout" ${style==="workout"?"selected":""}>Workout</option><option value="house" ${style==="house"?"selected":""}>House</option><option value="ambient" ${style==="ambient"?"selected":""}>Ambient</option></select></label><label>BPM<input data-field="bpm" type="number" min="70" max="160" value="${bpm}" placeholder="Vorlage"></label><label>Intensität<select data-field="intensity"><option value="">Vorlagenwert</option><option value="low" ${intensity==="low"?"selected":""}>Niedrig</option><option value="medium" ${intensity==="medium"?"selected":""}>Mittel</option><option value="high" ${intensity==="high"?"selected":""}>Hoch</option></select></label>`;
+    return `<label>Musikstil<select data-field="musicStyle"><option value="">Vorlagenwert</option><option value="electronic" ${style==="electronic"?"selected":""}>Electronic</option><option value="workout" ${style==="workout"?"selected":""}>Workout</option><option value="house" ${style==="house"?"selected":""}>House</option><option value="techno" ${style==="techno"?"selected":""}>Techno</option><option value="ambient" ${style==="ambient"?"selected":""}>Ambient</option></select></label><label>BPM<input data-field="bpm" type="number" min="70" max="160" value="${bpm}" placeholder="Vorlage"></label><label>Intensität<select data-field="intensity"><option value="">Vorlagenwert</option><option value="low" ${intensity==="low"?"selected":""}>Niedrig</option><option value="medium" ${intensity==="medium"?"selected":""}>Mittel</option><option value="high" ${intensity==="high"?"selected":""}>Hoch</option></select></label>`;
   }
   renderPhases() {
     this.e.trainingPhases.innerHTML = this.current.phases.map((phase,index) => {
@@ -604,6 +764,10 @@ class TrainingPlayerController {
     this.e.trainingBpmOutput.textContent = this.e.trainingBpm.value;
     this.e.trainingVolumeOutput.value = `${this.e.trainingVolume.value} %`;
     this.e.trainingVolumeOutput.textContent = `${this.e.trainingVolume.value} %`;
+    this.e.trainingSpeechVolumeOutput.value = `${this.e.trainingSpeechVolume.value} %`;
+    this.e.trainingSpeechVolumeOutput.textContent = `${this.e.trainingSpeechVolume.value} %`;
+    this.e.trainingSignalVolumeOutput.value = `${this.e.trainingSignalVolume.value} %`;
+    this.e.trainingSignalVolumeOutput.textContent = `${this.e.trainingSignalVolume.value} %`;
     this.e.trainingDuckingOutput.value = `${this.e.trainingDucking.value} %`;
     this.e.trainingDuckingOutput.textContent = `${this.e.trainingDucking.value} %`;
   }
@@ -714,5 +878,5 @@ class TrainingPlayerController {
 }
 
 window.VBTrainingPlayer = new TrainingPlayerController();
-window.VBTrainingPlayerInternals = {VERSION, normalizeTemplate, buildTimeline, TrainingIntervalEngine};
+window.VBTrainingPlayerInternals = {VERSION, normalizeTemplate, buildTimeline, TrainingIntervalEngine, AudioRuntime, ProceduralMusicEngine, TrainingCueEngine};
 })();

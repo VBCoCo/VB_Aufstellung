@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.1.1  
+**Aktueller Frontend-Stand:** 3.2.0  
 **Veröffentlichung:** GitHub Pages  
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -110,7 +110,7 @@ Mitgeliefert werden die Standardvorlagen `Tabata`, `Volleyball Power` und `Warm-
 
 Mit `＋ Neue Vorlage` wird ein eigenständiger, noch nicht gespeicherter Ablauf mit einem bearbeitbaren Intervall angelegt. Erst `Speichern` übernimmt ihn dauerhaft in die Liste der eigenen Vorlagen. Das Bearbeiten und Speichern einer Standardvorlage erzeugt weiterhin automatisch eine eigene Kopie.
 
-Die Musik wird prozedural mit der Web Audio API erzeugt. Der erste Start muss wegen der Autoplay-Regeln von iOS/Safari bewusst über Play erfolgen. Verlässt die App während eines laufenden Trainings den Vordergrund, wird der Ablauf automatisch pausiert, damit Timer und Ton nicht unbemerkt auseinanderlaufen.
+Die Musik wird prozedural mit der Web Audio API erzeugt. Die gemeinsame Musik-Engine bietet `Electronic`, `Workout`, `House`, `Techno` und `Ambient`. Schlagzeug-Samples entstehen beim Start direkt im Browser, benötigen keine externen Audiodateien und bleiben vollständig offlinefähig. Musik-, Ansagen- und Signaltonlautstärke sowie die Musikabsenkung während Ansagen werden pro Vorlage gespeichert. Der erste Start muss wegen der Autoplay-Regeln von iOS/Safari bewusst über Play erfolgen. Verlässt die App während eines laufenden Trainings den Vordergrund, wird der Ablauf automatisch pausiert, damit Timer und Ton nicht unbemerkt auseinanderlaufen.
 
 ## Einrichtung und Betrieb
 
@@ -133,6 +133,8 @@ Version 3.0.5.2 macht die Viewer-Legende so kompakt, dass ihre fünf Elemente au
 Version 3.1.0 ergänzt für Bearbeiter einen kompakten, aufklappbaren Trainings-Player. Eine eigenständige Intervall-Engine steuert fortlaufende Phasen, Action-/Pausenintervalle, Wiederholungen, Blöcke und längere Blockpausen. Davon getrennt erzeugt eine Web-Audio-Engine fortlaufende Musik in vier Stilrichtungen; Browser-Sprachausgabe, Countdown, Signaltöne und automatische Musikabsenkung sind separat angebunden. Eigene Vorlagen werden lokal pro Benutzer und Mannschaft gespeichert. Die Situationsauswahl reserviert außerdem dauerhaft den Platz des Info-Knopfs, damit beim Wechsel zu einer Situation mit Info nichts mehr springt.
 
 Version 3.1.1 ergänzt einen eindeutigen Knopf zum Anlegen einer neuen Trainingsvorlage. Die gesprochenen Countdown-Ziffern laufen ruhiger. Auf unterstützten iPhones setzt die Web-Audio-Engine beim bewussten Start per Play den Audio-Session-Typ `playback`, damit generierte Musik nicht durch den Stummmodus unterdrückt wird.
+
+Version 3.2.0 erweitert alle Musikstile um prozedural erzeugte Drum-Samples, längere Bass- und Rhythmusmuster, Variationen, Fills und Breaks. Der zusätzliche Stil `Techno` verwendet kräftigeren Subbass, gefilterte Riffs und einen Pump-Effekt. Ansagen- und Signaltonlautstärke sind unabhängig von der Musik einstellbar; die Musik wird bei Ansagen standardmäßig weniger stark abgesenkt. Im Viewer besitzen Teamaufstellung und Spielsituation nun dieselbe Höhe. Der Situations-Info-Knopf ist rechteckig in das bestehende Bedienraster integriert, ohne die Info-Funktion oder die stabile Platzreservierung zu entfernen.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

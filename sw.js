@@ -1,4 +1,4 @@
-const VERSION = "3.4.0";
+const VERSION = "3.5.0";
 const CACHE_PREFIX = "volleyball-trainer-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const APP_SHELL = [

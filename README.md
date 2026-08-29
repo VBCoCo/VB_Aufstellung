@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.4.0
+**Aktueller Frontend-Stand:** 3.5.0
 **Veröffentlichung:** GitHub Pages
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -111,7 +111,9 @@ Mitgeliefert werden die Standardvorlagen `Tabata`, `Volleyball Power` und `Warm-
 
 Mit `＋ Neue Vorlage` wird ein eigenständiger, noch nicht gespeicherter Ablauf mit einem bearbeitbaren Intervall angelegt. Erst `Speichern` übernimmt ihn dauerhaft in die Liste der eigenen Vorlagen. Das Bearbeiten und Speichern einer Standardvorlage erzeugt weiterhin automatisch eine eigene Kopie.
 
-Die Musik wird mit der lokal mitgelieferten Bibliothek Tone.js 15.1.22 direkt im Browser erzeugt. Die gemeinsame Musik-Engine bietet `Electronic`, `Workout`, `House`, `Techno` und `Ambient` mit harmonischen 16-Takt-Abläufen, Akkorden, Hauptmotiv, Antwortphrase, Breaks und Fills. Seit 3.4.0 ersetzen offline gespeicherte CC0-Aufnahmen die zuvor rein synthetischen Klangquellen für Kick, Snare, Hi-Hats, Bass und – außer im bewusst flächigen Ambient-Stil – Melodie. Tone.js bleibt für Timing und Arrangement zuständig. Die bisherige Web-Audio-Engine bleibt als Rückfall erhalten. Musik-, Ansagen- und Signaltonlautstärke sowie die Musikabsenkung während Ansagen werden pro Vorlage gespeichert. Der erste Start muss wegen der Autoplay-Regeln von iOS/Safari bewusst über Play erfolgen. Für Sprachansagen wechselt die iOS-Audio-Session kurz aus dem Musikmodus und danach zurück, damit `speechSynthesis` trotz laufender Tone.js-Ausgabe hörbar bleibt.
+Die Musik wird mit der lokal mitgelieferten Bibliothek Tone.js 15.1.22 direkt im Browser erzeugt. Die gemeinsame Musik-Engine bietet `Electronic`, `Workout`, `House`, `Techno`, `Rock` und `Ambient`. Seit 3.4.0 liefern offline gespeicherte CC0-Aufnahmen Kick, Snare, Hi-Hats und Bass. Version 3.5.0 entfernt die unnatürlich hoch transponierte Bassaufnahme aus der Melodiestimme und verwendet stattdessen tiefer liegende, stilabhängige Instrumente: warme FM-Klänge, House-E-Piano, dunkle Techno-Stabs, Ambient-Flächen sowie verzerrte Powerchords und kurze Gitarrenmotive für Rock. Techno erhält einen durchgehenden tiefen Basspuls, der auch in Breaks erhalten bleibt. Tone.js bleibt für Timing und Arrangement zuständig; die bisherige Web-Audio-Engine bleibt als Rückfall erhalten.
+
+Musik-, Ansagen- und Signaltonlautstärke sowie die Musikabsenkung während Ansagen werden pro Vorlage gespeichert. Tone.js und Signaltöne verwenden seit 3.5.0 denselben bereits vom Benutzer freigeschalteten AudioContext. Dadurch konkurrieren auf iOS nicht mehr zwei WebAudio-Ausgaben mit der System-Sprachausgabe. Die Musik läuft während Ansagen weiter und wird nur abgesenkt. Die bevorzugte deutsche weibliche Systemstimme spricht abhängig vom BPM-Bereich ruhig, normal oder kurz und dynamisch. Freie Ansagetexte bleiben möglich.
 
 Tone.js wird unter der MIT-Lizenz verwendet. Der Lizenztext liegt unter `vendor/TONE-LICENSE.md`; der Hinweis des Browser-Bundles unter `vendor/tone-15.1.22.LICENSE.txt`.
 
@@ -144,6 +146,8 @@ Version 3.2.0 erweitert alle Musikstile um prozedural erzeugte Drum-Samples, lä
 Version 3.3.0 stellt ausschließlich die Musikkomponente des Trainings-Players auf die lokal eingebundene Tone.js-Version 15.1.22 um. Alle fünf Musikstile erhalten tonale 16-Takt-Arrangements mit Akkordfolgen, hörbarer Melodie, Antwortphrase, Bass, Breaks, Fills und intensitätsabhängigen Zusatzstimmen. Timer, Vorlagen, Ansagen, Signaltöne und übrige App-Funktionen bleiben unverändert. Tone.js wird mit dem App-Shell offline gespeichert; die bisherige Musik-Engine bleibt als technischer Rückfall erhalten.
 
 Version 3.4.0 ergänzt kleine, lokal gespeicherte CC0-Samples für Schlagzeug, Fretless-Bass und die melodische Stimme. Tone.js bleibt Sequencer, Tempo- und Arrangement-Engine. Der Service Worker speichert alle Samples in der App-Shell, sodass der Trainings-Player weiterhin offline arbeitet. Zusätzlich schaltet die Sprachausgabe auf iOS die Audio-Session während einer Ansage kontrolliert um, leert eine veraltete Sprachwarteschlange und stellt Musik sowie Ducking anschließend mit einem Sicherheits-Timer zuverlässig wieder her.
+
+Version 3.5.0 ergänzt den Musikstil `Rock` mit Rock-Schlagzeug, verzerrten Powerchords, E-Bass und sparsamen Gitarrenmotiven. Die übrigen Stile erhalten stärker getrennte Instrumentierung und Rhythmen; die piepsige, hoch transponierte Bass-Melodie entfällt. Techno verwendet einen durchgehenden tiefen Achtel-Bass und bei hoher Intensität zusätzliche Sechzehntelimpulse. Tone.js und Signaltöne teilen nun einen AudioContext, damit die adaptive deutsche weibliche Systemstimme auf iOS bei weiterlaufender, nur abgesenkter Musik hörbar bleibt. Zwei neue Player-Tasten springen zur nächsten vollständigen Trainingsphase beziehungsweise starten die aktuelle Phase neu; ein zweiter Rücksprung innerhalb von drei Sekunden wechselt zur vorherigen Phase.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

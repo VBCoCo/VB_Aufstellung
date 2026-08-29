@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.4.0";
+const VERSION = "3.5.0";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -47,7 +47,7 @@ const BUILTIN_TEMPLATES = [
 ];
 
 function normalizeMusic(music={}) {
-  const styles = ["electronic", "workout", "house", "techno", "ambient"];
+  const styles = ["electronic", "workout", "house", "techno", "ambient", "rock"];
   const intensities = ["low", "medium", "high"];
   return {
     style:styles.includes(music.style) ? music.style : "workout",
@@ -69,7 +69,7 @@ function normalizeOptions(options={}) {
 }
 function normalizePhase(phase={}, index=0) {
   const music = {
-    style:["electronic", "workout", "house", "techno", "ambient"].includes(phase.music?.style) ? phase.music.style : "",
+    style:["electronic", "workout", "house", "techno", "ambient", "rock"].includes(phase.music?.style) ? phase.music.style : "",
     bpm:phase.music?.bpm ? clamp(phase.music.bpm, 70, 160) : null,
     intensity:["low", "medium", "high"].includes(phase.music?.intensity) ? phase.music.intensity : ""
   };
@@ -174,6 +174,22 @@ class TrainingIntervalEngine {
     this.remainingMs = (this.timeline[0]?.durationSeconds || 0) * 1000;
     this.lastCountdown = null;
     this.emit();
+  }
+  jumpToPhase(phaseIndex) {
+    const target = this.timeline.findIndex(segment => segment.phaseIndex === phaseIndex);
+    if (target < 0) return false;
+    const wasRunning = this.status === "running";
+    this.index = target;
+    this.remainingMs = this.current().durationSeconds * 1000;
+    this.lastCountdown = null;
+    if (wasRunning) this.deadline = Date.now() + this.remainingMs;
+    this.callbacks.onSegmentStart?.(this.current(), this.index, this.timeline.length);
+    this.emit();
+    return true;
+  }
+  nextPhase() {
+    const phaseIndex = this.current()?.phaseIndex ?? 0;
+    return this.jumpToPhase(phaseIndex + 1);
   }
   clearTimer() { if (this.timer) clearInterval(this.timer); this.timer = null; }
   tick() {
@@ -536,9 +552,7 @@ class ToneMusicEngine {
   }
   async unlock() {
     if (!this.Tone) throw new Error("Tone.js konnte nicht geladen werden.");
-    if (navigator.audioSession && "type" in navigator.audioSession) {
-      try { navigator.audioSession.type = "playback"; } catch {}
-    }
+    if (this.runtime.context && !this.ready && this.Tone.setContext) this.Tone.setContext(this.runtime.context);
     await this.Tone.start();
     this.initialize();
     if (!this.samplesReady && this.Tone.loaded) {
@@ -571,14 +585,6 @@ class ToneMusicEngine {
       baseUrl:"assets/audio/",
       release:0.12
     }).connect(this.bassFilter);
-    this.sampleLead = new Tone.Sampler({
-      urls:{C3:"bass-c3.wav"},
-      baseUrl:"assets/audio/",
-      attack:0.002,
-      release:0.18
-    }).connect(this.musicFilter);
-    this.sampleLead.connect(this.delay);
-
     this.kick = new Tone.MembraneSynth({
       pitchDecay:0.035, octaves:7,
       oscillator:{type:"sine"}, envelope:{attack:0.001, decay:0.32, sustain:0, release:0.08}
@@ -611,6 +617,25 @@ class ToneMusicEngine {
       oscillator:{type:"square"}, envelope:{attack:0.002, decay:0.08, sustain:0, release:0.08}
     }).connect(this.musicFilter);
     this.pluck.connect(this.delay);
+    this.warmLead = new Tone.FMSynth({
+      harmonicity:1.5, modulationIndex:1.2,
+      oscillator:{type:"sine"}, modulation:{type:"triangle"},
+      envelope:{attack:0.025, decay:0.18, sustain:0.18, release:0.35},
+      modulationEnvelope:{attack:0.02, decay:0.12, sustain:0.08, release:0.25}
+    }).connect(this.musicFilter);
+    this.warmLead.connect(this.delay);
+    this.electricPiano = new Tone.PolySynth(Tone.FMSynth, {
+      harmonicity:2, modulationIndex:1.4,
+      oscillator:{type:"sine"}, modulation:{type:"sine"},
+      envelope:{attack:0.008, decay:0.5, sustain:0.12, release:0.8},
+      modulationEnvelope:{attack:0.01, decay:0.25, sustain:0.05, release:0.4}
+    }).connect(this.musicFilter);
+    this.guitarDrive = new Tone.Distortion(0.72).connect(this.master);
+    this.guitarFilter = new Tone.Filter(3200, "lowpass").connect(this.guitarDrive);
+    this.guitar = new Tone.PolySynth(Tone.Synth, {
+      oscillator:{type:"fatsawtooth", count:3, spread:18},
+      envelope:{attack:0.004, decay:0.16, sustain:0.32, release:0.16}
+    }).connect(this.guitarFilter);
 
     this.kick.volume.value = -4;
     this.clap.volume.value = -17;
@@ -622,7 +647,9 @@ class ToneMusicEngine {
     this.pluck.volume.value = -24;
     Object.values(this.sampleDrums).forEach(player => { player.volume.value = -2; });
     this.sampleBass.volume.value = -10;
-    this.sampleLead.volume.value = -18;
+    this.warmLead.volume.value = -21;
+    this.electricPiano.volume.value = -19;
+    this.guitar.volume.value = -18;
     this.transport = Tone.getTransport ? Tone.getTransport() : Tone.Transport;
     this.eventId = this.transport.scheduleRepeat(time => {
       this.scheduleStep(this.step, time);
@@ -673,11 +700,12 @@ class ToneMusicEngine {
     if (!this.ready) return;
     const style = this.config.style;
     const settings = {
-      electronic:{lead:"sawtooth", chord:"triangle", cutoff:4600, delay:0.18, bass:980},
-      workout:{lead:"fatsawtooth", chord:"triangle", cutoff:3900, delay:0.12, bass:850},
-      house:{lead:"square", chord:"sine", cutoff:5200, delay:0.2, bass:1050},
-      techno:{lead:"fatsquare", chord:"sawtooth", cutoff:3300, delay:0.17, bass:720},
-      ambient:{lead:"sine", chord:"triangle", cutoff:3000, delay:0.32, bass:1250}
+      electronic:{lead:"triangle", chord:"triangle", cutoff:4300, delay:0.2, bass:980},
+      workout:{lead:"triangle", chord:"triangle", cutoff:3600, delay:0.1, bass:850},
+      house:{lead:"sine", chord:"sine", cutoff:5000, delay:0.18, bass:1050},
+      techno:{lead:"sine", chord:"sawtooth", cutoff:2800, delay:0.1, bass:680},
+      ambient:{lead:"sine", chord:"triangle", cutoff:2700, delay:0.34, bass:1250},
+      rock:{lead:"triangle", chord:"triangle", cutoff:3900, delay:0.08, bass:1150}
     }[style];
     this.lead.set({oscillator:{type:settings.lead}});
     this.chords.set({oscillator:{type:settings.chord}});
@@ -711,7 +739,8 @@ class ToneMusicEngine {
       workout:{root:48, scale:[0,2,3,5,7,8,10], progression:[0,5,8,7,0,3,8,7,0,5,3,7,8,5,7,0]},
       house:{root:48, scale:[0,2,4,5,7,9,11], progression:[0,5,9,7,0,5,9,7,0,4,9,7,5,9,7,0]},
       techno:{root:45, scale:[0,3,5,7,10,12], progression:[0,0,3,5,0,7,5,3,0,3,5,7,0,10,7,5]},
-      ambient:{root:45, scale:[0,2,4,7,9,12], progression:[0,5,9,7,0,9,5,7,0,4,9,5,7,9,5,0]}
+      ambient:{root:45, scale:[0,2,4,7,9,12], progression:[0,5,9,7,0,9,5,7,0,4,9,5,7,9,5,0]},
+      rock:{root:40, scale:[0,2,3,5,7,10,12], progression:[0,5,7,3,0,5,8,7,0,3,5,7,8,5,7,0]}
     }[this.config.style];
   }
   scheduleStep(step,time) {
@@ -724,53 +753,59 @@ class ToneMusicEngine {
     const energy = intensity === "high" ? 1 : intensity === "low" ? 0.58 : 0.8;
     const breakdown = (bar === 7 || bar === 15) && local < (style === "ambient" ? 12 : 8);
     const chordRoot = data.root + data.progression[bar] + (phrase % 4 === 2 ? 2 : phrase % 4 === 3 ? -2 : 0);
-
-    if (style !== "ambient") {
-      if (local % 4 === 0 && (!breakdown || local === 0)) this.drum("kick", time, 0.82 * energy);
-      if (!breakdown && (local === 4 || local === 12)) this.drum("snare", time, 0.58 * energy);
+    if (style === "rock") {
+      if ([0,6,8,14].includes(local) && (!breakdown || local === 0)) this.drum("kick", time, 0.92 * energy);
+      if (!breakdown && [4,12].includes(local)) this.drum("snare", time, 0.82 * energy);
+      if (!breakdown && local % 2 === 0) this.drum(local === 14 ? "openHat" : "hat", time, 0.34 * energy);
+    } else if (style !== "ambient") {
+      if (local % 4 === 0 && (!breakdown || local === 0)) this.drum("kick", time, (style === "techno" ? 1 : 0.82) * energy);
+      if (!breakdown && [4,12].includes(local)) this.drum("snare", time, 0.58 * energy);
       const hats = intensity === "low" ? [2,6,10,14] : [2,4,6,10,12,14];
-      if (!breakdown && (hats.includes(local) || (intensity === "high" && local % 2 === 1 && this.variation(step,1) > 0.58))) {
-        this.drum("hat", time, 0.28 * energy);
+      if (!breakdown && hats.includes(local)) this.drum(local === 14 && bar % 2 ? "openHat" : "hat", time, 0.28 * energy);
+    } else if ([2,6,10,14].includes(local) && !breakdown) this.drum("hat", time, 0.08 * energy);
+
+    if (style === "techno") {
+      const rollingStep = local % 2 === 0 || (intensity === "high" && [3,7,11,15].includes(local));
+      if (rollingStep) {
+        const bassNote = this.note(data.root - 12 + (local === 14 ? 3 : 0));
+        this.bass.triggerAttackRelease(bassNote, "16n", time, (breakdown ? 0.48 : 0.96) * energy);
       }
-      if (!breakdown && (local === 6 || (local === 14 && bar % 2 === 1))) this.drum("openHat", time, 0.18 * energy);
-      const bassPattern = style === "techno" ? [0,3,6,8,10,12,14] : [0,3,6,8,11,14];
+    } else if (style === "ambient") {
+      if (local === 0 && bar % 2 === 0) this.bass.triggerAttackRelease(this.note(chordRoot - 12), "1m", time, 0.24 * energy);
+    } else {
+      const bassPattern = style === "rock" ? [0,3,6,8,10,14] : [0,3,6,8,11,14];
       if (!breakdown && bassPattern.includes(local)) {
         const fifth = (local === 6 || local === 14) && bar % 2 ? 7 : 0;
         const bassNote = this.note(chordRoot - 12 + fifth);
-        if (this.samplesReady) this.sampleBass.triggerAttackRelease(bassNote, local % 4 === 0 ? "8n" : "16n", time, 0.78 * energy);
-        else this.bass.triggerAttackRelease(bassNote, local % 4 === 0 ? "8n" : "16n", time, 0.72 * energy);
+        if (this.samplesReady) this.sampleBass.triggerAttackRelease(bassNote, local % 4 === 0 ? "8n" : "16n", time, 0.8 * energy);
+        else this.bass.triggerAttackRelease(bassNote, "16n", time, 0.72 * energy);
       }
-    } else {
-      if ([2,6,10,14].includes(local) && !breakdown) this.hat.triggerAttackRelease("32n", time, 0.06 * energy);
-      if (local === 0 && bar % 2 === 0) this.bass.triggerAttackRelease(this.note(chordRoot - 12), "1m", time, 0.24 * energy);
     }
 
-    if (local === 0) {
-      const minor = style === "techno" || style === "workout" || style === "electronic";
-      const chord = [chordRoot + 12, chordRoot + 12 + (minor ? 3 : 4), chordRoot + 19];
-      this.chords.triggerAttackRelease(chord.map(note => this.note(note)), style === "ambient" ? "1m" : "2n", time, (style === "ambient" ? 0.34 : 0.22) * energy);
+    const minor = !["house","ambient"].includes(style);
+    const chord = [chordRoot + 12, chordRoot + 12 + (minor ? 3 : 4), chordRoot + 19];
+    if (style === "rock" && !breakdown && [0,8].includes(local)) {
+      const powerChord = [chordRoot + 12, chordRoot + 19, chordRoot + 24].map(note => this.note(note));
+      this.guitar.triggerAttackRelease(powerChord, local === 0 ? "4n" : "8n", time, 0.55 * energy);
+    } else if (style === "house" && !breakdown && [2,6,10,14].includes(local)) {
+      this.electricPiano.triggerAttackRelease(chord.map(note => this.note(note)), "8n", time, 0.32 * energy);
+    } else if (local === 0 && style !== "techno") {
+      this.chords.triggerAttackRelease(chord.map(note => this.note(note)), style === "ambient" ? "1m" : "2n", time, (style === "ambient" ? 0.34 : 0.18) * energy);
+    } else if (style === "techno" && local === 12 && bar % 2 === 1 && !breakdown) {
+      this.chords.triggerAttackRelease([this.note(chordRoot + 12),this.note(chordRoot + 19)], "16n", time, 0.14 * energy);
     }
 
-    const main = [[0,0],[2,2],[4,3],[7,2],[8,0],[10,4],[12,3],[14,2]];
-    const answer = [[0,4],[2,3],[4,2],[6,0],[8,2],[11,3],[13,1],[15,0]];
-    const ambient = [[0,0],[4,2],[8,4],[12,3]];
-    const motif = style === "ambient" ? ambient : ((bar % 4 < 2) ? main : answer);
-    const melodicBar = !breakdown && (intensity !== "low" || bar % 4 >= 2 || style === "ambient");
-    const event = melodicBar ? motif.find(([position]) => position === local) : null;
-    if (event) {
-      let degree = event[1];
-      if ((bar === 6 || bar === 14) && local >= 12) degree += 1;
-      const scaleNote = data.scale[((degree % data.scale.length) + data.scale.length) % data.scale.length];
-      const octave = style === "ambient" ? 12 : 24;
-      const melody = chordRoot + octave + scaleNote + (degree >= data.scale.length ? 12 : 0);
-      const melodyNote = this.note(melody);
-      if (this.samplesReady && style !== "ambient") this.sampleLead.triggerAttackRelease(melodyNote, "8n", time, (style === "techno" ? 0.5 : 0.4) * energy);
-      else this.lead.triggerAttackRelease(melodyNote, style === "ambient" ? "4n" : "8n", time, (style === "techno" ? 0.36 : 0.3) * energy);
-    }
-
-    if (intensity === "high" && !breakdown && bar % 2 === 1 && [1,5,9,13].includes(local)) {
-      const degree = [0,2,4,3][Math.floor(local/4)];
-      this.pluck.triggerAttackRelease(this.note(chordRoot + 36 + data.scale[degree]), "16n", time, 0.16);
+    const motifs = {
+      electronic:[[0,0],[4,2],[8,3],[12,2]],
+      workout:[[0,0],[6,3],[10,2],[14,4]],
+      ambient:[[0,0],[8,4]],
+      rock:[[2,0],[10,3],[14,2]]
+    };
+    const event = !breakdown && motifs[style]?.find(([position]) => position === local);
+    if (event && (intensity !== "low" || bar % 2 === 1 || style === "ambient")) {
+      const note = this.note(chordRoot + (style === "ambient" ? 12 : 17) + data.scale[event[1]]);
+      if (style === "rock") this.guitar.triggerAttackRelease(note, "8n", time, 0.28 * energy);
+      else this.warmLead.triggerAttackRelease(note, style === "ambient" ? "2n" : "8n", time, 0.24 * energy);
     }
     if ((bar === 7 || bar === 15) && local >= 12 && style !== "ambient") {
       const fillVelocity = 0.2 + (local - 12) * 0.06;
@@ -809,6 +844,7 @@ class TrainingCueEngine {
     this.music = music;
     this.options = defaultOptions();
     this.voice = null;
+    this.tempo = 128;
     this.speechToken = 0;
     this.speechTimer = null;
     this.loadVoices();
@@ -816,8 +852,11 @@ class TrainingCueEngine {
   }
   loadVoices() {
     const voices = window.speechSynthesis?.getVoices?.() || [];
-    this.voice = voices.find(v => /^de[-_]/i.test(v.lang)) || voices.find(v => /^de/i.test(v.lang)) || voices.find(v => v.default) || null;
+    const german = voices.filter(v => /^de(?:[-_]|$)/i.test(v.lang));
+    const femaleNames = /anna|helena|petra|marlene|vicki|female|weiblich/i;
+    this.voice = german.find(v => femaleNames.test(v.name)) || german.find(v => v.localService) || german[0] || voices.find(v => v.default) || null;
   }
+  setTempo(value) { this.tempo = clamp(value || 128, 70, 160); }
   configure(options={}) {
     this.options = normalizeOptions(options);
     this.runtime.setDucking(this.options.ducking);
@@ -841,33 +880,25 @@ class TrainingCueEngine {
     const utterance = new SpeechSynthesisUtterance(String(text));
     utterance.lang = this.voice?.lang || "de-DE";
     if (this.voice) utterance.voice = this.voice;
-    utterance.rate = /^\d+$/.test(String(text)) ? 0.85 : 1;
+    const shortCue = /^\d+$/.test(String(text)) || /^(action|pause|wechsel)$/i.test(String(text).trim());
+    utterance.rate = this.tempo <= 105 ? (shortCue ? 0.88 : 0.92) : this.tempo >= 129 ? (shortCue ? 1.24 : 1.14) : 1;
+    utterance.pitch = 1;
     utterance.volume = this.options.speechVolume;
     const token = ++this.speechToken;
     this.runtime.setDucked(true);
     this.music?.setDucked?.(true);
-    try {
-      if (navigator.audioSession && "type" in navigator.audioSession) navigator.audioSession.type = "auto";
-    } catch {}
     const restore = () => {
       if (token !== this.speechToken) return;
       clearTimeout(this.speechTimer);
       this.speechTimer = null;
       this.runtime.setDucked(false);
       this.music?.setDucked?.(false);
-      try {
-        if (navigator.audioSession && "type" in navigator.audioSession) navigator.audioSession.type = "playback";
-      } catch {}
     };
     utterance.onend = restore;
     utterance.onerror = restore;
-    window.speechSynthesis.cancel();
-    setTimeout(() => {
-      if (token !== this.speechToken) return;
-      window.speechSynthesis.resume?.();
-      window.speechSynthesis.speak(utterance);
-      this.speechTimer = setTimeout(restore, Math.max(2500, String(text).length * 140));
-    }, 40);
+    window.speechSynthesis.resume?.();
+    window.speechSynthesis.speak(utterance);
+    this.speechTimer = setTimeout(restore, Math.max(2500, String(text).length * 140));
   }
   stop() {
     this.speechToken += 1;
@@ -876,9 +907,6 @@ class TrainingCueEngine {
     window.speechSynthesis?.cancel?.();
     this.runtime.setDucked(false);
     this.music?.setDucked?.(false);
-    try {
-      if (navigator.audioSession && "type" in navigator.audioSession) navigator.audioSession.type = "playback";
-    } catch {}
   }
 }
 
@@ -886,7 +914,7 @@ class TrainingPlayerController {
   constructor() {
     this.root = document.getElementById("trainingPlayer");
     if (!this.root) return;
-    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingCountdownEnabled","trainingCountdownSeconds","trainingSpeechEnabled","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalsEnabled","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
+    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingCountdownEnabled","trainingCountdownSeconds","trainingSpeechEnabled","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalsEnabled","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
     this.e = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
     this.scope = "anonymous";
     this.customTemplates = [];
@@ -902,6 +930,7 @@ class TrainingPlayerController {
       onComplete:() => this.onComplete()
     });
     this.wakeLock = null;
+    this.lastBackAt = 0;
     this.bind();
     this.loadStorage();
     this.renderTemplateSelect();
@@ -936,6 +965,8 @@ class TrainingPlayerController {
     this.e.trainingPlayerPlay.addEventListener("click", () => this.play());
     this.e.trainingPlayerPause.addEventListener("click", () => this.pause());
     this.e.trainingPlayerStop.addEventListener("click", () => this.stop());
+    this.e.trainingPlayerBack.addEventListener("click", () => this.previousPhase());
+    this.e.trainingPlayerForward.addEventListener("click", () => this.nextPhase());
     this.e.trainingTemplateSelect.addEventListener("change", () => this.loadTemplate(this.e.trainingTemplateSelect.value));
     this.e.trainingTemplateNew.addEventListener("click", () => this.newTemplate());
     this.e.trainingTemplateSave.addEventListener("click", () => this.saveTemplate());
@@ -1037,7 +1068,7 @@ class TrainingPlayerController {
   }
   musicOverrideFields(phase) {
     const style = phase.music?.style || "", intensity = phase.music?.intensity || "", bpm = phase.music?.bpm || "";
-    return `<label>Musikstil<select data-field="musicStyle"><option value="">Vorlagenwert</option><option value="electronic" ${style==="electronic"?"selected":""}>Electronic</option><option value="workout" ${style==="workout"?"selected":""}>Workout</option><option value="house" ${style==="house"?"selected":""}>House</option><option value="techno" ${style==="techno"?"selected":""}>Techno</option><option value="ambient" ${style==="ambient"?"selected":""}>Ambient</option></select></label><label>BPM<input data-field="bpm" type="number" min="70" max="160" value="${bpm}" placeholder="Vorlage"></label><label>Intensität<select data-field="intensity"><option value="">Vorlagenwert</option><option value="low" ${intensity==="low"?"selected":""}>Niedrig</option><option value="medium" ${intensity==="medium"?"selected":""}>Mittel</option><option value="high" ${intensity==="high"?"selected":""}>Hoch</option></select></label>`;
+    return `<label>Musikstil<select data-field="musicStyle"><option value="">Vorlagenwert</option><option value="electronic" ${style==="electronic"?"selected":""}>Electronic</option><option value="workout" ${style==="workout"?"selected":""}>Workout</option><option value="house" ${style==="house"?"selected":""}>House</option><option value="techno" ${style==="techno"?"selected":""}>Techno</option><option value="rock" ${style==="rock"?"selected":""}>Rock</option><option value="ambient" ${style==="ambient"?"selected":""}>Ambient</option></select></label><label>BPM<input data-field="bpm" type="number" min="70" max="160" value="${bpm}" placeholder="Vorlage"></label><label>Intensität<select data-field="intensity"><option value="">Vorlagenwert</option><option value="low" ${intensity==="low"?"selected":""}>Niedrig</option><option value="medium" ${intensity==="medium"?"selected":""}>Mittel</option><option value="high" ${intensity==="high"?"selected":""}>Hoch</option></select></label>`;
   }
   renderPhases() {
     this.e.trainingPhases.innerHTML = this.current.phases.map((phase,index) => {
@@ -1107,8 +1138,8 @@ class TrainingPlayerController {
   }
   async play() {
     try {
-      const musicUnlock = this.music.unlock?.();
-      await Promise.all([this.runtime.unlock(), musicUnlock]);
+      await this.runtime.unlock();
+      await this.music.unlock?.();
       if (this.engine.status === "idle" || this.engine.status === "completed") {
         this.readEditor();
         this.engine.load(this.current);
@@ -1134,13 +1165,30 @@ class TrainingPlayerController {
     this.engine?.stop();
     this.music?.stop();
     this.cues?.stop();
+    this.lastBackAt = 0;
     this.releaseWakeLock();
     this.lockEditor(false);
     if (this.root && !this.root.classList.contains("hidden")) this.setStatus("Training zurückgesetzt.");
   }
+  nextPhase() {
+    if (!["running","paused"].includes(this.engine.status)) return;
+    this.lastBackAt = 0;
+    if (!this.engine.nextPhase()) this.setStatus("Letzte Trainingsphase ist bereits aktiv.");
+    else this.setStatus("Zur nächsten Trainingsphase gesprungen.");
+  }
+  previousPhase() {
+    if (!["running","paused"].includes(this.engine.status)) return;
+    const now = Date.now();
+    const currentPhase = this.engine.current()?.phaseIndex || 0;
+    const targetPhase = now - this.lastBackAt <= 3000 ? Math.max(0, currentPhase - 1) : currentPhase;
+    this.lastBackAt = now;
+    this.engine.jumpToPhase(targetPhase);
+    this.setStatus(targetPhase < currentPhase ? "Zur vorherigen Trainingsphase gesprungen." : "Aktuelle Trainingsphase neu gestartet.");
+  }
   onSegmentStart(segment) {
     this.music.setConfig(segment.music);
     this.cues.configure(this.current.options);
+    this.cues.setTempo(segment.music.bpm);
     this.cues.announce(segment.label);
   }
   onComplete() {
@@ -1164,6 +1212,11 @@ class TrainingPlayerController {
     this.e.trainingPlayerPlay.disabled = state.status === "running";
     this.e.trainingPlayerPause.disabled = state.status !== "running";
     this.e.trainingPlayerStop.disabled = state.status === "idle";
+    const navigationActive = ["running","paused"].includes(state.status);
+    const phaseIndex = segment?.phaseIndex || 0;
+    const lastPhaseIndex = Math.max(0, this.current.phases.length - 1);
+    this.e.trainingPlayerBack.disabled = !navigationActive;
+    this.e.trainingPlayerForward.disabled = !navigationActive || phaseIndex >= lastPhaseIndex;
     this.root.dataset.state = state.status;
   }
   lockEditor(locked) {

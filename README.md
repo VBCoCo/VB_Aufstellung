@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.2.0  
+**Aktueller Frontend-Stand:** 3.3.0  
 **Veröffentlichung:** GitHub Pages  
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -15,6 +15,7 @@ Die aktuell veröffentlichte Web-App besteht im Kern aus:
 | `index.html` | Einstiegspunkt und vollständige HTML-Oberfläche |
 | `app.js` | aktuelle Anwendungslogik; Cache-Busting über den Release-Parameter in `index.html` |
 | `training-player.js` | getrennte Musik-, Intervall- und Ansagelogik des Trainings-Players |
+| `vendor/tone-15.1.22.js` | lokal ausgelieferte Tone.js-Musikbibliothek (MIT-Lizenz) |
 | `style.css` | aktuelles Layout und Design; Cache-Busting über den Release-Parameter in `index.html` |
 | `config.js` | öffentliche Supabase-URL und Publishable/Anon-Key für den Browser |
 | `version.json` | maschinenlesbare aktuelle Release-Version |
@@ -31,7 +32,7 @@ Historische JavaScript-, CSS- und Config-Kopien werden nicht mehr im aktiven Bra
 - **Supabase PostgreSQL** speichert Vereine, Mannschaften, Rollen, Volleyball-Daten, Fragen und Lesestände.
 - **Row Level Security (RLS)** begrenzt den direkten Datenzugriff entsprechend Verein und Rolle.
 - Die **Edge Function `admin-invite`** führt privilegierte Verwaltungsaktionen serverseitig aus. Der dafür benötigte Secret/Service-Role-Key gehört ausschließlich in die Supabase-Umgebung und niemals in Browserdateien.
-- Der **Trainings-Player** trennt Intervallsteuerung, generative Web-Audio-Musik und Sprach-/Signalausgabe. Eigene Trainingsvorlagen werden lokal und nach Benutzer sowie Mannschaft getrennt gespeichert.
+- Der **Trainings-Player** trennt Intervallsteuerung, Tone.js-Musik und Sprach-/Signalausgabe. Eigene Trainingsvorlagen werden lokal und nach Benutzer sowie Mannschaft getrennt gespeichert.
 
 ## SQL- und Supabase-Dateien
 
@@ -110,7 +111,9 @@ Mitgeliefert werden die Standardvorlagen `Tabata`, `Volleyball Power` und `Warm-
 
 Mit `＋ Neue Vorlage` wird ein eigenständiger, noch nicht gespeicherter Ablauf mit einem bearbeitbaren Intervall angelegt. Erst `Speichern` übernimmt ihn dauerhaft in die Liste der eigenen Vorlagen. Das Bearbeiten und Speichern einer Standardvorlage erzeugt weiterhin automatisch eine eigene Kopie.
 
-Die Musik wird prozedural mit der Web Audio API erzeugt. Die gemeinsame Musik-Engine bietet `Electronic`, `Workout`, `House`, `Techno` und `Ambient`. Schlagzeug-Samples entstehen beim Start direkt im Browser, benötigen keine externen Audiodateien und bleiben vollständig offlinefähig. Musik-, Ansagen- und Signaltonlautstärke sowie die Musikabsenkung während Ansagen werden pro Vorlage gespeichert. Der erste Start muss wegen der Autoplay-Regeln von iOS/Safari bewusst über Play erfolgen. Verlässt die App während eines laufenden Trainings den Vordergrund, wird der Ablauf automatisch pausiert, damit Timer und Ton nicht unbemerkt auseinanderlaufen.
+Die Musik wird mit der lokal mitgelieferten Bibliothek Tone.js 15.1.22 direkt im Browser erzeugt. Die gemeinsame Musik-Engine bietet `Electronic`, `Workout`, `House`, `Techno` und `Ambient` mit stilabhängigen Instrumenten, harmonischen 16-Takt-Abläufen, Bass, Akkorden, Hauptmotiv, Antwortphrase, Breaks und Fills. Sie benötigt keine externen Musikdienste oder Netzwerkverbindung; die bisherige Web-Audio-Engine bleibt als Rückfall für Geräte erhalten, auf denen Tone.js nicht initialisiert werden kann. Musik-, Ansagen- und Signaltonlautstärke sowie die Musikabsenkung während Ansagen werden pro Vorlage gespeichert. Der erste Start muss wegen der Autoplay-Regeln von iOS/Safari bewusst über Play erfolgen. Verlässt die App während eines laufenden Trainings den Vordergrund, wird der Ablauf automatisch pausiert, damit Timer und Ton nicht unbemerkt auseinanderlaufen.
+
+Tone.js wird unter der MIT-Lizenz verwendet. Der Lizenztext liegt unter `vendor/TONE-LICENSE.md`; der Hinweis des Browser-Bundles unter `vendor/tone-15.1.22.LICENSE.txt`.
 
 ## Einrichtung und Betrieb
 
@@ -135,6 +138,8 @@ Version 3.1.0 ergänzt für Bearbeiter einen kompakten, aufklappbaren Trainings-
 Version 3.1.1 ergänzt einen eindeutigen Knopf zum Anlegen einer neuen Trainingsvorlage. Die gesprochenen Countdown-Ziffern laufen ruhiger. Auf unterstützten iPhones setzt die Web-Audio-Engine beim bewussten Start per Play den Audio-Session-Typ `playback`, damit generierte Musik nicht durch den Stummmodus unterdrückt wird.
 
 Version 3.2.0 erweitert alle Musikstile um prozedural erzeugte Drum-Samples, längere Bass- und Rhythmusmuster, Variationen, Fills und Breaks. Der zusätzliche Stil `Techno` verwendet kräftigeren Subbass, gefilterte Riffs und einen Pump-Effekt. Ansagen- und Signaltonlautstärke sind unabhängig von der Musik einstellbar; die Musik wird bei Ansagen standardmäßig weniger stark abgesenkt. Im Viewer besitzen Teamaufstellung und Spielsituation nun dieselbe Höhe. Der Situations-Info-Knopf ist rechteckig in das bestehende Bedienraster integriert, ohne die Info-Funktion oder die stabile Platzreservierung zu entfernen.
+
+Version 3.3.0 stellt ausschließlich die Musikkomponente des Trainings-Players auf die lokal eingebundene Tone.js-Version 15.1.22 um. Alle fünf Musikstile erhalten tonale 16-Takt-Arrangements mit Akkordfolgen, hörbarer Melodie, Antwortphrase, Bass, Breaks, Fills und intensitätsabhängigen Zusatzstimmen. Timer, Vorlagen, Ansagen, Signaltöne und übrige App-Funktionen bleiben unverändert. Tone.js wird mit dem App-Shell offline gespeichert; die bisherige Musik-Engine bleibt als technischer Rückfall erhalten.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

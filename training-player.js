@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.2.0";
+const VERSION = "3.3.0";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -521,6 +521,247 @@ class ProceduralMusicEngine {
   }
 }
 
+class ToneMusicEngine {
+  constructor(runtime) {
+    this.runtime = runtime;
+    this.Tone = window.Tone;
+    this.config = defaultMusic();
+    this.active = false;
+    this.step = 0;
+    this.eventId = null;
+    this.ducking = 0.6;
+    this.ducked = false;
+    this.ready = false;
+    this.seed = Math.floor(Math.random() * 100000);
+  }
+  async unlock() {
+    if (!this.Tone) throw new Error("Tone.js konnte nicht geladen werden.");
+    if (navigator.audioSession && "type" in navigator.audioSession) {
+      try { navigator.audioSession.type = "playback"; } catch {}
+    }
+    await this.Tone.start();
+    this.initialize();
+  }
+  initialize() {
+    if (this.ready) return;
+    const Tone = this.Tone;
+    this.master = new Tone.Gain(0.7);
+    this.limiter = new Tone.Limiter(-1).toDestination();
+    this.master.connect(this.limiter);
+
+    this.drumBus = new Tone.Gain(0.78).connect(this.master);
+    this.bassFilter = new Tone.Filter(900, "lowpass").connect(this.master);
+    this.musicFilter = new Tone.Filter(4200, "lowpass").connect(this.master);
+    this.delay = new Tone.FeedbackDelay("8n", 0.16);
+    this.delay.wet.value = 0.16;
+    this.delay.connect(this.master);
+
+    this.kick = new Tone.MembraneSynth({
+      pitchDecay:0.035, octaves:7,
+      oscillator:{type:"sine"}, envelope:{attack:0.001, decay:0.32, sustain:0, release:0.08}
+    }).connect(this.drumBus);
+    this.clap = new Tone.NoiseSynth({
+      noise:{type:"white"}, envelope:{attack:0.001, decay:0.13, sustain:0, release:0.05}
+    }).connect(this.drumBus);
+    this.hat = new Tone.MetalSynth({
+      frequency:250, envelope:{attack:0.001, decay:0.055, release:0.015},
+      harmonicity:5.1, modulationIndex:24, resonance:3500, octaves:1.5
+    }).connect(this.drumBus);
+    this.openHat = new Tone.MetalSynth({
+      frequency:210, envelope:{attack:0.001, decay:0.22, release:0.08},
+      harmonicity:5.1, modulationIndex:18, resonance:2800, octaves:1.3
+    }).connect(this.drumBus);
+    this.bass = new Tone.MonoSynth({
+      oscillator:{type:"fatsawtooth", count:2, spread:12},
+      filter:{type:"lowpass", Q:3, rolloff:-24},
+      envelope:{attack:0.004, decay:0.16, sustain:0.18, release:0.12},
+      filterEnvelope:{attack:0.003, decay:0.2, sustain:0.18, release:0.16, baseFrequency:80, octaves:3.1}
+    }).connect(this.bassFilter);
+    this.chords = new Tone.PolySynth(Tone.Synth, {
+      oscillator:{type:"triangle"}, envelope:{attack:0.02, decay:0.2, sustain:0.2, release:0.45}
+    }).connect(this.musicFilter);
+    this.lead = new Tone.PolySynth(Tone.Synth, {
+      oscillator:{type:"sawtooth"}, envelope:{attack:0.008, decay:0.12, sustain:0.12, release:0.14}
+    }).connect(this.musicFilter);
+    this.lead.connect(this.delay);
+    this.pluck = new Tone.Synth({
+      oscillator:{type:"square"}, envelope:{attack:0.002, decay:0.08, sustain:0, release:0.08}
+    }).connect(this.musicFilter);
+    this.pluck.connect(this.delay);
+
+    this.kick.volume.value = -4;
+    this.clap.volume.value = -17;
+    this.hat.volume.value = -23;
+    this.openHat.volume.value = -25;
+    this.bass.volume.value = -11;
+    this.chords.volume.value = -22;
+    this.lead.volume.value = -18;
+    this.pluck.volume.value = -24;
+    this.transport = Tone.getTransport ? Tone.getTransport() : Tone.Transport;
+    this.eventId = this.transport.scheduleRepeat(time => {
+      this.scheduleStep(this.step, time);
+      this.step += 1;
+    }, "16n");
+    this.ready = true;
+    this.applyStyle();
+    this.applyGain(true);
+  }
+  async start(config={}) {
+    await this.unlock();
+    this.setConfig(config);
+    if (this.active) return;
+    this.active = true;
+    this.transport.start();
+  }
+  pause() {
+    if (!this.ready) return;
+    this.active = false;
+    this.transport.pause();
+  }
+  stop() {
+    if (this.ready) {
+      this.transport.stop();
+      this.transport.position = 0;
+    }
+    this.active = false;
+    this.step = 0;
+    this.seed = Math.floor(Math.random() * 100000);
+  }
+  setConfig(config={}) {
+    const previousStyle = this.config.style;
+    this.config = normalizeMusic({...this.config, ...config});
+    if (!this.ready) return;
+    this.transport.bpm.rampTo(this.config.bpm, 0.12);
+    if (previousStyle !== this.config.style) this.applyStyle();
+    this.applyGain();
+  }
+  setDucking(value) { this.ducking = clamp(value, 0.2, 0.9); this.applyGain(); }
+  setDucked(value) { this.ducked = Boolean(value); this.applyGain(); }
+  applyGain(immediate=false) {
+    if (!this.ready) return;
+    const target = this.config.volume * (this.ducked ? this.ducking : 1);
+    if (immediate) this.master.gain.value = target;
+    else this.master.gain.rampTo(target, 0.06);
+  }
+  applyStyle() {
+    if (!this.ready) return;
+    const style = this.config.style;
+    const settings = {
+      electronic:{lead:"sawtooth", chord:"triangle", cutoff:4600, delay:0.18, bass:980},
+      workout:{lead:"fatsawtooth", chord:"triangle", cutoff:3900, delay:0.12, bass:850},
+      house:{lead:"square", chord:"sine", cutoff:5200, delay:0.2, bass:1050},
+      techno:{lead:"fatsquare", chord:"sawtooth", cutoff:3300, delay:0.17, bass:720},
+      ambient:{lead:"sine", chord:"triangle", cutoff:3000, delay:0.32, bass:1250}
+    }[style];
+    this.lead.set({oscillator:{type:settings.lead}});
+    this.chords.set({oscillator:{type:settings.chord}});
+    this.musicFilter.frequency.rampTo(settings.cutoff, 0.1);
+    this.bassFilter.frequency.rampTo(settings.bass, 0.1);
+    this.delay.wet.rampTo(settings.delay, 0.1);
+  }
+  variation(step,salt=0) {
+    const value = Math.sin((step + 1 + this.seed) * 12.9898 + salt * 78.233) * 43758.5453;
+    return value - Math.floor(value);
+  }
+  note(midi) {
+    const names = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+    const value = Math.round(midi);
+    return `${names[((value % 12) + 12) % 12]}${Math.floor(value / 12) - 1}`;
+  }
+  styleData() {
+    return {
+      electronic:{root:50, scale:[0,2,3,5,7,9,10], progression:[0,5,3,7,0,8,5,7,0,3,7,5,8,5,3,7]},
+      workout:{root:48, scale:[0,2,3,5,7,8,10], progression:[0,5,8,7,0,3,8,7,0,5,3,7,8,5,7,0]},
+      house:{root:48, scale:[0,2,4,5,7,9,11], progression:[0,5,9,7,0,5,9,7,0,4,9,7,5,9,7,0]},
+      techno:{root:45, scale:[0,3,5,7,10,12], progression:[0,0,3,5,0,7,5,3,0,3,5,7,0,10,7,5]},
+      ambient:{root:45, scale:[0,2,4,7,9,12], progression:[0,5,9,7,0,9,5,7,0,4,9,5,7,9,5,0]}
+    }[this.config.style];
+  }
+  scheduleStep(step,time) {
+    if (!this.active) return;
+    const {style,intensity} = this.config;
+    const data = this.styleData();
+    const local = step % 16;
+    const bar = Math.floor(step / 16) % 16;
+    const phrase = Math.floor(step / 256);
+    const energy = intensity === "high" ? 1 : intensity === "low" ? 0.58 : 0.8;
+    const breakdown = (bar === 7 || bar === 15) && local < (style === "ambient" ? 12 : 8);
+    const chordRoot = data.root + data.progression[bar] + (phrase % 4 === 2 ? 2 : phrase % 4 === 3 ? -2 : 0);
+
+    if (style !== "ambient") {
+      if (local % 4 === 0 && (!breakdown || local === 0)) this.kick.triggerAttackRelease("C1", "8n", time, 0.74 * energy);
+      if (!breakdown && (local === 4 || local === 12)) this.clap.triggerAttackRelease("16n", time, 0.45 * energy);
+      const hats = intensity === "low" ? [2,6,10,14] : [2,4,6,10,12,14];
+      if (!breakdown && (hats.includes(local) || (intensity === "high" && local % 2 === 1 && this.variation(step,1) > 0.58))) {
+        this.hat.triggerAttackRelease("32n", time, 0.24 * energy);
+      }
+      if (!breakdown && (local === 6 || (local === 14 && bar % 2 === 1))) this.openHat.triggerAttackRelease("8n", time, 0.13 * energy);
+      const bassPattern = style === "techno" ? [0,3,6,8,10,12,14] : [0,3,6,8,11,14];
+      if (!breakdown && bassPattern.includes(local)) {
+        const fifth = (local === 6 || local === 14) && bar % 2 ? 7 : 0;
+        this.bass.triggerAttackRelease(this.note(chordRoot - 12 + fifth), local % 4 === 0 ? "8n" : "16n", time, 0.72 * energy);
+      }
+    } else {
+      if ([2,6,10,14].includes(local) && !breakdown) this.hat.triggerAttackRelease("32n", time, 0.06 * energy);
+      if (local === 0 && bar % 2 === 0) this.bass.triggerAttackRelease(this.note(chordRoot - 12), "1m", time, 0.24 * energy);
+    }
+
+    if (local === 0) {
+      const minor = style === "techno" || style === "workout" || style === "electronic";
+      const chord = [chordRoot + 12, chordRoot + 12 + (minor ? 3 : 4), chordRoot + 19];
+      this.chords.triggerAttackRelease(chord.map(note => this.note(note)), style === "ambient" ? "1m" : "2n", time, (style === "ambient" ? 0.34 : 0.22) * energy);
+    }
+
+    const main = [[0,0],[2,2],[4,3],[7,2],[8,0],[10,4],[12,3],[14,2]];
+    const answer = [[0,4],[2,3],[4,2],[6,0],[8,2],[11,3],[13,1],[15,0]];
+    const ambient = [[0,0],[4,2],[8,4],[12,3]];
+    const motif = style === "ambient" ? ambient : ((bar % 4 < 2) ? main : answer);
+    const melodicBar = !breakdown && (intensity !== "low" || bar % 4 >= 2 || style === "ambient");
+    const event = melodicBar ? motif.find(([position]) => position === local) : null;
+    if (event) {
+      let degree = event[1];
+      if ((bar === 6 || bar === 14) && local >= 12) degree += 1;
+      const scaleNote = data.scale[((degree % data.scale.length) + data.scale.length) % data.scale.length];
+      const octave = style === "ambient" ? 12 : 24;
+      const melody = chordRoot + octave + scaleNote + (degree >= data.scale.length ? 12 : 0);
+      this.lead.triggerAttackRelease(this.note(melody), style === "ambient" ? "4n" : "8n", time, (style === "techno" ? 0.42 : 0.34) * energy);
+    }
+
+    if (intensity === "high" && !breakdown && bar % 2 === 1 && [1,5,9,13].includes(local)) {
+      const degree = [0,2,4,3][Math.floor(local/4)];
+      this.pluck.triggerAttackRelease(this.note(chordRoot + 36 + data.scale[degree]), "16n", time, 0.16);
+    }
+    if ((bar === 7 || bar === 15) && local >= 12 && style !== "ambient") {
+      const fillVelocity = 0.2 + (local - 12) * 0.06;
+      this.kick.triggerAttackRelease(this.note(31 + local - 12), "16n", time, fillVelocity * energy);
+    }
+  }
+}
+
+class ResilientMusicEngine {
+  constructor(runtime) {
+    this.runtime = runtime;
+    this.engine = window.Tone ? new ToneMusicEngine(runtime) : new ProceduralMusicEngine(runtime);
+    this.usingFallback = !window.Tone;
+  }
+  async unlock() {
+    try { return await this.engine.unlock(); }
+    catch (error) {
+      if (this.usingFallback) throw error;
+      console.warn("Tone.js konnte nicht initialisiert werden; Web-Audio-Rückfall wird verwendet.", error);
+      this.engine = new ProceduralMusicEngine(this.runtime);
+      this.usingFallback = true;
+      return this.engine.runtime.unlock();
+    }
+  }
+  start(config) { return this.engine.start(config); }
+  pause() { return this.engine.pause(); }
+  stop() { return this.engine.stop(); }
+  setConfig(config) { return this.engine.setConfig(config); }
+  setDucking(value) { return this.engine.setDucking?.(value); }
+  setDucked(value) { return this.engine.setDucked?.(value); }
+}
+
 class TrainingCueEngine {
   constructor(runtime, music) {
     this.runtime = runtime;
@@ -538,6 +779,7 @@ class TrainingCueEngine {
   configure(options={}) {
     this.options = normalizeOptions(options);
     this.runtime.setDucking(this.options.ducking);
+    this.music?.setDucking?.(this.options.ducking);
     this.runtime.setSignalVolume(this.options.signalVolume);
   }
   countdown(number) {
@@ -561,7 +803,12 @@ class TrainingCueEngine {
     utterance.volume = this.options.speechVolume;
     const token = ++this.speechToken;
     this.runtime.setDucked(true);
-    const restore = () => { if (token === this.speechToken) this.runtime.setDucked(false); };
+    this.music?.setDucked?.(true);
+    const restore = () => {
+      if (token !== this.speechToken) return;
+      this.runtime.setDucked(false);
+      this.music?.setDucked?.(false);
+    };
     utterance.onend = restore;
     utterance.onerror = restore;
     window.speechSynthesis.speak(utterance);
@@ -570,6 +817,7 @@ class TrainingCueEngine {
     this.speechToken += 1;
     window.speechSynthesis?.cancel?.();
     this.runtime.setDucked(false);
+    this.music?.setDucked?.(false);
   }
 }
 
@@ -584,7 +832,7 @@ class TrainingPlayerController {
     this.current = normalizeTemplate(BUILTIN_TEMPLATES[0]);
     this.currentId = this.current.id;
     this.runtime = new AudioRuntime();
-    this.music = new ProceduralMusicEngine(this.runtime);
+    this.music = new ResilientMusicEngine(this.runtime);
     this.cues = new TrainingCueEngine(this.runtime, this.music);
     this.engine = new TrainingIntervalEngine({
       onState:state => this.renderState(state),
@@ -798,7 +1046,8 @@ class TrainingPlayerController {
   }
   async play() {
     try {
-      await this.runtime.unlock();
+      const musicUnlock = this.music.unlock?.();
+      await Promise.all([this.runtime.unlock(), musicUnlock]);
       if (this.engine.status === "idle" || this.engine.status === "completed") {
         this.readEditor();
         this.engine.load(this.current);
@@ -878,5 +1127,5 @@ class TrainingPlayerController {
 }
 
 window.VBTrainingPlayer = new TrainingPlayerController();
-window.VBTrainingPlayerInternals = {VERSION, normalizeTemplate, buildTimeline, TrainingIntervalEngine, AudioRuntime, ProceduralMusicEngine, TrainingCueEngine};
+window.VBTrainingPlayerInternals = {VERSION, normalizeTemplate, buildTimeline, TrainingIntervalEngine, AudioRuntime, ProceduralMusicEngine, ToneMusicEngine, ResilientMusicEngine, TrainingCueEngine};
 })();

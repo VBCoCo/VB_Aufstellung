@@ -1,4 +1,4 @@
-/* Volleyball Trainer 3.5.0 */
+/* Volleyball Trainer 3.6.0 */
 :root{
   --panel:#10233a;--panel2:#0b1a2b;--text:#f8fafc;--muted:#aebed0;
   --club-blue:#0b4fc6;--club-blue-2:#073b9a;
@@ -360,14 +360,18 @@ body.tactic-mode .app{height:100dvh;padding-top:max(4px,env(safe-area-inset-top)
 
 
 /* 2.9.5 – kompaktere Auswahl von Teamaufstellung und Spielsituation */
-body:not(.editing-mode):not(.tactic-mode) .court-toolbar{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+body:not(.editing-mode):not(.tactic-mode) .court-toolbar{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 body:not(.editing-mode):not(.tactic-mode) .situation-compact select{padding-right:18px}
 body:not(.editing-mode):not(.tactic-mode) #teamSelect{font-size:.72rem}
+body:not(.editing-mode):not(.tactic-mode) #teamSelect.text-fit-medium{font-size:.68rem}
+body:not(.editing-mode):not(.tactic-mode) #teamSelect.text-fit-small{font-size:.62rem}
 body:not(.editing-mode):not(.tactic-mode) #rotationSelect.text-fit-medium{font-size:.66rem}
 body:not(.editing-mode):not(.tactic-mode) #rotationSelect.text-fit-small{font-size:.60rem}
 @media(max-width:430px){
-  body:not(.editing-mode):not(.tactic-mode) .court-toolbar{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+  body:not(.editing-mode):not(.tactic-mode) .court-toolbar{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   body:not(.editing-mode):not(.tactic-mode) #teamSelect{font-size:.70rem;padding-left:6px;padding-right:16px}
+  body:not(.editing-mode):not(.tactic-mode) #teamSelect.text-fit-medium{font-size:.65rem}
+  body:not(.editing-mode):not(.tactic-mode) #teamSelect.text-fit-small{font-size:.59rem}
   body:not(.editing-mode):not(.tactic-mode) #rotationSelect{padding-left:6px;padding-right:16px}
   body:not(.editing-mode):not(.tactic-mode) #rotationSelect.text-fit-medium{font-size:.64rem}
   body:not(.editing-mode):not(.tactic-mode) #rotationSelect.text-fit-small{font-size:.57rem}
@@ -919,6 +923,11 @@ body:not(.editing-mode):not(.tactic-mode) .situation-row .inline-info:active{
 .training-settings-card input[type="range"]{height:28px;padding:0;border:0;background:transparent;accent-color:#2085f4}
 .training-settings-card output{float:right;color:#7ee6ff;font-variant-numeric:tabular-nums}
 .training-settings-card .training-check{display:flex;align-items:center;gap:7px;min-height:36px;padding:5px 7px;border:1px solid #294b69;border-radius:8px;background:#081827}
+.training-source-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;grid-column:1/-1}
+.training-library-meta,.training-license-note{grid-column:1/-1;margin:0;color:#a9bfd4;font-size:.66rem;line-height:1.35}
+.training-license-note a{color:#7ee6ff}.training-library-meta{min-height:1.2em}
+#trainingLibraryOffline{min-height:36px;padding:7px 9px;border-radius:8px;background:#173f68;color:#fff;border:1px solid #4d7dab;font-weight:750}
+#trainingLibraryOffline[data-cached="true"]{background:#123c29;border-color:#34775a;color:#d8f8e6}
 .training-check input{flex:0 0 auto;width:19px;height:19px;padding:0;accent-color:#0b75e8}.training-check span{line-height:1.15}
 .training-phases-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding:0 2px}
 .training-phases-head>div{display:grid;gap:1px}.training-phases-head strong{font-size:.82rem}.training-phases-head span{font-size:.63rem;color:#9eb4c8}

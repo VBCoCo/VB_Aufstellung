@@ -1,6 +1,8 @@
-const VERSION = "3.5.0";
+const VERSION = "3.6.0";
 const CACHE_PREFIX = "volleyball-trainer-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
+const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
+const VOICE_ASSETS = ["slow","normal","fast"].map(speed => `./assets/audio/voice-de-eva/voice-${speed}.mp3`);
 const APP_SHELL = [
   "./index.html",
   `./style.css?v=${VERSION}`,
@@ -19,7 +21,10 @@ const APP_SHELL = [
   "./assets/audio/hat-open.wav",
   "./assets/audio/bass-c2.wav",
   "./assets/audio/bass-c3.wav",
-  "./assets/audio/LICENSE.md"
+  "./assets/audio/LICENSE.md",
+  "./assets/audio/voice-de-eva/LICENSE.md",
+  "./assets/music/ronald-kah/LICENSE.md",
+  ...VOICE_ASSETS
 ];
 const absoluteUrl = path => new URL(path, self.registration.scope).href;
 const INDEX_URL = absoluteUrl("./index.html");
@@ -73,6 +78,14 @@ self.addEventListener("fetch", event => {
       } catch {
         return (await caches.match(INDEX_URL)) || Response.error();
       }
+    })());
+    return;
+  }
+
+  if (url.pathname.includes("/assets/music/ronald-kah/chunks/") && url.pathname.endsWith(".mp3")) {
+    event.respondWith((async () => {
+      const cache = await caches.open(OFFLINE_MUSIC_CACHE);
+      return (await cache.match(request)) || fetch(request);
     })());
     return;
   }

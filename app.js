@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const VERSION="3.5.0",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
+const VERSION="3.6.0",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
 const OFFLINE_META_KEY=`${KEY}-offline-meta`;
 function loadOfflineMeta(){try{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false,...JSON.parse(localStorage.getItem(OFFLINE_META_KEY)||"{}")}}catch{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false}}}
 let offlineMeta=loadOfflineMeta();
@@ -585,8 +585,10 @@ function applySelectTextFit(select,text){
   select.title=text||"";
 }
 function renderTeamOptions(){
-  if(!e.teamSelect)return;const current=String(state.teamIndex);e.teamSelect.innerHTML="";state.teams.forEach((team,i)=>{const o=document.createElement("option");o.value=String(i);o.textContent=team.name||`Teamaufstellung ${i+1}`;e.teamSelect.appendChild(o)});e.teamSelect.value=current;applySelectTextFit(e.teamSelect,td().name||"");
+  if(!e.teamSelect)return;const current=String(state.teamIndex),visible=editing?state.teams.map((_team,i)=>i):visibleTeamIndexes();e.teamSelect.innerHTML="";visible.forEach(i=>{const team=state.teams[i],o=document.createElement("option");o.value=String(i);o.textContent=team.name||`Teamaufstellung ${i+1}`;e.teamSelect.appendChild(o)});e.teamSelect.value=current;applySelectTextFit(e.teamSelect,td()?.name||"");
 }
+function visibleTeamIndexes(){return state.teams.map((team,i)=>team.rotations?.some(situation=>situation.published)?i:null).filter(i=>i!==null)}
+function ensureVisibleTeam(){if(editing)return Boolean(td());const visible=visibleTeamIndexes();if(!visible.length)return false;if(!visible.includes(state.teamIndex)){state.teamIndex=visible[0];state.rotation=0;state.step=0}return true}
 function stepNeedsWork(step,index,rotation){
   const a=step?.action||{},type=a.type||"";
   // Der erste reine Grundpositions-Schritt darf ohne Aktion als Startzustand dienen,
@@ -663,8 +665,9 @@ function renderStepStrip(){
 function render(){
   document.body.classList.toggle("tactic-mode",tacticMode);
   window.VBTrainingPlayer?.setContext({visible:editing&&canEdit()&&!tacticMode,userId:authSession?.user?.id||"",teamId:currentTeamId});
+  const hasVisibleTeam=ensureVisibleTeam();
   renderTeamOptions();
-  const hasVisibleSituation=ensureVisibleSituation();
+  const hasVisibleSituation=hasVisibleTeam&&ensureVisibleSituation();
   document.body.classList.toggle("no-published-view",!editing&&!hasVisibleSituation);
   e.noPublishedNotice?.classList.toggle("hidden",editing||hasVisibleSituation);
   if(!editing&&!hasVisibleSituation){
@@ -673,7 +676,7 @@ function render(){
     e.editButton?.classList.toggle("hidden",!canEdit());
     e.teamConfigToggle?.classList.add("hidden");e.addTeam?.classList.add("hidden");e.deleteTeam?.classList.add("hidden");
     e.situationConfigToggle?.classList.add("hidden");e.addSituation?.classList.add("hidden");e.deleteSituation?.classList.add("hidden");
-    e.status.textContent=canEdit()?"Keine Spielsituation ist für Viewer freigegeben. Zum Freigeben auf ✎ wechseln.":"Aktuell ist noch keine Spielsituation freigegeben.";
+    e.status.textContent="Derzeit sind noch keine freigegebenen Inhalte verfügbar.";
     updateMigrationUI();
     return;
   }

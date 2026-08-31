@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const VERSION="3.6.0",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
+const VERSION="3.7.0",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
 const OFFLINE_META_KEY=`${KEY}-offline-meta`;
 function loadOfflineMeta(){try{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false,...JSON.parse(localStorage.getItem(OFFLINE_META_KEY)||"{}")}}catch{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false}}}
 let offlineMeta=loadOfflineMeta();
@@ -99,6 +99,13 @@ async function authUserUpdate(body,token=authSession?.access_token){const base=w
 async function sendRecovery(email){const base=window.APP_CONFIG.SUPABASE_URL.replace(/\/$/,"");const redirectTo="https://vbcoco.github.io/VB_Aufstellung/";const r=await fetch(`${base}/auth/v1/recover`,{method:"POST",headers:authHeaders(null),body:JSON.stringify({email,redirect_to:redirectTo})});if(!r.ok)throw new Error("E-Mail konnte nicht gesendet werden")}
 function parseAuthHash(){const h=new URLSearchParams(location.hash.replace(/^#/,''));const type=h.get('type');const access_token=h.get('access_token'),refresh_token=h.get('refresh_token');if(access_token&&(type==='invite'||type==='recovery')){persistSession({access_token,refresh_token,token_type:'bearer'});history.replaceState(null,'',location.pathname+location.search);return type}return null}
 async function authedRpc(name,body={}){if(!authSession?.access_token)throw new Error("Nicht angemeldet");const base=window.APP_CONFIG.SUPABASE_URL.replace(/\/$/,"");const res=await fetch(`${base}/rest/v1/rpc/${name}`,{method:"POST",headers:authHeaders(),body:JSON.stringify(body)});if(res.status===401&&navigator.onLine){await refreshSession();return authedRpc(name,body)}if(!res.ok)throw new Error((await res.text())||`HTTP ${res.status}`);const text=await res.text();return text?JSON.parse(text):null}
+async function trainingApiRequest(path,{method="GET",body=null,headers={},retry=true}={}){if(!authSession?.access_token)throw new Error("Nicht angemeldet");const base=window.APP_CONFIG.SUPABASE_URL.replace(/\/$/,"");const requestHeaders={apikey:supabaseKey(),Authorization:`Bearer ${authSession.access_token}`,...headers};if(body!==null&&!(body instanceof Blob)&&!(body instanceof ArrayBuffer)&&!requestHeaders["Content-Type"])requestHeaders["Content-Type"]="application/json";const res=await fetch(`${base}${path}`,{method,headers:requestHeaders,body:body===null?null:(requestHeaders["Content-Type"]==="application/json"?JSON.stringify(body):body)});if(res.status===401&&retry&&navigator.onLine){await refreshSession();return trainingApiRequest(path,{method,body,headers,retry:false})}if(!res.ok)throw new Error((await res.text())||`HTTP ${res.status}`);if(res.status===204)return null;const text=await res.text();return text?JSON.parse(text):null}
+window.VBTrainingApi={
+  request:trainingApiRequest,
+  uploadMusic:(path,file)=>trainingApiRequest(`/storage/v1/object/vt-training-music/${path}`,{method:"POST",body:file,headers:{"Content-Type":file.type||"audio/mpeg","x-upsert":"false"}}),
+  deleteMusic:path=>trainingApiRequest("/storage/v1/object/vt-training-music",{method:"DELETE",body:{prefixes:[path]}}),
+  signMusic:async path=>{const out=await trainingApiRequest(`/storage/v1/object/sign/vt-training-music/${path}`,{method:"POST",body:{expiresIn:3600}});return `${window.APP_CONFIG.SUPABASE_URL.replace(/\/$/,"")}/storage/v1${out.signedURL}`}
+};
 function allTeams(access=userAccess){const out=[];(access?.clubs||[]).forEach(c=>(c.teams||[]).forEach(t=>out.push({...t,club_id:c.id,club_name:c.name,roles:c.roles||[]})));return out}
 function selectedTeam(){const teams=allTeams();return teams.find(t=>t.id===currentTeamId)||teams[0]||null}
 function hasRole(role){return Boolean(selectedTeam()?.roles?.includes(role))}
@@ -664,7 +671,7 @@ function renderStepStrip(){
 }
 function render(){
   document.body.classList.toggle("tactic-mode",tacticMode);
-  window.VBTrainingPlayer?.setContext({visible:editing&&canEdit()&&!tacticMode,userId:authSession?.user?.id||"",teamId:currentTeamId});
+  window.VBTrainingPlayer?.setContext({visible:editing&&canEdit()&&!tacticMode,userId:authSession?.user?.id||"",teamId:currentTeamId,clubId:currentClub()?.id||""});
   const hasVisibleTeam=ensureVisibleTeam();
   renderTeamOptions();
   const hasVisibleSituation=hasVisibleTeam&&ensureVisibleSituation();

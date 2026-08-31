@@ -20,7 +20,8 @@ database/
     ├── admin_overview_v3_0_4_3.sql
     ├── upgrade_3_0_4_4.sql
     ├── upgrade_3_0_4_7.sql
-    └── upgrade_3_0_4_8.sql
+    ├── upgrade_3_0_4_8.sql
+    └── upgrade_3_7_0.sql
 ```
 
 ## Bedeutung der Bereiche
@@ -43,6 +44,7 @@ database/
 7. `upgrades/upgrade_3_0_4_4.sql` – Fragen, Antworten und Freigaben.
 8. `upgrades/upgrade_3_0_4_7.sql` – Fragen löschen.
 9. `upgrades/upgrade_3_0_4_8.sql` – Lesestände und Ungelesen-Zähler.
+10. `upgrades/upgrade_3_7_0.sql` – geschützte Musikbibliothek, persönliche/freigegebene Playlists und privater Storage-Bucket.
 
 Eine detaillierte Beschreibung der erzeugten Tabellen, RPCs und Rollen steht in der [Haupt-README](../README.md).
 
@@ -68,4 +70,3 @@ Vor einer späteren Umstellung auf echte CLI-Migrationen:
 - `bootstrap_first_admin.sql` nur mit bewusst gesetzter E-Mail-Adresse verwenden.
 - Service-Role- und Secret-Keys niemals in SQL-Dateien, Browserkonfiguration oder Git committen.
 - Die Edge Function bleibt getrennt unter `supabase/functions/admin-invite/index.ts`.
-

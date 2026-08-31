@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.6.0
+**Aktueller Frontend-Stand:** 3.7.0
 **Veröffentlichung:** GitHub Pages
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -117,6 +117,8 @@ Version 3.6.0 ergänzt eine Testbibliothek mit fünf vollständigen CC-BY-4.0-Ti
 
 Musik-, Ansagen- und Signaltonlautstärke sowie die Musikabsenkung während Ansagen werden pro Vorlage gespeichert. Feste Trainingsbegriffe und Countdown-Ziffern werden seit 3.6.0 als lokal mitgelieferte Aufnahmen einer klaren deutschen Frauenstimme im bereits freigeschalteten AudioContext wiedergegeben. Damit hängt der Countdown auf iOS nicht mehr von `speechSynthesis` oder einer installierten Systemstimme ab. Je nach BPM verwendet die App eine langsame, normale oder schnelle Aufnahme. Die Musik läuft weiter und wird nur abgesenkt. Freie, nicht im Sprachpaket vorhandene Ansagetexte verwenden weiterhin die System-Sprachausgabe als Rückfall.
 
+Version 3.7.0 baut diese Bibliothek zu einer vereinsbezogenen Musiksammlung aus. Bearbeiter können rechtlich freigegebene Audiodateien mit Titel, Stil, Original-BPM und Lizenzhinweis hochladen, nach Stil beziehungsweise Tempo filtern und direkt vorhören. Persönliche Playlists sind standardmäßig privat und können wahlweise für die aktuelle Mannschaft oder den Verein freigegeben werden. Freigegebene Playlists bleiben nur für den Eigentümer bearbeitbar; andere Bearbeiter können sie verwenden oder als eigene Playlist kopieren. Beim Trainingsstart wird ein Titel oder eine Playlist gewählt. Original- und Ziel-BPM sowie die auf ±5 Prozent begrenzte Tempoanpassung werden sichtbar angezeigt. Die neue dynamische Stimmoption hebt Präsenz und Lautheit für intensive Trainingsansagen an; die ruhige Variante bleibt auswählbar.
+
 Tone.js wird unter der MIT-Lizenz verwendet. Der Lizenztext liegt unter `vendor/TONE-LICENSE.md`; der Hinweis des Browser-Bundles unter `vendor/tone-15.1.22.LICENSE.txt`.
 
 Die eingebundenen Drum- und Bass-Aufnahmen stehen unter CC0 1.0. Quellen und Zuordnung sind in `assets/audio/LICENSE.md` dokumentiert.
@@ -154,6 +156,8 @@ Version 3.4.0 ergänzt kleine, lokal gespeicherte CC0-Samples für Schlagzeug, F
 Version 3.5.0 ergänzt den Musikstil `Rock` mit Rock-Schlagzeug, verzerrten Powerchords, E-Bass und sparsamen Gitarrenmotiven. Die übrigen Stile erhalten stärker getrennte Instrumentierung und Rhythmen; die piepsige, hoch transponierte Bass-Melodie entfällt. Techno verwendet einen durchgehenden tiefen Achtel-Bass und bei hoher Intensität zusätzliche Sechzehntelimpulse. Tone.js und Signaltöne teilen nun einen AudioContext, damit die adaptive deutsche weibliche Systemstimme auf iOS bei weiterlaufender, nur abgesenkter Musik hörbar bleibt. Zwei neue Player-Tasten springen zur nächsten vollständigen Trainingsphase beziehungsweise starten die aktuelle Phase neu; ein zweiter Rücksprung innerhalb von drei Sekunden wechselt zur vorherigen Phase.
 
 Version 3.6.0 ersetzt die für feste Trainingsbegriffe unzuverlässige iOS-Systemsprache durch drei kompakte lokale Audiosprites mit insgesamt 69 Varianten einer klaren deutschen Frauenstimme. Fünf Titel von Ronald Kah bilden eine kleine Musikbibliothek mit angezeigten BPM, begrenzter Tempoanpassung, fortlaufender Wiedergabe und wählbarem Offline-Speicher. Im Viewer nutzt die Teamaufstellung mehr Breite und erscheint nur, wenn sie mindestens eine freigegebene Spielsituation enthält.
+
+Version 3.7.0 ergänzt eine geschützte Vereinsbibliothek für eigene Musiktitel, Suche und BPM-Filter, Vorhören sowie persönliche Playlists mit den Freigabestufen privat, Mannschaft und Verein. Fremde freigegebene Playlists können verwendet oder als eigene bearbeitbare Kopie übernommen werden. Titel beziehungsweise Playlists werden im Trainings-Player ausgewählt; Original-BPM, Ziel-BPM und Tempoänderung sind dort sichtbar. Für Ansagen steht zusätzlich eine präsentere dynamische Trainerinnen-Stimme mit eigener Hörprobe zur Verfügung.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

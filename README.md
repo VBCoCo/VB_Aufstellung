@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.7.0
+**Aktueller Frontend-Stand:** 3.8.0
 **Veröffentlichung:** GitHub Pages
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -119,11 +119,13 @@ Musik-, Ansagen- und Signaltonlautstärke sowie die Musikabsenkung während Ansa
 
 Version 3.7.0 baut diese Bibliothek zu einer vereinsbezogenen Musiksammlung aus. Bearbeiter können rechtlich freigegebene Audiodateien mit Titel, Stil, Original-BPM und Lizenzhinweis hochladen, nach Stil beziehungsweise Tempo filtern und direkt vorhören. Persönliche Playlists sind standardmäßig privat und können wahlweise für die aktuelle Mannschaft oder den Verein freigegeben werden. Freigegebene Playlists bleiben nur für den Eigentümer bearbeitbar; andere Bearbeiter können sie verwenden oder als eigene Playlist kopieren. Beim Trainingsstart wird ein Titel oder eine Playlist gewählt. Original- und Ziel-BPM sowie die auf ±5 Prozent begrenzte Tempoanpassung werden sichtbar angezeigt. Die neue dynamische Stimmoption hebt Präsenz und Lautheit für intensive Trainingsansagen an; die ruhige Variante bleibt auswählbar.
 
+Version 3.8.0 ersetzt die zwei kaum unterscheidbaren Varianten durch zwei getrennte, lokal ausgelieferte Piper-Stimmen: Trainer Thorsten und Trainerin Kerstin. In der Musikbibliothek öffnet die Hörprobe direkt unter dem Titel eine Laufleiste mit aktueller Position, Gesamtdauer, freiem Vor- und Zurückspulen sowie Sprüngen um 15 Sekunden. Titel werden per Häkchen unmittelbar in der gefilterten Bibliothek zur Playlist hinzugefügt; die Auswahl bleibt beim Suchen und Filtern erhalten. Die Reihenfolge lässt sich per Finger oder Maus ziehen und zusätzlich über Pfeiltasten ändern.
+
 Tone.js wird unter der MIT-Lizenz verwendet. Der Lizenztext liegt unter `vendor/TONE-LICENSE.md`; der Hinweis des Browser-Bundles unter `vendor/tone-15.1.22.LICENSE.txt`.
 
 Die eingebundenen Drum- und Bass-Aufnahmen stehen unter CC0 1.0. Quellen und Zuordnung sind in `assets/audio/LICENSE.md` dokumentiert.
 
-Die lokalen deutschen Sprachaufnahmen basieren auf dem Piper-Modell `de_DE-eva_k-x_low` unter CC BY 4.0. Quelle und Namensnennung stehen in `assets/audio/voice-de-eva/LICENSE.md`.
+Die aktiven lokalen deutschen Sprachaufnahmen basieren auf den Piper-Modellen `de_DE-kerstin-low` und `de_DE-thorsten-high`. Quellen und Lizenzangaben stehen in `assets/audio/voice-de-kerstin/LICENSE.md` und `assets/audio/voice-de-thorsten/LICENSE.md`.
 
 ## Einrichtung und Betrieb
 
@@ -158,6 +160,8 @@ Version 3.5.0 ergänzt den Musikstil `Rock` mit Rock-Schlagzeug, verzerrten Powe
 Version 3.6.0 ersetzt die für feste Trainingsbegriffe unzuverlässige iOS-Systemsprache durch drei kompakte lokale Audiosprites mit insgesamt 69 Varianten einer klaren deutschen Frauenstimme. Fünf Titel von Ronald Kah bilden eine kleine Musikbibliothek mit angezeigten BPM, begrenzter Tempoanpassung, fortlaufender Wiedergabe und wählbarem Offline-Speicher. Im Viewer nutzt die Teamaufstellung mehr Breite und erscheint nur, wenn sie mindestens eine freigegebene Spielsituation enthält.
 
 Version 3.7.0 ergänzt eine geschützte Vereinsbibliothek für eigene Musiktitel, Suche und BPM-Filter, Vorhören sowie persönliche Playlists mit den Freigabestufen privat, Mannschaft und Verein. Fremde freigegebene Playlists können verwendet oder als eigene bearbeitbare Kopie übernommen werden. Titel beziehungsweise Playlists werden im Trainings-Player ausgewählt; Original-BPM, Ziel-BPM und Tempoänderung sind dort sichtbar. Für Ansagen steht zusätzlich eine präsentere dynamische Trainerinnen-Stimme mit eigener Hörprobe zur Verfügung.
+
+Version 3.8.0 liefert eine eigenständige weibliche und männliche Trainerstimme, erweitert die Hörprobe um eine frei bedienbare Zeitleiste und 15-Sekunden-Sprünge und überarbeitet die Playlist-Erstellung. Titel werden in der gefilterten Bibliothek markiert und anschließend in einer separaten Liste per Drag-and-drop oder Pfeiltasten sortiert. Persönliche und freigegebene Playlists sowie die bestehende BPM-Anzeige bleiben erhalten.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

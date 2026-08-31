@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.7.0";
+const VERSION = "3.8.0";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
@@ -35,7 +35,7 @@ const VOICE_PHRASES = {
 const VOICE_ORDER = ["one","two","three","four","five","action","pause","change","next-station","serve","reception","set-break","block-break","block","warm-up","warm-up-easy","increase-tempo","preparation","power","start","stop","continue","training-complete"];
 
 const defaultMusic = () => ({source:"generator", style:"workout", bpm:128, intensity:"medium", volume:0.7, libraryTrackId:"danza"});
-const defaultOptions = () => ({countdownEnabled:true, countdownSeconds:3, speechEnabled:true, speechVolume:0.78, voiceStyle:"dynamic", signalsEnabled:true, signalVolume:0.55, ducking:0.6});
+const defaultOptions = () => ({countdownEnabled:true, countdownSeconds:3, speechEnabled:true, speechVolume:0.78, voiceStyle:"male", signalsEnabled:true, signalVolume:0.55, ducking:0.6});
 const continuousPhase = (name="Neue Phase") => ({
   id:uid(), name, type:"continuous", durationSeconds:120, announcement:name,
   music:{style:"", bpm:null, intensity:""}
@@ -87,7 +87,7 @@ function normalizeOptions(options={}) {
     countdownSeconds:[3,5].includes(Number(options.countdownSeconds)) ? Number(options.countdownSeconds) : 3,
     speechEnabled:options.speechEnabled !== false,
     speechVolume:clamp(options.speechVolume ?? 0.7, 0.2, 1),
-    voiceStyle:options.voiceStyle === "calm" ? "calm" : "dynamic",
+    voiceStyle:options.voiceStyle === "female" || options.voiceStyle === "calm" ? "female" : "male",
     signalsEnabled:options.signalsEnabled !== false,
     signalVolume:clamp(options.signalVolume ?? 0.55, 0.1, 1),
     ducking:clamp(options.ducking ?? 0.6, 0.2, 0.9)
@@ -271,7 +271,7 @@ class AudioRuntime {
     this.ducking = 0.6;
     this.signalVolume = 0.55;
     this.speechVolume = 0.7;
-    this.voiceStyle = "dynamic";
+    this.voiceStyle = "male";
     this.ducked = false;
     this.audioBuffers = new Map();
     this.voiceSource = null;
@@ -375,14 +375,14 @@ class AudioRuntime {
   }
   setSpeechVolume(value) {
     this.speechVolume = clamp(value, 0.2, 1);
-    if (this.voiceGain) this.voiceGain.gain.setTargetAtTime(this.speechVolume * (this.voiceStyle === "dynamic" ? 1.18 : 1), this.context.currentTime, 0.015);
+    if (this.voiceGain) this.voiceGain.gain.setTargetAtTime(this.speechVolume, this.context.currentTime, 0.015);
   }
   setVoiceStyle(value) {
-    this.voiceStyle = value === "calm" ? "calm" : "dynamic";
+    this.voiceStyle = value === "female" ? "female" : "male";
     if (!this.context || !this.voicePresence || !this.voiceGain) return;
     const now=this.context.currentTime;
-    this.voicePresence.gain.setTargetAtTime(this.voiceStyle === "dynamic" ? 6 : 1.5, now, 0.02);
-    this.voiceGain.gain.setTargetAtTime(this.speechVolume * (this.voiceStyle === "dynamic" ? 1.18 : 1), now, 0.02);
+    this.voicePresence.gain.setTargetAtTime(3.5, now, 0.02);
+    this.voiceGain.gain.setTargetAtTime(this.speechVolume, now, 0.02);
   }
   async loadAudioBuffer(url) {
     await this.unlock();
@@ -401,7 +401,7 @@ class AudioRuntime {
       try {
         const source = this.context.createBufferSource();
         source.buffer = buffer;
-        source.playbackRate.value = this.voiceStyle === "dynamic" ? 1.06 : 1;
+        source.playbackRate.value = 1;
         source.connect(this.voiceGain);
         source.onended = () => { if (this.voiceSource === source) this.voiceSource = null; resolve(); };
         this.voiceSource = source;
@@ -968,6 +968,7 @@ class TrainingCueEngine {
     this.music = music;
     this.options = defaultOptions();
     this.voice = null;
+    this.voices = {female:null,male:null};
     this.tempo = 128;
     this.speechToken = 0;
     this.speechTimer = null;
@@ -978,7 +979,11 @@ class TrainingCueEngine {
     const voices = window.speechSynthesis?.getVoices?.() || [];
     const german = voices.filter(v => /^de(?:[-_]|$)/i.test(v.lang));
     const femaleNames = /anna|helena|petra|marlene|vicki|female|weiblich/i;
-    this.voice = german.find(v => femaleNames.test(v.name)) || german.find(v => v.localService) || german[0] || voices.find(v => v.default) || null;
+    const maleNames = /thorsten|thomas|markus|stefan|male|männlich|mann/i;
+    const fallback = german.find(v => v.localService) || german[0] || voices.find(v => v.default) || null;
+    this.voices.female = german.find(v => femaleNames.test(v.name)) || fallback;
+    this.voices.male = german.find(v => maleNames.test(v.name)) || fallback;
+    this.voice = this.voices[this.options.voiceStyle] || fallback;
   }
   setTempo(value) { this.tempo = clamp(value || 128, 70, 160); }
   configure(options={}) {
@@ -1005,7 +1010,7 @@ class TrainingCueEngine {
     if (!text) return;
     const slug=VOICE_PHRASES[normalizeSpokenText(text)];
     if(slug){
-      const variant=this.options.voiceStyle==="dynamic"?"fast":this.tempo<=105?"slow":"normal",token=++this.speechToken,url=`assets/audio/voice-de-eva/voice-${variant}.mp3`,offset=VOICE_ORDER.indexOf(slug)*3,duration=["next-station","warm-up-easy","increase-tempo","training-complete"].includes(slug)?2.9:["set-break","block-break","preparation","reception"].includes(slug)?2.4:1.9;
+      const token=++this.speechToken,url=this.options.voiceStyle==="female"?"assets/audio/voice-de-kerstin/voice.mp3":"assets/audio/voice-de-thorsten/voice.mp3",offset=VOICE_ORDER.indexOf(slug)*3,duration=2.72;
       this.runtime.stopVoice();this.runtime.setDucked(true);this.music?.setDucked?.(true);
       try{await this.runtime.loadAudioBuffer(url);if(token!==this.speechToken)return;await this.runtime.playVoice(url,offset,duration)}catch(error){console.warn("Lokale Sprachansage konnte nicht abgespielt werden.",error);if(token===this.speechToken)this.speakWithSystemVoice(text,token);return}
       if(token===this.speechToken){this.runtime.setDucked(false);this.music?.setDucked?.(false)}
@@ -1015,6 +1020,7 @@ class TrainingCueEngine {
   }
   speakWithSystemVoice(text,token) {
     if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {this.runtime.setDucked(false);this.music?.setDucked?.(false);return}
+    this.voice = this.voices[this.options.voiceStyle] || this.voice;
     const utterance = new SpeechSynthesisUtterance(String(text));
     utterance.lang = this.voice?.lang || "de-DE";
     if (this.voice) utterance.voice = this.voice;
@@ -1265,7 +1271,7 @@ class TrainingPlayerController {
         this.cues.speak(phrase);
         await new Promise(resolve=>setTimeout(resolve,900));
       }
-      this.setStatus(`Stimmprobe: ${this.current.options.voiceStyle==="dynamic"?"Trainerin dynamisch":"Trainerin ruhig"}.`);
+      this.setStatus(`Stimmprobe: ${this.current.options.voiceStyle==="female"?"Trainerin Kerstin":"Trainer Thorsten"}.`);
     } catch (error) { this.setStatus(error.message||"Stimmprobe konnte nicht abgespielt werden.",true); }
     finally { button.disabled=false; }
   }

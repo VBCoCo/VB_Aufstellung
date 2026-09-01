@@ -1,8 +1,9 @@
-const VERSION = "3.8.0";
+const VERSION = "3.9.0";
 const CACHE_PREFIX = "volleyball-trainer-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const VOICE_ASSETS = ["kerstin","thorsten"].map(name => `./assets/audio/voice-de-${name}/voice.mp3`);
+const CUSTOM_VOICE_ASSETS = ["b","c"].flatMap(pack => ["three","two","one","and","work","pause","action","continue","change","next-station"].map(name => `./assets/audio/voice-custom-${pack}/${name}.mp3`));
 const APP_SHELL = [
   "./index.html",
   `./style.css?v=${VERSION}`,
@@ -25,8 +26,11 @@ const APP_SHELL = [
   "./assets/audio/LICENSE.md",
   "./assets/audio/voice-de-kerstin/LICENSE.md",
   "./assets/audio/voice-de-thorsten/LICENSE.md",
+  "./assets/audio/voice-custom-b/README.md",
+  "./assets/audio/voice-custom-c/README.md",
   "./assets/music/ronald-kah/LICENSE.md",
-  ...VOICE_ASSETS
+  ...VOICE_ASSETS,
+  ...CUSTOM_VOICE_ASSETS
 ];
 const absoluteUrl = path => new URL(path, self.registration.scope).href;
 const INDEX_URL = absoluteUrl("./index.html");

@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.8.0";
+const VERSION = "3.9.0";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
@@ -30,12 +30,13 @@ const VOICE_PHRASES = {
   action:"action",pause:"pause",wechsel:"change",weiter:"continue",start:"start",stopp:"stop",stop:"stop",block:"block",
   "naechste station":"next-station",aufschlag:"serve",annahme:"reception",satzpause:"set-break",blockpause:"block-break",
   "warm up":"warm-up","warm up locker":"warm-up-easy","tempo steigern":"increase-tempo",vorbereitung:"preparation",power:"power",
-  "training beendet":"training-complete"
+  "training beendet":"training-complete",und:"and",work:"work"
 };
 const VOICE_ORDER = ["one","two","three","four","five","action","pause","change","next-station","serve","reception","set-break","block-break","block","warm-up","warm-up-easy","increase-tempo","preparation","power","start","stop","continue","training-complete"];
+const CUSTOM_VOICE_FILES = Object.fromEntries(["custom-b","custom-c"].map(style => [style,Object.fromEntries(["three","two","one","and","work","pause","action","continue","change","next-station"].map(slug => [slug,`assets/audio/voice-${style}/${slug}.mp3`]))]));
 
 const defaultMusic = () => ({source:"generator", style:"workout", bpm:128, intensity:"medium", volume:0.7, libraryTrackId:"danza"});
-const defaultOptions = () => ({countdownEnabled:true, countdownSeconds:3, speechEnabled:true, speechVolume:0.78, voiceStyle:"male", signalsEnabled:true, signalVolume:0.55, ducking:0.6});
+const defaultOptions = () => ({introEnabled:false, introSeconds:20, countdownEnabled:true, countdownSeconds:3, speechEnabled:true, speechVolume:0.78, voiceStyle:"custom-b", signalsEnabled:true, signalVolume:0.55, ducking:0.6});
 const continuousPhase = (name="Neue Phase") => ({
   id:uid(), name, type:"continuous", durationSeconds:120, announcement:name,
   music:{style:"", bpm:null, intensity:""}
@@ -82,12 +83,15 @@ function normalizeMusic(music={}) {
   };
 }
 function normalizeOptions(options={}) {
+  const voiceStyles = ["custom-b","custom-c","male","female"];
   return {
+    introEnabled:options.introEnabled === true,
+    introSeconds:clamp(options.introSeconds || 20, 3, 300),
     countdownEnabled:options.countdownEnabled !== false,
     countdownSeconds:[3,5].includes(Number(options.countdownSeconds)) ? Number(options.countdownSeconds) : 3,
     speechEnabled:options.speechEnabled !== false,
     speechVolume:clamp(options.speechVolume ?? 0.7, 0.2, 1),
-    voiceStyle:options.voiceStyle === "female" || options.voiceStyle === "calm" ? "female" : "male",
+    voiceStyle:voiceStyles.includes(options.voiceStyle) ? options.voiceStyle : (options.voiceStyle === "calm" ? "female" : "custom-b"),
     signalsEnabled:options.signalsEnabled !== false,
     signalVolume:clamp(options.signalVolume ?? 0.55, 0.1, 1),
     ducking:clamp(options.ducking ?? 0.6, 0.2, 0.9)
@@ -133,6 +137,7 @@ function segmentMusic(template, phase) {
 }
 function buildTimeline(template) {
   const result = [];
+  if (template.options.introEnabled) result.push({kind:"intro", label:"Intro", phaseName:"Vorbereitung", durationSeconds:template.options.introSeconds, phaseIndex:-1, music:segmentMusic(template,{music:{}}), silentStart:true});
   template.phases.forEach((phase, phaseIndex) => {
     const music = segmentMusic(template, phase);
     if (phase.type === "continuous") {
@@ -378,7 +383,7 @@ class AudioRuntime {
     if (this.voiceGain) this.voiceGain.gain.setTargetAtTime(this.speechVolume, this.context.currentTime, 0.015);
   }
   setVoiceStyle(value) {
-    this.voiceStyle = value === "female" ? "female" : "male";
+    this.voiceStyle = ["custom-b","custom-c","female","male"].includes(value) ? value : "custom-b";
     if (!this.context || !this.voicePresence || !this.voiceGain) return;
     const now=this.context.currentTime;
     this.voicePresence.gain.setTargetAtTime(3.5, now, 0.02);
@@ -1010,7 +1015,7 @@ class TrainingCueEngine {
     if (!text) return;
     const slug=VOICE_PHRASES[normalizeSpokenText(text)];
     if(slug){
-      const token=++this.speechToken,url=this.options.voiceStyle==="female"?"assets/audio/voice-de-kerstin/voice.mp3":"assets/audio/voice-de-thorsten/voice.mp3",offset=VOICE_ORDER.indexOf(slug)*3,duration=2.72;
+      const token=++this.speechToken,customUrl=CUSTOM_VOICE_FILES[this.options.voiceStyle]?.[slug],url=customUrl||(this.options.voiceStyle==="female"?"assets/audio/voice-de-kerstin/voice.mp3":"assets/audio/voice-de-thorsten/voice.mp3"),offset=customUrl?0:VOICE_ORDER.indexOf(slug)*3,duration=customUrl?null:2.72;
       this.runtime.stopVoice();this.runtime.setDucked(true);this.music?.setDucked?.(true);
       try{await this.runtime.loadAudioBuffer(url);if(token!==this.speechToken)return;await this.runtime.playVoice(url,offset,duration)}catch(error){console.warn("Lokale Sprachansage konnte nicht abgespielt werden.",error);if(token===this.speechToken)this.speakWithSystemVoice(text,token);return}
       if(token===this.speechToken){this.runtime.setDucked(false);this.music?.setDucked?.(false)}
@@ -1058,7 +1063,7 @@ class TrainingPlayerController {
   constructor() {
     this.root = document.getElementById("trainingPlayer");
     if (!this.root) return;
-    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingCountdownEnabled","trainingCountdownSeconds","trainingSpeechEnabled","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalsEnabled","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
+    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingIntroEnabled","trainingIntroSeconds","trainingCountdownEnabled","trainingCountdownSeconds","trainingSpeechEnabled","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalsEnabled","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
     this.e = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
     this.scope = "anonymous";
     this.customTemplates = [];
@@ -1120,7 +1125,7 @@ class TrainingPlayerController {
     this.e.trainingLibraryPreview?.addEventListener("click", () => window.VBMusicLibrary?.previewSelection(this.e.trainingLibraryTrack.value).catch(error=>this.setStatus(error.message,true)));
     this.e.trainingVoicePreview?.addEventListener("click", () => this.previewVoice());
     this.e.trainingPhaseAdd.addEventListener("click", () => { this.readEditor(); this.current.phases.push(continuousPhase()); this.renderPhases(); this.refreshIdleTimeline(); });
-    [this.e.trainingMusicSource,this.e.trainingLibraryTrack,this.e.trainingMusicStyle,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingCountdownEnabled,this.e.trainingCountdownSeconds,this.e.trainingSpeechEnabled,this.e.trainingVoiceStyle,this.e.trainingSpeechVolume,this.e.trainingSignalsEnabled,this.e.trainingSignalVolume,this.e.trainingDucking].forEach(control => control?.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
+    [this.e.trainingMusicSource,this.e.trainingLibraryTrack,this.e.trainingMusicStyle,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingIntroEnabled,this.e.trainingIntroSeconds,this.e.trainingCountdownEnabled,this.e.trainingCountdownSeconds,this.e.trainingSpeechEnabled,this.e.trainingVoiceStyle,this.e.trainingSpeechVolume,this.e.trainingSignalsEnabled,this.e.trainingSignalVolume,this.e.trainingDucking].forEach(control => control?.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
     this.e.trainingLibraryTrack.addEventListener("change", () => {const tracks=this.selectedLibraryTracks(),track=tracks[0];this.e.trainingBpm.value=String(track?.bpm||132);this.updateOutputs();this.readEditor();this.refreshIdleTimeline()});
     document.addEventListener("vb-music-library-updated",()=>this.refreshLibraryOptions());
     this.e.trainingPhases.addEventListener("input", event => this.onPhaseInput(event));
@@ -1135,6 +1140,10 @@ class TrainingPlayerController {
     [this.e.trainingPlayerToggle,this.e.trainingPlayerExpand].forEach(button => button.setAttribute("aria-expanded", String(expanded)));
     this.e.trainingPlayerExpand.textContent = expanded ? "⌃" : "⌄";
     this.e.trainingPlayerExpand.title = expanded ? "Einstellungen einklappen" : "Einstellungen aufklappen";
+  }
+  openEditor() {
+    if (this.root.classList.contains("is-collapsed")) this.toggleExpanded();
+    this.root.scrollIntoView({behavior:"smooth",block:"start"});
   }
   allTemplates() { return [...BUILTIN_TEMPLATES.map(normalizeTemplate), ...this.customTemplates.map(normalizeTemplate)]; }
   loadStorage() {
@@ -1189,6 +1198,8 @@ class TrainingPlayerController {
     this.e.trainingBpm.value = music.bpm;
     this.e.trainingIntensity.value = music.intensity;
     this.e.trainingVolume.value = Math.round(music.volume * 100);
+    this.e.trainingIntroEnabled.checked = options.introEnabled;
+    this.e.trainingIntroSeconds.value = String(options.introSeconds);
     this.e.trainingCountdownEnabled.checked = options.countdownEnabled;
     this.e.trainingCountdownSeconds.value = String(options.countdownSeconds);
     this.e.trainingSpeechEnabled.checked = options.speechEnabled;
@@ -1205,7 +1216,7 @@ class TrainingPlayerController {
   readEditor() {
     this.current.name = (this.e.trainingTemplateName.value.trim() || "Training").slice(0,80);
     this.current.music = normalizeMusic({source:this.e.trainingMusicSource.value,libraryTrackId:this.e.trainingLibraryTrack.value,style:this.e.trainingMusicStyle.value,bpm:this.e.trainingBpm.value,intensity:this.e.trainingIntensity.value,volume:Number(this.e.trainingVolume.value)/100});
-    this.current.options = normalizeOptions({countdownEnabled:this.e.trainingCountdownEnabled.checked,countdownSeconds:this.e.trainingCountdownSeconds.value,speechEnabled:this.e.trainingSpeechEnabled.checked,voiceStyle:this.e.trainingVoiceStyle.value,speechVolume:Number(this.e.trainingSpeechVolume.value)/100,signalsEnabled:this.e.trainingSignalsEnabled.checked,signalVolume:Number(this.e.trainingSignalVolume.value)/100,ducking:Number(this.e.trainingDucking.value)/100});
+    this.current.options = normalizeOptions({introEnabled:this.e.trainingIntroEnabled.checked,introSeconds:this.e.trainingIntroSeconds.value,countdownEnabled:this.e.trainingCountdownEnabled.checked,countdownSeconds:this.e.trainingCountdownSeconds.value,speechEnabled:this.e.trainingSpeechEnabled.checked,voiceStyle:this.e.trainingVoiceStyle.value,speechVolume:Number(this.e.trainingSpeechVolume.value)/100,signalsEnabled:this.e.trainingSignalsEnabled.checked,signalVolume:Number(this.e.trainingSignalVolume.value)/100,ducking:Number(this.e.trainingDucking.value)/100});
     const cards = [...this.e.trainingPhases.querySelectorAll(".training-phase")];
     if (cards.length) this.current.phases = cards.map((card,index) => this.phaseFromCard(card,index));
     this.current = normalizeTemplate(this.current);
@@ -1271,11 +1282,13 @@ class TrainingPlayerController {
         this.cues.speak(phrase);
         await new Promise(resolve=>setTimeout(resolve,900));
       }
-      this.setStatus(`Stimmprobe: ${this.current.options.voiceStyle==="female"?"Trainerin Kerstin":"Trainer Thorsten"}.`);
+      const labels={"custom-b":"Trainerstimme B","custom-c":"Trainerstimme C",female:"Trainerin Kerstin",male:"Trainer Thorsten"};
+      this.setStatus(`Stimmprobe: ${labels[this.current.options.voiceStyle]}.`);
     } catch (error) { this.setStatus(error.message||"Stimmprobe konnte nicht abgespielt werden.",true); }
     finally { button.disabled=false; }
   }
   updateOutputs() {
+    this.e.trainingIntroSeconds.disabled = !this.e.trainingIntroEnabled.checked;
     const library=this.e.trainingMusicSource.value==="library";
     this.e.trainingGeneratorSettings.classList.toggle("hidden",library);this.e.trainingLibrarySettings.classList.toggle("hidden",!library);
     if(library){const tracks=this.selectedLibraryTracks(),bpms=tracks.map(track=>Number(track.bpm)||128),minBpm=Math.min(...bpms),maxBpm=Math.max(...bpms),min=Math.round(minBpm*.95),max=Math.round(maxBpm*1.05);this.e.trainingBpm.min=String(min);this.e.trainingBpm.max=String(max);this.e.trainingBpm.value=String(clamp(this.e.trainingBpm.value,min,max));const target=Number(this.e.trainingBpm.value);if(tracks.length===1){const change=clamp((target/tracks[0].bpm-1)*100,-5,5),changeText=Math.abs(change)<.05?"Originaltempo":`${change>0?"+":""}${change.toFixed(1).replace(".",",")} % Tempo`;this.e.trainingLibraryMeta.textContent=`${tracks[0].title} · Original ${tracks[0].bpm} BPM · Ziel ${target} BPM · ${changeText} · ${formatTime(tracks[0].duration)}`}else{this.e.trainingLibraryMeta.textContent=`${tracks.length} Titel · Original ${minBpm===maxBpm?minBpm:`${minBpm}–${maxBpm}`} BPM · Ziel ${target} BPM · automatische Anpassung je Titel max. ±5 %`}this.updateLibraryOfflineState()}else{this.e.trainingBpm.min="70";this.e.trainingBpm.max="160"}
@@ -1365,8 +1378,9 @@ class TrainingPlayerController {
   previousPhase() {
     if (!["running","paused"].includes(this.engine.status)) return;
     const now = Date.now();
-    const currentPhase = this.engine.current()?.phaseIndex || 0;
-    const targetPhase = now - this.lastBackAt <= 3000 ? Math.max(0, currentPhase - 1) : currentPhase;
+    const currentPhase = this.engine.current()?.phaseIndex ?? 0;
+    const firstPhase = this.current.options.introEnabled ? -1 : 0;
+    const targetPhase = now - this.lastBackAt <= 3000 ? Math.max(firstPhase, currentPhase - 1) : currentPhase;
     this.lastBackAt = now;
     this.engine.jumpToPhase(targetPhase);
     this.setStatus(targetPhase < currentPhase ? "Zur vorherigen Trainingsphase gesprungen." : "Aktuelle Trainingsphase neu gestartet.");
@@ -1375,7 +1389,7 @@ class TrainingPlayerController {
     this.music.setConfig(segment.music);
     this.cues.configure(this.current.options);
     this.cues.setTempo(segment.music.bpm);
-    this.cues.announce(segment.label);
+    if (!segment.silentStart) this.cues.announce(segment.label);
   }
   onComplete() {
     this.music.stop();
@@ -1389,7 +1403,8 @@ class TrainingPlayerController {
     const segment = state.segment;
     this.e.trainingPlayerSection.textContent = state.status === "completed" ? "Beendet" : segment?.label || "Bereit";
     let repeat = "–";
-    if (segment?.repetitions) repeat = `${segment.repeat}/${segment.repetitions}${segment.blocks > 1 ? ` · Block ${segment.block}/${segment.blocks}` : ""}`;
+    if (segment?.kind === "intro") repeat = "Training startet danach";
+    else if (segment?.repetitions) repeat = `${segment.repeat}/${segment.repetitions}${segment.blocks > 1 ? ` · Block ${segment.block}/${segment.blocks}` : ""}`;
     else if (segment) repeat = segment.phaseName;
     this.e.trainingPlayerRepeat.textContent = repeat;
     const seconds = state.remainingMs / 1000;
@@ -1399,7 +1414,7 @@ class TrainingPlayerController {
     this.e.trainingPlayerPause.disabled = state.status !== "running";
     this.e.trainingPlayerStop.disabled = state.status === "idle";
     const navigationActive = ["running","paused"].includes(state.status);
-    const phaseIndex = segment?.phaseIndex || 0;
+    const phaseIndex = segment?.phaseIndex ?? 0;
     const lastPhaseIndex = Math.max(0, this.current.phases.length - 1);
     this.e.trainingPlayerBack.disabled = !navigationActive;
     this.e.trainingPlayerForward.disabled = !navigationActive || phaseIndex >= lastPhaseIndex;

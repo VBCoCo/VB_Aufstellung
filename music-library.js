@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION="3.8.0";
+const VERSION="3.9.0";
 const BUILTIN=[
   {id:"danza",title:"Danza",artist:"Ronald Kah",genre:"Electronic",bpm:136,duration:238,parts:7,local:true},
   {id:"danza-ii",title:"Danza II",artist:"Ronald Kah",genre:"Electronic",bpm:136,duration:258,parts:8,local:true},

@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.8.0
+**Aktueller Frontend-Stand:** 3.9.0
 **Veröffentlichung:** GitHub Pages
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -162,6 +162,8 @@ Version 3.6.0 ersetzt die für feste Trainingsbegriffe unzuverlässige iOS-Syste
 Version 3.7.0 ergänzt eine geschützte Vereinsbibliothek für eigene Musiktitel, Suche und BPM-Filter, Vorhören sowie persönliche Playlists mit den Freigabestufen privat, Mannschaft und Verein. Fremde freigegebene Playlists können verwendet oder als eigene bearbeitbare Kopie übernommen werden. Titel beziehungsweise Playlists werden im Trainings-Player ausgewählt; Original-BPM, Ziel-BPM und Tempoänderung sind dort sichtbar. Für Ansagen steht zusätzlich eine präsentere dynamische Trainerinnen-Stimme mit eigener Hörprobe zur Verfügung.
 
 Version 3.8.0 liefert eine eigenständige weibliche und männliche Trainerstimme, erweitert die Hörprobe um eine frei bedienbare Zeitleiste und 15-Sekunden-Sprünge und überarbeitet die Playlist-Erstellung. Titel werden in der gefilterten Bibliothek markiert und anschließend in einer separaten Liste per Drag-and-drop oder Pfeiltasten sortiert. Persönliche und freigegebene Playlists sowie die bestehende BPM-Anzeige bleiben erhalten.
+
+Version 3.9.0 ergänzt die bearbeiteten Trainerstimmen B und C als lokale, offline verfügbare Auswahl. Ein optionales Intro von 3 bis 300 Sekunden läuft vor der ersten Trainingsphase und endet mit dem konfigurierten Countdown. Der Bearbeitungsmodus erhält vier kompakte Kacheln für Aufstellung & Laufwege, Taktiktafel, Trainingsplayer und Playlists; Spotify, Übungsübersicht und Übungsplan bleiben bewusst außerhalb dieses Releases.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

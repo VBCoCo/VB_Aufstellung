@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.9.0";
+const VERSION = "3.10.0";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
@@ -13,6 +13,9 @@ const formatTime = totalSeconds => {
   const minutes = Math.floor(seconds / 60);
   return `${String(minutes).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
 };
+const TEMPO_TOLERANCE = 0.05;
+const tempoMatch = (trackBpm,targetBpm) => window.VBMusicLibraryInternals?.tempoMatch?.(trackBpm,targetBpm,TEMPO_TOLERANCE) || [Number(trackBpm)/2,Number(trackBpm),Number(trackBpm)*2].map(referenceBpm=>({referenceBpm,change:Number(targetBpm)/referenceBpm-1})).filter(item=>Math.abs(item.change)<=TEMPO_TOLERANCE+1e-9).sort((a,b)=>Math.abs(a.change)-Math.abs(b.change))[0] || null;
+const shuffle = items => window.VBMusicLibraryInternals?.shuffle?.(items) || [...items].sort(()=>Math.random()-.5);
 const normalizeSpokenText = value => String(value || "").trim().toLowerCase()
   .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
   .replace(/[^a-z0-9]+/g," ").trim();
@@ -36,7 +39,7 @@ const VOICE_ORDER = ["one","two","three","four","five","action","pause","change"
 const CUSTOM_VOICE_FILES = Object.fromEntries(["custom-b","custom-c"].map(style => [style,Object.fromEntries(["three","two","one","and","work","pause","action","continue","change","next-station"].map(slug => [slug,`assets/audio/voice-${style}/${slug}.mp3`]))]));
 
 const defaultMusic = () => ({source:"generator", style:"workout", bpm:128, intensity:"medium", volume:0.7, libraryTrackId:"danza"});
-const defaultOptions = () => ({introEnabled:false, introSeconds:20, countdownEnabled:true, countdownSeconds:3, speechEnabled:true, speechVolume:0.78, voiceStyle:"custom-b", signalsEnabled:true, signalVolume:0.55, ducking:0.6});
+const defaultOptions = () => ({introEnabled:false, introSeconds:20, countdownEnabled:true, countdownSeconds:3, countdownMode:"and-at-zero", speechEnabled:true, speechVolume:0.78, voiceStyle:"custom-b", signalsEnabled:true, signalVolume:0.55, ducking:0.6});
 const continuousPhase = (name="Neue Phase") => ({
   id:uid(), name, type:"continuous", durationSeconds:120, announcement:name,
   music:{style:"", bpm:null, intensity:""}
@@ -89,6 +92,7 @@ function normalizeOptions(options={}) {
     introSeconds:clamp(options.introSeconds || 20, 3, 300),
     countdownEnabled:options.countdownEnabled !== false,
     countdownSeconds:[3,5].includes(Number(options.countdownSeconds)) ? Number(options.countdownSeconds) : 3,
+    countdownMode:["and-at-zero","action-with-countdown"].includes(options.countdownMode) ? options.countdownMode : "and-at-zero",
     speechEnabled:options.speechEnabled !== false,
     speechVolume:clamp(options.speechVolume ?? 0.7, 0.2, 1),
     voiceStyle:voiceStyles.includes(options.voiceStyle) ? options.voiceStyle : (options.voiceStyle === "calm" ? "female" : "custom-b"),
@@ -940,19 +944,20 @@ class ResilientMusicEngine {
 class LibraryMusicEngine {
   constructor(runtime) {
     this.runtime=runtime;this.audio=new Audio();this.audio.preload="metadata";this.audio.playsInline=true;
-    this.audio.preservesPitch=true;this.audio.webkitPreservesPitch=true;this.sourceNode=null;this.config=defaultMusic();this.trackIndex=0;this.active=false;this.objectUrl="";this.currentTrackId="";
+    this.audio.preservesPitch=true;this.audio.webkitPreservesPitch=true;this.sourceNode=null;this.config=defaultMusic();this.trackIndex=0;this.trackQueue=[];this.active=false;this.objectUrl="";this.currentTrackId="";
     this.audio.addEventListener("ended",()=>this.onEnded());
   }
   async unlock(){await this.runtime.unlock();if(!this.sourceNode){this.sourceNode=this.runtime.context.createMediaElementSource(this.audio);this.sourceNode.connect(this.runtime.musicGain)}}
-  selectedTracks(){return window.VBMusicLibrary?.resolveSelection(this.config.libraryTrackId) || (this.config.libraryTrackId==="all"?RONALD_KAH_TRACKS:[RONALD_KAH_TRACKS.find(track=>track.id===this.config.libraryTrackId)||RONALD_KAH_TRACKS[0]])}
-  async selectTrack(index=0){const tracks=this.selectedTracks();this.trackIndex=Math.max(0,Math.min(index,tracks.length-1));const track=tracks[this.trackIndex];if(this.currentTrackId!==track.id){if(this.objectUrl){URL.revokeObjectURL(this.objectUrl);this.objectUrl=""}if(track.url)this.audio.src=track.url;else{const responses=await Promise.all(trackAssets(track).map(path=>fetch(path)));if(responses.some(response=>!response.ok))throw new Error(`Musiktitel konnte nicht geladen werden: ${track.title}`);const buffers=await Promise.all(responses.map(response=>response.arrayBuffer()));this.objectUrl=URL.createObjectURL(new Blob(buffers,{type:"audio/mpeg"}));this.audio.src=this.objectUrl}this.currentTrackId=track.id}this.audio.loop=tracks.length===1;this.audio.playbackRate=clamp(this.config.bpm/track.bpm,.95,1.05)}
+  selectedTracks(random=false){const resolved=window.VBMusicLibrary?.resolveSelection(this.config.libraryTrackId,this.config.bpm,{random});if(resolved)return resolved;const base=this.config.libraryTrackId==="all"?RONALD_KAH_TRACKS:[RONALD_KAH_TRACKS.find(track=>track.id===this.config.libraryTrackId)].filter(Boolean),matches=base.filter(track=>tempoMatch(track.bpm,this.config.bpm));return random?shuffle(matches):matches}
+  rebuildQueue(){this.trackQueue=this.selectedTracks(true);this.trackIndex=0;if(!this.trackQueue.length)throw new Error(`Keine Titel passen mit maximal ±5 % zu ${this.config.bpm} BPM.`)}
+  async selectTrack(index=0){if(!this.trackQueue.length)this.rebuildQueue();const tracks=this.trackQueue;this.trackIndex=Math.max(0,Math.min(index,tracks.length-1));const track=tracks[this.trackIndex];if(this.currentTrackId!==track.id){if(this.objectUrl){URL.revokeObjectURL(this.objectUrl);this.objectUrl=""}if(track.url)this.audio.src=track.url;else{const responses=await Promise.all(trackAssets(track).map(path=>fetch(path)));if(responses.some(response=>!response.ok))throw new Error(`Musiktitel konnte nicht geladen werden: ${track.title}`);const buffers=await Promise.all(responses.map(response=>response.arrayBuffer()));this.objectUrl=URL.createObjectURL(new Blob(buffers,{type:"audio/mpeg"}));this.audio.src=this.objectUrl}this.currentTrackId=track.id}const match=tempoMatch(track.bpm,this.config.bpm);if(!match)throw new Error(`„${track.title}“ liegt außerhalb der zulässigen ±5 %.`);this.audio.loop=tracks.length===1;this.audio.playbackRate=clamp(this.config.bpm/match.referenceBpm,.95,1.05)}
   async start(config){await this.unlock();this.setConfig(config);await this.selectTrack(this.trackIndex);this.active=true;await this.audio.play()}
   pause(){this.active=false;this.audio.pause()}
-  stop(){this.active=false;this.audio.pause();try{this.audio.currentTime=0}catch{}}
-  setConfig(config){const previous=this.config.libraryTrackId;this.config=normalizeMusic({...this.config,...config,source:"library"});this.runtime.setVolume(this.config.volume);if(previous!==this.config.libraryTrackId){this.trackIndex=0;this.currentTrackId=""}else if(this.currentTrackId){const track=this.selectedTracks()[this.trackIndex]||this.selectedTracks()[0];this.audio.playbackRate=clamp(this.config.bpm/track.bpm,.95,1.05)}}
+  stop(){this.active=false;this.audio.pause();try{this.audio.currentTime=0}catch{}this.trackQueue=[];this.trackIndex=0;this.currentTrackId=""}
+  setConfig(config){const previousSelection=this.config.libraryTrackId,previousBpm=this.config.bpm;this.config=normalizeMusic({...this.config,...config,source:"library"});this.runtime.setVolume(this.config.volume);if(previousSelection!==this.config.libraryTrackId||previousBpm!==this.config.bpm){this.trackQueue=[];this.trackIndex=0;this.currentTrackId="";if(this.active){this.audio.pause();this.selectTrack(0).then(()=>this.audio.play()).catch(error=>console.warn("Kein passender Titel für die neue Trainingsphase.",error))}}else if(this.currentTrackId){const track=this.trackQueue[this.trackIndex];const match=track&&tempoMatch(track.bpm,this.config.bpm);if(match)this.audio.playbackRate=clamp(this.config.bpm/match.referenceBpm,.95,1.05)}}
   setDucking(value){this.runtime.setDucking(value)}
   setDucked(){}
-  async onEnded(){if(!this.active||this.selectedTracks().length<2)return;this.trackIndex=(this.trackIndex+1)%this.selectedTracks().length;this.currentTrackId="";try{await this.selectTrack(this.trackIndex);await this.audio.play()}catch{}}
+  async onEnded(){if(!this.active||this.trackQueue.length<2)return;this.trackIndex=(this.trackIndex+1)%this.trackQueue.length;if(this.trackIndex===0)this.trackQueue=shuffle(this.trackQueue);this.currentTrackId="";try{await this.selectTrack(this.trackIndex);await this.audio.play()}catch{}}
 }
 
 class MusicSourceEngine {
@@ -977,6 +982,8 @@ class TrainingCueEngine {
     this.tempo = 128;
     this.speechToken = 0;
     this.speechTimer = null;
+    this.countdownTailTimer = null;
+    this.preannouncedActionAt = 0;
     this.loadVoices();
     if (window.speechSynthesis) window.speechSynthesis.addEventListener?.("voiceschanged", () => this.loadVoices());
   }
@@ -1001,11 +1008,15 @@ class TrainingCueEngine {
   }
   countdown(number) {
     if (this.options.signalsEnabled) this.runtime.cue("short");
-    if (this.options.speechEnabled) this.speak(String(number));
+    if (this.options.speechEnabled) {
+      this.speak(String(number));
+      if(number===1){clearTimeout(this.countdownTailTimer);this.countdownTailTimer=setTimeout(()=>{const word=this.options.countdownMode==="action-with-countdown"?"ACTION":"und";if(word==="ACTION")this.preannouncedActionAt=Date.now();this.speak(word)},480)}
+    }
   }
   announce(text) {
     if (this.options.signalsEnabled) this.runtime.cue("change");
-    if (this.options.speechEnabled && text) this.speak(text);
+    const suppress=this.options.countdownMode==="action-with-countdown"&&normalizeSpokenText(text)==="action"&&Date.now()-this.preannouncedActionAt<1800;
+    if (this.options.speechEnabled && text && !suppress) this.speak(text);
   }
   complete() {
     if (this.options.signalsEnabled) this.runtime.cue("end");
@@ -1015,7 +1026,9 @@ class TrainingCueEngine {
     if (!text) return;
     const slug=VOICE_PHRASES[normalizeSpokenText(text)];
     if(slug){
-      const token=++this.speechToken,customUrl=CUSTOM_VOICE_FILES[this.options.voiceStyle]?.[slug],url=customUrl||(this.options.voiceStyle==="female"?"assets/audio/voice-de-kerstin/voice.mp3":"assets/audio/voice-de-thorsten/voice.mp3"),offset=customUrl?0:VOICE_ORDER.indexOf(slug)*3,duration=customUrl?null:2.72;
+      const token=++this.speechToken,customUrl=CUSTOM_VOICE_FILES[this.options.voiceStyle]?.[slug];
+      if(!customUrl&&!VOICE_ORDER.includes(slug)){this.speakWithSystemVoice(text,token);return}
+      const url=customUrl||(this.options.voiceStyle==="female"?"assets/audio/voice-de-kerstin/voice.mp3":"assets/audio/voice-de-thorsten/voice.mp3"),offset=customUrl?0:VOICE_ORDER.indexOf(slug)*3,duration=customUrl?null:2.72;
       this.runtime.stopVoice();this.runtime.setDucked(true);this.music?.setDucked?.(true);
       try{await this.runtime.loadAudioBuffer(url);if(token!==this.speechToken)return;await this.runtime.playVoice(url,offset,duration)}catch(error){console.warn("Lokale Sprachansage konnte nicht abgespielt werden.",error);if(token===this.speechToken)this.speakWithSystemVoice(text,token);return}
       if(token===this.speechToken){this.runtime.setDucked(false);this.music?.setDucked?.(false)}
@@ -1051,7 +1064,10 @@ class TrainingCueEngine {
   stop() {
     this.speechToken += 1;
     clearTimeout(this.speechTimer);
+    clearTimeout(this.countdownTailTimer);
     this.speechTimer = null;
+    this.countdownTailTimer = null;
+    this.preannouncedActionAt = 0;
     window.speechSynthesis?.cancel?.();
     this.runtime.stopVoice();
     this.runtime.setDucked(false);
@@ -1063,7 +1079,7 @@ class TrainingPlayerController {
   constructor() {
     this.root = document.getElementById("trainingPlayer");
     if (!this.root) return;
-    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingIntroEnabled","trainingIntroSeconds","trainingCountdownEnabled","trainingCountdownSeconds","trainingSpeechEnabled","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalsEnabled","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
+    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingIntroEnabled","trainingIntroSeconds","trainingCountdownEnabled","trainingCountdownSeconds","trainingCountdownMode","trainingSpeechEnabled","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalsEnabled","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
     this.e = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
     this.scope = "anonymous";
     this.customTemplates = [];
@@ -1125,8 +1141,8 @@ class TrainingPlayerController {
     this.e.trainingLibraryPreview?.addEventListener("click", () => window.VBMusicLibrary?.previewSelection(this.e.trainingLibraryTrack.value).catch(error=>this.setStatus(error.message,true)));
     this.e.trainingVoicePreview?.addEventListener("click", () => this.previewVoice());
     this.e.trainingPhaseAdd.addEventListener("click", () => { this.readEditor(); this.current.phases.push(continuousPhase()); this.renderPhases(); this.refreshIdleTimeline(); });
-    [this.e.trainingMusicSource,this.e.trainingLibraryTrack,this.e.trainingMusicStyle,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingIntroEnabled,this.e.trainingIntroSeconds,this.e.trainingCountdownEnabled,this.e.trainingCountdownSeconds,this.e.trainingSpeechEnabled,this.e.trainingVoiceStyle,this.e.trainingSpeechVolume,this.e.trainingSignalsEnabled,this.e.trainingSignalVolume,this.e.trainingDucking].forEach(control => control?.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
-    this.e.trainingLibraryTrack.addEventListener("change", () => {const tracks=this.selectedLibraryTracks(),track=tracks[0];this.e.trainingBpm.value=String(track?.bpm||132);this.updateOutputs();this.readEditor();this.refreshIdleTimeline()});
+    [this.e.trainingMusicSource,this.e.trainingLibraryTrack,this.e.trainingMusicStyle,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingIntroEnabled,this.e.trainingIntroSeconds,this.e.trainingCountdownEnabled,this.e.trainingCountdownSeconds,this.e.trainingCountdownMode,this.e.trainingSpeechEnabled,this.e.trainingVoiceStyle,this.e.trainingSpeechVolume,this.e.trainingSignalsEnabled,this.e.trainingSignalVolume,this.e.trainingDucking].forEach(control => control?.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
+    this.e.trainingLibraryTrack.addEventListener("change", () => {this.updateOutputs();this.readEditor();this.refreshIdleTimeline()});
     document.addEventListener("vb-music-library-updated",()=>this.refreshLibraryOptions());
     this.e.trainingPhases.addEventListener("input", event => this.onPhaseInput(event));
     this.e.trainingPhases.addEventListener("change", event => this.onPhaseInput(event));
@@ -1202,6 +1218,7 @@ class TrainingPlayerController {
     this.e.trainingIntroSeconds.value = String(options.introSeconds);
     this.e.trainingCountdownEnabled.checked = options.countdownEnabled;
     this.e.trainingCountdownSeconds.value = String(options.countdownSeconds);
+    this.e.trainingCountdownMode.value = options.countdownMode;
     this.e.trainingSpeechEnabled.checked = options.speechEnabled;
     this.e.trainingVoiceStyle.value = options.voiceStyle;
     this.e.trainingSpeechVolume.value = Math.round(options.speechVolume * 100);
@@ -1216,7 +1233,7 @@ class TrainingPlayerController {
   readEditor() {
     this.current.name = (this.e.trainingTemplateName.value.trim() || "Training").slice(0,80);
     this.current.music = normalizeMusic({source:this.e.trainingMusicSource.value,libraryTrackId:this.e.trainingLibraryTrack.value,style:this.e.trainingMusicStyle.value,bpm:this.e.trainingBpm.value,intensity:this.e.trainingIntensity.value,volume:Number(this.e.trainingVolume.value)/100});
-    this.current.options = normalizeOptions({introEnabled:this.e.trainingIntroEnabled.checked,introSeconds:this.e.trainingIntroSeconds.value,countdownEnabled:this.e.trainingCountdownEnabled.checked,countdownSeconds:this.e.trainingCountdownSeconds.value,speechEnabled:this.e.trainingSpeechEnabled.checked,voiceStyle:this.e.trainingVoiceStyle.value,speechVolume:Number(this.e.trainingSpeechVolume.value)/100,signalsEnabled:this.e.trainingSignalsEnabled.checked,signalVolume:Number(this.e.trainingSignalVolume.value)/100,ducking:Number(this.e.trainingDucking.value)/100});
+    this.current.options = normalizeOptions({introEnabled:this.e.trainingIntroEnabled.checked,introSeconds:this.e.trainingIntroSeconds.value,countdownEnabled:this.e.trainingCountdownEnabled.checked,countdownSeconds:this.e.trainingCountdownSeconds.value,countdownMode:this.e.trainingCountdownMode.value,speechEnabled:this.e.trainingSpeechEnabled.checked,voiceStyle:this.e.trainingVoiceStyle.value,speechVolume:Number(this.e.trainingSpeechVolume.value)/100,signalsEnabled:this.e.trainingSignalsEnabled.checked,signalVolume:Number(this.e.trainingSignalVolume.value)/100,ducking:Number(this.e.trainingDucking.value)/100});
     const cards = [...this.e.trainingPhases.querySelectorAll(".training-phase")];
     if (cards.length) this.current.phases = cards.map((card,index) => this.phaseFromCard(card,index));
     this.current = normalizeTemplate(this.current);
@@ -1291,7 +1308,7 @@ class TrainingPlayerController {
     this.e.trainingIntroSeconds.disabled = !this.e.trainingIntroEnabled.checked;
     const library=this.e.trainingMusicSource.value==="library";
     this.e.trainingGeneratorSettings.classList.toggle("hidden",library);this.e.trainingLibrarySettings.classList.toggle("hidden",!library);
-    if(library){const tracks=this.selectedLibraryTracks(),bpms=tracks.map(track=>Number(track.bpm)||128),minBpm=Math.min(...bpms),maxBpm=Math.max(...bpms),min=Math.round(minBpm*.95),max=Math.round(maxBpm*1.05);this.e.trainingBpm.min=String(min);this.e.trainingBpm.max=String(max);this.e.trainingBpm.value=String(clamp(this.e.trainingBpm.value,min,max));const target=Number(this.e.trainingBpm.value);if(tracks.length===1){const change=clamp((target/tracks[0].bpm-1)*100,-5,5),changeText=Math.abs(change)<.05?"Originaltempo":`${change>0?"+":""}${change.toFixed(1).replace(".",",")} % Tempo`;this.e.trainingLibraryMeta.textContent=`${tracks[0].title} · Original ${tracks[0].bpm} BPM · Ziel ${target} BPM · ${changeText} · ${formatTime(tracks[0].duration)}`}else{this.e.trainingLibraryMeta.textContent=`${tracks.length} Titel · Original ${minBpm===maxBpm?minBpm:`${minBpm}–${maxBpm}`} BPM · Ziel ${target} BPM · automatische Anpassung je Titel max. ±5 %`}this.updateLibraryOfflineState()}else{this.e.trainingBpm.min="70";this.e.trainingBpm.max="160"}
+    if(library){this.e.trainingBpm.min="70";this.e.trainingBpm.max="160";const target=Number(this.e.trainingBpm.value),tracks=this.selectedLibraryTracks();if(tracks.length===1){const match=tempoMatch(tracks[0].bpm,target),change=(match?.change||0)*100,changeText=Math.abs(change)<.05?"Originaltempo":`${change>0?"+":""}${change.toFixed(1).replace(".",",")} % Tempo`;this.e.trainingLibraryMeta.textContent=`1 passender Titel · ${tracks[0].title} · Original ${tracks[0].bpm} BPM · Ziel ${target} BPM · ${changeText}`}else if(tracks.length>1)this.e.trainingLibraryMeta.textContent=`${tracks.length} passende Titel für ${target} BPM · zufällige Reihenfolge · max. ±5 %`;else this.e.trainingLibraryMeta.textContent=`Kein Titel passt mit maximal ±5 % zu ${target} BPM.`;this.updateLibraryOfflineState()}else{this.e.trainingBpm.min="70";this.e.trainingBpm.max="160"}
     this.e.trainingBpmOutput.value = this.e.trainingBpm.value;
     this.e.trainingBpmOutput.textContent = this.e.trainingBpm.value;
     this.e.trainingVolumeOutput.value = `${this.e.trainingVolume.value} %`;
@@ -1303,7 +1320,7 @@ class TrainingPlayerController {
     this.e.trainingDuckingOutput.value = `${this.e.trainingDucking.value} %`;
     this.e.trainingDuckingOutput.textContent = `${this.e.trainingDucking.value} %`;
   }
-  selectedLibraryTracks(){return window.VBMusicLibrary?.resolveSelection(this.e.trainingLibraryTrack.value)||RONALD_KAH_TRACKS}
+  selectedLibraryTracks(){const target=Number(this.e.trainingBpm.value)||128;return window.VBMusicLibrary?.resolveSelection(this.e.trainingLibraryTrack.value,target)||RONALD_KAH_TRACKS.filter(track=>tempoMatch(track.bpm,target))}
   selectedLibraryAssets(){return this.selectedLibraryTracks().filter(track=>track.local||track.parts).flatMap(trackAssets)}
   librarySelectionIsLocal(){const tracks=this.selectedLibraryTracks();return tracks.length>0&&tracks.every(track=>track.local||track.parts)}
   async selectedLibraryIsOffline(){if(!window.caches||!this.librarySelectionIsLocal())return false;const cache=await caches.open(OFFLINE_MUSIC_CACHE),matches=await Promise.all(this.selectedLibraryAssets().map(path=>cache.match(path)));return matches.length>0&&matches.every(Boolean)}

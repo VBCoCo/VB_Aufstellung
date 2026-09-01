@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const VERSION="3.9.0",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
+const VERSION="3.10.0",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
 const OFFLINE_META_KEY=`${KEY}-offline-meta`;
 function loadOfflineMeta(){try{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false,...JSON.parse(localStorage.getItem(OFFLINE_META_KEY)||"{}")}}catch{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false}}}
 let offlineMeta=loadOfflineMeta();

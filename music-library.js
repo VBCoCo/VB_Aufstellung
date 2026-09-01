@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION="3.10.0";
+const VERSION="3.11.0";
 const TEMPO_TOLERANCE=0.05;
 const BUILTIN=[
   {id:"danza",title:"Danza",artist:"Ronald Kah",genre:"Electronic",bpm:136,duration:238,parts:7,local:true},
@@ -36,11 +36,11 @@ class MusicLibrary {
   setContext({userId="",teamId="",clubId=""}={}){const changed=this.userId!==userId||this.teamId!==teamId||this.clubId!==clubId;this.userId=userId;this.teamId=teamId;this.clubId=clubId;if(!changed)return;if(!clubId){this.stopPreview();this.remote=[];this.playlists=[];this.currentPlaylistId="";this.playlistDraft=[];this.render();return}this.load().catch(error=>this.status(error.message,true))}
   tracks(){return [...BUILTIN,...this.remote]}
   trackByKey(key){return this.tracks().find(track=>track.id===key)}
-  resolveSelection(value,targetBpm=null,{random=false}={}){let tracks;if(value==="all")tracks=this.tracks();else{const playlistId=String(value||"").replace(/^playlist:/,"");const playlist=this.playlists.find(item=>item.id===playlistId);if(playlist)tracks=[...playlist.items].sort((a,b)=>a.sort_order-b.sort_order).map(item=>item.local_track_key?this.trackByKey(item.local_track_key):this.trackByKey(`remote:${item.track_id}`)).filter(Boolean);else{const track=this.trackByKey(String(value||"danza").replace(/^track:/,""));tracks=track?[track]:[]}}if(targetBpm)tracks=tracks.filter(track=>tempoMatch(track.bpm,targetBpm));return random?shuffle(tracks):tracks}
+  resolveSelection(value,targetBpm=null,{random=false,tolerance=TEMPO_TOLERANCE}={}){let tracks;if(value==="all")tracks=this.tracks();else{const playlistId=String(value||"").replace(/^playlist:/,"");const playlist=this.playlists.find(item=>item.id===playlistId);if(playlist)tracks=[...playlist.items].sort((a,b)=>a.sort_order-b.sort_order).map(item=>item.local_track_key?this.trackByKey(item.local_track_key):this.trackByKey(`remote:${item.track_id}`)).filter(Boolean);else{const track=this.trackByKey(String(value||"danza").replace(/^track:/,""));tracks=track?[track]:[]}}if(targetBpm)tracks=tracks.filter(track=>tempoMatch(track.bpm,targetBpm,tolerance));return random?shuffle(tracks):tracks}
   selectionOptions(selected=""){
     const option=(value,label)=>`<option value="${esc(value)}" ${value===selected?"selected":""}>${esc(label)}</option>`;
     const mine=this.playlists.filter(p=>p.owner_id===this.userId),shared=this.playlists.filter(p=>p.owner_id!==this.userId);
-    return `<optgroup label="Automatische Auswahl">${option("all","Zufällige passende Titel · ±5 %")}</optgroup>${mine.length?`<optgroup label="Meine Playlists">${mine.map(p=>option(`playlist:${p.id}`,`${p.name} · ${p.items.length} Titel`)).join("")}</optgroup>`:""}${shared.length?`<optgroup label="Freigegebene Playlists">${shared.map(p=>option(`playlist:${p.id}`,`${p.name} · ${p.items.length} Titel`)).join("")}</optgroup>`:""}`;
+    return `<optgroup label="Automatische Auswahl">${option("all","Zufällige passende Titel · nach Spielraum")}</optgroup>${mine.length?`<optgroup label="Meine Playlists">${mine.map(p=>option(`playlist:${p.id}`,`${p.name} · ${p.items.length} Titel`)).join("")}</optgroup>`:""}${shared.length?`<optgroup label="Freigegebene Playlists">${shared.map(p=>option(`playlist:${p.id}`,`${p.name} · ${p.items.length} Titel`)).join("")}</optgroup>`:""}`;
   }
   async load(){if(!this.clubId)return;this.status("Musikbibliothek wird geladen …");const tracks=await this.api().request(`/rest/v1/vt_music_tracks?select=id,owner_id,title,artist,genre,bpm_original,duration_seconds,storage_path,license_note&club_id=eq.${encodeURIComponent(this.clubId)}&active=eq.true&order=title.asc`);this.remote=await Promise.all((tracks||[]).map(async row=>({id:`remote:${row.id}`,remoteId:row.id,title:row.title,artist:row.artist,genre:row.genre,bpm:row.bpm_original,duration:row.duration_seconds,storagePath:row.storage_path,licenseNote:row.license_note,ownerId:row.owner_id,url:await this.api().signMusic(row.storage_path)})));const playlists=await this.api().request(`/rest/v1/vt_music_playlists?select=id,owner_id,name,visibility,team_id,vt_music_playlist_items(id,sort_order,track_id,local_track_key)&club_id=eq.${encodeURIComponent(this.clubId)}&order=name.asc`);this.playlists=(playlists||[]).map(p=>({...p,items:p.vt_music_playlist_items||[]}));this.render();this.status(`${this.tracks().length} Titel und ${this.playlists.length} Playlists verfügbar.`);document.dispatchEvent(new CustomEvent("vb-music-library-updated"))}
   bind(){
@@ -54,7 +54,7 @@ class MusicLibrary {
     this.dialog?.addEventListener("click",event=>{if(event.target===this.dialog)this.close()});this.dialog?.addEventListener("cancel",event=>{event.preventDefault();this.close()});
   }
   open(){this.render();this.dialog?.showModal()}
-  close(){this.stopPreview();this.dialog?.close()}
+  close(){this.stopPreview();this.dialog?.close();document.dispatchEvent(new CustomEvent("vb-music-library-closed"))}
   render(){this.renderFilters();this.renderPlaylistSelect();this.selectPlaylist(this.currentPlaylistId||"new")}
   renderFilters(){const genres=[...new Set(this.tracks().map(t=>t.genre).filter(Boolean))].sort();const selected=this.e.musicLibraryGenre?.value||"";if(this.e.musicLibraryGenre)this.e.musicLibraryGenre.innerHTML=`<option value="">Alle Stile</option>${genres.map(g=>`<option ${g===selected?"selected":""}>${esc(g)}</option>`).join("")}`}
   filteredTracks(){const q=(this.e.musicLibrarySearch?.value||"").trim().toLowerCase(),genre=this.e.musicLibraryGenre?.value||"",range=this.e.musicLibraryBpm?.value||"";return this.tracks().filter(t=>(!q||`${t.title} ${t.artist}`.toLowerCase().includes(q))&&(!genre||t.genre===genre)&&(!range||(range==="lt100"?t.bpm<100:range==="100-119"?t.bpm<120&&t.bpm>=100:range==="120-129"?t.bpm<130&&t.bpm>=120:range==="130-139"?t.bpm<140&&t.bpm>=130:t.bpm>=140)))}

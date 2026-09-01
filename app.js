@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const VERSION="3.10.0",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
+const VERSION="3.11.0",DATA_SCHEMA=8,KEY="volleyball-trainer-v2-2";
 const OFFLINE_META_KEY=`${KEY}-offline-meta`;
 function loadOfflineMeta(){try{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false,...JSON.parse(localStorage.getItem(OFFLINE_META_KEY)||"{}")}}catch{return{deviceId:"",lastOnlineLoadAt:"",lastSuccessfulSyncAt:"",lastLocalSaveAt:"",pendingLocalChanges:false}}}
 let offlineMeta=loadOfflineMeta();
@@ -15,7 +15,7 @@ const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role
 const allPlayers=[...ownRoster,...opponentRoster];
 const ownSlots={1:{x:520,y:735},2:{x:520,y:545},3:{x:350,y:545},4:{x:180,y:545},5:{x:180,y:735},6:{x:350,y:735}};
 const opponentSlots={1:{x:180,y:165},2:{x:180,y:355},3:{x:350,y:355},4:{x:520,y:355},5:{x:520,y:165},6:{x:350,y:165}};
-const ids=["authGate","appMain","loginForm","loginEmail","loginPassword","loginSubmit","invitePasswordForm","invitePassword","invitePasswordRepeat","forgotPassword","authStatus","platformOnlyGate","platformOnlyAdminOpen","platformOnlyLogout","accountButton","accountDialog","closeAccount","accountName","accountEmail","accountRoles","clubSwitcherWrap","teamContextSelect","platformAdminOpen","clubAdminOpen","platformAdminDialog","closePlatformAdmin","platformAdminContent","platformAdminRefresh","clubAdminDialog","closeClubAdmin","clubAdminContent","clubAdminRefresh","logoutButton","teamNameInput","teamConfigClose","teamConfigPanel","teamConfigToggle","deleteTeam","addTeam","teamSelect","infoButton","editButton","brandClubName","rotationSelect","situationConfigToggle","situationConfigPanel","situationConfigClose","situationBaseNameWrap","situationBaseName","situationNameLabel","situationNameEdit","situationNameHint","addSituation","deleteSituation","stepNumber","stepTotal","stepNameEdit","stepNameInlineEditor","stepNameInlineInput","stepNameSuggestions","prevStep","playButton","nextStep","resetStepPositions","saveStep","addStep","deleteStep","actionMenuToggle","actionMenuClose","editPanel","editorHub","editorTileLineup","editorTileTactic","editorTileTraining","editorTilePlaylists","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","tapNoticeText","resetSelectedPlayer","status","infoDialog","closeInfo","closeInfoBottom","infoGuideTitle","infoGuideList","infoSituation","infoDataSource","lineupEditor","lineupGrid","liberoToggle","opponentSystem","opponentLiberoToggle","syncBadge","jsBuildBadge","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint","invitePreviewDialog","closeInvitePreview","invitePreviewTitle","invitePreviewMeta","invitePreviewSubject","invitePreviewBody","inviteTemplateHint","invitePreviewStatus","invitePreviewCancel","invitePreviewSave","invitePreviewSend","syncTimeStatus","infoSyncStatus","viewToggle","view2d","view25d","positionInfoToggle","court25d","court25Floor","movement25Layer","ballPath25Layer","action25Layer","player25Layer","ball25Object","actionPanel","actionType","actionActorWrap","actionActor","actionTechniqueWrap","actionTechnique","actionHelperWrap","actionHelper","actionOutcomeWrap","actionOutcome","actionReasonWrap","actionReason","attackBlockWrap","attackBlocker1","attackBlocker2","snapBallToActor","clearAction","actionHint","actionSummary","actionLayer","ruleCheck","ruleCheckToggle","ruleCheckSummary","ruleCheckChevron","ruleCheckDetails","stepStrip","tacticLaunch","tacticPanel","tacticPrev","tacticNext","tacticReset","tacticUndo","tacticPlayerMove","tacticPlayerPath","tacticBallMove","tacticBallPath","tacticExit","tacticTitle","tacticContext","tacticStepTitle","questionsButton","questionsBadge","courtQuestionButton","courtQuestionBadge","questionContextPanel","questionsDialog","questionsTitle","closeQuestions","questionsContent","questionNewButton","questionComposer","questionText","questionCancel","questionSend","situationInfoButton","stepInfoButton","situationInfoInline","situationInfoEdit","stepInfoEdit","publishSituation","publishState","contextInfoDialog","closeContextInfo","contextInfoTitle","contextInfoBody","noPublishedNotice"];
+const ids=["authGate","appMain","loginForm","loginEmail","loginPassword","loginSubmit","invitePasswordForm","invitePassword","invitePasswordRepeat","forgotPassword","authStatus","platformOnlyGate","platformOnlyAdminOpen","platformOnlyLogout","accountButton","accountDialog","closeAccount","accountName","accountEmail","accountRoles","clubSwitcherWrap","teamContextSelect","platformAdminOpen","clubAdminOpen","platformAdminDialog","closePlatformAdmin","platformAdminContent","platformAdminRefresh","clubAdminDialog","closeClubAdmin","clubAdminContent","clubAdminRefresh","logoutButton","teamNameInput","teamConfigClose","teamConfigPanel","teamConfigToggle","deleteTeam","addTeam","teamSelect","infoButton","editButton","brandClubName","rotationSelect","situationConfigToggle","situationConfigPanel","situationConfigClose","situationBaseNameWrap","situationBaseName","situationNameLabel","situationNameEdit","situationNameHint","addSituation","deleteSituation","stepNumber","stepTotal","stepNameEdit","stepNameInlineEditor","stepNameInlineInput","stepNameSuggestions","prevStep","playButton","nextStep","resetStepPositions","saveStep","addStep","deleteStep","actionMenuToggle","actionMenuClose","editPanel","editorHub","editorTileLineup","editorTileTactic","editorTileTraining","editorTilePlaylists","editorWorkspaceHead","editorWorkspaceBack","editorWorkspaceTitle","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","tapNoticeText","resetSelectedPlayer","status","infoDialog","closeInfo","closeInfoBottom","infoGuideTitle","infoGuideList","infoSituation","infoDataSource","lineupEditor","lineupGrid","liberoToggle","opponentSystem","opponentLiberoToggle","syncBadge","jsBuildBadge","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint","invitePreviewDialog","closeInvitePreview","invitePreviewTitle","invitePreviewMeta","invitePreviewSubject","invitePreviewBody","inviteTemplateHint","invitePreviewStatus","invitePreviewCancel","invitePreviewSave","invitePreviewSend","syncTimeStatus","infoSyncStatus","viewToggle","view2d","view25d","positionInfoToggle","court25d","court25Floor","movement25Layer","ballPath25Layer","action25Layer","player25Layer","ball25Object","actionPanel","actionType","actionActorWrap","actionActor","actionTechniqueWrap","actionTechnique","actionHelperWrap","actionHelper","actionOutcomeWrap","actionOutcome","actionReasonWrap","actionReason","attackBlockWrap","attackBlocker1","attackBlocker2","snapBallToActor","clearAction","actionHint","actionSummary","actionLayer","ruleCheck","ruleCheckToggle","ruleCheckSummary","ruleCheckChevron","ruleCheckDetails","stepStrip","tacticLaunch","tacticPanel","tacticPrev","tacticNext","tacticReset","tacticUndo","tacticPlayerMove","tacticPlayerPath","tacticBallMove","tacticBallPath","tacticExit","tacticTitle","tacticContext","tacticStepTitle","questionsButton","questionsBadge","courtQuestionButton","courtQuestionBadge","questionContextPanel","questionsDialog","questionsTitle","closeQuestions","questionsContent","questionNewButton","questionComposer","questionText","questionCancel","questionSend","situationInfoButton","stepInfoButton","situationInfoInline","situationInfoEdit","stepInfoEdit","publishSituation","publishState","contextInfoDialog","closeContextInfo","contextInfoTitle","contextInfoBody","noPublishedNotice"];
 const e=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
 if(e.jsBuildBadge)e.jsBuildBadge.textContent=`JS ${VERSION} geladen`;window.addEventListener("error",ev=>{if(e.jsBuildBadge)e.jsBuildBadge.textContent=`JS-Fehler ${VERSION}: ${ev.message||"unbekannt"}`});
 const roleNames={AA:"Außen",MB:"Mitte",Z:"Zuspiel",D:"Diagonal",L:"Libero"};
@@ -70,7 +70,7 @@ function migrate(){
   return changed;
 }
 const localMigrationApplied=migrate();if(localMigrationApplied)localStorage.setItem(KEY,JSON.stringify(state));
-let editing=false,selected=null,dragging=null,playing=false,animations=[],teamConfigOpen=false,situationConfigOpen=false,committedState=structuredClone(state),dirty=false,renamingStep=false,actionMenuOpen=false,tacticMode=false,tacticSourceState=null,tacticPreviousView="2d",tacticChanged=false,tacticUndoStack=[],tacticPaths=[],tacticPlayerMode="move",tacticBallMode="move";
+let editing=false,editorWorkspace="hub",selected=null,dragging=null,playing=false,animations=[],teamConfigOpen=false,situationConfigOpen=false,committedState=structuredClone(state),dirty=false,renamingStep=false,actionMenuOpen=false,tacticMode=false,tacticSourceState=null,tacticPreviousView="2d",tacticChanged=false,tacticUndoStack=[],tacticPaths=[],tacticPlayerMode="move",tacticBallMode="move";
 let remoteHasData=false,dataSource=hadLocalStateAtStartup?"browser":"default";
 let preferredView=localStorage.getItem("volleyball-trainer-view")||"2d";if(!["2d","25d"].includes(preferredView))preferredView="2d";
 let showPositionInfo=localStorage.getItem("volleyball-trainer-position-info")!=="off";
@@ -669,9 +669,25 @@ function renderStepStrip(){
     e.stepStrip.scrollTo({left:Math.max(0,target),behavior:"smooth"});
   });
 }
+const editorWorkspaceTitles={lineup:"Aufstellung & Laufwege",tactic:"Taktiktafel",training:"Trainingsplayer",playlists:"Musik & Playlists"};
+function applyEditorWorkspace(){
+  for(const name of ["hub","lineup","tactic","training","playlists"])document.body.classList.toggle(`editor-workspace-${name}`,editing&&editorWorkspace===name);
+  e.editorWorkspaceHead?.classList.toggle("hidden",!editing||editorWorkspace==="hub");
+  if(e.editorWorkspaceTitle)e.editorWorkspaceTitle.textContent=editorWorkspaceTitles[editorWorkspace]||"Bearbeiten";
+}
+function setEditorWorkspace(name){
+  if(!editing||!["hub","lineup","tactic","training","playlists"].includes(name))return;
+  if(name!=="tactic"&&tacticMode)exitTacticMode();
+  if(name!=="training")window.VBTrainingPlayer?.stop?.();
+  editorWorkspace=name;render();
+  if(name==="training")window.VBTrainingPlayer?.openEditor?.();
+  if(name==="playlists")window.VBMusicLibrary?.open?.();
+  else e.editorWorkspaceHead?.scrollIntoView?.({behavior:"smooth",block:"start"});
+}
 function render(){
   document.body.classList.toggle("tactic-mode",tacticMode);
-  window.VBTrainingPlayer?.setContext({visible:editing&&canEdit()&&!tacticMode,userId:authSession?.user?.id||"",teamId:currentTeamId,clubId:currentClub()?.id||""});
+  applyEditorWorkspace();
+  window.VBTrainingPlayer?.setContext({visible:editing&&canEdit()&&editorWorkspace==="training"&&!tacticMode,userId:authSession?.user?.id||"",teamId:currentTeamId,clubId:currentClub()?.id||""});
   const hasVisibleTeam=ensureVisibleTeam();
   renderTeamOptions();
   const hasVisibleSituation=hasVisibleTeam&&ensureVisibleSituation();
@@ -715,7 +731,7 @@ function clearVisualAnimations(){
   e.ballObject.getAnimations().forEach(a=>a.cancel());
 }
 function stop(){playing=false;animations.forEach(a=>a.cancel());animations=[];clearVisualAnimations();e.playButton.textContent="▶"}
-function edit(v){stop();clearVisualAnimations();if(v&&!editing){state=structuredClone(committedState);dirty=false}if(!v&&editing&&dirty){state=structuredClone(committedState);migrate();dirty=false}editing=v;selected=dragging=null;if(!v){renamingStep=false;actionMenuOpen=false;teamConfigOpen=false;situationConfigOpen=false;}e.editButton.textContent=v?"✓":"✎";e.editButton.setAttribute("aria-label",v?"Bearbeitung beenden":"Bearbeiten");e.editButton.setAttribute("title",v?"Bearbeitung beenden":"Bearbeiten");e.editPanel.classList.toggle("hidden",!v);e.tapNotice.classList.add("hidden");if(!v){teamConfigOpen=false;situationConfigOpen=false;e.lineupEditor.classList.add("hidden");e.teamConfigPanel?.classList.add("hidden");e.situationConfigPanel?.classList.add("hidden")}render()}
+function edit(v){stop();clearVisualAnimations();if(v&&!editing){state=structuredClone(committedState);dirty=false;editorWorkspace="hub"}if(!v&&editing&&dirty){state=structuredClone(committedState);migrate();dirty=false}editing=v;selected=dragging=null;if(!v){editorWorkspace="hub";renamingStep=false;actionMenuOpen=false;teamConfigOpen=false;situationConfigOpen=false;window.VBMusicLibrary?.close?.();}e.editButton.textContent=v?"✓":"✎";e.editButton.setAttribute("aria-label",v?"Bearbeitung beenden":"Bearbeiten");e.editButton.setAttribute("title",v?"Bearbeitung beenden":"Bearbeiten");e.editPanel.classList.toggle("hidden",!v);e.tapNotice.classList.add("hidden");if(!v){teamConfigOpen=false;situationConfigOpen=false;e.lineupEditor.classList.add("hidden");e.teamConfigPanel?.classList.add("hidden");e.situationConfigPanel?.classList.add("hidden")}render()}
 async function requestEdit(){if(editing){edit(false);return}if(!navigator.onLine){e.status.textContent="Offline-Bearbeitung nicht möglich.";window.alert("Offline-Bearbeitung nicht möglich.\n\nZum Bearbeiten wird eine Internetverbindung benötigt.");return}if(!canEdit()){window.alert("Dein Konto hat keine Bearbeitungsberechtigung.");return}edit(true)}
 function resetTacticWorkspace(){tacticUndoStack=[];tacticPaths=[];tacticChanged=false;selected=dragging=null}
 function tacticSnapshot(){return{step:state.step,stepData:structuredClone(sd()),paths:structuredClone(tacticPaths),changed:tacticChanged}}
@@ -737,7 +753,7 @@ function enterTacticMode(){
   stop();clearVisualAnimations();
   tacticSourceState=structuredClone(state);
   state=structuredClone(state);
-  tacticPreviousView=preferredView;tacticMode=true;tacticPlayerMode="move";tacticBallMode="move";resetTacticWorkspace();preferredView="2d";
+  tacticPreviousView=preferredView;tacticMode=true;editorWorkspace="tactic";tacticPlayerMode="move";tacticBallMode="move";resetTacticWorkspace();preferredView="2d";
   e.status.textContent="Taktiktafel im Bearbeitungsmodus: Änderungen werden nicht gespeichert.";
   render();
 }
@@ -755,7 +771,7 @@ function exitTacticMode(){
   if(!tacticMode)return;
   stop();clearVisualAnimations();
   if(tacticSourceState)state=structuredClone(tacticSourceState);
-  tacticSourceState=null;tacticMode=false;resetTacticWorkspace();preferredView=tacticPreviousView;
+  tacticSourceState=null;tacticMode=false;editorWorkspace="hub";resetTacticWorkspace();preferredView=tacticPreviousView;
   e.status.textContent="Taktiktafel beendet. Keine Änderung wurde gespeichert.";
   render();
 }
@@ -869,10 +885,12 @@ e.editButton.addEventListener("click",requestEdit);e.rotationSelect.addEventList
 });
 
 e.tacticLaunch?.addEventListener("click",enterTacticMode);
-e.editorTileLineup?.addEventListener("click",()=>document.querySelector(".court-toolbar")?.scrollIntoView({behavior:"smooth",block:"start"}));
+e.editorTileLineup?.addEventListener("click",()=>setEditorWorkspace("lineup"));
 e.editorTileTactic?.addEventListener("click",enterTacticMode);
-e.editorTileTraining?.addEventListener("click",()=>window.VBTrainingPlayer?.openEditor?.());
-e.editorTilePlaylists?.addEventListener("click",()=>document.getElementById("musicLibraryOpen")?.click());
+e.editorTileTraining?.addEventListener("click",()=>setEditorWorkspace("training"));
+e.editorTilePlaylists?.addEventListener("click",()=>setEditorWorkspace("playlists"));
+e.editorWorkspaceBack?.addEventListener("click",()=>setEditorWorkspace("hub"));
+document.addEventListener("vb-music-library-closed",()=>{if(editing&&editorWorkspace==="playlists"){editorWorkspace="hub";render()}});
 e.tacticUndo?.addEventListener("click",undoTactic);
 e.tacticReset?.addEventListener("click",()=>restoreTacticStep(state.step));
 e.tacticPrev?.addEventListener("click",()=>restoreTacticStep(state.step-1));

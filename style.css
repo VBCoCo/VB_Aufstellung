@@ -1,4 +1,4 @@
-/* Volleyball Trainer 3.6.0 */
+/* Volleyball Trainer 3.11.0 */
 :root{
   --panel:#10233a;--panel2:#0b1a2b;--text:#f8fafc;--muted:#aebed0;
   --club-blue:#0b4fc6;--club-blue-2:#073b9a;
@@ -9,11 +9,19 @@ html,body{max-width:100%;overflow-x:hidden}
 body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at 70% 0%,#153b72 0,#07111d 48%,#050b12 100%);color:var(--text);transition:background .2s ease}
 body.editing-mode{background:linear-gradient(180deg,#f5d04c,#e8b719 52%,#d9a80c)}
 .editor-hub{display:none}
-body.editing-mode:not(.tactic-mode) .editor-hub{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:9px}
+body.editing-mode.editor-workspace-hub:not(.tactic-mode) .editor-hub{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:9px}
 .editor-tile{display:grid;grid-template-columns:38px minmax(0,1fr);grid-template-rows:auto auto;align-items:center;gap:1px 8px;min-height:70px;padding:9px 10px;text-align:left;border:1px solid #3d668b;border-radius:12px;background:linear-gradient(180deg,#143b60,#0b2742);color:#fff;box-shadow:0 3px 0 #07192b}
 .editor-tile>span{grid-row:1/3;display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#0b75e8;font-size:1.15rem}.editor-tile strong{font-size:.76rem;line-height:1.15}.editor-tile small{color:#b8cee1;font-size:.59rem;line-height:1.15}.editor-tile:active{transform:translateY(2px);box-shadow:0 1px 0 #07192b}.editor-tile.active{border-color:#76c7ff;background:linear-gradient(180deg,#175487,#0c3356)}
-@media(max-width:760px){body.editing-mode:not(.tactic-mode) .editor-hub{grid-template-columns:1fr 1fr}.editor-tile{min-height:66px;padding:8px}.editor-tile strong{font-size:.71rem}.editor-tile small{font-size:.56rem}}
+@media(max-width:760px){body.editing-mode.editor-workspace-hub:not(.tactic-mode) .editor-hub{grid-template-columns:1fr 1fr}.editor-tile{min-height:66px;padding:8px}.editor-tile strong{font-size:.71rem}.editor-tile small{font-size:.56rem}}
 @media(max-width:390px){.editor-tile{grid-template-columns:32px minmax(0,1fr);gap:1px 6px}.editor-tile>span{width:30px;height:30px;font-size:1rem}}
+.editor-workspace-head{display:flex;align-items:center;gap:10px;margin-bottom:9px;padding:7px 9px;border:1px solid #355b7b;border-radius:12px;background:linear-gradient(180deg,#123654,#0a2238)}
+.editor-workspace-head button{min-height:38px;padding:0 11px;border-radius:9px}.editor-workspace-head strong{font-size:.9rem}
+body.editing-mode .layout{grid-template-columns:minmax(0,1fr)}
+body.editing-mode .sidebar{display:none!important}
+body.editing-mode.editor-workspace-hub .court-section>:not(.editor-hub){display:none!important}
+body.editing-mode.editor-workspace-training .court-section>:not(.editor-workspace-head):not(#trainingPlayer){display:none!important}
+body.editing-mode.editor-workspace-tactic .court-section>:not(.editor-workspace-head):not(.court-wrap):not(#status){display:none!important}
+body.editing-mode.editor-workspace-playlists .court-section>:not(.editor-workspace-head){display:none!important}
 button,input,select{font:inherit;max-width:100%}
 button{min-height:44px;border:1px solid #365473;border-radius:12px;color:var(--text);background:#0d1d2e;cursor:pointer}
 button.primary,.blue{background:linear-gradient(180deg,var(--club-blue),var(--club-blue-2));border-color:#3b7be0}

@@ -1,4 +1,4 @@
-const VERSION = "3.11.0";
+const VERSION = "3.12.0";
 const CACHE_PREFIX = "volleyball-trainer-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";

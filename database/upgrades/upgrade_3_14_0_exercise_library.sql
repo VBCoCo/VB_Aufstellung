@@ -1,0 +1,13 @@
+-- Release 3.14.0 / V1.1 – Übungsbibliothek
+-- Produktiv am 2026-09-02 über Supabase Migrationen exercise_library_1_1_schema und exercise_library_1_1_seed angewandt.
+-- Enthaltene Datenobjekte:
+--   vt_exercise_catalog_items  – zentrale Tags, Schwerpunkte und Materialien
+--   vt_exercises               – Athletik- und Volleyballübungen
+--   vt_exercise_favorites      – persönliche Favoriten
+--   vt_hall_profiles           – vorbereitete Hallenprofile
+--   vt_hall_resources          – Ressourcen/Material einer Halle
+--   vt_team_training_profiles  – vorbereitete Mannschafts-/Trainingsdefaults
+--
+-- Die produktive Migration enthält außerdem RLS-Policies und 10+10 System-Testübungen.
+-- Dieses Repository-Dokument dient als Upgrade-Nachweis; die Migration ist bereits produktiv ausgeführt
+-- und darf nicht ungeprüft erneut gegen eine bestehende Installation ausgeführt werden.

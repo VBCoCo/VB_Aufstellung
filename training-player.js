@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.12.0";
+const VERSION = "3.13.0";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
@@ -39,7 +39,7 @@ const VOICE_ORDER = ["one","two","three","four","five","action","pause","change"
 const CUSTOM_VOICE_FILES = Object.fromEntries(["custom-b","custom-c"].map(style => [style,Object.fromEntries(["three","two","one","and","work","pause","action","continue","change","next-station"].map(slug => [slug,`assets/audio/voice-${style}/${slug}.mp3`]))]));
 
 const defaultMusic = () => ({source:"generator", style:"workout", bpm:128, intensity:"medium", volume:0.7, libraryTrackId:"danza", tempoTolerance:0.03});
-const defaultOptions = () => ({introEnabled:false, introSeconds:20, countdownEnabled:true, countdownSeconds:3, countdownMode:"and-at-zero", speechEnabled:true, speechVolume:0.78, voiceStyle:"custom-b", signalsEnabled:true, signalVolume:0.55, ducking:0.6, wakeLockEnabled:true});
+const defaultOptions = () => ({introEnabled:false, introSeconds:20, countdownEnabled:true, countdownSeconds:3, countdownMode:"and-at-zero", cueMode:"speech", speechVolume:0.78, voiceStyle:"custom-b", signalVolume:0.55, ducking:0.6, wakeLockEnabled:true});
 const continuousPhase = (name="Neue Phase") => ({
   id:uid(), name, type:"continuous", durationSeconds:120, announcement:name,
   music:{style:"", bpm:null, intensity:""}
@@ -88,16 +88,16 @@ function normalizeMusic(music={}) {
 }
 function normalizeOptions(options={}) {
   const voiceStyles = ["custom-b","custom-c","male","female"];
+  const legacyCueMode=options.speechEnabled!==undefined||options.signalsEnabled!==undefined?(options.speechEnabled!==false?"speech":options.signalsEnabled!==false?"tones":"none"):"speech";
   return {
     introEnabled:options.introEnabled === true,
     introSeconds:clamp(options.introSeconds || 20, 3, 300),
     countdownEnabled:options.countdownEnabled !== false,
-    countdownSeconds:[3,5].includes(Number(options.countdownSeconds)) ? Number(options.countdownSeconds) : 3,
+    countdownSeconds:3,
     countdownMode:["and-at-zero","action-with-countdown"].includes(options.countdownMode) ? options.countdownMode : "and-at-zero",
-    speechEnabled:options.speechEnabled !== false,
+    cueMode:["none","tones","speech"].includes(options.cueMode) ? options.cueMode : legacyCueMode,
     speechVolume:clamp(options.speechVolume ?? 0.7, 0.2, 1),
     voiceStyle:voiceStyles.includes(options.voiceStyle) ? options.voiceStyle : (options.voiceStyle === "calm" ? "female" : "custom-b"),
-    signalsEnabled:options.signalsEnabled !== false,
     signalVolume:clamp(options.signalVolume ?? 0.55, 0.1, 1),
     ducking:clamp(options.ducking ?? 0.6, 0.2, 0.9),
     wakeLockEnabled:options.wakeLockEnabled !== false
@@ -227,6 +227,19 @@ class TrainingIntervalEngine {
     this.emit();
     return true;
   }
+  jumpToIndex(index) {
+    const target=Math.max(0,Math.min(this.timeline.length-1,Number(index)));
+    if(!this.timeline.length||target===this.index)return false;
+    const wasRunning=this.status==="running";
+    this.index=target;
+    this.remainingMs=this.current().durationSeconds*1000;
+    this.lastCountdown=null;
+    if(wasRunning)this.deadline=Date.now()+this.remainingMs;
+    this.callbacks.onSegmentStart?.(this.current(),this.index,this.timeline.length);
+    this.emit();
+    return true;
+  }
+  nextSegment(){return this.jumpToIndex(this.index+1)}
   nextPhase() {
     const phaseIndex = this.current()?.phaseIndex ?? 0;
     return this.jumpToPhase(phaseIndex + 1);
@@ -493,11 +506,18 @@ class AudioRuntime {
     if (!this.context) return;
     const now = this.context.currentTime + 0.01;
     if (kind === "end") {
-      this.tone(660, now, 0.12, {destination:"cue", gain:0.22});
-      this.tone(880, now + 0.15, 0.28, {destination:"cue", gain:0.25});
+      this.tone(880, now, 0.22, {destination:"cue", gain:0.22});
+      this.tone(700, now + 0.28, 0.22, {destination:"cue", gain:0.22});
+      this.tone(520, now + 0.56, 0.38, {destination:"cue", gain:0.25});
+    } else if (kind === "start") {
+      this.tone(1040, now, 0.42, {destination:"cue", gain:0.25});
+    } else if (kind === "pause") {
+      this.tone(520, now, 0.11, {destination:"cue", gain:0.2});
+      this.tone(440, now + 0.16, 0.16, {destination:"cue", gain:0.2});
     } else if (kind === "change") {
-      this.tone(740, now, 0.08, {destination:"cue", gain:0.18});
-      this.tone(980, now + 0.1, 0.13, {destination:"cue", gain:0.2});
+      this.tone(620, now, 0.1, {destination:"cue", gain:0.18});
+      this.tone(820, now + 0.14, 0.1, {destination:"cue", gain:0.2});
+      this.tone(1040, now + 0.28, 0.18, {destination:"cue", gain:0.22});
     } else this.tone(880, now, 0.08, {destination:"cue", gain:0.16});
   }
 }
@@ -960,7 +980,8 @@ class LibraryMusicEngine {
   setConfig(config){const previousSelection=this.config.libraryTrackId,previousBpm=this.config.bpm,previousTolerance=this.config.tempoTolerance;this.config=normalizeMusic({...this.config,...config,source:"library"});this.runtime.setVolume(this.config.volume);if(previousSelection!==this.config.libraryTrackId||previousBpm!==this.config.bpm||previousTolerance!==this.config.tempoTolerance){this.trackQueue=[];this.trackIndex=0;this.currentTrackId="";if(this.active){this.audio.pause();this.selectTrack(0).then(()=>this.audio.play()).catch(error=>console.warn("Kein passender Titel für die neue Trainingsphase.",error))}}else if(this.currentTrackId){const track=this.trackQueue[this.trackIndex];const match=track&&tempoMatch(track.bpm,this.config.bpm,this.config.tempoTolerance);if(match)this.audio.playbackRate=clamp(this.config.bpm/match.referenceBpm,.95,1.05)}}
   setDucking(value){this.runtime.setDucking(value)}
   setDucked(){}
-  async onEnded(){if(!this.active||this.trackQueue.length<2)return;this.trackIndex=(this.trackIndex+1)%this.trackQueue.length;if(this.trackIndex===0)this.trackQueue=shuffle(this.trackQueue);this.currentTrackId="";try{await this.selectTrack(this.trackIndex);await this.audio.play()}catch{}}
+  reshuffle(lastId){this.trackQueue=shuffle(this.trackQueue);if(this.trackQueue.length>1&&this.trackQueue[0]?.id===lastId)[this.trackQueue[0],this.trackQueue[1]]=[this.trackQueue[1],this.trackQueue[0]]}
+  async onEnded(){if(!this.active)return;if(this.trackQueue.length<2){try{this.audio.currentTime=0;await this.audio.play()}catch{}return}const lastId=this.trackQueue[this.trackIndex]?.id;this.trackIndex=(this.trackIndex+1)%this.trackQueue.length;if(this.trackIndex===0)this.reshuffle(lastId);this.currentTrackId="";try{await this.selectTrack(this.trackIndex);await this.audio.play()}catch{}}
 }
 
 class MusicSourceEngine {
@@ -1010,20 +1031,20 @@ class TrainingCueEngine {
     this.runtime.setVoiceStyle(this.options.voiceStyle);
   }
   countdown(number) {
-    if (this.options.signalsEnabled) this.runtime.cue("short");
-    if (this.options.speechEnabled) {
+    if (this.options.cueMode==="tones") this.runtime.cue("short");
+    if (this.options.cueMode==="speech") {
       this.speak(String(number));
       if(number===1){clearTimeout(this.countdownTailTimer);this.countdownTailTimer=setTimeout(()=>{const word=this.options.countdownMode==="action-with-countdown"?"ACTION":"und";if(word==="ACTION")this.preannouncedActionAt=Date.now();this.speak(word)},480)}
     }
   }
-  announce(text) {
-    if (this.options.signalsEnabled) this.runtime.cue("change");
+  announce(text,segment={}) {
+    if(this.options.cueMode==="tones")this.runtime.cue(segment.kind==="work"?"start":segment.kind==="pause"?"pause":"change");
     const suppress=this.options.countdownMode==="action-with-countdown"&&normalizeSpokenText(text)==="action"&&Date.now()-this.preannouncedActionAt<1800;
-    if (this.options.speechEnabled && text && !suppress) this.speak(text);
+    if (this.options.cueMode==="speech" && text && !suppress) this.speak(text);
   }
   complete() {
-    if (this.options.signalsEnabled) this.runtime.cue("end");
-    if (this.options.speechEnabled) this.speak("Training beendet");
+    if (this.options.cueMode==="tones") this.runtime.cue("end");
+    if (this.options.cueMode==="speech") this.speak("Training beendet");
   }
   async speak(text) {
     if (!text) return;
@@ -1082,7 +1103,7 @@ class TrainingPlayerController {
   constructor() {
     this.root = document.getElementById("trainingPlayer");
     if (!this.root) return;
-    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerTrack","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingTempoTolerance","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingIntroEnabled","trainingIntroSeconds","trainingCountdownEnabled","trainingCountdownSeconds","trainingCountdownMode","trainingSpeechEnabled","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalsEnabled","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingWakeLockEnabled","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
+    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerTrack","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingTempoTolerance","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingIntroEnabled","trainingIntroSeconds","trainingCountdownEnabled","trainingCountdownMode","trainingCueMode","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingWakeLockEnabled","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
     this.e = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
     this.scope = "anonymous";
     this.customTemplates = [];
@@ -1099,6 +1120,7 @@ class TrainingPlayerController {
     });
     this.wakeLock = null;
     this.lastBackAt = 0;
+    this.forwardPressTimer = null;
     this.currentTrack = null;
     this.bind();
     this.loadStorage();
@@ -1107,10 +1129,6 @@ class TrainingPlayerController {
     document.addEventListener("vb-training-track",event=>{this.currentTrack=event.detail||null;this.renderTrack()});
     document.addEventListener("visibilitychange", () => {
       if(!document.hidden&&this.engine.status==="running"&&this.current.options.wakeLockEnabled)this.requestWakeLock();
-      if (document.hidden && this.engine.status === "running") {
-        this.pause();
-        this.setStatus("Automatisch pausiert, weil die App nicht mehr im Vordergrund ist.");
-      }
     });
   }
   storageKey(suffix) { return `${STORAGE_PREFIX}:${this.scope}:${suffix}`; }
@@ -1138,7 +1156,7 @@ class TrainingPlayerController {
     this.e.trainingPlayerPause.addEventListener("click", () => this.pause());
     this.e.trainingPlayerStop.addEventListener("click", () => this.stop());
     this.e.trainingPlayerBack.addEventListener("click", () => this.previousPhase());
-    this.e.trainingPlayerForward.addEventListener("click", () => this.nextPhase());
+    this.e.trainingPlayerForward.addEventListener("click", () => this.forwardPress());
     this.e.trainingTemplateSelect.addEventListener("change", () => this.loadTemplate(this.e.trainingTemplateSelect.value));
     this.e.trainingTemplateNew.addEventListener("click", () => this.newTemplate());
     this.e.trainingTemplateSave.addEventListener("click", () => this.saveTemplate());
@@ -1147,7 +1165,7 @@ class TrainingPlayerController {
     this.e.trainingLibraryPreview?.addEventListener("click", () => window.VBMusicLibrary?.previewSelection(this.e.trainingLibraryTrack.value).catch(error=>this.setStatus(error.message,true)));
     this.e.trainingVoicePreview?.addEventListener("click", () => this.previewVoice());
     this.e.trainingPhaseAdd.addEventListener("click", () => { this.readEditor(); this.current.phases.push(continuousPhase()); this.renderPhases(); this.refreshIdleTimeline(); });
-    [this.e.trainingMusicSource,this.e.trainingLibraryTrack,this.e.trainingTempoTolerance,this.e.trainingMusicStyle,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingIntroEnabled,this.e.trainingIntroSeconds,this.e.trainingCountdownEnabled,this.e.trainingCountdownSeconds,this.e.trainingCountdownMode,this.e.trainingSpeechEnabled,this.e.trainingVoiceStyle,this.e.trainingSpeechVolume,this.e.trainingSignalsEnabled,this.e.trainingSignalVolume,this.e.trainingDucking,this.e.trainingWakeLockEnabled].forEach(control => control?.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
+    [this.e.trainingMusicSource,this.e.trainingLibraryTrack,this.e.trainingTempoTolerance,this.e.trainingMusicStyle,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingIntroEnabled,this.e.trainingIntroSeconds,this.e.trainingCountdownEnabled,this.e.trainingCountdownMode,this.e.trainingCueMode,this.e.trainingVoiceStyle,this.e.trainingSpeechVolume,this.e.trainingSignalVolume,this.e.trainingDucking,this.e.trainingWakeLockEnabled].forEach(control => control?.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
     this.e.trainingLibraryTrack.addEventListener("change", () => {this.updateOutputs();this.readEditor();this.refreshIdleTimeline()});
     document.addEventListener("vb-music-library-updated",()=>this.refreshLibraryOptions());
     this.e.trainingPhases.addEventListener("input", event => this.onPhaseInput(event));
@@ -1224,12 +1242,10 @@ class TrainingPlayerController {
     this.e.trainingIntroEnabled.checked = options.introEnabled;
     this.e.trainingIntroSeconds.value = String(options.introSeconds);
     this.e.trainingCountdownEnabled.checked = options.countdownEnabled;
-    this.e.trainingCountdownSeconds.value = String(options.countdownSeconds);
     this.e.trainingCountdownMode.value = options.countdownMode;
-    this.e.trainingSpeechEnabled.checked = options.speechEnabled;
+    this.e.trainingCueMode.value = options.cueMode;
     this.e.trainingVoiceStyle.value = options.voiceStyle;
     this.e.trainingSpeechVolume.value = Math.round(options.speechVolume * 100);
-    this.e.trainingSignalsEnabled.checked = options.signalsEnabled;
     this.e.trainingSignalVolume.value = Math.round(options.signalVolume * 100);
     this.e.trainingDucking.value = Math.round(options.ducking * 100);
     this.e.trainingWakeLockEnabled.checked = options.wakeLockEnabled;
@@ -1241,7 +1257,7 @@ class TrainingPlayerController {
   readEditor() {
     this.current.name = (this.e.trainingTemplateName.value.trim() || "Training").slice(0,80);
     this.current.music = normalizeMusic({source:this.e.trainingMusicSource.value,libraryTrackId:this.e.trainingLibraryTrack.value,tempoTolerance:this.e.trainingTempoTolerance.value,style:this.e.trainingMusicStyle.value,bpm:this.e.trainingBpm.value,intensity:this.e.trainingIntensity.value,volume:Number(this.e.trainingVolume.value)/100});
-    this.current.options = normalizeOptions({introEnabled:this.e.trainingIntroEnabled.checked,introSeconds:this.e.trainingIntroSeconds.value,countdownEnabled:this.e.trainingCountdownEnabled.checked,countdownSeconds:this.e.trainingCountdownSeconds.value,countdownMode:this.e.trainingCountdownMode.value,speechEnabled:this.e.trainingSpeechEnabled.checked,voiceStyle:this.e.trainingVoiceStyle.value,speechVolume:Number(this.e.trainingSpeechVolume.value)/100,signalsEnabled:this.e.trainingSignalsEnabled.checked,signalVolume:Number(this.e.trainingSignalVolume.value)/100,ducking:Number(this.e.trainingDucking.value)/100,wakeLockEnabled:this.e.trainingWakeLockEnabled.checked});
+    this.current.options = normalizeOptions({introEnabled:this.e.trainingIntroEnabled.checked,introSeconds:this.e.trainingIntroSeconds.value,countdownEnabled:this.e.trainingCountdownEnabled.checked,countdownMode:this.e.trainingCountdownMode.value,cueMode:this.e.trainingCueMode.value,voiceStyle:this.e.trainingVoiceStyle.value,speechVolume:Number(this.e.trainingSpeechVolume.value)/100,signalVolume:Number(this.e.trainingSignalVolume.value)/100,ducking:Number(this.e.trainingDucking.value)/100,wakeLockEnabled:this.e.trainingWakeLockEnabled.checked});
     const cards = [...this.e.trainingPhases.querySelectorAll(".training-phase")];
     if (cards.length) this.current.phases = cards.map((card,index) => this.phaseFromCard(card,index));
     this.current = normalizeTemplate(this.current);
@@ -1314,9 +1330,22 @@ class TrainingPlayerController {
   }
   updateOutputs() {
     this.e.trainingIntroSeconds.disabled = !this.e.trainingIntroEnabled.checked;
+    this.e.trainingCountdownMode.disabled=!this.e.trainingCountdownEnabled.checked;
+    const cueMode=this.e.trainingCueMode.value;
+    this.e.trainingVoiceStyle.disabled=cueMode!=="speech";
+    this.e.trainingVoicePreview.disabled=cueMode!=="speech";
+    this.e.trainingSpeechVolume.disabled=cueMode!=="speech";
+    this.e.trainingSignalVolume.disabled=cueMode!=="tones";
     const library=this.e.trainingMusicSource.value==="library";
     this.e.trainingGeneratorSettings.classList.toggle("hidden",library);this.e.trainingLibrarySettings.classList.toggle("hidden",!library);
-    if(library){this.e.trainingBpm.min="70";this.e.trainingBpm.max="160";const target=Number(this.e.trainingBpm.value),tolerance=Number(this.e.trainingTempoTolerance.value)||0.03,tolerancePercent=Math.round(tolerance*100),tracks=this.selectedLibraryTracks();if(tracks.length===1){const match=tempoMatch(tracks[0].bpm,target,tolerance),change=(match?.change||0)*100,changeText=Math.abs(change)<.05?"Originaltempo":`${change>0?"+":""}${change.toFixed(1).replace(".",",")} % Tempo`;this.e.trainingLibraryMeta.textContent=`1 passender Titel · ${tracks[0].title} · Original ${tracks[0].bpm} BPM · Ziel ${target} BPM · ${changeText}`}else if(tracks.length>1)this.e.trainingLibraryMeta.textContent=`${tracks.length} passende Titel für ${target} BPM · zufällige Reihenfolge · max. ±${tolerancePercent} %`;else this.e.trainingLibraryMeta.textContent=`Kein Titel passt mit maximal ±${tolerancePercent} % zu ${target} BPM.`;this.updateLibraryOfflineState()}else{this.e.trainingBpm.min="70";this.e.trainingBpm.max="160"}
+    if(library){
+      this.e.trainingBpm.min="70";this.e.trainingBpm.max="160";
+      const target=Number(this.e.trainingBpm.value),tolerance=Number(this.e.trainingTempoTolerance.value)||0.03,tolerancePercent=Math.round(tolerance*100),tracks=this.selectedLibraryTracks(),pool=window.VBMusicLibrary?.resolveSelection(this.e.trainingLibraryTrack.value)||tracks,bpms=pool.map(track=>Number(track.bpm)).filter(Boolean),range=bpms.length?`${Math.min(...bpms)}–${Math.max(...bpms)} BPM`:"–";
+      if(tracks.length===1){const match=tempoMatch(tracks[0].bpm,target,tolerance),change=(match?.change||0)*100,changeText=Math.abs(change)<.05?"Originaltempo":`${change>0?"+":""}${change.toFixed(1).replace(".",",")} % Tempo`;this.e.trainingLibraryMeta.textContent=`1 von ${pool.length} Titeln passend · Playlist-Bereich ${range} · ${tracks[0].title} · ${changeText}`}
+      else if(tracks.length>1)this.e.trainingLibraryMeta.textContent=`${tracks.length} von ${pool.length} Titeln passend · Playlist-Bereich ${range} · Ziel ${target} BPM · max. ±${tolerancePercent} %`;
+      else this.e.trainingLibraryMeta.textContent=`Kein Titel aus dem Bereich ${range} passt mit maximal ±${tolerancePercent} % zu ${target} BPM.`;
+      this.updateLibraryOfflineState()
+    }else{this.e.trainingBpm.min="70";this.e.trainingBpm.max="160"}
     this.e.trainingBpmOutput.value = this.e.trainingBpm.value;
     this.e.trainingBpmOutput.textContent = this.e.trainingBpm.value;
     this.e.trainingVolumeOutput.value = `${this.e.trainingVolume.value} %`;
@@ -1389,6 +1418,7 @@ class TrainingPlayerController {
     this.setStatus("Training pausiert.");
   }
   stop() {
+    clearTimeout(this.forwardPressTimer);this.forwardPressTimer=null;
     this.engine?.stop();
     this.music?.stop();
     this.cues?.stop();
@@ -1406,6 +1436,16 @@ class TrainingPlayerController {
     if (!this.engine.nextPhase()) this.setStatus("Letzte Trainingsphase ist bereits aktiv.");
     else this.setStatus("Zur nächsten Trainingsphase gesprungen.");
   }
+  nextSegment() {
+    if (!["running","paused"].includes(this.engine.status)) return;
+    if (!this.engine.nextSegment()) this.setStatus("Letzter Trainingsabschnitt ist bereits aktiv.");
+    else this.setStatus("Zum nächsten Trainingsabschnitt gesprungen.");
+  }
+  forwardPress(){
+    if(!["running","paused"].includes(this.engine.status))return;
+    if(this.forwardPressTimer){clearTimeout(this.forwardPressTimer);this.forwardPressTimer=null;this.nextPhase();return}
+    this.forwardPressTimer=setTimeout(()=>{this.forwardPressTimer=null;this.nextSegment()},500);
+  }
   previousPhase() {
     if (!["running","paused"].includes(this.engine.status)) return;
     const currentPhase = this.engine.current()?.phaseIndex ?? 0;
@@ -1418,7 +1458,7 @@ class TrainingPlayerController {
     this.music.setConfig(segment.music);
     this.cues.configure(this.current.options);
     this.cues.setTempo(segment.music.bpm);
-    if (!segment.silentStart) this.cues.announce(segment.label);
+    if (!segment.silentStart) this.cues.announce(segment.label,segment);
   }
   onComplete() {
     this.music.stop();
@@ -1443,16 +1483,14 @@ class TrainingPlayerController {
     this.e.trainingPlayerPause.disabled = state.status !== "running";
     this.e.trainingPlayerStop.disabled = state.status === "idle";
     const navigationActive = ["running","paused"].includes(state.status);
-    const phaseIndex = segment?.phaseIndex ?? 0;
-    const lastPhaseIndex = Math.max(0, this.current.phases.length - 1);
     this.e.trainingPlayerBack.disabled = !navigationActive;
-    this.e.trainingPlayerForward.disabled = !navigationActive || phaseIndex >= lastPhaseIndex;
+    this.e.trainingPlayerForward.disabled = !navigationActive || state.index >= state.total-1;
     this.root.dataset.state = state.status;
     this.renderTrack();
     this.updateMediaMetadata(state);
   }
   renderTrack(){if(!this.e.trainingPlayerTrack)return;const source=this.current?.music?.source;if(source==="library"&&this.currentTrack)this.e.trainingPlayerTrack.textContent=`♫ ${this.currentTrack.title}${this.currentTrack.artist?` · ${this.currentTrack.artist}`:""} · ${this.currentTrack.bpm} BPM`;else if(source==="library")this.e.trainingPlayerTrack.textContent="♫ Passender Titel wird ausgewählt …";else this.e.trainingPlayerTrack.textContent=`♫ Musikgenerator · ${this.current?.music?.style||"Workout"} · ${this.current?.music?.bpm||128} BPM`}
-  setupMediaSession(){if(!("mediaSession" in navigator))return;const actions={play:()=>this.play(),pause:()=>this.pause(),stop:()=>this.stop(),previoustrack:()=>this.previousPhase(),nexttrack:()=>this.nextPhase()};for(const [action,handler] of Object.entries(actions))try{navigator.mediaSession.setActionHandler(action,handler)}catch{}navigator.mediaSession.playbackState=this.engine.status==="running"?"playing":"paused"}
+  setupMediaSession(){if(!("mediaSession" in navigator))return;const actions={play:()=>this.play(),pause:()=>this.pause(),stop:()=>this.stop(),previoustrack:()=>this.previousPhase(),nexttrack:()=>this.forwardPress()};for(const [action,handler] of Object.entries(actions))try{navigator.mediaSession.setActionHandler(action,handler)}catch{}navigator.mediaSession.playbackState=this.engine.status==="running"?"playing":"paused"}
   updateMediaMetadata(state){if(!("mediaSession" in navigator)||typeof MediaMetadata==="undefined"||!this.root.classList.contains("is-active"))return;const segment=state.segment,cycle=segment?.repetitions?`Runde ${segment.repeat}/${segment.repetitions}${segment.blocks>1?` · Block ${segment.block}/${segment.blocks}`:""}`:(segment?.phaseName||this.current.name),song=this.currentTrack?`${this.currentTrack.title}${this.currentTrack.artist?` · ${this.currentTrack.artist}`:""}`:`${this.current.music.bpm} BPM`;try{navigator.mediaSession.metadata=new MediaMetadata({title:`${segment?.label||"Training"} · ${cycle}`,artist:this.current.name,album:song});navigator.mediaSession.playbackState=state.status==="running"?"playing":state.status==="paused"?"paused":"none"}catch{}}
   lockEditor(locked) {
     this.e.trainingPlayerEditor.querySelectorAll("input,select,button").forEach(control => {

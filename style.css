@@ -1,4 +1,4 @@
-/* Volleyball Trainer 3.12.0 */
+/* Volleyball Trainer 3.13.0 */
 :root{
   --panel:#10233a;--panel2:#0b1a2b;--text:#f8fafc;--muted:#aebed0;
   --club-blue:#0b4fc6;--club-blue-2:#073b9a;
@@ -20,8 +20,8 @@ body.editing-mode .layout{grid-template-columns:minmax(0,1fr)}
 body.editing-mode .sidebar{display:none!important}
 body.editing-mode.editor-workspace-hub .court-section>:not(.editor-hub){display:none!important}
 body.editing-mode.editor-workspace-training .court-section>:not(.editor-workspace-head):not(#trainingPlayer){display:none!important}
-body.editing-mode.editor-workspace-tactic .court-section>:not(.editor-workspace-head):not(.court-wrap):not(#status){display:none!important}
-body.editing-mode.editor-workspace-playlists .court-section>:not(.editor-workspace-head){display:none!important}
+body.editing-mode.editor-workspace-tactic .court-section>:not(.editor-workspace-head):not(.court-toolbar):not(.court-wrap):not(#status){display:none!important}
+body.editing-mode.editor-workspace-playlists .court-section>:not(.editor-workspace-head):not(#musicLibraryDialog){display:none!important}
 button,input,select{font:inherit;max-width:100%}
 button{min-height:44px;border:1px solid #365473;border-radius:12px;color:var(--text);background:#0d1d2e;cursor:pointer}
 button.primary,.blue{background:linear-gradient(180deg,var(--club-blue),var(--club-blue-2));border-color:#3b7be0}
@@ -254,7 +254,13 @@ body:not(.editing-mode):not(.tactic-mode) .situation-row{grid-template-columns:m
 .tactic-title{width:min(100%,720px);margin:0 0 8px;padding:7px 10px;border-radius:10px;background:#071522;color:#dceaff;font-size:.78rem;font-weight:700;text-align:center;line-height:1.25}
 body.tactic-mode{background:#06111e}
 
-body.tactic-mode .topbar,body.tactic-mode .sidebar,body.tactic-mode .court-toolbar,body.tactic-mode .court-head,body.tactic-mode #actionPanel,body.tactic-mode .legend,body.tactic-mode #tapNotice{display:none!important}
+body.tactic-mode .topbar,body.tactic-mode .sidebar,body.tactic-mode .court-head,body.tactic-mode #actionPanel,body.tactic-mode .legend,body.tactic-mode #tapNotice{display:none!important}
+body.tactic-mode .court-toolbar{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));border-radius:12px;margin-bottom:7px}
+body.tactic-mode .court-toolbar>:not(.situation-compact){display:none!important}
+body.tactic-mode .court-toolbar .situation-compact{display:grid!important;grid-template-columns:1fr;gap:3px}
+body.tactic-mode .court-toolbar .situation-compact>span{font-size:.58rem}
+body.tactic-mode .court-toolbar .team-row,body.tactic-mode .court-toolbar .situation-row{display:block}
+body.tactic-mode .court-toolbar button{display:none!important}
 body.tactic-mode .layout{display:block}
 body.tactic-mode .court-section{width:100%}
 body.tactic-mode .court-wrap{border:1px solid #6e96d0;border-radius:14px;padding:8px;background:linear-gradient(180deg,#eef4ff,#d8e7ff)}
@@ -682,6 +688,12 @@ body.editing-mode #editPanel{grid-column:1/-1;width:100%!important;max-width:100
 .court-view-toggle{position:absolute;z-index:13;left:10px;top:10px;display:grid!important;grid-template-columns:1fr!important;width:44px;padding:2px;border-radius:9px;background:#071522dd;border:1px solid #6e96d0}
 .court-view-toggle button{width:100%;height:29px;min-height:29px;padding:0 3px;border-radius:6px;font-size:.68rem}
 .legend-position-toggle{height:28px;min-height:28px;padding:0 9px;border-radius:8px;font-size:.72rem;white-space:nowrap}
+.position-info-menu{position:absolute;z-index:35;right:8px;bottom:48px;display:grid;gap:8px;width:min(310px,calc(100% - 16px));padding:12px;border:1px solid #5e86ad;border-radius:12px;background:#081827f2;color:#fff;box-shadow:0 10px 28px #0009}
+.position-info-menu.hidden{display:none!important}.position-info-menu label{display:flex;align-items:center;gap:8px;font-size:.76rem}.position-info-menu label:has(select){display:grid;gap:4px}.position-info-menu input[type="checkbox"]{width:20px;height:20px;accent-color:#0b75e8}.position-info-menu select{width:100%;min-height:38px;padding:6px 8px;border:1px solid #416481;border-radius:8px;background:#071421;color:#fff}.position-info-menu button{min-height:38px}
+.position-viewer-notice{margin:7px 0 0;padding:11px 13px;border:2px solid #ffb020;border-radius:10px;background:#fff7df;color:#553300;font-weight:900;text-align:center}.position-viewer-notice.hidden{display:none!important}
+.player-object.my-position circle{stroke:#fff200!important;stroke-width:8!important;filter:drop-shadow(0 0 10px #fff200) drop-shadow(0 0 18px #ff9d00)!important}.player25-object.my-position [data-footprint]{stroke:#fff200!important;stroke-width:8!important;opacity:1!important;filter:drop-shadow(0 0 8px #fff200)}
+.movement-path.my-position-path,.movement25-path.my-position-path{stroke:#fff200!important;stroke-width:9!important;filter:drop-shadow(0 0 5px #ff9d00)}
+body.editing-mode .position-info-toggle,body.tactic-mode .position-info-menu,body.editing-mode .position-viewer-notice{display:none!important}
 .step-compact{display:flex;align-items:center}
 .step-save-slot{display:inline-grid;place-items:center;width:38px;min-width:38px;height:38px;margin-left:4px}
 .step-save-slot .step-save{width:36px;height:36px;min-height:36px;padding:0}
@@ -766,6 +778,7 @@ button:disabled{cursor:not-allowed}
 .tactic-tools{display:grid;gap:5px;width:min(100%,820px);padding:5px;border:1px solid #315a82;border-radius:10px;background:#071522f2}
 .tactic-history-controls{display:grid;grid-template-columns:minmax(88px,1fr) minmax(94px,1fr) 36px 36px minmax(78px,1fr);gap:5px}
 .tactic-history-controls button{height:34px;min-height:34px;padding:0 7px;border-radius:8px;font-size:.7rem;font-weight:850;white-space:nowrap}
+#tacticExit{white-space:normal;line-height:1.05}
 .tactic-mode-controls{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 .tactic-mode-group{display:grid;grid-template-columns:auto 1fr 1fr;align-items:center;gap:3px;padding:3px;border:1px solid #294766;border-radius:8px;background:#0c2035}
 .tactic-mode-group>span{padding:0 4px;color:#b9cde2;font-size:.62rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em}
@@ -787,6 +800,7 @@ body.tactic-mode .court-wrap{grid-template-rows:auto auto minmax(0,1fr)}
   .tactic-mode-group>span{grid-column:1/-1;padding:0;text-align:center;font-size:.54rem;line-height:1}
   .tactic-mode-group button{height:27px;min-height:27px;padding:0 3px;font-size:.59rem}
 }
+@media(max-width:680px){.tactic-history-controls{grid-template-columns:minmax(78px,1fr) minmax(84px,1fr) 34px 34px!important}.tactic-history-controls #tacticExit{grid-column:1/-1;height:34px;min-height:34px;font-size:.66rem}}
 @media(max-height:620px) and (orientation:landscape){
   .tactic-title small{display:none}
   .tactic-tools{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center;padding:3px}
@@ -954,13 +968,17 @@ body:not(.editing-mode):not(.tactic-mode) .situation-row .inline-info:active{
 .training-license-note a{color:#7ee6ff}.training-library-meta{min-height:1.2em}
 #trainingLibraryOffline{min-height:36px;padding:7px 9px;border-radius:8px;background:#173f68;color:#fff;border:1px solid #4d7dab;font-weight:750}
 #trainingLibraryOffline[data-cached="true"]{background:#123c29;border-color:#34775a;color:#d8f8e6}
-.music-library-dialog{box-sizing:border-box;width:min(94vw,880px);max-height:92vh;overflow:auto;padding:16px}
+.music-library-workspace{display:none;width:100%}
+body.editing-mode.editor-workspace-playlists .music-library-workspace{display:block}
+.music-library-dialog{box-sizing:border-box;width:100%;overflow:visible;padding:4px 0 16px}
+.music-library-head{display:flex;align-items:center;justify-content:space-between}.music-library-head h2{margin:.2rem 0 0}
 .music-library-viewbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}.music-library-viewbar label{display:flex;align-items:center;gap:7px;color:#bcd0e3;font-weight:750}.music-library-viewbar select{min-height:36px;padding:5px 8px;border:1px solid #416481;border-radius:8px;background:#071421;color:#fff}.music-library-viewbar button{min-height:36px}
 .music-library-toolbar{display:grid;grid-template-columns:minmax(180px,2fr) minmax(120px,1fr) minmax(150px,1fr) 42px;gap:7px;margin:12px 0}
 .music-library-toolbar input,.music-library-toolbar select,.music-upload-form input,.music-upload-form textarea,.music-playlist-editor input,.music-playlist-editor select{box-sizing:border-box;width:100%;min-height:40px;padding:8px 10px;border:1px solid #416481;border-radius:9px;background:#071421;color:#fff;font:inherit}
 .music-track-table-head{display:grid;grid-template-columns:32px minmax(0,1fr) 54px 46px 80px;align-items:center;gap:6px;padding:4px 7px;color:#8facbf;font-size:.65rem;font-weight:850;border-bottom:1px solid #294b69}.music-track-table-head span:nth-child(3),.music-track-table-head span:nth-child(4){text-align:center}
 .music-track-list{display:grid;gap:2px;max-height:360px;overflow:auto;padding-right:2px}
 .music-track-row{display:grid;grid-template-columns:32px minmax(0,1fr) 54px 46px 80px;align-items:center;gap:6px;padding:5px 7px;border-bottom:1px solid #294b69;background:#0a1a2a}.music-track-row:first-child{border-radius:10px 10px 0 0}.music-track-row:last-child{border-radius:0 0 10px 10px}.music-track-row.preview-active{border-color:#2f8fdb;background:#0d2540}.music-track-row.expanded{border:1px solid #2f8fdb;border-radius:10px;margin:3px 0}
+.music-track-row.license-missing{border-left:3px solid #d89b36;background:#211d16}.music-track-row.license-missing .music-track-select{opacity:.55}
 .music-track-main{display:grid;gap:2px;min-width:0}.music-track-row strong,.music-track-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.music-track-row span{color:#afc5d9;font-size:.72rem}.music-track-row b{color:#7ee6ff}
 .music-track-expand,.music-preview{width:30px;height:32px;min-height:32px;padding:0;border-radius:7px}.music-preview{width:42px}.music-track-bpm{text-align:center;font-variant-numeric:tabular-nums}
 .music-track-select{display:flex;align-items:center;justify-content:center;gap:4px;min-height:32px;padding:3px 5px;border:1px solid #416481;border-radius:7px;background:#102a43;color:#dbeaff;cursor:pointer}.music-track-select:has(input:checked){border-color:#46a3ec;background:#0b4f87}.music-track-select input{width:17px;height:17px;min-height:17px;margin:0;accent-color:#0b75e8}.music-track-select span{font-size:.62rem;font-weight:800}
@@ -971,6 +989,7 @@ body:not(.editing-mode):not(.tactic-mode) .situation-row .inline-info:active{
 .music-upload-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.music-upload-form label,.music-playlist-editor label{display:grid;gap:4px;color:#bcd0e3;font-size:.72rem;font-weight:750}.music-upload-form .wide{grid-column:1/-1}.music-upload-form button{justify-self:start}
 .music-upload-hint{margin:0;color:#9fb9d0;font-size:.68rem}.music-upload-queue{display:grid;gap:7px}.music-upload-item{display:grid;grid-template-columns:1.3fr 1fr 1fr .8fr .65fr 34px;align-items:end;gap:6px;padding:7px;border:1px solid #294b69;border-radius:9px;background:#071421}.music-upload-item>div{display:grid;min-width:0;align-self:center}.music-upload-item>div strong,.music-upload-item>div small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.music-upload-item>div small{color:#8facbf}.music-upload-item label{font-size:.62rem}.music-upload-item button{width:34px;min-height:36px;padding:0}
 .music-playlist-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.music-playlist-editor{display:grid;grid-template-columns:1.2fr 1.5fr 1fr;gap:8px;margin-top:9px}.music-playlist-tracks{display:grid;gap:5px;grid-column:1/-1;max-height:250px;overflow:auto;padding:7px;border:1px solid #294b69;border-radius:9px;background:#071421}.music-playlist-item{display:grid;grid-template-columns:36px 24px minmax(0,1fr) auto;align-items:center;gap:6px;min-height:44px;padding:5px 6px;border:1px solid #294b69;border-radius:8px;background:#0d2136}.music-playlist-item.dragging{opacity:.62;border-color:#65baf7}.music-playlist-item>span{display:grid;min-width:0}.music-playlist-item strong,.music-playlist-item small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.music-playlist-item small{color:#9fb9d0}.music-playlist-item>div{display:flex;gap:4px}.music-playlist-item>div button{width:32px;min-height:32px;padding:0}.music-drag-handle{width:34px;min-height:34px;padding:0;touch-action:none;cursor:grab}.music-drag-handle:active{cursor:grabbing}.music-playlist-tracks b{color:#7ee6ff;text-align:center}.music-playlist-actions{display:flex;gap:7px;grid-column:1/-1}.music-library-status{min-height:18px;margin:10px 2px 0;color:#98d8ff;font-size:.72rem}.music-library-status.error{color:#ff9b9b}
+.music-playlist-bpm-range{grid-column:1/-1;margin:0;padding:7px 9px;border-radius:8px;background:#102a43;color:#7ee6ff;font-weight:850;font-size:.74rem}
 .training-check input{flex:0 0 auto;width:19px;height:19px;padding:0;accent-color:#0b75e8}.training-check span{line-height:1.15}
 .training-phases-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding:0 2px}
 .training-phases-head>div{display:grid;gap:1px}.training-phases-head strong{font-size:.82rem}.training-phases-head span{font-size:.63rem;color:#9eb4c8}

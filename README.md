@@ -2,7 +2,7 @@
 
 Mobile Web-App für Volleyball-Aufstellungen, Spielsituationen, Animationen, Fragen und die rollenbasierte Vereinsverwaltung des TTC Geltendorf.
 
-**Aktueller Frontend-Stand:** 3.12.0
+**Aktueller Frontend-Stand:** 3.13.0
 **Veröffentlichung:** GitHub Pages
 **Backend:** Supabase (PostgreSQL, Auth und Edge Function)
 
@@ -170,6 +170,8 @@ Version 3.10.0 ergänzt beim Musik-Upload eine automatische BPM-Schätzung, fall
 Version 3.11.0 macht den Tempo-Spielraum pro Trainingsvorlage wählbar: `Eng ±1 %`, `Mittel ±3 %` (Standard) oder `Weit ±5 %`. Außerdem trennt die Bearbeitungsoberfläche die vier Arbeitsbereiche vollständig. Beim Einstieg werden nur die Kacheln angezeigt; Aufstellung & Laufwege, Taktiktafel, Trainingsplayer sowie Musik & Playlists öffnen jeweils eine eigene fokussierte Ansicht mit Rückkehr zu den Bereichskacheln.
 
 Version 3.12.0 verdichtet die Musikbibliothek zu einer filterbaren Tabelle mit einblendbaren Details und drei Schriftgrößen. Eigene Titel lassen sich nachträglich bearbeiten; Genre und Lizenz werden aus festen Auswahllisten gewählt. Der Mehrfach-Upload liest vorhandene ID3-Daten beziehungsweise Dateinamen ein, schlägt Metadaten vor und erkennt fehlende BPM automatisch. Während eines laufenden Trainings zeigt ein großer Fokusmodus nur Zeit, Abschnitt, Zyklus, aktuellen Titel und die fünf Player-Aktionen. Optional hält die Screen Wake Lock API das Display wach; Media Session stellt unterstützten Sperrbildschirm- und Fernbedienungen Play/Pause sowie Abschnitt vor/zurück bereit.
+
+Version 3.13.0 ergänzt den Trainingsplayer um den Sprung zum nächsten Intervall per Einfachdruck und zur nächsten Phase per Doppeldruck – einschließlich Media Session und Apple-Watch-Steuerung. Akustische Hinweise lassen sich klar zwischen keiner Ausgabe, differenzierten Tönen und Sprachausgabe wählen. Viewer können ihre Position markieren; die Hervorhebung folgt dem Spieler und zeigt beim Libero-Wechsel einen deutlichen Hinweis. Die Taktiktafel erhält eine Kontextauswahl und führt zurück zur Bearbeitung der gewählten Situation. Die Musikverwaltung ist ein fester Arbeitsbereich, sperrt Titel mit unbekannter Lizenz für Training und Playlists, zeigt Playlist-BPM-Bereiche, filtert beim Abspielen nach Zieltempo, wiederholt zu kurze Playlists und speichert gemischte lokale/hochgeladene Titel zuverlässig.
 
 `version.json` wird beim Start direkt aus dem Netzwerk abgefragt und nicht vom Service Worker gespeichert. Erkennt eine bereits geladene App eine neuere Version, lädt sie die Seite mit der neuen Versionsnummer erneut. Der Service Worker verwendet pro Release einen eigenen App-Cache, lädt den vollständigen Offline-App-Shell während der Installation und entfernt beim Aktivieren ausschließlich ältere Caches mit dem Präfix `volleyball-trainer-shell-`.
 

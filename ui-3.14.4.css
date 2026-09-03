@@ -1,9 +1,9 @@
-/* UI refinements 3.14.9.2 */
-html,body{height:100%;overflow:hidden!important;background:#e8b719!important}
+/* UI refinements 3.14.9.3 */
+html,body{height:100%;overflow:hidden!important}
 #appMain.app:not(.auth-hidden){height:100dvh;max-height:100dvh;display:flex;flex-direction:column;overflow:hidden;padding-top:max(env(safe-area-inset-top),29px)!important;padding-bottom:0!important;background:transparent!important}
 #appMain>.topbar{position:relative!important;top:auto!important;z-index:120;flex:0 0 auto;background:#07111d;padding-top:8px!important;border-radius:14px!important;overflow:hidden}
-#appMain>.layout{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding-bottom:0!important;background:transparent!important;border-radius:0 0 14px 14px}
-#appMain>.layout>.court-section{min-height:100%;padding-bottom:0!important;background:transparent!important;border-radius:0 0 14px 14px;overflow:clip}
+#appMain>.layout{flex:1 1 auto;min-height:0;overflow-y:auto!important;overflow-x:hidden!important;touch-action:pan-y;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding-bottom:0!important;background:transparent!important;border-radius:0 0 14px 14px}
+#appMain>.layout>.court-section{min-height:100%;padding-bottom:0!important;background:transparent!important;border-radius:0 0 14px 14px;overflow:visible!important}
 body.editing-mode,body.editing-mode.tactic-mode{background:linear-gradient(180deg,#f5d04c,#e8b719 52%,#d9a80c)!important}
 body.editing-mode #appMain,body.editing-mode #appMain>.layout,body.editing-mode .court-section{background:transparent!important}
 .editor-workspace-head{position:sticky;top:0;z-index:100;min-height:44px!important;padding:4px 8px!important;gap:8px!important;border-radius:10px!important;margin-bottom:6px!important}

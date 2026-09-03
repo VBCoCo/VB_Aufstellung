@@ -5,7 +5,7 @@ window.APP_CONFIG = {
 
 // Feature-Releases bleiben vom Legacy-Core-Updater entkoppelt.
 (() => {
-  const version = "3.14.4";
+  const version = "3.14.5";
   const asset = (tag, attrs) => {
     if (document.querySelector(`${tag}[data-vb-release="${attrs['data-vb-release']}"]`)) return;
     const el=document.createElement(tag); Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v)); (tag==='link'?document.head:document.body).appendChild(el);
@@ -15,9 +15,8 @@ window.APP_CONFIG = {
     let line=document.getElementById('brandVersion'); if(!line){line=document.createElement('div');line.id='brandVersion';club.insertAdjacentElement('afterend',line)}
     line.textContent=version; line.setAttribute('aria-label',`Version ${version}`); line.style.cssText='font-size:.68rem;line-height:1.05;opacity:.68;margin-top:-1px';
   };
-  const setStickyOffset=()=>{const h=document.querySelector('.topbar')?.getBoundingClientRect().height||0;document.documentElement.style.setProperty('--topbar-sticky-offset',`${Math.ceil(h)}px`)};
   const load = () => {
-    showLoadedVersion();setStickyOffset();window.addEventListener('resize',setStickyOffset,{passive:true});
+    showLoadedVersion();
     asset('link',{rel:'stylesheet',href:`ui-3.14.4.css?v=${version}`,'data-vb-release':'ui-css'});
     asset('link',{rel:'stylesheet',href:`exercise-library.css?v=${version}`,'data-vb-release':'exercise-css'});
     asset('script',{src:`feature-admin.js?v=${version}`,'data-vb-release':'feature-admin'});

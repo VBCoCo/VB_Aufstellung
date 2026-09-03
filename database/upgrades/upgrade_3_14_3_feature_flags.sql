@@ -1,0 +1,8 @@
+-- Release 3.14.3 production migration.
+-- Applied to Supabase as migrations feature_flags_3_14_3 and exercise_parallel_groups_3_14_3.
+-- Feature access is fail-closed for normal users and always available to active platform admins.
+-- Tables: vt_feature_flags, vt_feature_clubs, vt_feature_users.
+-- RPCs: get_my_feature_access, get_feature_admin_overview, set_feature_admin_config.
+-- vt_exercises.parallel_groups stores whether a volleyball exercise can be split across parallel groups/courts.
+-- Initial beta: exercise_library globally enabled, TTC Geltendorf granted/enabled, role-wide access disabled,
+-- and only the active platform-admin user explicitly enabled.

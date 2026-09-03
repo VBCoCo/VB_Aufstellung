@@ -1,0 +1,74 @@
+/* VB Trainer 3.14.12 – mobile shell and library consistency */
+
+/* Editor yellow must stay readable; never use muted grey directly on yellow. */
+body.editing-mode,
+body.editor-workspace-hub,
+body.exercise-library-open,
+body.editor-workspace-playlists,
+body.editor-workspace-tactic { color:#061727; }
+body.editing-mode .exercise-status,
+body.exercise-library-open .exercise-status,
+body.editor-workspace-playlists .music-library-viewbar > span,
+body.editor-workspace-playlists .music-library-table-head { color:#061727 !important; }
+
+/* Do not recolour the Viewer. Safe area inherits the current page background. */
+html,body { min-height:100%; }
+body::after { content:none !important; }
+
+/* Keep the app identity/actions visible in every workspace, including tactics. */
+.topbar { position:sticky !important; top:calc(env(safe-area-inset-top,0px) + 1px) !important; z-index:500 !important; }
+
+/* Common compact area header. */
+.editor-workspace-head,
+.exercise-head { min-height:0 !important; padding:.38rem .55rem !important; gap:.45rem !important; }
+.exercise-head { display:flex !important; align-items:center !important; }
+.exercise-head > div { min-width:0; flex:1; }
+.exercise-head .eyebrow { display:none !important; }
+.exercise-head h2 { margin:0 !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.exercise-head .exercise-density { margin-left:auto; flex:0 0 auto; }
+.exercise-density { display:flex; gap:.18rem; }
+.exercise-density button { min-width:2.15rem !important; width:2.15rem !important; height:2.15rem !important; padding:0 !important; font-size:.9rem !important; }
+
+/* Exercise libraries: exactly one compact row when filters are closed. */
+.exercise-searchbar { display:grid !important; grid-template-columns:minmax(0,1fr) auto auto !important; gap:.35rem !important; align-items:center !important; padding:.38rem .45rem !important; }
+.exercise-searchbar > input { min-width:0 !important; height:2.55rem !important; }
+.exercise-searchbar > button { height:2.55rem !important; padding:.35rem .65rem !important; white-space:nowrap; }
+.exercise-toolbar { margin-top:.3rem !important; padding:.4rem !important; gap:.32rem !important; }
+.exercise-toolbar select { min-height:2.45rem !important; padding:.35rem .55rem !important; }
+.exercise-check { min-height:2.15rem !important; }
+
+/* Music: S/M/L belongs to the area header, not its own row. */
+body.editor-workspace-playlists .editor-workspace-head { display:flex !important; align-items:center !important; }
+body.editor-workspace-playlists .editor-workspace-head .music-density-buttons { margin-left:auto; display:flex; gap:.18rem; }
+body.editor-workspace-playlists .editor-workspace-head .music-density-buttons button { min-width:2.15rem; width:2.15rem; height:2.15rem; padding:0; font-size:.9rem; }
+body.editor-workspace-playlists #musicLibraryDialog .music-library-viewbar { min-height:0 !important; margin:.35rem 0 !important; padding:0 !important; display:flex !important; }
+body.editor-workspace-playlists #musicLibraryDialog .music-library-viewbar > span,
+body.editor-workspace-playlists #musicLibraryDialog .music-density-buttons { display:none !important; }
+body.editor-workspace-playlists #musicLibraryToolbar { margin-top:.25rem !important; }
+body.editor-workspace-playlists #musicLibraryToolbar.hidden { display:none !important; }
+
+/* Viewer legend dimensions are the reference for editor/tactic legends. */
+body.editing-mode .legend,
+body.editor-workspace-tactic .legend { padding:.32rem .45rem !important; gap:.42rem !important; min-height:0 !important; font-size:.82rem !important; line-height:1.05 !important; }
+body.editing-mode .legend > *,
+body.editor-workspace-tactic .legend > * { margin-top:0 !important; margin-bottom:0 !important; }
+
+/* Court containers end with their real content instead of reserving a viewport tail. */
+body.editing-mode .court-wrap,
+body.editor-workspace-tactic .court-wrap,
+body.editing-mode .court-container,
+body.editor-workspace-tactic .court-container { min-height:0 !important; height:auto !important; padding-bottom:.45rem !important; margin-bottom:0 !important; }
+
+@media (max-width:760px){
+  .exercise-head { padding:.32rem .42rem !important; }
+  .exercise-head h2 { font-size:1.05rem !important; }
+  .exercise-density button,
+  body.editor-workspace-playlists .editor-workspace-head .music-density-buttons button { min-width:1.95rem !important; width:1.95rem !important; height:1.95rem !important; font-size:.82rem !important; }
+  .exercise-searchbar { gap:.25rem !important; padding:.3rem .35rem !important; }
+  .exercise-searchbar > input,.exercise-searchbar > button { height:2.35rem !important; }
+  .exercise-searchbar > button { padding:.25rem .48rem !important; font-size:.88rem !important; }
+  .exercise-toolbar { padding:.32rem !important; }
+  .exercise-toolbar select { min-height:2.25rem !important; }
+  body.editing-mode .legend,
+  body.editor-workspace-tactic .legend { padding:.26rem .36rem !important; gap:.32rem !important; font-size:.72rem !important; flex-wrap:nowrap !important; }
+}

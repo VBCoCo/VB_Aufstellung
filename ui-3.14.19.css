@@ -1,0 +1,43 @@
+/* VB Trainer 3.14.19 – safe-area and layout cleanup. */
+
+/* iOS owns the safe-area. We add no artificial positive or negative offset. */
+#appMain.app:not(.auth-hidden){padding-top:env(safe-area-inset-top)!important}
+#appMain>.topbar{margin-top:0!important;padding-top:2px!important;padding-bottom:4px!important}
+
+/* Viewer: blue is the actual screen/content background; the court card remains light. */
+body:not(.editing-mode){background:#2f6eb3!important}
+body:not(.editing-mode) #appMain{background:#2f6eb3!important}
+body:not(.editing-mode) #appMain>.layout{background:linear-gradient(180deg,#4f8dce 0%,#2f6eb3 55%,#1f5189 100%)!important}
+body:not(.editing-mode) #appMain>.layout>.court-section{background:transparent!important}
+body:not(.editing-mode) .court-wrap{background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important}
+
+/* Music search/filter must participate in normal document flow. Sticky positioning caused
+   the apparent yellow phantom row after filter toggles. */
+body.editor-workspace-playlists .music-searchbar{position:static!important;top:auto!important;bottom:auto!important;margin:0 0 .2rem!important;padding:.2rem!important;min-height:0!important}
+body.editor-workspace-playlists .music-searchbar #musicLibrarySearch,
+body.editor-workspace-playlists .music-searchbar #musicFiltersToggle,
+body.editor-workspace-playlists .music-searchbar #musicLibraryRefresh{height:2.05rem!important;min-height:2.05rem!important;margin:0!important}
+body.editor-workspace-playlists .music-searchbar #musicLibrarySearch{padding:.2rem .55rem!important}
+body.editor-workspace-playlists .music-searchbar #musicFiltersToggle,
+body.editor-workspace-playlists .music-searchbar #musicLibraryRefresh{padding:0 .48rem!important}
+body.editor-workspace-playlists #musicLibraryToolbar.hidden{display:none!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+body.editor-workspace-playlists #musicLibraryToolbar:not(.hidden){position:static!important;top:auto!important;height:auto!important;min-height:0!important;margin:0 0 .2rem!important;padding:.18rem!important;gap:.18rem!important}
+body.editor-workspace-playlists #musicLibraryToolbar select{height:1.95rem!important;min-height:1.95rem!important;padding:.15rem .5rem!important;font-size:.8rem!important}
+
+/* Tactic: restore comfortable command sizes. Situation editing now lives in workspace header. */
+body.editor-workspace-tactic #tacticPanel{display:flex!important;flex-direction:column!important;gap:5px!important;padding:5px!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-history{display:flex!important;width:100%!important;gap:5px!important;align-items:center!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-history button{height:38px!important;min-height:38px!important;padding:0 9px!important;font-size:.76rem!important;line-height:1!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-history button:nth-last-child(-n+2){width:38px!important;min-width:38px!important;padding:0!important;font-size:1rem!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-mode-grid{width:100%!important;margin:0!important}
+
+#editorWorkspaceHead .tactic-header-action{margin-left:auto!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;height:2rem!important;min-height:2rem!important;padding:0 .55rem!important;font-size:.68rem!important;line-height:1!important;white-space:nowrap!important}
+body.editor-workspace-tactic #editorWorkspaceTitle{flex:1 1 auto!important;min-width:0!important}
+
+@media(max-width:430px){
+  #appMain>.topbar{margin-top:0!important;padding-top:1px!important;padding-bottom:3px!important}
+  body.editor-workspace-playlists .music-searchbar #musicLibrarySearch,
+  body.editor-workspace-playlists .music-searchbar #musicFiltersToggle,
+  body.editor-workspace-playlists .music-searchbar #musicLibraryRefresh{height:1.9rem!important;min-height:1.9rem!important}
+  #editorWorkspaceHead .tactic-header-action{max-width:8.1rem!important;padding:0 .4rem!important;font-size:.61rem!important;overflow:hidden!important;text-overflow:ellipsis!important}
+}

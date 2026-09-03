@@ -1,0 +1,47 @@
+/* VB Trainer 3.14.22 – shared shell geometry. */
+:root{
+  --app-shell-gutter:4px;
+  --club-viewer-background:#153b72;
+}
+
+/* One global width for the app header in every mode. Tactic-table geometry is the reference. */
+#appMain>.topbar{
+  width:calc(100% - (2 * var(--app-shell-gutter)))!important;
+  max-width:none!important;
+  margin-left:var(--app-shell-gutter)!important;
+  margin-right:var(--app-shell-gutter)!important;
+  box-sizing:border-box!important;
+}
+
+/* Workspace headers use the same left/right edge as the global app header. */
+#editorWorkspaceHead,
+.exercise-head{
+  width:calc(100% - (2 * var(--app-shell-gutter)))!important;
+  max-width:none!important;
+  margin-left:var(--app-shell-gutter)!important;
+  margin-right:var(--app-shell-gutter)!important;
+  box-sizing:border-box!important;
+}
+
+/* Viewer safe-area and all outer viewport surfaces use the same club background.
+   The light court card is intentionally excluded. */
+html:has(body:not(.editing-mode)),
+body:not(.editing-mode),
+body:not(.editing-mode)::before,
+body:not(.editing-mode) #appMain,
+body:not(.editing-mode) #appMain::before,
+body:not(.editing-mode) #appMain>.layout{
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body:not(.editing-mode) #appMain{
+  min-width:100vw!important;
+  width:100vw!important;
+}
+body:not(.editing-mode) .court-wrap{
+  background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important;
+}
+
+@media(max-width:430px){
+  :root{--app-shell-gutter:3px}
+}

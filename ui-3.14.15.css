@@ -1,0 +1,56 @@
+/* VB Trainer 3.14.15 – stability/layout corrections. Bottom safe area intentionally untouched. */
+
+/* Core 'Bearbeiten' workspace bar is never useful on hub or addon exercise libraries. */
+#editorWorkspaceHead.addon-suppressed{display:none!important}
+body.exercise-library-open #editorWorkspaceHead{display:none!important}
+
+/* The editor hub is a single compact column on phones and cannot overlay an open workspace. */
+@media(max-width:760px){
+  #editorHub.editor-hub{grid-template-columns:minmax(0,1fr)!important;gap:.48rem!important}
+  #editorHub .editor-tile{min-height:4rem!important;display:grid!important;grid-template-columns:2.4rem minmax(0,1fr)!important;grid-template-rows:auto auto!important;column-gap:.55rem!important;row-gap:.08rem!important;text-align:left!important;align-items:center!important;padding:.55rem .7rem!important}
+  #editorHub .editor-tile>span{grid-row:1/3!important;font-size:1.45rem!important}
+  #editorHub .editor-tile>strong{grid-column:2!important;grid-row:1!important}
+  #editorHub .editor-tile>small{grid-column:2!important;grid-row:2!important}
+}
+body.exercise-library-open #editorHub{display:none!important}
+body.editor-workspace-playlists #editorHub,
+body.editor-workspace-tactic #editorHub,
+body.editor-workspace-training #editorHub,
+body.editor-workspace-lineup #editorHub{display:none!important}
+
+/* Viewer: restore the blue application background on the actual page shell, but keep court/panels untouched. */
+body:not(.editing-mode){background:linear-gradient(180deg,#dceaff 0%,#b9d4f5 55%,#91b9e8 100%)!important}
+body:not(.editing-mode) #appMain,
+body:not(.editing-mode) #appMain>.layout,
+body:not(.editing-mode) #appMain>.layout>.court-section{background:transparent!important}
+
+/* Music & Playlists follows the same compact control grammar as exercise libraries. */
+body.editor-workspace-playlists .music-library-head{display:none!important}
+body.editor-workspace-playlists .music-library-viewbar{display:none!important}
+body.editor-workspace-playlists .music-searchbar{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto!important;gap:.25rem!important;align-items:center!important;margin:0 0 .32rem!important;padding:.3rem .35rem!important;background:var(--club-panel,#10233a)!important;border-radius:14px!important}
+body.editor-workspace-playlists .music-searchbar #musicLibrarySearch{min-width:0!important;height:2.3rem!important;margin:0!important}
+body.editor-workspace-playlists .music-searchbar #musicFiltersToggle,
+body.editor-workspace-playlists .music-searchbar #musicLibraryRefresh{height:2.3rem!important;min-height:2.3rem!important;margin:0!important;padding:.2rem .48rem!important;white-space:nowrap!important}
+body.editor-workspace-playlists #musicLibraryToolbar{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:.28rem!important;padding:.34rem!important;margin:0 0 .32rem!important}
+body.editor-workspace-playlists #musicLibraryToolbar #musicLibrarySearch,
+body.editor-workspace-playlists #musicLibraryToolbar #musicLibraryRefresh{display:none!important}
+body.editor-workspace-playlists #musicLibraryToolbar.hidden{display:none!important}
+body.editor-workspace-playlists #musicFontSize{display:none!important}
+
+/* Playlist first, then upload; both compact and closed until requested. */
+body.editor-workspace-playlists details.music-library-section,
+body.editor-workspace-playlists details.music-playlist-details{margin-top:.42rem!important}
+body.editor-workspace-playlists details.music-library-section>summary,
+body.editor-workspace-playlists details.music-playlist-details>summary{min-height:3rem!important;padding:.55rem .7rem!important;display:flex!important;align-items:center!important;font-weight:800!important;color:var(--club-panel-text,#f8fafc)!important;background:var(--club-panel,#10233a)!important;border-radius:14px!important}
+
+/* Real workspace header: compact back arrow/title/density. */
+body.editing-mode:not(.exercise-library-open) #editorWorkspaceHead:not(.addon-suppressed){display:flex!important;align-items:center!important;min-width:0!important}
+#editorWorkspaceHead #editorWorkspaceBack{width:2.25rem!important;min-width:2.25rem!important;height:2.2rem!important;padding:0!important}
+#editorWorkspaceHead #editorWorkspaceTitle{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+
+@media(max-width:430px){
+  body.editor-workspace-playlists .music-searchbar{gap:.2rem!important;padding:.28rem .32rem!important}
+  body.editor-workspace-playlists .music-searchbar #musicLibrarySearch{font-size:.8rem!important}
+  body.editor-workspace-playlists .music-searchbar #musicFiltersToggle,
+  body.editor-workspace-playlists .music-searchbar #musicLibraryRefresh{font-size:.76rem!important;padding:.15rem .36rem!important}
+}

@@ -1,0 +1,51 @@
+/* VB Trainer 3.14.17 – targeted mobile layout polish. */
+
+/* Keep safe-area coverage, but remove the app's extra vertical padding around the header. */
+#appMain.app:not(.auth-hidden){padding-top:env(safe-area-inset-top)!important}
+#appMain>.topbar{margin-top:0!important;padding-top:3px!important;padding-bottom:5px!important}
+
+/* Viewer: the page outside the court is blue; the court surround itself stays light. */
+body:not(.editing-mode){background:radial-gradient(circle at 70% 0%,#153b72 0,#07111d 48%,#050b12 100%)!important}
+body:not(.editing-mode) #appMain,
+body:not(.editing-mode) #appMain>.layout,
+body:not(.editing-mode) #appMain>.layout>.court-section{background:transparent!important}
+body:not(.editing-mode) .court-wrap{background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important}
+
+/* All library density buttons use the compact Music & Playlists geometry.
+   Density changes content only, never the header or density controls. */
+.exercise-head{padding:3px 6px!important;min-height:0!important;margin-bottom:5px!important}
+.exercise-head>button:first-child{width:2.15rem!important;min-width:2.15rem!important;height:2.05rem!important;min-height:2.05rem!important}
+.exercise-head h2{font-size:.9rem!important;line-height:1.05!important}
+.exercise-head .exercise-density{gap:.16rem!important}
+.exercise-head .exercise-density button,
+.exercise-library-workspace[data-density="small"] .exercise-head .exercise-density button,
+.exercise-library-workspace[data-density="large"] .exercise-head .exercise-density button{width:1.78rem!important;min-width:1.78rem!important;height:1.78rem!important;min-height:1.78rem!important;padding:0!important;font-size:.72rem!important;line-height:1!important}
+.exercise-library-workspace[data-density="small"] .exercise-head,
+.exercise-library-workspace[data-density="large"] .exercise-head{padding:3px 6px!important}
+.exercise-library-workspace[data-density="small"] .exercise-head h2,
+.exercise-library-workspace[data-density="large"] .exercise-head h2{font-size:.9rem!important}
+
+/* Core workspace header uses the same reduced height. */
+body.editing-mode:not(.exercise-library-open) #editorWorkspaceHead:not(.addon-suppressed){padding:3px 6px!important;gap:.35rem!important;margin-bottom:5px!important;min-height:0!important}
+#editorWorkspaceHead #editorWorkspaceBack{width:2.15rem!important;min-width:2.15rem!important;height:2.05rem!important;min-height:2.05rem!important}
+#editorWorkspaceHead #editorWorkspaceTitle{font-size:.9rem!important;line-height:1.05!important}
+body.editor-workspace-playlists .editor-workspace-head>.music-density-buttons button{width:1.78rem!important;min-width:1.78rem!important;height:1.78rem!important;min-height:1.78rem!important;font-size:.72rem!important}
+
+/* Music filter: hidden means zero footprint. No stale height/margin after toggling. */
+body.editor-workspace-playlists #musicLibraryToolbar.hidden{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+body.editor-workspace-playlists #musicLibraryToolbar:not(.hidden){height:auto!important;min-height:0!important;margin:0 0 .32rem!important;padding:.34rem!important}
+body.editor-workspace-playlists #musicLibraryDialog,
+body.editor-workspace-playlists .music-library-dialog{margin-top:0!important;padding-top:0!important}
+body.editor-workspace-playlists .music-searchbar{margin-top:0!important;margin-bottom:.32rem!important}
+
+/* Tactic action row: move the situation-edit action into the compact command row visually. */
+body.editor-workspace-tactic #tacticPanel{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:5px!important;padding:5px!important;align-items:center!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-history{grid-column:1!important;grid-row:1!important;min-width:0!important}
+body.editor-workspace-tactic #tacticPanel>#tacticExit{grid-column:2!important;grid-row:1!important;width:auto!important;min-width:0!important;min-height:34px!important;height:34px!important;padding:0 9px!important;font-size:.72rem!important;white-space:nowrap!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-mode-grid{grid-column:1/3!important;grid-row:2!important}
+
+@media(max-width:430px){
+  #appMain>.topbar{padding-top:2px!important;padding-bottom:4px!important}
+  .exercise-head,#editorWorkspaceHead{padding:2px 5px!important}
+  body.editor-workspace-tactic #tacticPanel>#tacticExit{padding:0 7px!important;font-size:.68rem!important}
+}

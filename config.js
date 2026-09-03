@@ -5,7 +5,7 @@ window.APP_CONFIG = {
 
 // Feature-Releases bleiben vom Legacy-Core-Updater entkoppelt.
 (() => {
-  const version = "3.14.8";
+  const version = "3.14.9";
   const asset = (tag, attrs) => {
     if (document.querySelector(`${tag}[data-vb-release="${attrs['data-vb-release']}"]`)) return;
     const el=document.createElement(tag); Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v)); (tag==='link'?document.head:document.body).appendChild(el);
@@ -24,22 +24,12 @@ window.APP_CONFIG = {
     const editPanel=document.getElementById('editPanel');
     const hub=document.getElementById('editorHub');
     const editing=!!editPanel && !editPanel.classList.contains('hidden');
-    if(!editing){
-      closeExerciseUi();
-      document.body.classList.remove('editor-workspace-hub');
-      hub?.classList.add('hidden');
-      return;
-    }
-    if(!document.body.classList.contains('exercise-library-open')){
-      document.body.classList.add('editor-workspace-hub');
-      hub?.classList.remove('hidden');
-    }
+    if(!editing){closeExerciseUi();document.body.classList.remove('editor-workspace-hub');hub?.classList.add('hidden');return;}
+    if(!document.body.classList.contains('exercise-library-open')){document.body.classList.add('editor-workspace-hub');hub?.classList.remove('hidden');}
   };
   const installEditorModeReconcile=()=>{
     const editButton=document.getElementById('editButton'); if(!editButton||editButton.dataset.vbModeReconcile)return;
     editButton.dataset.vbModeReconcile='1';
-    // app.js verarbeitet den Klick zuerst. Im nächsten Task gleichen wir die
-    // dynamisch nachgeladenen Übungs-Workspaces an den echten Editorzustand an.
     editButton.addEventListener('click',()=>setTimeout(reconcileEditorUi,0));
   };
   const installDensitySync=()=>{

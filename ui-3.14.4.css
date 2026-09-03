@@ -1,0 +1,14 @@
+/* UI refinements 3.14.4 */
+.topbar{position:sticky!important;top:0;z-index:120;background:inherit}
+.editor-workspace-head{position:sticky;top:var(--topbar-sticky-offset,0);z-index:100;min-height:48px!important;padding:6px 10px!important;gap:10px!important;border-radius:12px!important;margin-bottom:8px!important}
+.editor-workspace-head button{min-height:36px!important;padding:0 12px!important;font-size:.9rem!important}.editor-workspace-head strong{font-size:.95rem!important}
+body.editor-workspace-playlists .music-library-head{display:none!important}
+body.editor-workspace-playlists .music-library-dialog{padding-top:4px!important}
+body.editor-workspace-playlists .music-library-viewbar{margin-top:0!important;padding-top:2px!important}
+body.editor-workspace-tactic #tacticTitle{display:none!important}
+body.editor-workspace-tactic .court-toolbar{margin-bottom:8px!important}
+.music-font-small .music-library-viewbar{gap:8px!important;font-size:.78rem!important}.music-font-small .music-library-viewbar button,.music-font-small .music-library-viewbar select{min-height:34px!important;height:34px!important;padding:4px 9px!important;font-size:.78rem!important}
+.music-font-small .music-library-toolbar{gap:5px!important;padding:5px!important}.music-font-small .music-library-toolbar input,.music-font-small .music-library-toolbar select,.music-font-small .music-library-toolbar button{min-height:34px!important;height:34px!important;padding:4px 8px!important;font-size:.78rem!important}.music-font-small .music-library-toolbar button{min-width:44px!important}
+.music-font-small .music-track-table-head{font-size:.68rem!important}.music-font-small .music-library-section{margin-top:8px!important}
+.feature-admin-panel{margin-top:14px}.feature-admin-panel .feature-club{border:1px solid #355b7b;border-radius:12px;padding:10px;margin:8px 0;background:#0d2033}.feature-admin-panel .feature-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.feature-admin-panel label{display:flex;gap:6px;align-items:center}.feature-admin-panel .feature-users{display:grid;gap:5px;margin:8px 0}.feature-admin-panel .feature-users label{padding:5px 8px;border-radius:8px;background:#122c45}.feature-admin-panel .feature-status{font-size:.8rem;color:#b8c9dc;margin-left:8px}
+@media(max-width:600px){.topbar{padding-top:6px!important;padding-bottom:6px!important}.editor-workspace-head{min-height:44px!important;padding:4px 8px!important;margin-bottom:6px!important}.editor-workspace-head button{min-height:34px!important}.editor-workspace-head strong{font-size:.9rem!important}.music-font-small .music-library-toolbar{grid-template-columns:1fr!important}.music-font-small .music-library-toolbar input,.music-font-small .music-library-toolbar select,.music-font-small .music-library-toolbar button{min-height:32px!important;height:32px!important}.feature-admin-panel .feature-row{display:grid;grid-template-columns:1fr 1fr}}

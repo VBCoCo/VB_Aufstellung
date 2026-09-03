@@ -1,0 +1,30 @@
+/* VB Trainer 3.14.16 – targeted workspace/shell corrections */
+
+/* Keep iPhone safe-area coverage, but remove the additional fixed 31/33px top gap. */
+#appMain.app:not(.auth-hidden){padding-top:env(safe-area-inset-top)!important}
+@media(max-width:600px){#appMain.app:not(.auth-hidden){padding-top:env(safe-area-inset-top)!important}}
+@media(display-mode:standalone){#appMain.app:not(.auth-hidden){padding-top:env(safe-area-inset-top)!important}}
+
+/* Viewer uses the intended blue application surface. */
+body:not(.editing-mode),
+body:not(.editing-mode) #appMain,
+body:not(.editing-mode) #appMain>.layout,
+body:not(.editing-mode) #appMain>.layout>.court-section{
+  background:linear-gradient(180deg,#dceaff 0%,#b9d4f5 55%,#91b9e8 100%)!important;
+}
+
+/* Exercise library is a real workspace: never render it below/alongside the hub. */
+body.exercise-library-open #editorHub{display:none!important}
+body.exercise-library-open #exerciseLibraryWorkspace{display:block!important}
+body.exercise-library-open #editorWorkspaceHead{display:none!important}
+body.exercise-library-open .court-section{display:block!important}
+body.exercise-library-open .court-section>*:not(#exerciseLibraryWorkspace){display:none!important}
+
+/* Hub state is the inverse: exercise workspace is fully absent. */
+body.editor-workspace-hub:not(.exercise-library-open) #exerciseLibraryWorkspace{display:none!important}
+body.editor-workspace-hub:not(.exercise-library-open) #editorHub{display:grid!important}
+
+/* Music: no artificial spacer between workspace heading and compact search/filter row. */
+body.editor-workspace-playlists #musicLibraryDialog{margin-top:0!important;padding-top:0!important}
+body.editor-workspace-playlists .music-searchbar{margin-top:0!important}
+body.editor-workspace-playlists .music-library-dialog{padding-top:0!important}

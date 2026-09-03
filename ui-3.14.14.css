@@ -1,0 +1,37 @@
+/* VB Trainer 3.14.14 – navigation stability. Safe-area rules intentionally unchanged. */
+
+/* Viewer has no editor workspace navigation bar. */
+body:not(.editing-mode) #editorWorkspaceHead{display:none!important}
+
+/* In editing, the workspace header belongs to every real sub-workspace, including tactics. */
+body.editing-mode:not(.editor-workspace-hub) #editorWorkspaceHead{display:flex!important;visibility:visible!important;opacity:1!important}
+body.editing-mode.editor-workspace-hub #editorWorkspaceHead{display:none!important}
+body.editing-mode.editor-workspace-tactic #editorWorkspaceHead{display:flex!important}
+
+/* The global app header remains outside all workspace state and must never be hidden by tactic mode. */
+#appMain>.topbar{display:flex!important;visibility:visible!important;opacity:1!important;flex:0 0 auto!important}
+body.tactic-mode #appMain>.topbar,body.editor-workspace-tactic #appMain>.topbar{display:flex!important;visibility:visible!important}
+
+/* Restore the viewer's actual visible surfaces instead of only recolouring body. */
+body:not(.editing-mode) #appMain,
+body:not(.editing-mode) #appMain>.layout,
+body:not(.editing-mode) #appMain>.layout>.court-section{
+  background:radial-gradient(circle at 70% 0%,var(--viewer-bg-start,#153b72) 0,var(--viewer-bg-mid,#07111d) 48%,var(--viewer-bg-end,#050b12) 100%)!important;
+}
+/* The court itself keeps its deliberate light playing surface. */
+body:not(.editing-mode) .court-wrap{background:transparent!important}
+
+/* Add-on workspaces cannot keep the hub visually on top of them. */
+body.editing-mode:not(.editor-workspace-hub) #editorHub{display:none!important}
+body.editing-mode.editor-workspace-hub #editorHub{display:grid!important}
+
+/* Exercise library owns its content while open; core workspace header stays out of its way. */
+body.exercise-library-open #editorWorkspaceHead{display:none!important}
+body.exercise-library-open #exerciseLibraryWorkspace{display:block!important}
+
+/* Music and tactics must remain reachable after repeated navigation. */
+body.editor-workspace-playlists #musicLibraryDialog{display:block!important}
+body.editor-workspace-tactic #tacticPanel{display:block!important}
+
+/* No scrollIntoView compensation in the header: layout is the only scrolling region. */
+#editorWorkspaceHead{scroll-margin-top:0!important}

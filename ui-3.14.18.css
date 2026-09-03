@@ -1,0 +1,39 @@
+/* VB Trainer 3.14.18 – focused fixes from iPhone screenshots. */
+
+/* Top shell: keep safe-area, but remove any additional app spacing above the topbar. */
+#appMain.app:not(.auth-hidden){padding-top:env(safe-area-inset-top)!important}
+#appMain>.topbar{margin-top:-8px!important;padding-top:2px!important;padding-bottom:3px!important}
+
+/* Viewer: blue belongs to the page/screen around the content. Keep the court surround light. */
+body:not(.editing-mode){background:linear-gradient(180deg,#6fa3df 0%,#3e78bd 48%,#24558f 100%)!important}
+body:not(.editing-mode) #appMain{background:transparent!important}
+body:not(.editing-mode) #appMain>.layout{background:transparent!important}
+body:not(.editing-mode) #appMain>.layout>.court-section{background:transparent!important}
+body:not(.editing-mode) .court-wrap{background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important}
+
+/* Music: search row follows the workspace header without a retained spacer.
+   The expanded filter owns only the height of its actual fields. */
+body.editor-workspace-playlists #musicLibraryDialog,
+body.editor-workspace-playlists .music-library-dialog{margin:0!important;padding-top:0!important}
+body.editor-workspace-playlists .music-searchbar{margin:0 0 .22rem!important;padding:0!important;min-height:0!important}
+body.editor-workspace-playlists #musicLibraryToolbar.hidden{display:none!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+body.editor-workspace-playlists #musicLibraryToolbar:not(.hidden){display:grid!important;height:auto!important;min-height:0!important;margin:0 0 .22rem!important;padding:.2rem!important;gap:.2rem!important}
+body.editor-workspace-playlists #musicLibraryToolbar select,
+body.editor-workspace-playlists #musicLibraryToolbar input{min-height:2.05rem!important;height:2.05rem!important;padding:.2rem .55rem!important;font-size:.82rem!important;line-height:1.05!important}
+
+/* Tactic command area: one clean row. History/reset are compact, step arrows square,
+   and situation edit is a compact action instead of overlapping the mode controls. */
+body.editor-workspace-tactic #tacticPanel{display:flex!important;flex-wrap:wrap!important;gap:4px!important;padding:5px!important;align-items:center!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-history{display:flex!important;flex:1 1 auto!important;min-width:0!important;gap:4px!important;order:1!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-history button{min-width:0!important;height:32px!important;min-height:32px!important;padding:0 7px!important;font-size:.66rem!important;line-height:1!important;white-space:nowrap!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-history button:nth-last-child(-n+2){width:32px!important;min-width:32px!important;padding:0!important;font-size:.82rem!important}
+body.editor-workspace-tactic #tacticPanel>#tacticExit{order:2!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:9.2rem!important;height:32px!important;min-height:32px!important;padding:0 7px!important;font-size:.64rem!important;line-height:1!important;white-space:nowrap!important}
+body.editor-workspace-tactic #tacticPanel>.tactic-mode-grid{order:3!important;flex:1 0 100%!important;width:100%!important;margin:0!important}
+
+@media(max-width:430px){
+  #appMain>.topbar{margin-top:-10px!important}
+  body.editor-workspace-tactic #tacticPanel>.tactic-history button{padding:0 5px!important;font-size:.61rem!important}
+  body.editor-workspace-tactic #tacticPanel>#tacticExit{max-width:7.7rem!important;padding:0 5px!important;font-size:.58rem!important}
+  body.editor-workspace-playlists #musicLibraryToolbar select,
+  body.editor-workspace-playlists #musicLibraryToolbar input{height:1.95rem!important;min-height:1.95rem!important}
+}

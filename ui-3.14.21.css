@@ -1,0 +1,49 @@
+/* VB Trainer 3.14.21 – viewer/background and music polish. */
+:root{
+  /* Future club-theme hook: this value can later come from club settings. */
+  --club-viewer-background:#153b72;
+  --club-editor-background:#f5d04c;
+}
+
+/* Viewer background must cover the complete viewport outside the light court card. */
+html,
+body:not(.editing-mode),
+body:not(.editing-mode) #appMain.app,
+body:not(.editing-mode) #appMain>.layout,
+body:not(.editing-mode) #appMain>.layout>.court-section{
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body:not(.editing-mode) #appMain.app{max-width:none!important;width:100%!important}
+body:not(.editing-mode) .court-wrap{
+  background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important;
+}
+body.editing-mode{background-color:var(--club-editor-background)!important}
+
+/* There is still a little unnecessary reserve above the header on iPhone. */
+#appMain.app:not(.auth-hidden){padding-top:max(0px,calc(env(safe-area-inset-top) - 13px))!important}
+
+/* Compact music accordion headers. */
+body.editor-workspace-playlists .music-playlist-details>summary,
+body.editor-workspace-playlists details.music-library-section>summary{
+  min-height:0!important;
+  padding:.62rem .72rem!important;
+  font-size:.94rem!important;
+  line-height:1.1!important;
+}
+body.editor-workspace-playlists .music-playlist-details,
+body.editor-workspace-playlists details.music-library-section{
+  margin-top:.4rem!important;
+}
+
+/* The select entry "Neue Playlist" is sufficient; the separate +Neu action is redundant. */
+body.editor-workspace-playlists #musicPlaylistNew{display:none!important}
+
+@media(max-width:430px){
+  #appMain.app:not(.auth-hidden){padding-top:max(0px,calc(env(safe-area-inset-top) - 14px))!important}
+  body.editor-workspace-playlists .music-playlist-details>summary,
+  body.editor-workspace-playlists details.music-library-section>summary{
+    padding:.55rem .64rem!important;
+    font-size:.9rem!important;
+  }
+}

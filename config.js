@@ -20,15 +20,27 @@ window.APP_CONFIG = {
     document.getElementById('exerciseLibraryWorkspace')?.classList.add('hidden');
     document.querySelectorAll('.exercise-editor-overlay').forEach(el=>el.remove());
   };
+  const reconcileEditorUi=()=>{
+    const editPanel=document.getElementById('editPanel');
+    const hub=document.getElementById('editorHub');
+    const editing=!!editPanel && !editPanel.classList.contains('hidden');
+    if(!editing){
+      closeExerciseUi();
+      document.body.classList.remove('editor-workspace-hub');
+      hub?.classList.add('hidden');
+      return;
+    }
+    if(!document.body.classList.contains('exercise-library-open')){
+      document.body.classList.add('editor-workspace-hub');
+      hub?.classList.remove('hidden');
+    }
+  };
   const installEditorModeReconcile=()=>{
-    const editButton=document.getElementById('editButton'); if(!editButton)return;
-    editButton.addEventListener('click',()=>setTimeout(()=>{
-      const editPanel=document.getElementById('editPanel');
-      const hub=document.getElementById('editorHub');
-      const editing=!!editPanel && !editPanel.classList.contains('hidden');
-      if(!editing){closeExerciseUi();document.body.classList.remove('editor-workspace-hub');hub?.classList.add('hidden');return}
-      if(!document.body.classList.contains('exercise-library-open')){document.body.classList.add('editor-workspace-hub');hub?.classList.remove('hidden')}
-    },0));
+    const editButton=document.getElementById('editButton'); if(!editButton||editButton.dataset.vbModeReconcile)return;
+    editButton.dataset.vbModeReconcile='1';
+    // app.js verarbeitet den Klick zuerst. Im nächsten Task gleichen wir die
+    // dynamisch nachgeladenen Übungs-Workspaces an den echten Editorzustand an.
+    editButton.addEventListener('click',()=>setTimeout(reconcileEditorUi,0));
   };
   const installDensitySync=()=>{
     const sync=()=>{const list=document.getElementById('exerciseList'),ws=document.getElementById('exerciseLibraryWorkspace');if(list&&ws)ws.dataset.density=list.dataset.density||localStorage.getItem('volleyball-trainer-exercise-density')||'normal'};

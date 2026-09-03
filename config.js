@@ -26,20 +26,17 @@ window.APP_CONFIG = {
       const editPanel=document.getElementById('editPanel');
       const hub=document.getElementById('editorHub');
       const editing=!!editPanel && !editPanel.classList.contains('hidden');
-      if(!editing){
-        closeExerciseUi();
-        document.body.classList.remove('editor-workspace-hub');
-        hub?.classList.add('hidden');
-        return;
-      }
-      if(!document.body.classList.contains('exercise-library-open')){
-        document.body.classList.add('editor-workspace-hub');
-        hub?.classList.remove('hidden');
-      }
+      if(!editing){closeExerciseUi();document.body.classList.remove('editor-workspace-hub');hub?.classList.add('hidden');return}
+      if(!document.body.classList.contains('exercise-library-open')){document.body.classList.add('editor-workspace-hub');hub?.classList.remove('hidden')}
     },0));
   };
+  const installDensitySync=()=>{
+    const sync=()=>{const list=document.getElementById('exerciseList'),ws=document.getElementById('exerciseLibraryWorkspace');if(list&&ws)ws.dataset.density=list.dataset.density||localStorage.getItem('volleyball-trainer-exercise-density')||'normal'};
+    const observer=new MutationObserver(()=>{sync();const list=document.getElementById('exerciseList');if(list&&!list.dataset.densityObserved){list.dataset.densityObserved='1';new MutationObserver(sync).observe(list,{attributes:true,attributeFilter:['data-density']})}});
+    observer.observe(document.body,{childList:true,subtree:true}); sync();
+  };
   const load = () => {
-    showLoadedVersion(); installEditorModeReconcile();
+    showLoadedVersion(); installEditorModeReconcile(); installDensitySync();
     asset('link',{rel:'stylesheet',href:`ui-3.14.4.css?v=${version}`,'data-vb-release':'ui-css'});
     asset('link',{rel:'stylesheet',href:`exercise-library.css?v=${version}`,'data-vb-release':'exercise-css'});
     asset('script',{src:`feature-admin.js?v=${version}`,'data-vb-release':'feature-admin'});

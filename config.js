@@ -5,7 +5,7 @@ window.APP_CONFIG = {
 
 // Feature-Releases bleiben vom Legacy-Core-Updater entkoppelt.
 (() => {
-  const version = "3.14.9.2";
+  const version = "3.14.9.3";
   const asset = (tag, attrs) => {
     if (document.querySelector(`${tag}[data-vb-release="${attrs['data-vb-release']}"]`)) return;
     const el=document.createElement(tag); Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v)); (tag==='link'?document.head:document.body).appendChild(el);

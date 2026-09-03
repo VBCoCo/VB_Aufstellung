@@ -1,14 +1,10 @@
-const VERSION = "3.14.9.1";
+const VERSION = "3.14.9.2";
 const CORE_VERSION = "3.13.0";
 const CACHE_PREFIX = "volleyball-trainer-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const VOICE_ASSETS = ["kerstin","thorsten"].map(name => `./assets/audio/voice-de-${name}/voice.mp3`);
 const CUSTOM_VOICE_ASSETS = ["b","c"].flatMap(pack => ["three","two","one","and","work","pause","action","continue","change","next-station"].map(name => `./assets/audio/voice-custom-${pack}/${name}.mp3`));
-// Der Legacy-Core bleibt absichtlich auf 3.13.0. Die Feature-Dateien werden mit
-// der Hotfix-Version gecacht. config.js wird zusätzlich unter der weiterhin von
-// index.html verwendeten Core-URL gecacht, damit bestehende Installationen sicher
-// den neuen Bootstrap erhalten, ohne den alten Reload-Vergleich anzufassen.
 const APP_SHELL = ["./index.html",`./style.css?v=${CORE_VERSION}`,`./vendor/tone-15.1.22.js?v=${CORE_VERSION}`,`./music-library.js?v=${CORE_VERSION}`,`./training-player.js?v=${CORE_VERSION}`,`./app.js?v=${CORE_VERSION}`,`./config.js?v=${CORE_VERSION}`,`./exercise-library.css?v=${VERSION}`,`./exercise-library.js?v=${VERSION}`,`./feature-admin.js?v=${VERSION}`,`./ui-3.14.4.css?v=${VERSION}`,`./manifest.webmanifest?v=${CORE_VERSION}`,`./assets/ttc-logo.png?v=${CORE_VERSION}`,`./assets/apple-touch-icon.png?v=${CORE_VERSION}`,`./assets/icon-192.png?v=${CORE_VERSION}`,`./assets/icon-512.png?v=${CORE_VERSION}`,"./assets/audio/kick.wav","./assets/audio/snare.wav","./assets/audio/hat-closed.wav","./assets/audio/hat-open.wav","./assets/audio/bass-c2.wav","./assets/audio/bass-c3.wav","./assets/audio/LICENSE.md","./assets/audio/voice-de-kerstin/LICENSE.md","./assets/audio/voice-de-thorsten/LICENSE.md","./assets/audio/voice-custom-b/README.md","./assets/audio/voice-custom-c/README.md","./assets/music/ronald-kah/LICENSE.md",...VOICE_ASSETS,...CUSTOM_VOICE_ASSETS];
 const absoluteUrl=path=>new URL(path,self.registration.scope).href,INDEX_URL=absoluteUrl("./index.html"),VERSION_URL=absoluteUrl("./version.json"),APP_SHELL_URLS=new Set(APP_SHELL.map(absoluteUrl));
 self.addEventListener("install",event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE_NAME);await Promise.all(APP_SHELL.map(async path=>{const request=new Request(absoluteUrl(path),{cache:"reload"}),response=await fetch(request);if(!response.ok)throw new Error(`App-Datei konnte nicht geladen werden: ${path}`);await cache.put(request,response)}));await self.skipWaiting()})())});

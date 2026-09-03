@@ -1,0 +1,32 @@
+/* VB Trainer 3.14.20 – focused cleanup after iPhone verification. */
+
+/* Viewer outer surface: no white strip above or beside the app. */
+html{background:#153b72!important}
+html:has(body.editing-mode){background:#f5d04c!important}
+body:not(.editing-mode),
+body:not(.editing-mode) #appMain,
+body:not(.editing-mode) #appMain>.layout,
+body:not(.editing-mode) #appMain>.layout>.court-section{background:#153b72!important}
+body:not(.editing-mode) #appMain>.layout{background:linear-gradient(180deg,#153b72 0%,#0d315c 58%,#082442 100%)!important}
+body:not(.editing-mode) .court-wrap{background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important}
+
+/* Use the iOS safe-area as the reference, but trim the visibly excessive reserve a little.
+   Unlike 3.14.18 this does not move the topbar with a negative margin, so nothing is clipped. */
+#appMain.app:not(.auth-hidden){padding-top:max(0px,calc(env(safe-area-inset-top) - 8px))!important}
+#appMain>.topbar{margin-top:0!important}
+
+/* The S/M/L controls moved to the workspace header. The legacy music viewbar must therefore
+   have zero footprint; it was the remaining yellow phantom spacer. */
+body.editor-workspace-playlists #musicLibraryDialog .music-library-viewbar,
+body.editor-workspace-playlists .music-library-viewbar{display:none!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+body.editor-workspace-playlists #musicLibraryDialog,
+body.editor-workspace-playlists .music-library-dialog{margin-top:0!important;padding-top:0!important}
+body.editor-workspace-playlists .music-searchbar{margin-top:0!important}
+
+/* The original full-width tactic exit is now proxied by the compact header action. */
+body.editor-workspace-tactic #tacticExit.tactic-exit-proxy{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+body.editor-workspace-tactic #tacticPanel{gap:5px!important}
+
+@media(max-width:430px){
+  #appMain.app:not(.auth-hidden){padding-top:max(0px,calc(env(safe-area-inset-top) - 10px))!important}
+}

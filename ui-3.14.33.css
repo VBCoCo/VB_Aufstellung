@@ -1,0 +1,5 @@
+/* VB Trainer 3.14.33 – remove stray workspace header from editor hub. */
+body.editing-mode.editor-workspace-hub #editorWorkspaceHead,
+body.editing-mode.editor-workspace-hub .editor-workspace-head{
+  display:none!important;
+}

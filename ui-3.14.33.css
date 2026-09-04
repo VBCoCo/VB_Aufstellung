@@ -1,0 +1,5 @@
+/* VB Trainer 3.14.33 – editor hub has no workspace header. */
+body.editing-mode.editor-workspace-hub #editorWorkspaceHead,
+body.editing-mode.editor-workspace-hub .editor-workspace-head{
+  display:none!important;
+}

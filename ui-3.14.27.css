@@ -1,0 +1,45 @@
+/* VB Trainer 3.14.27 – simplify safe-area handling using the proven editor pattern. */
+:root{
+  --club-viewer-background:#153b72;
+  --club-editor-background:#f5d04c;
+}
+
+/* Disable all synthetic safe-area layers introduced in 3.14.24–3.14.26. */
+body::before,
+body:not(.editing-mode)::before,
+body:not(.editing-mode) #appMain::before{
+  content:none!important;
+  display:none!important;
+}
+
+/* The document background is the single source of truth, exactly like the editor
+   path that already paints the iOS top area correctly. */
+html,
+body,
+body:not(.editing-mode),
+body:not(.editing-mode) #appMain,
+body:not(.editing-mode) #appMain>.layout{
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body.editing-mode,
+body.editing-mode #appMain{
+  background:var(--club-editor-background)!important;
+  background-color:var(--club-editor-background)!important;
+}
+
+/* Undo the standalone 48px fallback from 3.14.26. Use the established compact
+   shell offset only; do not create a second safe area inside the document. */
+@media (display-mode:standalone){
+  #appMain.app:not(.auth-hidden),
+  body.tactic-mode #appMain.app:not(.auth-hidden),
+  body.editing-mode #appMain.app:not(.auth-hidden){
+    padding-top:max(0px,calc(env(safe-area-inset-top) - 14px))!important;
+    padding-bottom:max(env(safe-area-inset-bottom),0px)!important;
+  }
+}
+
+/* Keep the light court card distinct from the club-colored outer canvas. */
+body:not(.editing-mode) .court-wrap{
+  background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important;
+}

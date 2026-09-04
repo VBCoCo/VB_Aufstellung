@@ -5,6 +5,9 @@ window.APP_CONFIG = {
 (() => {
   const version = "3.14.37";
   window.VB_RELEASE_VERSION = version;
+  const setMeta=(name,content)=>{const el=document.querySelector(`meta[name="${name}"]`);if(el)el.setAttribute('content',content)};
+  setMeta('theme-color','#153b72');
+  setMeta('apple-mobile-web-app-status-bar-style','black');
   const compareVersions=(a,b)=>{const A=String(a||'0').split('.').map(Number),B=String(b||'0').split('.').map(Number);for(let i=0;i<Math.max(A.length,B.length);i++){const d=(A[i]||0)-(B[i]||0);if(d)return d}return 0};
   const releaseFromMeta=meta=>String(meta?.featureVersion||meta?.version||'0');
   const registerReleaseWorker=async()=>{if(!('serviceWorker' in navigator))return null;try{const reg=await navigator.serviceWorker.register(`./sw.js?release=${encodeURIComponent(version)}`,{scope:'./',updateViaCache:'none'});await reg.update().catch(()=>{});return reg}catch(err){console.warn('Release-Service-Worker konnte nicht aktualisiert werden',err);return null}};
@@ -14,21 +17,7 @@ window.APP_CONFIG = {
   const showVersions=()=>{const club=document.getElementById('brandClubName');if(club){let line=document.getElementById('brandVersion');if(!line){line=document.createElement('div');line.id='brandVersion';club.insertAdjacentElement('afterend',line)}line.textContent=version;line.setAttribute('aria-label',`Version ${version}`);line.style.cssText='font-size:.68rem;line-height:1.05;opacity:.68;margin-top:-1px'}const gate=document.getElementById('authGate');if(gate){let line=document.getElementById('loginVersion');if(!line){line=document.createElement('div');line.id='loginVersion';line.style.cssText='text-align:center;font-size:.72rem;line-height:1.2;opacity:.55;margin-top:14px;color:#52657a';const card=gate.querySelector('.auth-card')||gate.firstElementChild||gate;card.appendChild(line)}line.textContent=`Version ${version}`}};
   const syncViewerMode=()=>{const body=document.body;if(!body)return;const authenticated=!body.classList.contains('auth-pending')&&!document.getElementById('appMain')?.classList.contains('auth-hidden');const viewer=authenticated&&!body.classList.contains('editing-mode');body.classList.toggle('viewer-mode',viewer)};
   let workspaceHeadRef=null;
-  const syncWorkspaceHeadPresence=()=>{
-    syncViewerMode();
-    if(!workspaceHeadRef)workspaceHeadRef=document.getElementById('editorWorkspaceHead');
-    const head=workspaceHeadRef;if(!head)return;
-    const back=head.querySelector('#editorWorkspaceBack');
-    if(back){back.textContent='←';back.setAttribute('aria-label','Zurück zu Bereiche');back.setAttribute('title','Zurück zu Bereiche')}
-    const body=document.body;
-    const editing=body.classList.contains('editing-mode');
-    const hub=body.classList.contains('editor-workspace-hub');
-    const exerciseOpen=body.classList.contains('exercise-library-open');
-    const shouldExist=editing&&!hub&&!exerciseOpen;
-    if(!shouldExist){if(head.isConnected)head.remove();return}
-    if(!head.isConnected){const court=document.querySelector('.court-section');if(!court)return;const toolbar=court.querySelector('.court-toolbar');court.insertBefore(head,toolbar||court.firstChild)}
-    head.classList.remove('hidden');
-  };
+  const syncWorkspaceHeadPresence=()=>{syncViewerMode();if(!workspaceHeadRef)workspaceHeadRef=document.getElementById('editorWorkspaceHead');const head=workspaceHeadRef;if(!head)return;const back=head.querySelector('#editorWorkspaceBack');if(back){back.textContent='←';back.setAttribute('aria-label','Zurück zu Bereiche');back.setAttribute('title','Zurück zu Bereiche')}const body=document.body;const editing=body.classList.contains('editing-mode');const hub=body.classList.contains('editor-workspace-hub');const exerciseOpen=body.classList.contains('exercise-library-open');const shouldExist=editing&&!hub&&!exerciseOpen;if(!shouldExist){if(head.isConnected)head.remove();return}if(!head.isConnected){const court=document.querySelector('.court-section');if(!court)return;const toolbar=court.querySelector('.court-toolbar');court.insertBefore(head,toolbar||court.firstChild)}head.classList.remove('hidden')};
   const load=()=>{registerReleaseWorker();checkRelease();['ui-3.14.4.css','exercise-library.css','ui-3.14.12.css','ui-3.14.13.css','ui-3.14.14.css','ui-3.14.15.css','ui-3.14.16.css','ui-3.14.17.css','ui-3.14.18.css','ui-3.14.19.css','ui-3.14.20.css','ui-3.14.21.css','ui-3.14.22.css','ui-3.14.23.css','ui-3.14.24.css','ui-3.14.25.css','ui-3.14.26.css','ui-3.14.27.css','ui-3.14.28.css','ui-3.14.29.css','ui-3.14.36.css'].forEach((href,i)=>asset('link',{rel:'stylesheet',href:`${href}?v=${version}`,'data-vb-release':`css-${i}`}));asset('script',{src:`feature-admin.js?v=${version}`,'data-vb-release':'feature-admin'});asset('script',{src:`exercise-library.js?v=${version}`,'data-vb-release':'exercise-js'});showVersions();syncWorkspaceHeadPresence();const observer=new MutationObserver(syncWorkspaceHeadPresence);observer.observe(document.body,{attributes:true,attributeFilter:['class']});const appMain=document.getElementById('appMain');if(appMain){const appObserver=new MutationObserver(syncViewerMode);appObserver.observe(appMain,{attributes:true,attributeFilter:['class']})}setTimeout(syncWorkspaceHeadPresence,0);setTimeout(syncWorkspaceHeadPresence,350);setTimeout(syncWorkspaceHeadPresence,1200);setTimeout(showVersions,350);setTimeout(showVersions,1200);window.addEventListener('pageshow',()=>{showVersions();syncWorkspaceHeadPresence();checkRelease()});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){showVersions();syncWorkspaceHeadPresence();checkRelease()}})};
   if(document.readyState==='complete')load();else window.addEventListener('load',load,{once:true});
 })();

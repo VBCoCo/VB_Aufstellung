@@ -1,0 +1,21 @@
+/* VB Trainer 3.14.25 – mode-aware iOS root canvas. */
+:root{
+  --club-viewer-background:#153b72;
+  --club-editor-background:#f5d04c;
+}
+
+/* iOS paints overscroll/safe-area chrome from the document canvas. Keep the
+   root viewer canvas dark; editing mode keeps its established yellow body. */
+html{
+  min-height:100%;
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body:not(.editing-mode){
+  min-height:100vh;
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body.editing-mode{
+  background-color:var(--club-editor-background)!important;
+}

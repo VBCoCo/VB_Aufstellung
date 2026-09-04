@@ -1,0 +1,34 @@
+/* VB Trainer 3.14.31 – explicit root display modes.
+   Login and editor are the proven iOS references; viewer now follows the same body-owned model. */
+:root{
+  --club-viewer-background:#153b72;
+  --club-editor-background:#f5d04c;
+}
+
+/* The document canvas stays neutral. Exactly one body state owns the page colour. */
+html{
+  background:transparent!important;
+  background-color:transparent!important;
+}
+body.auth-pending,
+body.viewer-mode{
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body.editing-mode{
+  background:var(--club-editor-background)!important;
+  background-color:var(--club-editor-background)!important;
+}
+
+/* App containers must not compete with the root state colour. */
+body.viewer-mode #appMain,
+body.viewer-mode #appMain>.layout,
+body.viewer-mode #appMain>.layout>.court-section{
+  background:transparent!important;
+  background-color:transparent!important;
+}
+
+/* The court itself deliberately remains light in viewer mode. */
+body.viewer-mode .court-wrap{
+  background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important;
+}

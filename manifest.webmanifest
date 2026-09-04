@@ -9,8 +9,8 @@
     "standalone"
   ],
   "orientation": "any",
-  "background_color": "#07111d",
-  "theme_color": "#0b4fc6",
+  "background_color": "#153b72",
+  "theme_color": "#153b72",
   "icons": [
     {
       "src": "assets/icon-192.png?v=3.13.0",

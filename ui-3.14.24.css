@@ -1,0 +1,28 @@
+/* VB Trainer 3.14.24 – explicit viewer safe-area paint. */
+:root{--club-viewer-background:#153b72}
+
+/* The editor already paints its safe area correctly. Do not touch it.
+   In viewer mode paint the physical top inset itself, independent of the
+   document/body background chosen by iOS standalone mode. */
+body:not(.editing-mode)::before{
+  content:""!important;
+  position:fixed!important;
+  z-index:2147483646!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  height:env(safe-area-inset-top)!important;
+  min-height:env(safe-area-inset-top)!important;
+  background:var(--club-viewer-background)!important;
+  pointer-events:none!important;
+}
+
+/* Keep the actual canvas behind the inset identical to the viewer surround. */
+html,
+body:not(.editing-mode),
+body:not(.editing-mode) #appMain{
+  background-color:var(--club-viewer-background)!important;
+}
+
+/* Never place the viewer overlay over the working editor. */
+body.editing-mode::before{content:none!important;display:none!important}

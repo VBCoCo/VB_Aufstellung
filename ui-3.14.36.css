@@ -1,0 +1,18 @@
+/* VB Trainer 3.14.36 – isolated viewer root background test.
+   No safe-area geometry, auth layout or PWA status-bar metadata changes. */
+:root{
+  --club-viewer-background:#153b72;
+  --club-editor-background:#f5d04c;
+}
+
+/* Give the normal viewer the same explicit root ownership as the proven editor state. */
+html:has(body.viewer-mode),
+body.viewer-mode{
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+html:has(body.editing-mode),
+body.editing-mode{
+  background:var(--club-editor-background)!important;
+  background-color:var(--club-editor-background)!important;
+}

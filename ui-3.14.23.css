@@ -1,0 +1,57 @@
+/* VB Trainer 3.14.23 – root-cause fix for shell geometry and iOS viewer safe area. */
+:root{
+  --app-shell-padding-inline:4px;
+  --app-shell-padding-top:max(0px,calc(env(safe-area-inset-top) - 13px));
+}
+
+/* The app itself owns the shell geometry. Workspace/tactic modes must never change it. */
+#appMain.app:not(.auth-hidden),
+body.tactic-mode #appMain.app:not(.auth-hidden),
+body.editing-mode #appMain.app:not(.auth-hidden){
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding-top:var(--app-shell-padding-top)!important;
+  padding-right:var(--app-shell-padding-inline)!important;
+  padding-left:var(--app-shell-padding-inline)!important;
+  box-sizing:border-box!important;
+}
+
+/* Header geometry is relative to that stable shell, never to a workspace-specific app width. */
+#appMain>.topbar{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+}
+#editorWorkspaceHead,
+.exercise-head{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+}
+
+/* Tactic viewport sizing stays inside its content area instead of resizing the global app shell. */
+body.tactic-mode #appMain>.layout,
+body.tactic-mode #appMain .court-section{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+}
+
+/* iOS standalone status/safe area: root canvas must be the viewer club colour. */
+html{background-color:var(--club-viewer-background,#153b72)!important}
+body:not(.editing-mode){
+  background:var(--club-viewer-background,#153b72)!important;
+  background-color:var(--club-viewer-background,#153b72)!important;
+}
+
+@media(max-width:430px){
+  :root{
+    --app-shell-padding-inline:3px;
+    --app-shell-padding-top:max(0px,calc(env(safe-area-inset-top) - 14px));
+  }
+}

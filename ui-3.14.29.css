@@ -1,0 +1,43 @@
+/* VB Trainer 3.14.29 – viewer/editor background symmetry and music workspace width. */
+:root{
+  --club-viewer-background:#153b72;
+  --club-editor-background:#f5d04c;
+}
+
+/* Match the proven editor model: the body alone owns the mode background.
+   Inner application surfaces no longer repeat the viewer club colour. */
+html{
+  background:transparent!important;
+  background-color:transparent!important;
+}
+body:not(.editing-mode){
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body.editing-mode{
+  background:var(--club-editor-background)!important;
+  background-color:var(--club-editor-background)!important;
+}
+body:not(.editing-mode) #appMain,
+body:not(.editing-mode) #appMain>.layout,
+body:not(.editing-mode) #appMain>.layout>.court-section{
+  background:transparent!important;
+  background-color:transparent!important;
+}
+
+/* Preserve the deliberately light court card in the viewer. */
+body:not(.editing-mode) .court-wrap{
+  background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important;
+}
+
+/* Music & Playlists uses the same full workspace width as the shared header. */
+body.editing-mode.editor-workspace-playlists #musicLibraryDialog,
+body.editing-mode.editor-workspace-playlists .music-library-dialog,
+body.editing-mode.editor-workspace-playlists .music-library-shell,
+body.editing-mode.editor-workspace-playlists .music-library-content{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+}

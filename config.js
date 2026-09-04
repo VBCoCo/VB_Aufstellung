@@ -3,7 +3,7 @@ window.APP_CONFIG = {
   SUPABASE_PUBLISHABLE_KEY: "sb_publishable_gwDoKpExqBfM4voiXncaaA_w61xcbO4"
 };
 (() => {
-  const version = "3.14.34";
+  const version = "3.14.35";
   window.VB_RELEASE_VERSION = version;
   const compareVersions=(a,b)=>{const A=String(a||'0').split('.').map(Number),B=String(b||'0').split('.').map(Number);for(let i=0;i<Math.max(A.length,B.length);i++){const d=(A[i]||0)-(B[i]||0);if(d)return d}return 0};
   const releaseFromMeta=meta=>String(meta?.featureVersion||meta?.version||'0');
@@ -16,6 +16,8 @@ window.APP_CONFIG = {
   const syncWorkspaceHeadPresence=()=>{
     if(!workspaceHeadRef)workspaceHeadRef=document.getElementById('editorWorkspaceHead');
     const head=workspaceHeadRef;if(!head)return;
+    const back=head.querySelector('#editorWorkspaceBack');
+    if(back){back.textContent='←';back.setAttribute('aria-label','Zurück zu Bereiche');back.setAttribute('title','Zurück zu Bereiche')}
     const body=document.body;
     const editing=body.classList.contains('editing-mode');
     const hub=body.classList.contains('editor-workspace-hub');

@@ -1,0 +1,49 @@
+/* VB Trainer 3.14.26 – consolidated iOS standalone safe-area layout. */
+:root{
+  --club-viewer-background:#153b72;
+  --club-editor-background:#f5d04c;
+}
+
+/* 3.14.24 painted a fixed overlay while 3.14.25 changed the root canvas.
+   Disable the old overlay: the root canvas is now the single source of truth. */
+body::before{content:none!important;display:none!important}
+
+html{
+  min-height:100%;
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body{
+  min-height:100dvh!important;
+}
+body:not(.editing-mode),
+body:not(.editing-mode) #appMain{
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body.editing-mode{
+  background:var(--club-editor-background)!important;
+  background-color:var(--club-editor-background)!important;
+}
+
+/* black-translucent makes the document edge-to-edge on iOS. The app shell must
+   therefore reserve the physical status/safe area itself. env() is preferred;
+   the standalone fallback covers iOS installations where WebKit reports 0 after
+   a service-worker navigation metadata change. */
+@media (display-mode:standalone){
+  #appMain.app:not(.auth-hidden),
+  body.tactic-mode #appMain.app:not(.auth-hidden),
+  body.editing-mode #appMain.app:not(.auth-hidden){
+    padding-top:max(env(safe-area-inset-top),48px)!important;
+    padding-bottom:max(env(safe-area-inset-bottom),0px)!important;
+  }
+}
+
+/* Normal browser mode keeps the established compact shell geometry. */
+@media not all and (display-mode:standalone){
+  #appMain.app:not(.auth-hidden),
+  body.tactic-mode #appMain.app:not(.auth-hidden),
+  body.editing-mode #appMain.app:not(.auth-hidden){
+    padding-top:max(0px,calc(env(safe-area-inset-top) - 14px))!important;
+  }
+}

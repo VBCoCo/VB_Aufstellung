@@ -5,13 +5,17 @@
   --club-editor-background:#f5d04c;
 }
 
-/* The document canvas stays neutral. Exactly one body state owns the page colour. */
+/* The document canvas stays neutral. Existing application state is authoritative:
+   auth-pending = login, editing-mode = editor, otherwise visible app = viewer. */
 html{
   background:transparent!important;
   background-color:transparent!important;
 }
-body.auth-pending,
-body.viewer-mode{
+body.auth-pending{
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body:not(.auth-pending):not(.editing-mode){
   background:var(--club-viewer-background)!important;
   background-color:var(--club-viewer-background)!important;
 }
@@ -21,14 +25,14 @@ body.editing-mode{
 }
 
 /* App containers must not compete with the root state colour. */
-body.viewer-mode #appMain,
-body.viewer-mode #appMain>.layout,
-body.viewer-mode #appMain>.layout>.court-section{
+body:not(.auth-pending):not(.editing-mode) #appMain,
+body:not(.auth-pending):not(.editing-mode) #appMain>.layout,
+body:not(.auth-pending):not(.editing-mode) #appMain>.layout>.court-section{
   background:transparent!important;
   background-color:transparent!important;
 }
 
 /* The court itself deliberately remains light in viewer mode. */
-body.viewer-mode .court-wrap{
+body:not(.auth-pending):not(.editing-mode) .court-wrap{
   background:linear-gradient(180deg,#eef4ff,#d8e7ff)!important;
 }

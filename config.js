@@ -3,7 +3,7 @@ window.APP_CONFIG = {
   SUPABASE_PUBLISHABLE_KEY: "sb_publishable_gwDoKpExqBfM4voiXncaaA_w61xcbO4"
 };
 (() => {
-  const version = "3.14.36";
+  const version = "3.14.37";
   window.VB_RELEASE_VERSION = version;
   const compareVersions=(a,b)=>{const A=String(a||'0').split('.').map(Number),B=String(b||'0').split('.').map(Number);for(let i=0;i<Math.max(A.length,B.length);i++){const d=(A[i]||0)-(B[i]||0);if(d)return d}return 0};
   const releaseFromMeta=meta=>String(meta?.featureVersion||meta?.version||'0');

@@ -320,10 +320,10 @@ class AudioRuntime {
       this.synthGain.connect(this.musicGain);
       this.drumGain.connect(this.musicGain);
       this.musicGain.connect(this.compressor);
-      this.cueGain.connect(this.compressor);
+      this.cueGain.connect(this.context.destination);
       this.voiceGain.connect(this.voicePresence);
       this.voicePresence.connect(this.voiceCompressor);
-      this.voiceCompressor.connect(this.compressor);
+      this.voiceCompressor.connect(this.context.destination);
       this.compressor.connect(this.context.destination);
       this.synthGain.gain.value = 1;
       this.drumGain.gain.value = 1;

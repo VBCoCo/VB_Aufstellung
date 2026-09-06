@@ -6,17 +6,35 @@
 
 /* Match the proven editor model: the body alone owns the mode background.
    Inner application surfaces no longer repeat the viewer club colour. */
-html{
-  background:transparent!important;
-  background-color:transparent!important;
+html,
+html[data-app-mode="login"],
+html[data-app-mode="viewer"]{
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+html[data-app-mode="editor"]{
+  background:var(--club-editor-background)!important;
+  background-color:var(--club-editor-background)!important;
+}
+html[data-app-mode="tactic"]{
+  background:#06111e!important;
+  background-color:#06111e!important;
 }
 body:not(.editing-mode){
+  background:var(--club-viewer-background)!important;
+  background-color:var(--club-viewer-background)!important;
+}
+body.viewer-mode{
   background:var(--club-viewer-background)!important;
   background-color:var(--club-viewer-background)!important;
 }
 body.editing-mode{
   background:var(--club-editor-background)!important;
   background-color:var(--club-editor-background)!important;
+}
+body.tactic-mode{
+  background:#06111e!important;
+  background-color:#06111e!important;
 }
 body:not(.editing-mode) #appMain,
 body:not(.editing-mode) #appMain>.layout,

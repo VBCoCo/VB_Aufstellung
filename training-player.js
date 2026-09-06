@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.13.0";
+const VERSION = "3.14.49";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));

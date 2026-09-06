@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.14.51";
+const VERSION = "3.14.52";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
@@ -1123,7 +1123,7 @@ class TrainingPlayerController {
   constructor() {
     this.root = document.getElementById("trainingPlayer");
     if (!this.root) return;
-    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerTrack","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingTempoTolerance","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingIntroEnabled","trainingIntroSeconds","trainingCountdownEnabled","trainingCountdownMode","trainingCueMode","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingWakeLockEnabled","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
+    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerTrack","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateSummary","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingTempoTolerance","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingMusicSummary","trainingIntroEnabled","trainingIntroSeconds","trainingCountdownEnabled","trainingCountdownMode","trainingCueMode","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingWakeLockEnabled","trainingCueSummary","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
     this.e = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
     this.scope = "anonymous";
     this.customTemplates = [];
@@ -1191,6 +1191,12 @@ class TrainingPlayerController {
     this.e.trainingPhases.addEventListener("input", event => this.onPhaseInput(event));
     this.e.trainingPhases.addEventListener("change", event => this.onPhaseInput(event));
     this.e.trainingPhases.addEventListener("click", event => this.onPhaseAction(event));
+    this.e.trainingPlayerEditor.querySelectorAll(".training-section-toggle").forEach(button => button.addEventListener("click", () => {
+      const section = button.closest(".training-editor-section");
+      const open = section.classList.toggle("is-open");
+      button.setAttribute("aria-expanded", String(open));
+      button.querySelector("i").textContent = open ? "⌃" : "⌄";
+    }));
     window.addEventListener("pagehide", () => { this.music.stop(); this.cues.stop(); this.releaseWakeLock(); });
   }
   toggleExpanded() {
@@ -1273,6 +1279,7 @@ class TrainingPlayerController {
     this.updateOutputs();
     this.e.trainingTemplateDelete.disabled = this.current.builtin || !this.customTemplates.some(t => t.id === this.currentId);
     this.e.trainingPlayerTemplateName.textContent = this.current.name;
+    this.updateSectionSummaries();
   }
   readEditor() {
     this.current.name = (this.e.trainingTemplateName.value.trim() || "Training").slice(0,80);
@@ -1282,6 +1289,7 @@ class TrainingPlayerController {
     if (cards.length) this.current.phases = cards.map((card,index) => this.phaseFromCard(card,index));
     this.current = normalizeTemplate(this.current);
     this.e.trainingPlayerTemplateName.textContent = this.current.name;
+    this.updateSectionSummaries();
     return this.current;
   }
   phaseFromCard(card,index) {
@@ -1297,11 +1305,12 @@ class TrainingPlayerController {
   }
   renderPhases() {
     this.e.trainingPhases.innerHTML = this.current.phases.map((phase,index) => {
-      const common = `<div class="training-phase-head"><strong>Phase ${index+1}</strong><div><button type="button" data-action="up" aria-label="Phase nach oben" ${index===0?"disabled":""}>↑</button><button type="button" data-action="down" aria-label="Phase nach unten" ${index===this.current.phases.length-1?"disabled":""}>↓</button><button type="button" data-action="delete" class="danger" aria-label="Phase löschen" ${this.current.phases.length===1?"disabled":""}>🗑</button></div></div><div class="training-phase-common"><label>Name<input data-field="name" type="text" maxlength="80" value="${esc(phase.name)}"></label><label>Art<select data-field="type"><option value="continuous" ${phase.type==="continuous"?"selected":""}>Fortlaufende Phase</option><option value="interval" ${phase.type==="interval"?"selected":""}>Intervallblock</option></select></label>${this.musicOverrideFields(phase)}</div>`;
+      const duration = phase.type === "interval" ? `${phase.workSeconds}/${phase.pauseSeconds} Sek. · ${phase.repetitions}×` : `${Math.round(phase.durationSeconds/60)} Min.`;
+      const common = `<button type="button" class="training-phase-summary" data-action="toggle" aria-expanded="${index===0}"><span class="training-phase-node">${index+1}</span><span><strong>${esc(phase.name)}</strong><small>${phase.type==="interval"?"Intervall":"Fortlaufend"} · ${duration}</small></span><i>${index===0?"⌃":"⌄"}</i></button><div class="training-phase-body"><div class="training-phase-head"><strong>Phase ${index+1} bearbeiten</strong><div><button type="button" data-action="up" aria-label="Phase nach oben" ${index===0?"disabled":""}>↑</button><button type="button" data-action="down" aria-label="Phase nach unten" ${index===this.current.phases.length-1?"disabled":""}>↓</button><button type="button" data-action="delete" class="danger" aria-label="Phase löschen" ${this.current.phases.length===1?"disabled":""}>🗑</button></div></div><div class="training-phase-common"><label>Name<input data-field="name" type="text" maxlength="80" value="${esc(phase.name)}"></label><label>Art<select data-field="type"><option value="continuous" ${phase.type==="continuous"?"selected":""}>Fortlaufende Phase</option><option value="interval" ${phase.type==="interval"?"selected":""}>Intervallblock</option></select></label>${this.musicOverrideFields(phase)}</div>`;
       const details = phase.type === "interval"
         ? `<div class="training-phase-details interval"><label>Action-Bezeichnung<input data-field="workLabel" type="text" maxlength="80" value="${esc(phase.workLabel)}"></label><label>Action (Sek.)<input data-field="workSeconds" type="number" min="1" max="3600" value="${phase.workSeconds}"></label><label>Pause-Bezeichnung<input data-field="pauseLabel" type="text" maxlength="80" value="${esc(phase.pauseLabel)}"></label><label>Pause (Sek.)<input data-field="pauseSeconds" type="number" min="0" max="3600" value="${phase.pauseSeconds}"></label><label>Wiederholungen<input data-field="repetitions" type="number" min="1" max="99" value="${phase.repetitions}"></label><label>Blöcke / Sätze<input data-field="blocks" type="number" min="1" max="30" value="${phase.blocks}"></label><label>Blockpause-Bezeichnung<input data-field="longPauseLabel" type="text" maxlength="80" value="${esc(phase.longPauseLabel)}"></label><label>Blockpause (Sek.)<input data-field="longPauseSeconds" type="number" min="0" max="3600" value="${phase.longPauseSeconds}"></label></div>`
         : `<div class="training-phase-details continuous"><label>Dauer (Sek.)<input data-field="durationSeconds" type="number" min="1" max="7200" value="${phase.durationSeconds}"></label><label>Ansage beim Start<input data-field="announcement" type="text" maxlength="180" value="${esc(phase.announcement)}" placeholder="z. B. Nächste Station"></label></div>`;
-      return `<article class="training-phase" data-phase-id="${esc(phase.id)}">${common}${details}</article>`;
+      return `<article class="training-phase ${index===0?"is-open":""}" data-phase-id="${esc(phase.id)}">${common}${details}</div></article>`;
     }).join("");
   }
   onPhaseInput(event) {
@@ -1314,6 +1323,13 @@ class TrainingPlayerController {
   onPhaseAction(event) {
     const button = event.target.closest("button[data-action]");
     if (!button || button.disabled) return;
+    if (button.dataset.action === "toggle") {
+      const card = button.closest(".training-phase");
+      const open = card.classList.toggle("is-open");
+      button.setAttribute("aria-expanded", String(open));
+      button.querySelector("i").textContent = open ? "⌃" : "⌄";
+      return;
+    }
     this.readEditor();
     const card = button.closest(".training-phase");
     const index = [...this.e.trainingPhases.children].indexOf(card);
@@ -1322,6 +1338,11 @@ class TrainingPlayerController {
     if (button.dataset.action === "down" && index < this.current.phases.length-1) [this.current.phases[index+1],this.current.phases[index]]=[this.current.phases[index],this.current.phases[index+1]];
     this.renderPhases();
     this.refreshIdleTimeline();
+  }
+  updateSectionSummaries() {
+    if (this.e.trainingTemplateSummary) this.e.trainingTemplateSummary.textContent = this.current.name;
+    if (this.e.trainingMusicSummary) this.e.trainingMusicSummary.textContent = `${this.current.music.bpm} BPM · ${Math.round(this.current.music.volume*100)} %`;
+    if (this.e.trainingCueSummary) this.e.trainingCueSummary.textContent = `${this.current.options.countdownEnabled?"Countdown":"Ohne Countdown"} · ${this.current.options.cueMode==="speech"?"Stimme":this.current.options.cueMode==="tones"?"Töne":"Stumm"}`;
   }
   refreshIdleTimeline() { if (this.engine.status === "idle" || this.engine.status === "completed") this.engine.load(this.current); }
   refreshLibraryOptions(selected=this.e.trainingLibraryTrack.value || "all") {

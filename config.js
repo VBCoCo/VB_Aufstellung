@@ -3,7 +3,7 @@ window.APP_CONFIG = {
   SUPABASE_PUBLISHABLE_KEY: "sb_publishable_gwDoKpExqBfM4voiXncaaA_w61xcbO4"
 };
 (() => {
-  const version = "3.14.49";
+  const version = "3.14.50";
   window.VB_RELEASE_VERSION = version;
   const visualModes={login:{color:'#153b72'},viewer:{color:'#153b72'},editor:{color:'#f5d04c'},tactic:{color:'#06111e'}};
   const syncVisualMode=()=>{const body=document.body,app=document.getElementById('appMain');if(!body)return;let mode='login';if(body.classList.contains('tactic-mode'))mode='tactic';else if(body.classList.contains('editing-mode'))mode='editor';else if(app&&!app.classList.contains('auth-hidden'))mode='viewer';body.classList.toggle('viewer-mode',mode==='viewer');document.documentElement.dataset.appMode=mode;document.documentElement.style.backgroundColor=visualModes[mode].color;const theme=document.querySelector('meta[name="theme-color"]');if(theme)theme.setAttribute('content',visualModes[mode].color)};

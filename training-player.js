@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.14.49";
+const VERSION = "3.14.50";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
@@ -290,6 +290,7 @@ class AudioRuntime {
     this.voiceGain = null;
     this.voicePresence = null;
     this.voiceCompressor = null;
+    this.voiceOutput = null;
     this.compressor = null;
     this.noiseBuffer = null;
     this.samples = {};
@@ -317,6 +318,7 @@ class AudioRuntime {
       this.voiceGain = this.context.createGain();
       this.voicePresence = this.context.createBiquadFilter();
       this.voiceCompressor = this.context.createDynamicsCompressor();
+      this.voiceOutput = this.context.createGain();
       this.compressor = this.context.createDynamicsCompressor();
       this.synthGain.connect(this.musicGain);
       this.drumGain.connect(this.musicGain);
@@ -324,12 +326,14 @@ class AudioRuntime {
       this.cueGain.connect(this.context.destination);
       this.voiceGain.connect(this.voicePresence);
       this.voicePresence.connect(this.voiceCompressor);
-      this.voiceCompressor.connect(this.context.destination);
+      this.voiceCompressor.connect(this.voiceOutput);
+      this.voiceOutput.connect(this.context.destination);
       this.compressor.connect(this.context.destination);
       this.synthGain.gain.value = 1;
       this.drumGain.gain.value = 1;
-      this.cueGain.gain.value = this.signalVolume;
+      this.cueGain.gain.value = this.signalVolume * 2;
       this.voiceGain.gain.value = this.speechVolume;
+      this.voiceOutput.gain.value = 1.8;
       this.voicePresence.type = "peaking";
       this.voicePresence.frequency.value = 2400;
       this.voicePresence.Q.value = 0.9;
@@ -397,7 +401,7 @@ class AudioRuntime {
   setSignalVolume(value) {
     this.signalVolume = clamp(value, 0.1, 1);
     if (!this.cueGain || !this.context) return;
-    this.cueGain.gain.setTargetAtTime(this.signalVolume, this.context.currentTime, 0.025);
+    this.cueGain.gain.setTargetAtTime(this.signalVolume * 2, this.context.currentTime, 0.025);
   }
   setSpeechVolume(value) {
     this.speechVolume = clamp(value, 0.2, 1);
@@ -1008,6 +1012,7 @@ class TrainingCueEngine {
     this.speechToken = 0;
     this.speechTimer = null;
     this.countdownTailTimer = null;
+    this.toneDuckTimer = null;
     this.preannouncedActionAt = 0;
     this.loadVoices();
     if (window.speechSynthesis) window.speechSynthesis.addEventListener?.("voiceschanged", () => this.loadVoices());
@@ -1031,20 +1036,32 @@ class TrainingCueEngine {
     this.runtime.setSpeechVolume(this.options.speechVolume);
     this.runtime.setVoiceStyle(this.options.voiceStyle);
   }
+  playToneCue(kind) {
+    clearTimeout(this.toneDuckTimer);
+    this.runtime.setDucked(true);
+    this.music?.setDucked?.(true);
+    this.runtime.cue(kind);
+    const duration={short:360,start:560,pause:480,change:650,end:1100}[kind]||500;
+    this.toneDuckTimer=setTimeout(()=>{
+      this.toneDuckTimer=null;
+      this.runtime.setDucked(false);
+      this.music?.setDucked?.(false);
+    },duration);
+  }
   countdown(number) {
-    if (this.options.cueMode==="tones") this.runtime.cue("short");
+    if (this.options.cueMode==="tones") this.playToneCue("short");
     if (this.options.cueMode==="speech") {
       this.speak(String(number));
       if(number===1){clearTimeout(this.countdownTailTimer);this.countdownTailTimer=setTimeout(()=>{const word=this.options.countdownMode==="action-with-countdown"?"ACTION":"und";if(word==="ACTION")this.preannouncedActionAt=Date.now();this.speak(word)},480)}
     }
   }
   announce(text,segment={}) {
-    if(this.options.cueMode==="tones")this.runtime.cue(segment.kind==="work"?"start":segment.kind==="pause"?"pause":"change");
+    if(this.options.cueMode==="tones")this.playToneCue(segment.kind==="work"?"start":segment.kind==="pause"?"pause":"change");
     const suppress=this.options.countdownMode==="action-with-countdown"&&normalizeSpokenText(text)==="action"&&Date.now()-this.preannouncedActionAt<1800;
     if (this.options.cueMode==="speech" && text && !suppress) this.speak(text);
   }
   complete() {
-    if (this.options.cueMode==="tones") this.runtime.cue("end");
+    if (this.options.cueMode==="tones") this.playToneCue("end");
     if (this.options.cueMode==="speech") this.speak("Training beendet");
   }
   async speak(text) {
@@ -1090,8 +1107,10 @@ class TrainingCueEngine {
     this.speechToken += 1;
     clearTimeout(this.speechTimer);
     clearTimeout(this.countdownTailTimer);
+    clearTimeout(this.toneDuckTimer);
     this.speechTimer = null;
     this.countdownTailTimer = null;
+    this.toneDuckTimer = null;
     this.preannouncedActionAt = 0;
     window.speechSynthesis?.cancel?.();
     this.runtime.stopVoice();

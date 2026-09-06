@@ -144,7 +144,8 @@ function segmentMusic(template, phase) {
 }
 function buildTimeline(template) {
   const result = [];
-  if (template.options.introEnabled) result.push({kind:"intro", label:"Intro", phaseName:"Vorbereitung", durationSeconds:template.options.introSeconds, phaseIndex:-1, music:segmentMusic(template,{music:{}}), silentStart:true});
+  const firstPhase = template.phases[0] || {music:{}};
+  if (template.options.introEnabled) result.push({kind:"intro", label:"Intro", phaseName:"Vorbereitung", durationSeconds:template.options.introSeconds, phaseIndex:-1, music:segmentMusic(template,firstPhase), silentStart:true});
   template.phases.forEach((phase, phaseIndex) => {
     const music = segmentMusic(template, phase);
     if (phase.type === "continuous") {

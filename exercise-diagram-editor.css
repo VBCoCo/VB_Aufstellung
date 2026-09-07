@@ -1,0 +1,201 @@
+body.exercise-diagram-open {
+  overflow: hidden;
+}
+.exercise-diagram-shell {
+  position: fixed;
+  z-index: 5000;
+  inset: 0;
+  background: #06111e;
+  color: #fff;
+}
+.exercise-diagram-editor {
+  display: grid;
+  height: 100dvh;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  overflow: hidden;
+}
+.exercise-diagram-editor header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  border-bottom: 1px solid #315675;
+  background: linear-gradient(180deg, #173b5d, #0b2034);
+}
+.exercise-diagram-editor header h2 {
+  overflow: hidden;
+  margin: 1px 0;
+  font-size: 0.95rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.exercise-diagram-editor header small {
+  color: #7ee6ff;
+  font-size: 0.63rem;
+}
+.exercise-diagram-editor header button {
+  min-height: 40px;
+}
+.diagram-toolbar {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  overflow-x: auto;
+  background: #0c2136;
+}
+.diagram-toolbar > * {
+  min-width: max-content;
+  min-height: 40px;
+}
+.diagram-toolbar .active {
+  border-color: #7ee6ff;
+  background: #0b64ba;
+}
+.exercise-diagram-editor main {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.diagram-court-wrap {
+  display: grid;
+  min-height: 0;
+  padding: 6px;
+  place-items: center;
+  overflow: hidden;
+}
+.diagram-court-wrap svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 620px;
+  touch-action: none;
+  filter: drop-shadow(0 8px 16px #0008);
+}
+.diagram-object {
+  cursor: pointer;
+  touch-action: none;
+}
+.diagram-object.selected {
+  filter: drop-shadow(0 0 8px #7ee6ff);
+}
+.diagram-person-number {
+  fill: #fff;
+  font-size: 20px;
+  font-weight: 900;
+  pointer-events: none;
+}
+.diagram-person-label {
+  fill: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: #06111e;
+  stroke-width: 4px;
+  pointer-events: none;
+}
+.diagram-free-text {
+  fill: #fff;
+  font-size: 24px;
+  font-weight: 850;
+  paint-order: stroke;
+  stroke: #06111e;
+  stroke-width: 5px;
+}
+.diagram-path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.diagram-path.ball {
+  stroke: #ffd400;
+}
+.exercise-diagram-editor aside {
+  display: flex;
+  min-height: 50px;
+  align-items: end;
+  gap: 7px;
+  padding: 7px;
+  overflow-x: auto;
+  border-top: 1px solid #315675;
+  background: #0d2136;
+}
+.exercise-diagram-editor aside p {
+  margin: 0;
+  color: #b8cce0;
+  font-size: 0.76rem;
+}
+.exercise-diagram-editor aside strong {
+  align-self: center;
+  min-width: max-content;
+}
+.exercise-diagram-editor aside label {
+  display: grid;
+  min-width: 130px;
+  gap: 2px;
+  color: #b8cce0;
+  font-size: 0.62rem;
+}
+.exercise-diagram-editor aside input,
+.exercise-diagram-editor aside select,
+.diagram-toolbar select {
+  box-sizing: border-box;
+  min-height: 40px;
+  padding: 6px 8px;
+  border: 1px solid #456782;
+  border-radius: 8px;
+  background: #081522;
+  color: #fff;
+}
+.diagram-add-panel {
+  padding: 6px;
+  border-top: 1px solid #315675;
+  background: #102a43;
+}
+.diagram-add-panel strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #7ee6ff;
+  font-size: 0.67rem;
+}
+.diagram-add-panel > div {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+}
+.diagram-add-panel button {
+  min-width: max-content;
+  min-height: 42px;
+}
+.exercise-diagram-editor footer {
+  min-height: 28px;
+  padding: 5px 9px;
+  background: #06111e;
+  color: #b8cce0;
+  font-size: 0.7rem;
+}
+.exercise-diagram-editor .hidden {
+  display: none !important;
+}
+@media (min-width: 760px) {
+  .exercise-diagram-editor main {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .exercise-diagram-editor aside {
+    display: grid;
+    align-content: start;
+    align-items: stretch;
+    border-top: 0;
+    border-left: 1px solid #315675;
+    overflow-y: auto;
+  }
+  .exercise-diagram-editor aside label {
+    min-width: 0;
+  }
+  .diagram-add-panel > div {
+    justify-content: center;
+  }
+}

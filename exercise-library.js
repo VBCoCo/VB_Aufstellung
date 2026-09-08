@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const VERSION = "3.15.1",
+  const VERSION = "3.15.2",
     FEATURE = "exercise_library",
     API = () => window.VBTrainingApi,
     KEY = "volleyball-trainer-exercise-density";
@@ -273,7 +273,16 @@
       selected = new Set((item?.materials || []).map((x) => x.code));
     overlay.className = "exercise-editor-overlay";
     const mode = item?.player_mode || "multiple";
-    overlay.innerHTML = `<form class="exercise-editor"><div class="exercise-editor-head"><div><span class="eyebrow">${readonly ? "Übung ansehen" : item?.id ? "Übung bearbeiten" : "Neue Übung"}</span><h2>${isV ? "Volleyballübung" : "Athletikübung"}</h2></div><button type="button" data-close>✕</button></div><label>Name<input name="name" required maxlength="140" value="${esc(item?.name || "")}"></label><label class="exercise-short-field">Kurzbeschreibung<textarea class="exercise-short-description" name="short_description" required rows="5" maxlength="300">${esc(item?.short_description || "")}</textarea><span class="exercise-character-count" data-short-count>0/300 Zeichen</span></label><div class="exercise-form-grid"><label>Hauptfokus<select name="main_focus" required>${focuses.map((x) => `<option value="${esc(x.code)}" ${item?.main_focus === x.code ? "selected" : ""}>${esc(x.label)}</option>`).join("")}</select></label><label>Schwierigkeit<select name="difficulty"><option value="easy" ${item?.difficulty === "easy" ? "selected" : ""}>Leicht</option><option value="medium" ${!item || item?.difficulty === "medium" ? "selected" : ""}>Mittel</option><option value="hard" ${item?.difficulty === "hard" ? "selected" : ""}>Schwer</option></select></label>${isV ? `<label>Form<select name="form_type"><option value="exercise" ${item?.form_type !== "game" ? "selected" : ""}>Übungsform</option><option value="game" ${item?.form_type === "game" ? "selected" : ""}>Spielform</option></select></label><label>Ziel<textarea name="goal" required rows="2">${esc(item?.goal || "")}</textarea></label><label>Spieleranzahl<select name="player_mode"><option value="exact" ${mode === "exact" ? "selected" : ""}>genau X</option><option value="minimum" ${mode === "range" && !item?.player_max ? "selected" : ""}>ab X</option><option value="range" ${mode === "range" && item?.player_max ? "selected" : ""}>von X bis Y</option><option value="multiple" ${mode === "multiple" ? "selected" : ""}>Gruppen zu X</option></select></label><label>X / Minimum<input name="players" type="number" min="1" max="40" value="${item?.player_exact || item?.group_size || item?.player_min || 3}"></label><label>Maximum (nur von–bis)<input name="players_max" type="number" min="1" max="40" value="${item?.player_max || ""}"></label><details class="exercise-player-help"><summary>Wie gebe ich die Spielerzahl an?</summary>„genau X“ für feste Besetzung, „ab X“ z. B. Baggertennis ab 3, „von X bis Y“ für einen Bereich und „Gruppen zu X“ für Übungen in festen Kleingruppen.</details><label>Feldbedarf<input name="field_need" value="${esc(item?.field_need || "")}"></label><label>Ablauf / Organisation<textarea name="organization" required rows="3">${esc(item?.organization || "")}</textarea></label>` : `<label>Ausführung<textarea name="execution" required rows="3">${esc(item?.execution || "")}</textarea></label><label>Sozialform<select name="social_form"><option value="single">Einzeln</option><option value="partner" ${item?.social_form === "partner" ? "selected" : ""}>Partner</option><option value="group" ${item?.social_form === "group" ? "selected" : ""}>Gruppe</option></select></label>`}<label>Dauer-Richtwert (min)<input name="duration_min" type="number" min="1" max="120" value="${item?.duration_min || 5}"></label><label>Übungsfamilie<input name="family_key" value="${esc(item?.family_key || "")}"></label><label>Variante<input name="variant_label" value="${esc(item?.variant_label || "")}"></label></div><fieldset><legend>Material</legend><div class="exercise-materials">${materials.map((m) => `<label><input type="checkbox" name="material" value="${esc(m.code)}" ${selected.has(m.code) || (m.code === "none" && !item) ? "checked" : ""}> ${esc(m.label)}</label>`).join("")}</div></fieldset><div class="exercise-check-row"><label><input name="youth_suitable" type="checkbox" ${item?.youth_suitable ? "checked" : ""}> Kinder/Jugend geeignet</label><label><input name="playful" type="checkbox" ${item?.playful ? "checked" : ""}> Spielerisch</label>${isV ? `<label><input name="competition_oriented" type="checkbox" ${item?.competition_oriented ? "checked" : ""}> Wettkampforientiert</label><label><input name="parallel_groups" type="checkbox" ${item?.parallel_groups ? "checked" : ""}> In parallele Gruppen/Felder teilbar</label>` : `<label><input name="circuit_suitable" type="checkbox" ${item?.circuit_suitable ? "checked" : ""}> Zirkelgeeignet</label>`}</div><p class="exercise-editor-status"></p><div class="exercise-editor-actions"><button type="button" data-close>${readonly ? "Schließen" : "Abbrechen"}</button>${readonly ? '<button type="button" class="primary" data-clone>Als eigene übernehmen</button>' : '<button class="primary" type="submit">Speichern</button>'}</div></form>`;
+    const focusOptions = focuses.map((x) => `<option value="${esc(x.code)}" ${item?.main_focus === x.code ? "selected" : ""}>${esc(x.label)}</option>`).join(""),
+      materialOptions = materials.map((m) => `<label><input type="checkbox" name="material" value="${esc(m.code)}" ${selected.has(m.code) || (m.code === "none" && !item) ? "checked" : ""}> ${esc(m.label)}</label>`).join(""),
+      basicVolleyball = isV ? `<label>Form<select name="form_type"><option value="exercise" ${item?.form_type !== "game" ? "selected" : ""}>Übungsform</option><option value="game" ${item?.form_type === "game" ? "selected" : ""}>Spielform</option></select></label><label class="exercise-span-wide">Ziel<textarea name="goal" required rows="2">${esc(item?.goal || "")}</textarea></label>` : "",
+      organizationFields = isV ? `<label>Spieleranzahl<select name="player_mode"><option value="exact" ${mode === "exact" ? "selected" : ""}>genau X</option><option value="minimum" ${mode === "range" && !item?.player_max ? "selected" : ""}>ab X</option><option value="range" ${mode === "range" && item?.player_max ? "selected" : ""}>von X bis Y</option><option value="multiple" ${mode === "multiple" ? "selected" : ""}>Gruppen zu X</option></select></label><label>X / Minimum<input name="players" type="number" min="1" max="40" value="${item?.player_exact || item?.group_size || item?.player_min || 3}"></label><label>Maximum (nur von–bis)<input name="players_max" type="number" min="1" max="40" value="${item?.player_max || ""}"></label><label>Feldbedarf<input name="field_need" value="${esc(item?.field_need || "")}"></label><details class="exercise-player-help exercise-span-wide"><summary>Wie gebe ich die Spielerzahl an?</summary>„genau X“ für feste Besetzung, „ab X“ für eine Mindestzahl, „von X bis Y“ für einen Bereich und „Gruppen zu X“ für feste Kleingruppen.</details><label class="exercise-span-wide">Ablauf / Organisation<textarea name="organization" required rows="3">${esc(item?.organization || "")}</textarea></label>` : `<label class="exercise-span-wide">Ausführung<textarea name="execution" required rows="3">${esc(item?.execution || "")}</textarea></label><label>Sozialform<select name="social_form"><option value="single">Einzeln</option><option value="partner" ${item?.social_form === "partner" ? "selected" : ""}>Partner</option><option value="group" ${item?.social_form === "group" ? "selected" : ""}>Gruppe</option></select></label>`;
+    overlay.innerHTML = `<form class="exercise-editor"><div class="exercise-editor-head"><div><span class="eyebrow">${readonly ? "Übung ansehen" : item?.id ? "Übung bearbeiten" : "Neue Übung"}</span><h2>${isV ? "Volleyballübung" : "Athletikübung"}</h2></div><div class="exercise-editor-head-actions">${isV && item?.id ? '<button type="button" data-diagram-switch>Grafik</button>' : ""}<button type="button" data-close aria-label="Schließen">✕</button></div></div>
+      <details class="exercise-form-section" open><summary><span>Grunddaten</span><small>Name, Beschreibung und Einordnung</small></summary><div class="exercise-section-body"><label>Name<input name="name" required maxlength="140" value="${esc(item?.name || "")}"></label><label class="exercise-short-field">Kurzbeschreibung<textarea class="exercise-short-description" name="short_description" required rows="5" maxlength="300">${esc(item?.short_description || "")}</textarea><span class="exercise-character-count" data-short-count>0/300 Zeichen</span></label><div class="exercise-form-grid"><label>Hauptfokus<select name="main_focus" required>${focusOptions}</select></label><label>Schwierigkeit<select name="difficulty"><option value="easy" ${item?.difficulty === "easy" ? "selected" : ""}>Leicht</option><option value="medium" ${!item || item?.difficulty === "medium" ? "selected" : ""}>Mittel</option><option value="hard" ${item?.difficulty === "hard" ? "selected" : ""}>Schwer</option></select></label>${basicVolleyball}</div></div></details>
+      <details class="exercise-form-section"><summary><span>Organisation</span><small>Spieler, Feld, Ablauf und Dauer</small></summary><div class="exercise-section-body exercise-form-grid">${organizationFields}<label>Dauer-Richtwert (min)<input name="duration_min" type="number" min="1" max="120" value="${item?.duration_min || 5}"></label></div></details>
+      <details class="exercise-form-section"><summary><span>Familie &amp; Eigenschaften</span><small>Variante und Eignung</small></summary><div class="exercise-section-body"><div class="exercise-form-grid"><label>Übungsfamilie<input name="family_key" value="${esc(item?.family_key || "")}"></label><label>Variante<input name="variant_label" value="${esc(item?.variant_label || "")}"></label></div><div class="exercise-check-row"><label><input name="youth_suitable" type="checkbox" ${item?.youth_suitable ? "checked" : ""}> Kinder/Jugend geeignet</label><label><input name="playful" type="checkbox" ${item?.playful ? "checked" : ""}> Spielerisch</label>${isV ? `<label><input name="competition_oriented" type="checkbox" ${item?.competition_oriented ? "checked" : ""}> Wettkampforientiert</label><label><input name="parallel_groups" type="checkbox" ${item?.parallel_groups ? "checked" : ""}> In parallele Gruppen/Felder teilbar</label>` : `<label><input name="circuit_suitable" type="checkbox" ${item?.circuit_suitable ? "checked" : ""}> Zirkelgeeignet</label>`}</div></div></details>
+      <details class="exercise-form-section exercise-material-section"><summary><span>Material</span><small data-material-summary>Auswahl anzeigen</small></summary><div class="exercise-section-body"><div class="exercise-materials">${materialOptions}</div></div></details>
+      <p class="exercise-editor-status"></p><div class="exercise-editor-actions"><button type="button" data-close>${readonly ? "Schließen" : "Abbrechen"}</button>${readonly ? '<button type="button" class="primary" data-clone>Als eigene übernehmen</button>' : '<button class="primary" type="submit">Speichern</button>'}</div></form>`;
     document.body.appendChild(overlay);
     const shortDescription = overlay.querySelector('[name="short_description"]'),
       shortCount = overlay.querySelector("[data-short-count]"),
@@ -284,6 +293,23 @@
       };
     shortDescription.addEventListener("input", syncShortDescription);
     syncShortDescription();
+    const materialInputs = [...overlay.querySelectorAll('[name="material"]')],
+      materialSummary = overlay.querySelector("[data-material-summary]"),
+      syncMaterials = (changed = null) => {
+        if (changed?.value === "none" && changed.checked)
+          materialInputs.forEach((input) => { if (input !== changed) input.checked = false; });
+        const checked = materialInputs.filter((input) => input.checked),
+          names = checked.map((input) => input.parentElement.textContent.trim());
+        materialSummary.textContent = names.length ? (names.length <= 2 ? names.join(", ") : `${names.length} ausgewählt`) : "Nichts ausgewählt";
+      };
+    materialInputs.forEach((input) => input.addEventListener("change", () => {
+      if (input.value !== "none" && input.checked) {
+        const none = materialInputs.find((candidate) => candidate.value === "none");
+        if (none) none.checked = false;
+      }
+      syncMaterials(input.value === "none" ? input : null);
+    }));
+    syncMaterials();
     if (readonly) overlay.querySelectorAll("input,textarea,select").forEach((x) => (x.disabled = true));
     overlay.querySelectorAll("[data-close]").forEach((b) => (b.onclick = () => overlay.remove()));
     overlay.querySelector("[data-clone]")?.addEventListener("click", () => {
@@ -298,6 +324,22 @@
         false,
         item.id,
       );
+    });
+    overlay.querySelector("[data-diagram-switch]")?.addEventListener("click", async () => {
+      const status = overlay.querySelector(".exercise-editor-status");
+      try {
+        if (!window.VBExerciseDiagramEditor) throw new Error("Grafikeditor ist noch nicht geladen.");
+        overlay.classList.add("diagram-background");
+        await window.VBExerciseDiagramEditor.open({
+          exercise: item,
+          readonly,
+          userId: state.context.userId,
+          onClose: () => overlay.classList.remove("diagram-background"),
+        });
+      } catch (error) {
+        overlay.classList.remove("diagram-background");
+        status.textContent = `Grafik konnte nicht geöffnet werden: ${error.message}`;
+      }
     });
     if (!readonly) overlay.querySelector("form").onsubmit = (e) => saveExercise(e, item, overlay, sourceId);
   }

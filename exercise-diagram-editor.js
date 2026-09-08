@@ -68,6 +68,18 @@
     session.redo = [];
     session.dirty = true;
   }
+  function setStatus(message, { sticky = false, error = false } = {}) {
+    if (!session) return;
+    clearTimeout(session.statusTimer);
+    const status = session.root.querySelector("[data-status]");
+    if (!status) return;
+    status.textContent = message || "";
+    status.classList.toggle("error", error);
+    if (message && !sticky && !error)
+      session.statusTimer = setTimeout(() => {
+        if (session && status.isConnected) status.textContent = "";
+      }, 2600);
+  }
   function restore(stack, target) {
     if (!stack.length) return;
     target.push(clone(session.doc));
@@ -84,9 +96,8 @@
   }
 
   async function save() {
-    const status = session.root.querySelector("[data-status]"),
-      button = session.root.querySelector("[data-save]");
-    status.textContent = "Speichere Grafik …";
+    const button = session.root.querySelector("[data-save]");
+    setStatus("Speichere Grafik …", { sticky: true });
     button.disabled = true;
     const body = {
       exercise_id: session.exercise.id,
@@ -125,10 +136,10 @@
       session.dirty = false;
       session.undo = [];
       session.redo = [];
-      status.textContent = "Grafik gespeichert.";
+      setStatus("Grafik gespeichert.");
       render();
     } catch (error) {
-      status.textContent = `Speichern fehlgeschlagen: ${error.message}`;
+      setStatus(`Speichern fehlgeschlagen: ${error.message}`, { error: true });
     } finally {
       button.disabled = false;
     }
@@ -137,9 +148,12 @@
   function close() {
     if (session?.dirty && !confirm("Ungespeicherte Änderungen verwerfen?"))
       return;
+    const onClose = session?.onClose;
+    clearTimeout(session?.statusTimer);
     session?.root.remove();
     document.body.classList.remove("exercise-diagram-open");
     session = null;
+    onClose?.();
   }
 
   function add(type) {
@@ -148,8 +162,7 @@
       session.tool = "line";
       session.selectedId = "";
       render();
-      session.root.querySelector("[data-status]").textContent =
-        "Linie: Auf dem Feld vom Start- zum Endpunkt ziehen.";
+      setStatus("Linie: Auf dem Feld vom Start- zum Endpunkt ziehen.");
       return;
     }
     snapshot();
@@ -170,6 +183,7 @@
       Object.assign(base, { x: 350, y: 450, text: "Hinweis" });
     objects.push(base);
     session.selectedId = base.id;
+    session.propertiesExpanded = false;
     session.tool = "move";
     render();
   }
@@ -243,12 +257,14 @@
     const panel = session.root.querySelector("[data-properties]"),
       o = selected();
     if (!o) {
-      panel.classList.remove("open");
+      panel.classList.remove("open", "expanded");
       panel.innerHTML = "";
       return;
     }
     panel.classList.add("open");
-    let fields = `<div class="diagram-properties-head"><strong>${labels[o.type]}</strong><button type="button" data-properties-close aria-label="Eigenschaften schließen">⌄</button></div><div class="diagram-properties-grid">`;
+    panel.classList.toggle("expanded", session.propertiesExpanded);
+    const hint = o.type === "line" ? "Endpunkte ziehen" : o.type === "zone" ? "Ecke ziehen" : "Eigenschaften";
+    let fields = `<div class="diagram-properties-head"><span><strong>${labels[o.type]}</strong><small>${hint}</small></span><div><button type="button" data-properties-toggle aria-label="Eigenschaften ${session.propertiesExpanded ? "zuklappen" : "aufklappen"}" aria-expanded="${session.propertiesExpanded}">${session.propertiesExpanded ? "⌄" : "⌃"}</button><button type="button" data-properties-close aria-label="Auswahl schließen">×</button></div></div><div class="diagram-properties-grid">`;
     if (o.type === "person")
       fields += `<label class="diagram-prop-team">Team / Person<select data-prop="team"><option value="a">Team A</option><option value="b">Team B</option><option value="neutral">Neutral</option><option value="coach">Trainer / Ballgeber</option></select></label><label class="diagram-prop-number">Nummer<input data-prop="number" maxlength="3" value="${esc(o.number || "")}"></label><label class="diagram-prop-role">Rolle<select data-prop="role">${roles.map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select></label><label class="diagram-prop-label">Kurzbezeichnung<input data-prop="label" maxlength="14" value="${esc(o.label || "")}"></label>`;
     if (o.type === "text")
@@ -280,8 +296,13 @@
     panel
       .querySelector("[data-delete]")
       ?.addEventListener("click", removeSelected);
+    panel.querySelector("[data-properties-toggle]")?.addEventListener("click", () => {
+      session.propertiesExpanded = !session.propertiesExpanded;
+      renderProperties();
+    });
     panel.querySelector("[data-properties-close]")?.addEventListener("click", () => {
       session.selectedId = "";
+      session.propertiesExpanded = false;
       render();
     });
   }
@@ -307,6 +328,9 @@
       .querySelector('[data-add="line"]')
       ?.classList.toggle("active", session.tool === "line");
     session.root.querySelector("[data-field]").value = session.doc.court.type;
+    const summary = session.root.querySelector("[data-tools-summary]");
+    if (summary)
+      summary.textContent = `${session.doc.court.type === "half" ? "Halbfeld" : "Ganzfeld"} · ${session.tool === "path" ? "Weg zeichnen" : session.tool === "line" ? "Linie zeichnen" : "Verschieben"}`;
   }
 
   function wirePointer() {
@@ -344,6 +368,8 @@
         (x) => x.id === target.dataset.id,
       );
       if (!o) return;
+      if (session.selectedId !== o.id)
+        session.propertiesExpanded = matchMedia("(orientation: landscape) and (min-width: 600px)").matches;
       session.selectedId = o.id;
       if (session.readonly) {
         render();
@@ -418,8 +444,7 @@
           if (d.kind === "draw-line") {
             session.doc = d.before;
             session.selectedId = "";
-            session.root.querySelector("[data-status]").textContent =
-              "Linie nicht angelegt – bitte auf dem Feld ziehen.";
+            setStatus("Linie nicht angelegt – bitte auf dem Feld ziehen.");
           }
           return render();
         }
@@ -429,8 +454,7 @@
         const o = session.doc.steps[0].objects.find((x) => x.id === d.id);
         if (d.kind === "draw-line") {
           session.tool = "move";
-          session.root.querySelector("[data-status]").textContent =
-            "Linie angelegt. Die markierten Endpunkte können verschoben werden.";
+          setStatus("Linie angelegt. Endpunkte können verschoben werden.");
         }
         if (session.tool === "path" && ["person", "ball"].includes(o.type) && d.points.length > 1) {
           d.points.push({ x: o.x, y: o.y });
@@ -446,12 +470,12 @@
     );
   }
 
-  async function open({ exercise, readonly = false, userId }) {
+  async function open({ exercise, readonly = false, userId, onClose = null }) {
     if (!exercise?.id) return;
     const row = await load(exercise.id),
       root = document.createElement("div");
     root.className = "exercise-diagram-shell";
-    root.innerHTML = `<section class="exercise-diagram-editor"><header><button type="button" data-close>←</button><div><small>Grafischer Aufbau · V1.2a.1</small><h2>${esc(exercise.name)}</h2></div><button type="button" class="primary" data-save>Speichern</button></header><div class="diagram-toolbar"><select data-field aria-label="Felddarstellung"><option value="full">Ganzfeld</option><option value="half">Halbfeld</option></select><button type="button" data-mode="move" class="active">Verschieben</button><button type="button" data-mode="path">Weg zeichnen</button><button type="button" data-undo aria-label="Rückgängig">↶</button><button type="button" data-redo aria-label="Wiederholen">↷</button></div><main><div class="diagram-court-wrap"><svg data-court role="img" aria-label="Grafischer Übungsaufbau" preserveAspectRatio="xMidYMid meet"></svg></div><aside data-properties></aside></main><div class="diagram-add-panel"><strong>Hinzufügen</strong><div>${[
+    root.innerHTML = `<section class="exercise-diagram-editor"><header><button type="button" data-close>←</button><div><small>Grafischer Aufbau · V1.2a.2</small><h2>${esc(exercise.name)}</h2></div><button type="button" class="primary" data-save>Speichern</button></header><section class="diagram-tool-panel collapsed" data-collapsible="tools"><button type="button" class="diagram-panel-toggle" data-panel-toggle="tools" aria-expanded="false"><span>Aufbau</span><small data-tools-summary>Ganzfeld · Verschieben</small><i>⌃</i></button><div class="diagram-toolbar"><select data-field aria-label="Felddarstellung"><option value="full">Ganzfeld</option><option value="half">Halbfeld</option></select><button type="button" data-mode="move" class="active">Verschieben</button><button type="button" data-mode="path">Weg zeichnen</button><button type="button" data-undo aria-label="Rückgängig">↶</button><button type="button" data-redo aria-label="Wiederholen">↷</button></div></section><main><div class="diagram-court-wrap"><svg data-court role="img" aria-label="Grafischer Übungsaufbau" preserveAspectRatio="xMidYMid meet"></svg></div><aside data-properties></aside></main><section class="diagram-add-panel collapsed" data-collapsible="add"><button type="button" class="diagram-panel-toggle" data-panel-toggle="add" aria-expanded="false"><span>Hinzufügen</span><small>Personen &amp; Objekte</small><i>⌃</i></button><div>${[
       ["person", "＋ Person"],
       ["ball", "＋ Ball"],
       ["cone", "＋ Hütchen"],
@@ -462,7 +486,7 @@
       .map(([v, l]) => `<button type="button" data-add="${v}">${l}</button>`)
       .join(
         "",
-      )}</div></div><footer><span data-status>${readonly ? "Nur ansehen" : "Noch nicht geändert"}</span></footer></section>`;
+      )}</div></section><footer aria-live="polite"><span data-status></span></footer></section>`;
     document.body.appendChild(root);
     document.body.classList.add("exercise-diagram-open");
     session = {
@@ -481,6 +505,9 @@
       redo: [],
       dirty: false,
       drag: null,
+      propertiesExpanded: false,
+      statusTimer: null,
+      onClose,
     };
     root.querySelector("[data-close]").onclick = close;
     root.querySelector("[data-save]").onclick = save;
@@ -508,8 +535,23 @@
       b.disabled = readonly;
       b.onclick = () => add(b.dataset.add);
     });
+    root.querySelectorAll("[data-panel-toggle]").forEach((button) => {
+      button.onclick = () => {
+        const panel = root.querySelector(`[data-collapsible="${button.dataset.panelToggle}"]`),
+          opening = panel.classList.contains("collapsed");
+        root.querySelectorAll("[data-collapsible]").forEach((other) => {
+          if (other !== panel) {
+            other.classList.add("collapsed");
+            other.querySelector("[data-panel-toggle]")?.setAttribute("aria-expanded", "false");
+          }
+        });
+        panel.classList.toggle("collapsed", !opening);
+        button.setAttribute("aria-expanded", String(opening));
+      };
+    });
     wirePointer();
     render();
+    setStatus(readonly ? "Nur ansehen" : "Grafik bereit.");
   }
 
   window.VBExerciseDiagramEditor = { open };

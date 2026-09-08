@@ -5,21 +5,26 @@ body.exercise-diagram-open {
   position: fixed;
   z-index: 5000;
   inset: 0;
+  min-width: 0;
   background: #06111e;
   color: #fff;
 }
 .exercise-diagram-editor {
+  position: relative;
   display: grid;
+  width: 100%;
   height: 100dvh;
-  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  min-width: 0;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   overflow: hidden;
 }
 .exercise-diagram-editor header {
   display: grid;
+  min-width: 0;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 9px;
-  padding: 7px 9px;
+  padding: max(7px, env(safe-area-inset-top)) max(9px, env(safe-area-inset-right)) 7px max(9px, env(safe-area-inset-left));
   border-bottom: 1px solid #315675;
   background: linear-gradient(180deg, #173b5d, #0b2034);
 }
@@ -35,30 +40,48 @@ body.exercise-diagram-open {
   font-size: 0.63rem;
 }
 .exercise-diagram-editor header button {
-  min-height: 40px;
+  min-width: 44px;
+  min-height: 44px;
 }
 .diagram-toolbar {
   display: flex;
+  min-width: 0;
   gap: 6px;
-  padding: 6px;
+  padding: 6px max(6px, env(safe-area-inset-right)) 6px max(6px, env(safe-area-inset-left));
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   background: #0c2136;
 }
-.diagram-toolbar > * {
-  min-width: max-content;
-  min-height: 40px;
+.diagram-toolbar::-webkit-scrollbar,
+.diagram-add-panel > div::-webkit-scrollbar {
+  display: none;
 }
-.diagram-toolbar .active {
+.diagram-toolbar > * {
+  flex: 0 0 auto;
+  min-width: max-content;
+  min-height: 44px;
+  scroll-snap-align: start;
+}
+.diagram-toolbar .active,
+.diagram-add-panel button.active {
   border-color: #7ee6ff;
   background: #0b64ba;
 }
 .exercise-diagram-editor main {
+  position: relative;
   display: grid;
+  min-width: 0;
   min-height: 0;
-  grid-template-rows: minmax(0, 1fr) auto;
+  overflow: hidden;
 }
 .diagram-court-wrap {
   display: grid;
+  width: 100%;
+  min-width: 0;
   min-height: 0;
   padding: 6px;
   place-items: center;
@@ -68,16 +91,24 @@ body.exercise-diagram-open {
   display: block;
   width: 100%;
   height: 100%;
-  max-width: 620px;
+  min-width: 0;
+  max-width: 700px;
+  max-height: 100%;
   touch-action: none;
   filter: drop-shadow(0 8px 16px #0008);
 }
-.diagram-object {
+.diagram-object,
+.diagram-resize-handle {
   cursor: pointer;
   touch-action: none;
 }
 .diagram-object.selected {
   filter: drop-shadow(0 0 8px #7ee6ff);
+}
+.diagram-resize-handle {
+  fill: #7ee6ff;
+  stroke: #06111e;
+  stroke-width: 5px;
 }
 .diagram-person-number {
   fill: #fff;
@@ -113,46 +144,97 @@ body.exercise-diagram-open {
   stroke: #ffd400;
 }
 .exercise-diagram-editor aside {
+  position: absolute;
+  z-index: 5;
+  right: max(6px, env(safe-area-inset-right));
+  bottom: 6px;
+  left: max(6px, env(safe-area-inset-left));
+  display: none;
+  min-width: 0;
+  max-height: min(46dvh, 360px);
+  padding: 9px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid #426987;
+  border-radius: 13px;
+  background: #0d2136f5;
+  box-shadow: 0 8px 24px #000a;
+  -webkit-overflow-scrolling: touch;
+}
+.exercise-diagram-editor aside.open {
+  display: grid;
+  gap: 8px;
+}
+.diagram-properties-head {
   display: flex;
-  min-height: 50px;
-  align-items: end;
-  gap: 7px;
-  padding: 7px;
-  overflow-x: auto;
-  border-top: 1px solid #315675;
-  background: #0d2136;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.diagram-properties-head button {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+}
+.diagram-properties-grid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr);
+  gap: 8px;
 }
 .exercise-diagram-editor aside p {
   margin: 0;
   color: #b8cce0;
   font-size: 0.76rem;
-}
-.exercise-diagram-editor aside strong {
-  align-self: center;
-  min-width: max-content;
+  line-height: 1.35;
 }
 .exercise-diagram-editor aside label {
   display: grid;
-  min-width: 130px;
-  gap: 2px;
+  min-width: 0;
+  gap: 3px;
   color: #b8cce0;
-  font-size: 0.62rem;
+  font-size: 0.68rem;
+}
+.diagram-prop-team,
+.diagram-prop-label,
+.diagram-prop-wide {
+  grid-column: 1 / -1;
 }
 .exercise-diagram-editor aside input,
 .exercise-diagram-editor aside select,
 .diagram-toolbar select {
   box-sizing: border-box;
-  min-height: 40px;
-  padding: 6px 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 7px 9px;
   border: 1px solid #456782;
   border-radius: 8px;
   background: #081522;
   color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
 }
 .diagram-add-panel {
-  padding: 6px;
+  position: relative;
+  min-width: 0;
+  padding: 6px max(6px, env(safe-area-inset-right)) max(6px, env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left));
+  overflow: hidden;
   border-top: 1px solid #315675;
   background: #102a43;
+}
+.diagram-add-panel::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 34px;
+  height: 50px;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(90deg, transparent, #102a43);
 }
 .diagram-add-panel strong {
   display: block;
@@ -162,40 +244,164 @@ body.exercise-diagram-open {
 }
 .diagram-add-panel > div {
   display: flex;
+  min-width: 0;
   gap: 5px;
+  padding-right: 22px;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 .diagram-add-panel button {
+  flex: 0 0 auto;
   min-width: max-content;
-  min-height: 42px;
+  min-height: 44px;
+  scroll-snap-align: start;
 }
 .exercise-diagram-editor footer {
-  min-height: 28px;
+  position: absolute;
+  z-index: 7;
+  right: max(8px, env(safe-area-inset-right));
+  bottom: calc(64px + env(safe-area-inset-bottom));
+  left: max(8px, env(safe-area-inset-left));
+  min-width: 0;
+  pointer-events: none;
+}
+.exercise-diagram-editor footer span {
+  display: inline-block;
+  max-width: 100%;
   padding: 5px 9px;
-  background: #06111e;
-  color: #b8cce0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #06111ee6;
+  color: #c7d8e9;
   font-size: 0.7rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .exercise-diagram-editor .hidden {
   display: none !important;
 }
-@media (min-width: 760px) {
+@media (max-width: 390px) {
+  .exercise-diagram-editor header {
+    gap: 6px;
+  }
+  .exercise-diagram-editor header button {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 9px;
+  }
+  .diagram-properties-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .diagram-prop-team,
+  .diagram-prop-number,
+  .diagram-prop-role,
+  .diagram-prop-label,
+  .diagram-prop-wide {
+    grid-column: 1;
+  }
+}
+@media (orientation: landscape) and (min-width: 600px) {
+  .exercise-diagram-editor {
+    grid-template-columns: 170px minmax(0, 1fr) 230px;
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+      "header header header"
+      "tools court properties";
+  }
+  .exercise-diagram-editor header {
+    grid-area: header;
+    padding-top: max(5px, env(safe-area-inset-top));
+    padding-bottom: 5px;
+  }
+  .diagram-toolbar {
+    z-index: 2;
+    grid-area: tools;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-self: start;
+    padding: 7px 7px 6px max(7px, env(safe-area-inset-left));
+    overflow-x: hidden;
+    overflow-y: auto;
+    touch-action: pan-y;
+    background: #0c2136;
+  }
+  .diagram-toolbar select {
+    grid-column: 1 / -1;
+  }
+  .diagram-toolbar > * {
+    min-width: 0;
+    padding-right: 5px;
+    padding-left: 5px;
+    font-size: 0.72rem;
+    white-space: normal;
+  }
   .exercise-diagram-editor main {
-    grid-template-columns: minmax(0, 1fr) 260px;
-    grid-template-rows: minmax(0, 1fr);
+    display: contents;
+  }
+  .diagram-court-wrap {
+    grid-area: court;
+    padding: 6px;
   }
   .exercise-diagram-editor aside {
-    display: grid;
-    align-content: start;
-    align-items: stretch;
-    border-top: 0;
-    border-left: 1px solid #315675;
-    overflow-y: auto;
+    position: static;
+    grid-area: properties;
+    width: auto;
+    max-height: none;
+    padding: 9px max(9px, env(safe-area-inset-right)) 9px 9px;
+    border-width: 0 0 0 1px;
+    border-radius: 0;
+    box-shadow: none;
+    background: #0d2136;
   }
-  .exercise-diagram-editor aside label {
-    min-width: 0;
+  .exercise-diagram-editor aside.open {
+    align-content: start;
+  }
+  .diagram-properties-head button {
+    display: none;
+  }
+  .diagram-properties-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .diagram-prop-team,
+  .diagram-prop-number,
+  .diagram-prop-role,
+  .diagram-prop-label,
+  .diagram-prop-wide {
+    grid-column: 1;
+  }
+  .diagram-add-panel {
+    z-index: 3;
+    grid-area: tools;
+    align-self: end;
+    max-height: 54%;
+    padding: 6px 7px max(7px, env(safe-area-inset-bottom)) max(7px, env(safe-area-inset-left));
+    overflow-y: auto;
+    border-top: 1px solid #315675;
+  }
+  .diagram-add-panel::after {
+    display: none;
   }
   .diagram-add-panel > div {
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 5px;
+    padding-right: 0;
+    overflow: visible;
+  }
+  .diagram-add-panel button {
+    min-width: 0;
+    min-height: 38px;
+    padding: 0 4px;
+    font-size: 0.69rem;
+    white-space: normal;
+  }
+  .exercise-diagram-editor footer {
+    right: 240px;
+    bottom: max(7px, env(safe-area-inset-bottom));
+    left: 180px;
   }
 }

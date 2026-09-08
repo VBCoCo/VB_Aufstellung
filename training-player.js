@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.15.1";
+const VERSION = "3.15.2";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
@@ -36,7 +36,10 @@ const VOICE_PHRASES = {
   "training beendet":"training-complete",und:"and",work:"work"
 };
 const VOICE_ORDER = ["one","two","three","four","five","action","pause","change","next-station","serve","reception","set-break","block-break","block","warm-up","warm-up-easy","increase-tempo","preparation","power","start","stop","continue","training-complete"];
-const CUSTOM_VOICE_FILES = Object.fromEntries(["custom-b","custom-c"].map(style => [style,Object.fromEntries(["three","two","one","and","work","pause","action","continue","change","next-station"].map(slug => [slug,`assets/audio/voice-${style}/${slug}.mp3`]))]));
+const CUSTOM_VOICE_FILES = {
+  ...Object.fromEntries(["custom-b","custom-c"].map(style => [style,Object.fromEntries(["three","two","one","and","work","pause","action","continue","change","next-station"].map(slug => [slug,`assets/audio/voice-${style}/${slug}.mp3`]))])),
+  "ellen":Object.fromEntries([...VOICE_ORDER,"and","work"].map(slug => [slug,`assets/audio/voice-de-ellen/${slug}.mp3`]))
+};
 
 const defaultMusic = () => ({source:"generator", style:"workout", bpm:128, intensity:"medium", volume:0.7, libraryTrackId:"danza", tempoTolerance:0.03});
 const defaultOptions = () => ({introEnabled:false, introSeconds:20, countdownEnabled:true, countdownSeconds:3, countdownMode:"and-at-zero", cueMode:"speech", speechVolume:0.78, voiceStyle:"custom-b", signalVolume:0.55, ducking:0.6, wakeLockEnabled:true});
@@ -87,7 +90,7 @@ function normalizeMusic(music={}) {
   };
 }
 function normalizeOptions(options={}) {
-  const voiceStyles = ["custom-b","custom-c","male","female"];
+  const voiceStyles = ["ellen","custom-b","custom-c","male","female"];
   const legacyCueMode=options.speechEnabled!==undefined||options.signalsEnabled!==undefined?(options.speechEnabled!==false?"speech":options.signalsEnabled!==false?"tones":"none"):"speech";
   return {
     introEnabled:options.introEnabled === true,
@@ -408,7 +411,7 @@ class AudioRuntime {
     if (this.voiceGain) this.voiceGain.gain.setTargetAtTime(this.speechVolume, this.context.currentTime, 0.015);
   }
   setVoiceStyle(value) {
-    this.voiceStyle = ["custom-b","custom-c","female","male"].includes(value) ? value : "custom-b";
+    this.voiceStyle = ["ellen","custom-b","custom-c","female","male"].includes(value) ? value : "custom-b";
     if (!this.context || !this.voicePresence || !this.voiceGain) return;
     const now=this.context.currentTime;
     this.voicePresence.gain.setTargetAtTime(3.5, now, 0.02);
@@ -1364,7 +1367,7 @@ class TrainingPlayerController {
         this.cues.speak(phrase);
         await new Promise(resolve=>setTimeout(resolve,900));
       }
-      const labels={"custom-b":"Trainerstimme B","custom-c":"Trainerstimme C",female:"Trainerin Kerstin",male:"Trainer Thorsten"};
+      const labels={ellen:"Trainerin Ellen", "custom-b":"Trainerstimme B","custom-c":"Trainerstimme C",female:"Trainerin Kerstin",male:"Trainer Thorsten"};
       this.setStatus(`Stimmprobe: ${labels[this.current.options.voiceStyle]}.`);
     } catch (error) { this.setStatus(error.message||"Stimmprobe konnte nicht abgespielt werden.",true); }
     finally { button.disabled=false; }

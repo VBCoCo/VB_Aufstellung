@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const VERSION = "3.15.2";
+const VERSION = "3.15.3";
 const STORAGE_PREFIX = "vb-training-player-v1";
 const OFFLINE_MUSIC_CACHE = "vb-training-music-v1";
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value) || 0));
@@ -41,16 +41,16 @@ const CUSTOM_VOICE_FILES = {
   "ellen":Object.fromEntries([...VOICE_ORDER,"and","work"].map(slug => [slug,`assets/audio/voice-de-ellen/${slug}.mp3`]))
 };
 
-const defaultMusic = () => ({source:"generator", style:"workout", bpm:128, intensity:"medium", volume:0.7, libraryTrackId:"danza", tempoTolerance:0.03});
+const defaultMusic = () => ({source:"generator", style:"workout", soundWorld:"electronic", bpm:128, intensity:"medium", volume:0.7, libraryTrackId:"danza", tempoTolerance:0.03});
 const defaultOptions = () => ({introEnabled:false, introSeconds:20, countdownEnabled:true, countdownSeconds:3, countdownMode:"and-at-zero", cueMode:"speech", speechVolume:0.78, voiceStyle:"custom-b", signalVolume:0.55, ducking:0.6, wakeLockEnabled:true});
 const continuousPhase = (name="Neue Phase") => ({
   id:uid(), name, type:"continuous", durationSeconds:120, announcement:name,
-  music:{style:"", bpm:null, intensity:""}
+  music:{style:"", soundWorld:"", bpm:null, intensity:""}
 });
 const intervalPhase = (name="Intervall") => ({
   id:uid(), name, type:"interval", workSeconds:20, pauseSeconds:10, repetitions:8, blocks:1,
   longPauseSeconds:0, workLabel:"ACTION", pauseLabel:"PAUSE", longPauseLabel:"BLOCKPAUSE",
-  music:{style:"", bpm:null, intensity:""}
+  music:{style:"", soundWorld:"", bpm:null, intensity:""}
 });
 
 const BUILTIN_TEMPLATES = [
@@ -83,6 +83,7 @@ function normalizeMusic(music={}) {
   return {
     source:sources.includes(music.source) ? music.source : "generator",
     style:styles.includes(music.style) ? music.style : "workout",
+    soundWorld:window.VBMusicSamplePacks?.isWorld?.(music.soundWorld) ? music.soundWorld : "electronic",
     bpm:clamp(music.bpm || 128, 70, 160),
     intensity:intensities.includes(music.intensity) ? music.intensity : "medium",
     volume:clamp(music.volume ?? 0.7, 0, 1),
@@ -109,6 +110,7 @@ function normalizeOptions(options={}) {
 function normalizePhase(phase={}, index=0) {
   const music = {
     style:["electronic", "workout", "house", "techno", "ambient", "rock"].includes(phase.music?.style) ? phase.music.style : "",
+    soundWorld:window.VBMusicSamplePacks?.isWorld?.(phase.music?.soundWorld) ? phase.music.soundWorld : "",
     bpm:phase.music?.bpm ? clamp(phase.music.bpm, 70, 160) : null,
     intensity:["low", "medium", "high"].includes(phase.music?.intensity) ? phase.music.intensity : ""
   };
@@ -138,6 +140,7 @@ function segmentMusic(template, phase) {
   return {
     source:template.music.source,
     style:phase.music?.style || template.music.style,
+    soundWorld:phase.music?.soundWorld || template.music.soundWorld,
     bpm:phase.music?.bpm || template.music.bpm,
     intensity:phase.music?.intensity || template.music.intensity,
     volume:template.music.volume,
@@ -703,10 +706,13 @@ class ToneMusicEngine {
 
     this.drumBus = new Tone.Gain(0.78).connect(this.master);
     this.bassFilter = new Tone.Filter(900, "lowpass").connect(this.master);
-    this.musicFilter = new Tone.Filter(4200, "lowpass").connect(this.master);
+    this.melodyBus = new Tone.Gain(1).connect(this.master);
+    this.instrumentBus = new Tone.Gain(0.82).connect(this.melodyBus);
+    this.atmosphereBus = new Tone.Gain(0.48).connect(this.melodyBus);
+    this.musicFilter = new Tone.Filter(4200, "lowpass").connect(this.melodyBus);
     this.delay = new Tone.FeedbackDelay("8n", 0.16);
     this.delay.wet.value = 0.16;
-    this.delay.connect(this.master);
+    this.delay.connect(this.melodyBus);
 
     this.sampleDrums = {
       kick:new Tone.Player("assets/audio/kick.wav").connect(this.drumBus),
@@ -764,12 +770,22 @@ class ToneMusicEngine {
       envelope:{attack:0.008, decay:0.5, sustain:0.12, release:0.8},
       modulationEnvelope:{attack:0.01, decay:0.25, sustain:0.05, release:0.4}
     }).connect(this.musicFilter);
-    this.guitarDrive = new Tone.Distortion(0.72).connect(this.master);
+    this.guitarDrive = new Tone.Distortion(0.72).connect(this.melodyBus);
     this.guitarFilter = new Tone.Filter(3200, "lowpass").connect(this.guitarDrive);
     this.guitar = new Tone.PolySynth(Tone.Synth, {
       oscillator:{type:"fatsawtooth", count:3, spread:18},
       envelope:{attack:0.004, decay:0.16, sustain:0.32, release:0.16}
     }).connect(this.guitarFilter);
+    this.packSamplers = {};
+    for (const pack of window.VBMusicSamplePacks?.samplerPacks?.() || []) {
+      const target = pack.roles.includes("atmosphere") ? this.atmosphereBus : this.instrumentBus;
+      this.packSamplers[pack.id] = new Tone.Sampler({
+        urls:pack.sampler.urls,
+        baseUrl:pack.sampler.baseUrl,
+        attack:pack.sampler.attack || 0.01,
+        release:pack.sampler.release || 0.25
+      }).connect(target);
+    }
 
     this.kick.volume.value = -4;
     this.clap.volume.value = -17;
@@ -784,6 +800,8 @@ class ToneMusicEngine {
     this.warmLead.volume.value = -21;
     this.electricPiano.volume.value = -19;
     this.guitar.volume.value = -18;
+    if (this.packSamplers.accordion) this.packSamplers.accordion.volume.value = -4;
+    if (this.packSamplers.choir) this.packSamplers.choir.volume.value = 0;
     this.transport = Tone.getTransport ? Tone.getTransport() : Tone.Transport;
     this.eventId = this.transport.scheduleRepeat(time => {
       this.scheduleStep(this.step, time);
@@ -806,20 +824,41 @@ class ToneMusicEngine {
     this.transport.pause();
   }
   stop() {
+    if (this.transitionTimer) clearTimeout(this.transitionTimer);
+    this.transitionTimer = null;
     if (this.ready) {
       this.transport.stop();
       this.transport.position = 0;
+      this.melodyBus.gain.value = 1;
     }
     this.active = false;
     this.step = 0;
     this.seed = Math.floor(Math.random() * 100000);
   }
   setConfig(config={}) {
-    const previousStyle = this.config.style;
-    this.config = normalizeMusic({...this.config, ...config});
+    const previous = this.config;
+    const next = normalizeMusic({...this.config, ...config});
+    const arrangementChanged = previous.style !== next.style || previous.soundWorld !== next.soundWorld;
+    const tempoChanged = previous.bpm !== next.bpm;
+    this.config = next;
     if (!this.ready) return;
-    this.transport.bpm.rampTo(this.config.bpm, 0.12);
-    if (previousStyle !== this.config.style) this.applyStyle();
+    const transitionPending = Boolean(this.transitionTimer);
+    if (this.transitionTimer) clearTimeout(this.transitionTimer);
+    this.transitionTimer = null;
+    if (this.active && (arrangementChanged || tempoChanged || transitionPending)) {
+      this.melodyBus.gain.rampTo(0.001, 0.5);
+      this.transitionTimer = setTimeout(() => {
+        this.transport.bpm.value = this.config.bpm;
+        this.step = Math.ceil(this.step / 16) * 16;
+        this.applyStyle();
+        this.melodyBus.gain.rampTo(1, 0.85);
+        this.transitionTimer = null;
+      }, 520);
+    } else {
+      this.transport.bpm.value = this.config.bpm;
+      if (arrangementChanged) this.applyStyle();
+      this.melodyBus.gain.rampTo(1, 0.08);
+    }
     this.applyGain();
   }
   setDucking(value) { this.ducking = clamp(value, 0.2, 0.9); this.applyGain(); }
@@ -867,6 +906,15 @@ class ToneMusicEngine {
     const value = Math.round(midi);
     return `${names[((value % 12) + 12) % 12]}${Math.floor(value / 12) - 1}`;
   }
+  sampler(id) {
+    const sampler = this.packSamplers?.[id];
+    return sampler?.loaded ? sampler : null;
+  }
+  soundWorld(bar) {
+    const world = this.config.soundWorld;
+    if (world === "mixed") return bar < 8 ? "accordion" : "mystic";
+    return world;
+  }
   styleData() {
     return {
       electronic:{root:50, scale:[0,2,3,5,7,9,10], progression:[0,5,3,7,0,8,5,7,0,3,7,5,8,5,3,7]},
@@ -887,6 +935,7 @@ class ToneMusicEngine {
     const energy = intensity === "high" ? 1 : intensity === "low" ? 0.58 : 0.8;
     const breakdown = (bar === 7 || bar === 15) && local < (style === "ambient" ? 12 : 8);
     const chordRoot = data.root + data.progression[bar] + (phrase % 4 === 2 ? 2 : phrase % 4 === 3 ? -2 : 0);
+    const soundWorld = this.soundWorld(bar);
     if (style === "rock") {
       if ([0,6,8,14].includes(local) && (!breakdown || local === 0)) this.drum("kick", time, 0.92 * energy);
       if (!breakdown && [4,12].includes(local)) this.drum("snare", time, 0.82 * energy);
@@ -918,14 +967,22 @@ class ToneMusicEngine {
 
     const minor = !["house","ambient"].includes(style);
     const chord = [chordRoot + 12, chordRoot + 12 + (minor ? 3 : 4), chordRoot + 19];
-    if (style === "rock" && !breakdown && [0,8].includes(local)) {
+    const accordion = soundWorld === "accordion" ? this.sampler("accordion") : null;
+    const choir = soundWorld === "mystic" ? this.sampler("choir") : null;
+    if (accordion && !breakdown && [2,10].includes(local)) {
+      const partyChord = chord.map(note => this.note(note + (style === "rock" ? 0 : 12)));
+      accordion.triggerAttackRelease(partyChord, "8n", time, (local === 2 ? 0.42 : 0.3) * energy);
+    } else if (choir && local === 0 && bar % 2 === 0) {
+      const choirChord = chord.map(note => this.note(note - 12));
+      choir.triggerAttackRelease(choirChord, "2m", time, 0.36 * energy);
+    } else if (soundWorld === "electronic" && style === "rock" && !breakdown && [0,8].includes(local)) {
       const powerChord = [chordRoot + 12, chordRoot + 19, chordRoot + 24].map(note => this.note(note));
       this.guitar.triggerAttackRelease(powerChord, local === 0 ? "4n" : "8n", time, 0.55 * energy);
-    } else if (style === "house" && !breakdown && [2,6,10,14].includes(local)) {
+    } else if (soundWorld === "electronic" && style === "house" && !breakdown && [2,6,10,14].includes(local)) {
       this.electricPiano.triggerAttackRelease(chord.map(note => this.note(note)), "8n", time, 0.32 * energy);
-    } else if (local === 0 && style !== "techno") {
+    } else if (soundWorld === "electronic" && local === 0 && style !== "techno") {
       this.chords.triggerAttackRelease(chord.map(note => this.note(note)), style === "ambient" ? "1m" : "2n", time, (style === "ambient" ? 0.34 : 0.18) * energy);
-    } else if (style === "techno" && local === 12 && bar % 2 === 1 && !breakdown) {
+    } else if (soundWorld === "electronic" && style === "techno" && local === 12 && bar % 2 === 1 && !breakdown) {
       this.chords.triggerAttackRelease([this.note(chordRoot + 12),this.note(chordRoot + 19)], "16n", time, 0.14 * energy);
     }
 
@@ -935,11 +992,14 @@ class ToneMusicEngine {
       ambient:[[0,0],[8,4]],
       rock:[[2,0],[10,3],[14,2]]
     };
-    const event = !breakdown && motifs[style]?.find(([position]) => position === local);
+    const event = soundWorld === "electronic" && !breakdown && motifs[style]?.find(([position]) => position === local);
     if (event && (intensity !== "low" || bar % 2 === 1 || style === "ambient")) {
       const note = this.note(chordRoot + (style === "ambient" ? 12 : 17) + data.scale[event[1]]);
       if (style === "rock") this.guitar.triggerAttackRelease(note, "8n", time, 0.28 * energy);
       else this.warmLead.triggerAttackRelease(note, style === "ambient" ? "2n" : "8n", time, 0.24 * energy);
+    }
+    if (accordion && !breakdown && local === 14 && bar % 4 === 3) {
+      accordion.triggerAttackRelease(this.note(chordRoot + 24 + data.scale[(bar + phrase) % data.scale.length]), "8n", time, 0.25 * energy);
     }
     if ((bar === 7 || bar === 15) && local >= 12 && style !== "ambient") {
       const fillVelocity = 0.2 + (local - 12) * 0.06;
@@ -1126,7 +1186,7 @@ class TrainingPlayerController {
   constructor() {
     this.root = document.getElementById("trainingPlayer");
     if (!this.root) return;
-    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerTrack","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateSummary","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingTempoTolerance","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingMusicSummary","trainingIntroEnabled","trainingIntroSeconds","trainingCountdownEnabled","trainingCountdownMode","trainingCueMode","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingWakeLockEnabled","trainingCueSummary","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
+    const ids = ["trainingPlayerToggle","trainingPlayerTemplateName","trainingPlayerSection","trainingPlayerRepeat","trainingPlayerTime","trainingPlayerTrack","trainingPlayerBack","trainingPlayerPlay","trainingPlayerPause","trainingPlayerStop","trainingPlayerForward","trainingPlayerExpand","trainingPlayerEditor","trainingTemplateSelect","trainingTemplateName","trainingTemplateSummary","trainingTemplateNew","trainingTemplateSave","trainingTemplateDelete","trainingMusicSource","trainingGeneratorSettings","trainingLibrarySettings","trainingLibraryTrack","trainingTempoTolerance","trainingLibraryMeta","trainingLibraryPreview","trainingLibraryOffline","trainingMusicStyle","trainingSoundWorld","trainingBpm","trainingBpmOutput","trainingIntensity","trainingVolume","trainingVolumeOutput","trainingMusicSummary","trainingIntroEnabled","trainingIntroSeconds","trainingCountdownEnabled","trainingCountdownMode","trainingCueMode","trainingVoiceStyle","trainingVoicePreview","trainingSpeechVolume","trainingSpeechVolumeOutput","trainingSignalVolume","trainingSignalVolumeOutput","trainingDucking","trainingDuckingOutput","trainingWakeLockEnabled","trainingCueSummary","trainingPhaseAdd","trainingPhases","trainingPlayerStatus"];
     this.e = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
     this.scope = "anonymous";
     this.customTemplates = [];
@@ -1188,7 +1248,7 @@ class TrainingPlayerController {
     this.e.trainingLibraryPreview?.addEventListener("click", () => window.VBMusicLibrary?.previewSelection(this.e.trainingLibraryTrack.value).catch(error=>this.setStatus(error.message,true)));
     this.e.trainingVoicePreview?.addEventListener("click", () => this.previewVoice());
     this.e.trainingPhaseAdd.addEventListener("click", () => { this.readEditor(); this.current.phases.push(continuousPhase()); this.renderPhases(); this.refreshIdleTimeline(); });
-    [this.e.trainingMusicSource,this.e.trainingLibraryTrack,this.e.trainingTempoTolerance,this.e.trainingMusicStyle,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingIntroEnabled,this.e.trainingIntroSeconds,this.e.trainingCountdownEnabled,this.e.trainingCountdownMode,this.e.trainingCueMode,this.e.trainingVoiceStyle,this.e.trainingSpeechVolume,this.e.trainingSignalVolume,this.e.trainingDucking,this.e.trainingWakeLockEnabled].forEach(control => control?.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
+    [this.e.trainingMusicSource,this.e.trainingLibraryTrack,this.e.trainingTempoTolerance,this.e.trainingMusicStyle,this.e.trainingSoundWorld,this.e.trainingBpm,this.e.trainingIntensity,this.e.trainingVolume,this.e.trainingIntroEnabled,this.e.trainingIntroSeconds,this.e.trainingCountdownEnabled,this.e.trainingCountdownMode,this.e.trainingCueMode,this.e.trainingVoiceStyle,this.e.trainingSpeechVolume,this.e.trainingSignalVolume,this.e.trainingDucking,this.e.trainingWakeLockEnabled].forEach(control => control?.addEventListener("input", () => { this.updateOutputs(); this.readEditor(); this.refreshIdleTimeline(); }));
     this.e.trainingLibraryTrack.addEventListener("change", () => {this.updateOutputs();this.readEditor();this.refreshIdleTimeline()});
     document.addEventListener("vb-music-library-updated",()=>this.refreshLibraryOptions());
     this.e.trainingPhases.addEventListener("input", event => this.onPhaseInput(event));
@@ -1265,6 +1325,7 @@ class TrainingPlayerController {
     this.refreshLibraryOptions(music.libraryTrackId);
     this.e.trainingTempoTolerance.value = String(music.tempoTolerance);
     this.e.trainingMusicStyle.value = music.style;
+    this.e.trainingSoundWorld.value = music.soundWorld;
     this.e.trainingBpm.value = music.bpm;
     this.e.trainingIntensity.value = music.intensity;
     this.e.trainingVolume.value = Math.round(music.volume * 100);
@@ -1286,7 +1347,7 @@ class TrainingPlayerController {
   }
   readEditor() {
     this.current.name = (this.e.trainingTemplateName.value.trim() || "Training").slice(0,80);
-    this.current.music = normalizeMusic({source:this.e.trainingMusicSource.value,libraryTrackId:this.e.trainingLibraryTrack.value,tempoTolerance:this.e.trainingTempoTolerance.value,style:this.e.trainingMusicStyle.value,bpm:this.e.trainingBpm.value,intensity:this.e.trainingIntensity.value,volume:Number(this.e.trainingVolume.value)/100});
+    this.current.music = normalizeMusic({source:this.e.trainingMusicSource.value,libraryTrackId:this.e.trainingLibraryTrack.value,tempoTolerance:this.e.trainingTempoTolerance.value,style:this.e.trainingMusicStyle.value,soundWorld:this.e.trainingSoundWorld.value,bpm:this.e.trainingBpm.value,intensity:this.e.trainingIntensity.value,volume:Number(this.e.trainingVolume.value)/100});
     this.current.options = normalizeOptions({introEnabled:this.e.trainingIntroEnabled.checked,introSeconds:this.e.trainingIntroSeconds.value,countdownEnabled:this.e.trainingCountdownEnabled.checked,countdownMode:this.e.trainingCountdownMode.value,cueMode:this.e.trainingCueMode.value,voiceStyle:this.e.trainingVoiceStyle.value,speechVolume:Number(this.e.trainingSpeechVolume.value)/100,signalVolume:Number(this.e.trainingSignalVolume.value)/100,ducking:Number(this.e.trainingDucking.value)/100,wakeLockEnabled:this.e.trainingWakeLockEnabled.checked});
     const cards = [...this.e.trainingPhases.querySelectorAll(".training-phase")];
     if (cards.length) this.current.phases = cards.map((card,index) => this.phaseFromCard(card,index));
@@ -1298,13 +1359,15 @@ class TrainingPlayerController {
   phaseFromCard(card,index) {
     const get = name => card.querySelector(`[data-field="${name}"]`);
     const type = get("type").value;
-    const common = {id:card.dataset.phaseId || uid(),name:get("name").value,type,music:{style:get("musicStyle").value,bpm:get("bpm").value || null,intensity:get("intensity").value}};
+    const common = {id:card.dataset.phaseId || uid(),name:get("name").value,type,music:{style:get("musicStyle").value,soundWorld:get("soundWorld").value,bpm:get("bpm").value || null,intensity:get("intensity").value}};
     if (type === "interval") return {...common,workSeconds:get("workSeconds").value,pauseSeconds:get("pauseSeconds").value,repetitions:get("repetitions").value,blocks:get("blocks").value,longPauseSeconds:get("longPauseSeconds").value,workLabel:get("workLabel").value,pauseLabel:get("pauseLabel").value,longPauseLabel:get("longPauseLabel").value};
     return {...common,durationSeconds:get("durationSeconds").value,announcement:get("announcement").value};
   }
   musicOverrideFields(phase) {
-    const style = phase.music?.style || "", intensity = phase.music?.intensity || "", bpm = phase.music?.bpm || "";
-    return `<label>Musikstil<select data-field="musicStyle"><option value="">Vorlagenwert</option><option value="electronic" ${style==="electronic"?"selected":""}>Electronic</option><option value="workout" ${style==="workout"?"selected":""}>Workout</option><option value="house" ${style==="house"?"selected":""}>House</option><option value="techno" ${style==="techno"?"selected":""}>Techno</option><option value="rock" ${style==="rock"?"selected":""}>Rock</option><option value="ambient" ${style==="ambient"?"selected":""}>Ambient</option></select></label><label>BPM<input data-field="bpm" type="number" min="70" max="160" value="${bpm}" placeholder="Vorlage"></label><label>Intensität<select data-field="intensity"><option value="">Vorlagenwert</option><option value="low" ${intensity==="low"?"selected":""}>Niedrig</option><option value="medium" ${intensity==="medium"?"selected":""}>Mittel</option><option value="high" ${intensity==="high"?"selected":""}>Hoch</option></select></label>`;
+    const style = phase.music?.style || "", soundWorld = phase.music?.soundWorld || "", intensity = phase.music?.intensity || "", bpm = phase.music?.bpm || "";
+    const worlds = window.VBMusicSamplePacks?.worlds || [{id:"electronic",name:"Elektronisch"},{id:"accordion",name:"Akkordeon / Party"},{id:"mystic",name:"Mystisch / Chor"},{id:"mixed",name:"Gemischt"}];
+    const worldOptions = worlds.map(item => `<option value="${item.id}" ${soundWorld===item.id?"selected":""}>${item.name}</option>`).join("");
+    return `<label>Musikstil<select data-field="musicStyle"><option value="">Vorlagenwert</option><option value="electronic" ${style==="electronic"?"selected":""}>Electronic</option><option value="workout" ${style==="workout"?"selected":""}>Workout</option><option value="house" ${style==="house"?"selected":""}>House</option><option value="techno" ${style==="techno"?"selected":""}>Techno</option><option value="rock" ${style==="rock"?"selected":""}>Rock</option><option value="ambient" ${style==="ambient"?"selected":""}>Ambient</option></select></label><label>Klangwelt<select data-field="soundWorld"><option value="">Vorlagenwert</option>${worldOptions}</select></label><label>BPM<input data-field="bpm" type="number" min="70" max="160" value="${bpm}" placeholder="Vorlage"></label><label>Intensität<select data-field="intensity"><option value="">Vorlagenwert</option><option value="low" ${intensity==="low"?"selected":""}>Niedrig</option><option value="medium" ${intensity==="medium"?"selected":""}>Mittel</option><option value="high" ${intensity==="high"?"selected":""}>Hoch</option></select></label>`;
   }
   renderPhases() {
     this.e.trainingPhases.innerHTML = this.current.phases.map((phase,index) => {
@@ -1344,7 +1407,7 @@ class TrainingPlayerController {
   }
   updateSectionSummaries() {
     if (this.e.trainingTemplateSummary) this.e.trainingTemplateSummary.textContent = this.current.name;
-    if (this.e.trainingMusicSummary) this.e.trainingMusicSummary.textContent = `${this.current.music.bpm} BPM · ${Math.round(this.current.music.volume*100)} %`;
+    if (this.e.trainingMusicSummary) this.e.trainingMusicSummary.textContent = `${this.current.music.bpm} BPM · ${window.VBMusicSamplePacks?.label?.(this.current.music.soundWorld) || "Elektronisch"} · ${Math.round(this.current.music.volume*100)} %`;
     if (this.e.trainingCueSummary) this.e.trainingCueSummary.textContent = `${this.current.options.countdownEnabled?"Countdown":"Ohne Countdown"} · ${this.current.options.cueMode==="speech"?"Stimme":this.current.options.cueMode==="tones"?"Töne":"Stumm"}`;
   }
   refreshIdleTimeline() { if (this.engine.status === "idle" || this.engine.status === "completed") this.engine.load(this.current); }
@@ -1367,7 +1430,7 @@ class TrainingPlayerController {
         this.cues.speak(phrase);
         await new Promise(resolve=>setTimeout(resolve,900));
       }
-      const labels={ellen:"Trainerin Ellen", "custom-b":"Trainerstimme B","custom-c":"Trainerstimme C",female:"Trainerin Kerstin",male:"Trainer Thorsten"};
+      const labels={ellen:"Trainerin Ellen", "custom-b":"Trainerstimme B","custom-c":"Trainerstimme C",female:"Trainerin Kerstin",male:"Trainer Thomas"};
       this.setStatus(`Stimmprobe: ${labels[this.current.options.voiceStyle]}.`);
     } catch (error) { this.setStatus(error.message||"Stimmprobe konnte nicht abgespielt werden.",true); }
     finally { button.disabled=false; }
@@ -1533,7 +1596,7 @@ class TrainingPlayerController {
     this.renderTrack();
     this.updateMediaMetadata(state);
   }
-  renderTrack(){if(!this.e.trainingPlayerTrack)return;const source=this.current?.music?.source;if(source==="library"&&this.currentTrack)this.e.trainingPlayerTrack.textContent=`♫ ${this.currentTrack.title}${this.currentTrack.artist?` · ${this.currentTrack.artist}`:""} · ${this.currentTrack.bpm} BPM`;else if(source==="library")this.e.trainingPlayerTrack.textContent="♫ Passender Titel wird ausgewählt …";else this.e.trainingPlayerTrack.textContent=`♫ Musikgenerator · ${this.current?.music?.style||"Workout"} · ${this.current?.music?.bpm||128} BPM`}
+  renderTrack(){if(!this.e.trainingPlayerTrack)return;const source=this.current?.music?.source;if(source==="library"&&this.currentTrack)this.e.trainingPlayerTrack.textContent=`♫ ${this.currentTrack.title}${this.currentTrack.artist?` · ${this.currentTrack.artist}`:""} · ${this.currentTrack.bpm} BPM`;else if(source==="library")this.e.trainingPlayerTrack.textContent="♫ Passender Titel wird ausgewählt …";else this.e.trainingPlayerTrack.textContent=`♫ Musikgenerator · ${window.VBMusicSamplePacks?.label?.(this.current?.music?.soundWorld)||"Elektronisch"} · ${this.current?.music?.style||"Workout"} · ${this.current?.music?.bpm||128} BPM`}
   setupMediaSession(){if(!("mediaSession" in navigator))return;const actions={play:()=>this.play(),pause:()=>this.pause(),stop:()=>this.stop(),previoustrack:()=>this.previousPhase(),nexttrack:()=>this.forwardPress()};for(const [action,handler] of Object.entries(actions))try{navigator.mediaSession.setActionHandler(action,handler)}catch{}navigator.mediaSession.playbackState=this.engine.status==="running"?"playing":"paused"}
   updateMediaMetadata(state){if(!("mediaSession" in navigator)||typeof MediaMetadata==="undefined"||!this.root.classList.contains("is-active"))return;const segment=state.segment,cycle=segment?.repetitions?`Runde ${segment.repeat}/${segment.repetitions}${segment.blocks>1?` · Block ${segment.block}/${segment.blocks}`:""}`:(segment?.phaseName||this.current.name),song=this.currentTrack?`${this.currentTrack.title}${this.currentTrack.artist?` · ${this.currentTrack.artist}`:""}`:`${this.current.music.bpm} BPM`;try{navigator.mediaSession.metadata=new MediaMetadata({title:`${segment?.label||"Training"} · ${cycle}`,artist:this.current.name,album:song});navigator.mediaSession.playbackState=state.status==="running"?"playing":state.status==="paused"?"paused":"none"}catch{}}
   lockEditor(locked) {

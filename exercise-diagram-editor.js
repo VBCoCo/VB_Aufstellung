@@ -71,6 +71,18 @@
   function currentStep() {
     return session.doc.steps[session.stepIndex];
   }
+  function transitionPoints(path, stepIndex) {
+    const points = Array.isArray(path?.points)
+      ? path.points.map((entry) => ({ ...entry }))
+      : [];
+    if (points.length < 2 || stepIndex < 1) return points;
+    const objectId = path.objectId,
+      from = session.doc.steps[stepIndex - 1]?.objects.find((object) => object.id === objectId),
+      to = session.doc.steps[stepIndex]?.objects.find((object) => object.id === objectId);
+    if (from) points[0] = { ...points[0], x: from.x, y: from.y };
+    if (to) points[points.length - 1] = { ...points.at(-1), x: to.x, y: to.y };
+    return points;
+  }
   function history() {
     const id = currentStep().id;
     if (!session.histories.has(id)) session.histories.set(id, { undo: [], redo: [] });
@@ -296,7 +308,7 @@
       paths = step.paths
         .map(
           (p) =>
-            `<path d="${pathD(p.points, p.kind)}" class="diagram-path ${p.kind === "ball" ? "ball" : ""}" marker-end="url(#diagramArrow)"/>`,
+            `<path d="${pathD(transitionPoints(p, session.stepIndex), p.kind)}" class="diagram-path ${p.kind === "ball" ? "ball" : ""}" marker-end="url(#diagramArrow)"/>`,
         )
         .join("");
     const projectedCourt = () => {
@@ -445,7 +457,7 @@
     return new Promise((resolve) => {
       const from = currentStep(), to = session.doc.steps[index];
       if (!to || to === from) return resolve();
-      const fromById = new Map(from.objects.map((o) => [o.id, o])), pathsById = new Map(to.paths.map((p) => [p.objectId, p]));
+      const fromById = new Map(from.objects.map((o) => [o.id, o])), pathsById = new Map(to.paths.map((p) => [p.objectId, { ...p, points: transitionPoints(p, index) }]));
       session.stepIndex = index;
       const started = performance.now(), duration = 1500;
       const tick = (now) => {

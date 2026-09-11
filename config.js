@@ -3,7 +3,7 @@ window.APP_CONFIG = {
   SUPABASE_PUBLISHABLE_KEY: "sb_publishable_gwDoKpExqBfM4voiXncaaA_w61xcbO4",
 };
 (() => {
-  const version = "3.16.1";
+  const version = "3.16.2";
   window.VB_RELEASE_VERSION = version;
   const visualModes = {
     login: { color: "#153b72" },

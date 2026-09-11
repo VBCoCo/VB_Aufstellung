@@ -19,6 +19,14 @@
     zone: "Zone",
     text: "Text",
   };
+  const roleMarks = {
+    setter: "Z",
+    middle: "M",
+    outside: "A",
+    opposite: "D",
+    libero: "L",
+    coach: "T",
+  };
   const colors = {
     a: "#1264d7",
     b: "#dc3030",
@@ -249,11 +257,16 @@
     const selectedClass = o.id === session.selectedId ? " selected" : "";
     if (o.type === "person") {
       const fill = colors[o.team] || colors.neutral,
-        caption = o.label || o.number || "";
+        caption = o.label || o.number || "",
+        badge = o.number || roleMarks[o.role] || "";
+      if (session.view === "25d")
+        return `<g class="diagram-object diagram-person-25d${selectedClass}" data-id="${o.id}" transform="translate(${o.x} ${o.y - (raw.lift || 0)}) scale(${scale})"><ellipse class="diagram-person-footprint" cx="0" cy="0" rx="29" ry="11"/><ellipse class="diagram-person-shadow" cx="0" cy="-2" rx="20" ry="7"/><path class="diagram-person-body" d="M-9-12Q0-20 9-12L13-48Q0-60-13-48Z" fill="${fill}"/><path class="diagram-person-arm" d="M-9-44L-20-25M9-44L20-25"/><circle class="diagram-person-head" cx="0" cy="-63" r="12"/><circle class="diagram-person-badge" cx="0" cy="-34" r="17" fill="${fill}"/><text class="diagram-person-number" text-anchor="middle" x="0" y="-28">${esc(badge)}</text>${caption && caption !== badge ? `<text class="diagram-person-label" text-anchor="middle" y="30">${esc(caption)}</text>` : ""}</g>`;
       return `<g class="diagram-object${selectedClass}" data-id="${o.id}" transform="translate(${o.x} ${o.y}) scale(${scale})"><circle r="27" fill="${fill}"/><text class="diagram-person-number" text-anchor="middle" dy="6">${esc(o.number || "")}</text>${caption && caption !== o.number ? `<text class="diagram-person-label" text-anchor="middle" y="43">${esc(caption)}</text>` : ""}</g>`;
     }
     if (o.type === "ball")
       return `<g class="diagram-object${selectedClass}" data-id="${o.id}" transform="translate(${o.x} ${o.y - (raw.lift || 0)}) scale(${scale})"><circle r="19" fill="#ffd400" stroke="#0f4bcf" stroke-width="4"/><path d="M-14-5 Q0-18 15-6M-12 8 Q2 0 11-13" fill="none" stroke="#0f4bcf" stroke-width="2"/></g>`;
+    if (o.type === "cone" && session.view === "25d")
+      return `<g class="diagram-object diagram-cone-25d${selectedClass}" data-id="${o.id}" transform="translate(${o.x} ${o.y}) scale(${scale})"><ellipse class="diagram-cone-shadow" cx="0" cy="4" rx="22" ry="7"/><ellipse class="diagram-cone-base" cx="0" cy="0" rx="19" ry="7"/><path class="diagram-cone-body" d="M-13-2L-5-31Q0-36 5-31L13-2Q0 5-13-2Z"/><ellipse class="diagram-cone-top" cx="0" cy="-31" rx="5" ry="2.4"/><path class="diagram-cone-highlight" d="M-6-5L-2-27"/></g>`;
     if (o.type === "cone")
       return `<g transform="translate(${o.x} ${o.y}) scale(${scale})"><path class="diagram-object${selectedClass}" data-id="${o.id}" d="M-15 17L0-20L15 17Z" fill="#ff9f1c" stroke="#6d3d00" stroke-width="3"/></g>`;
     if (o.type === "line" && session.view === "25d") {
@@ -282,6 +295,31 @@
     }
     return points;
   }
+  function pointSegmentDistance(p, a, b) {
+    const dx = b.x - a.x, dy = b.y - a.y;
+    if (!dx && !dy) return Math.hypot(p.x - a.x, p.y - a.y);
+    const t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / (dx * dx + dy * dy))),
+      x = a.x + t * dx, y = a.y + t * dy;
+    return Math.hypot(p.x - x, p.y - y);
+  }
+  function simplifyPathPoints(rawPoints, tolerance = 4) {
+    const points = (rawPoints || []).map((p) => ({ x: Number(p.x) || 0, y: Number(p.y) || 0 }));
+    if (points.length < 3) return points;
+    const radial = [points[0]];
+    for (let i = 1; i < points.length - 1; i++)
+      if (Math.hypot(points[i].x - radial.at(-1).x, points[i].y - radial.at(-1).y) >= 7) radial.push(points[i]);
+    radial.push(points.at(-1));
+    const reduce = (start, end) => {
+      let max = tolerance, index = -1;
+      for (let i = start + 1; i < end; i++) {
+        const distance = pointSegmentDistance(radial[i], radial[start], radial[end]);
+        if (distance > max) { max = distance; index = i; }
+      }
+      if (index < 0) return [radial[start], radial[end]];
+      return [...reduce(start, index).slice(0, -1), ...reduce(index, end)];
+    };
+    return reduce(0, radial.length - 1);
+  }
   function pathD(rawPoints, kind = "player") {
     let points = (rawPoints || []).map(project);
     if (!points?.length) return "";
@@ -305,12 +343,21 @@
       half = session.doc.court.type === "half";
     svg.setAttribute("viewBox", half ? "0 0 700 470" : "0 0 700 900");
     const step = currentStep(),
+      dragged = session.drag?.kind === "move" && session.tool === "path"
+        ? step.objects.find((object) => object.id === session.drag.id)
+        : null,
+      previewPoints = dragged && ["person", "ball"].includes(dragged.type)
+        ? [...session.drag.points, { x: dragged.x, y: dragged.y }]
+        : [],
       paths = step.paths
+        .filter((p) => !dragged || p.objectId !== dragged.id)
         .map(
           (p) =>
             `<path d="${pathD(transitionPoints(p, session.stepIndex), p.kind)}" class="diagram-path ${p.kind === "ball" ? "ball" : ""}" marker-end="url(#diagramArrow)"/>`,
         )
-        .join("");
+        .join("") + (previewPoints.length > 1
+          ? `<path d="${pathD(previewPoints, dragged.type === "ball" ? "ball" : "player")}" class="diagram-path diagram-path-preview ${dragged.type === "ball" ? "ball" : ""}" marker-end="url(#diagramArrow)"/>`
+          : "");
     const projectedCourt = () => {
       const topLeft = project({ x: 95, y: 50 }), topRight = project({ x: 605, y: 50 }), bottomY = half ? 450 : 850,
         bottomLeft = project({ x: 95, y: bottomY }), bottomRight = project({ x: 605, y: bottomY }),
@@ -413,6 +460,7 @@
   }
   function deleteStep() {
     if (session.readonly || session.doc.steps.length < 2) return;
+    if (!window.confirm(`Schritt ${session.stepIndex + 1} wirklich löschen?`)) return;
     stopPlayback();
     const removedIndex = session.stepIndex, removed = session.doc.steps.splice(removedIndex, 1)[0];
     session.histories.delete(removed.id);
@@ -422,19 +470,6 @@
     session.dirty = true;
     render();
     setStatus("Schritt gelöscht.");
-  }
-  function moveStep(delta) {
-    if (session.readonly) return;
-    const previous = session.stepIndex, next = previous + delta;
-    if (next < 0 || next >= session.doc.steps.length) return;
-    stopPlayback();
-    const [step] = session.doc.steps.splice(session.stepIndex, 1);
-    session.doc.steps.splice(next, 0, step);
-    session.stepIndex = next;
-    session.doc.steps[Math.min(previous, next)].paths = [];
-    session.doc.steps[Math.max(previous, next)].paths = [];
-    session.dirty = true;
-    render();
   }
   function pointAlong(points, progress) {
     if (!points?.length) return { x: 0, y: 0 };
@@ -467,7 +502,14 @@
           const source = fromById.get(target.id) || target, path = pathsById.get(target.id), position = path?.points?.length > 1
             ? pointAlong(path.points, t)
             : { x: source.x + (target.x - source.x) * t, y: source.y + (target.y - source.y) * t };
-          return [target.id, { ...target, ...position, lift: target.type === "ball" && session.view === "25d" ? Math.sin(Math.PI * t) * 105 : 0 }];
+          const lift = session.view === "25d"
+            ? target.type === "ball"
+              ? Math.sin(Math.PI * t) * 105
+              : target.type === "person"
+                ? Math.abs(Math.sin(Math.PI * t * 4)) * 5
+                : 0
+            : 0;
+          return [target.id, { ...target, ...position, lift }];
         }));
         renderCourt();
         if (raw < 1) session.animationFrame = requestAnimationFrame(tick);
@@ -504,8 +546,6 @@
     const prev = session.root.querySelector("[data-step-prev]"), next = session.root.querySelector("[data-step-next]");
     prev.disabled = session.stepIndex === 0; next.disabled = session.stepIndex === session.doc.steps.length - 1;
     session.root.querySelector("[data-step-delete]").disabled = session.readonly || session.doc.steps.length < 2;
-    session.root.querySelector("[data-step-left]").disabled = session.readonly || session.stepIndex === 0;
-    session.root.querySelector("[data-step-right]").disabled = session.readonly || session.stepIndex === session.doc.steps.length - 1;
     session.root.querySelector("[data-play]").textContent = session.playing ? "■" : "▶";
     session.root.querySelector("[data-loop]").classList.toggle("active", session.loop);
     session.root.querySelector("[data-view-2d]").classList.toggle("active", session.view === "2d");
@@ -535,9 +575,6 @@
       .querySelector('[data-add="line"]')
       ?.classList.toggle("active", session.tool === "line");
     session.root.querySelector("[data-field]").value = session.doc.court.type;
-    const summary = session.root.querySelector("[data-tools-summary]");
-    if (summary)
-      summary.textContent = `${session.doc.court.type === "half" ? "Halbfeld" : "Ganzfeld"} · ${session.tool === "path" ? "Weg zeichnen" : session.tool === "line" ? "Linie zeichnen" : "Verschieben"}`;
   }
 
   function wirePointer() {
@@ -666,13 +703,13 @@
           setStatus("Linie angelegt. Endpunkte können verschoben werden.");
         }
         if (session.tool === "path" && ["person", "ball"].includes(o.type) && d.points.length > 1) {
-          d.points.push({ x: o.x, y: o.y });
+          const points = simplifyPathPoints([...d.points, { x: o.x, y: o.y }]);
           currentStep().paths = currentStep().paths.filter((path) => path.objectId !== o.id);
           currentStep().paths.push({
             id: uid(),
             objectId: o.id,
             kind: o.type === "ball" ? "ball" : "player",
-            points: d.points,
+            points,
           });
         }
         render();
@@ -685,7 +722,7 @@
     const row = await load(exercise.id),
       root = document.createElement("div");
     root.className = "exercise-diagram-shell";
-    root.innerHTML = `<section class="exercise-diagram-editor"><header><button type="button" data-close>←</button><div><small>Grafischer Aufbau · V1.2b</small><h2>${esc(exercise.name)}</h2></div><button type="button" class="primary" data-save>Speichern</button></header><nav class="diagram-step-bar" aria-label="Übungsschritte"><button type="button" data-step-prev aria-label="Vorheriger Schritt">‹</button><div data-step-strip></div><button type="button" data-step-next aria-label="Nächster Schritt">›</button><button type="button" data-step-add aria-label="Neuen Schritt anlegen">＋</button><button type="button" data-play aria-label="Abspielen">▶</button><button type="button" data-loop aria-label="Wiederholen">↻</button><details class="diagram-step-menu"><summary aria-label="Schritt verwalten">⋯</summary><div><button type="button" data-step-left>Nach links</button><button type="button" data-step-right>Nach rechts</button><button type="button" class="danger" data-step-delete>Löschen</button></div></details></nav><section class="diagram-preview-bar"><span>Ansicht</span><button type="button" data-view-2d class="active">2D</button><button type="button" data-view-25d>2,5D</button><button type="button" data-reset-play aria-label="Zum ersten Schritt">|‹</button></section><section class="diagram-tool-panel collapsed" data-collapsible="tools"><button type="button" class="diagram-panel-toggle" data-panel-toggle="tools" aria-expanded="false"><span>Aufbau</span><small data-tools-summary>Ganzfeld · Verschieben</small><i>⌃</i></button><div class="diagram-toolbar"><select data-field aria-label="Felddarstellung"><option value="full">Ganzfeld</option><option value="half">Halbfeld</option></select><button type="button" data-mode="move" class="active">Nur verschieben</button><button type="button" data-mode="path">Mit Weg / Flugbahn</button><button type="button" data-undo aria-label="Rückgängig">↶</button><button type="button" data-redo aria-label="Wiederholen">↷</button></div></section><main><div class="diagram-court-wrap"><svg data-court role="img" aria-label="Grafischer Übungsaufbau" preserveAspectRatio="xMidYMid meet"></svg></div><aside data-properties></aside></main><section class="diagram-add-panel collapsed" data-collapsible="add"><button type="button" class="diagram-panel-toggle" data-panel-toggle="add" aria-expanded="false"><span>Hinzufügen</span><small>Personen &amp; Objekte</small><i>⌃</i></button><div>${[
+    root.innerHTML = `<section class="exercise-diagram-editor"><header><button type="button" data-close>←</button><div><small>Grafischer Aufbau · V1.2b.1</small><h2>${esc(exercise.name)}</h2></div><button type="button" class="primary" data-save>Speichern</button></header><nav class="diagram-step-bar" aria-label="Übungsschritte"><button type="button" data-step-prev aria-label="Vorheriger Schritt">‹</button><div data-step-strip></div><button type="button" data-step-next aria-label="Nächster Schritt">›</button><button type="button" data-step-add aria-label="Neuen Schritt anlegen">＋</button><button type="button" data-play aria-label="Abspielen">▶</button><button type="button" data-loop aria-label="Wiederholen">↻</button><button type="button" data-reset-play aria-label="Zum ersten Schritt" title="Zum ersten Schritt">|‹</button><button type="button" class="danger diagram-step-delete" data-step-delete aria-label="Aktuellen Schritt löschen" title="Schritt löschen">🗑</button></nav><section class="diagram-tool-panel"><div class="diagram-toolbar"><select data-field aria-label="Felddarstellung"><option value="full">Ganzfeld</option><option value="half">Halbfeld</option></select><button type="button" data-mode="move" class="active" aria-label="Nur verschieben">Verschieben</button><button type="button" data-mode="path" aria-label="Mit Laufweg oder Flugbahn bewegen">Weg / Flug</button><button type="button" data-undo aria-label="Rückgängig">↶</button><button type="button" data-redo aria-label="Wiederholen">↷</button></div></section><main><div class="diagram-court-wrap"><div class="diagram-court-view-toggle" role="group" aria-label="Darstellung"><button type="button" data-view-2d class="active">2D</button><button type="button" data-view-25d>2,5D</button></div><svg data-court role="img" aria-label="Grafischer Übungsaufbau" preserveAspectRatio="xMidYMid meet"></svg></div><aside data-properties></aside></main><section class="diagram-add-panel collapsed" data-collapsible="add"><button type="button" class="diagram-panel-toggle" data-panel-toggle="add" aria-expanded="false"><span>Hinzufügen</span><small>Personen &amp; Objekte</small><i>⌃</i></button><div>${[
       ["person", "＋ Person"],
       ["ball", "＋ Ball"],
       ["cone", "＋ Hütchen"],
@@ -732,8 +769,6 @@
     root.querySelector("[data-step-next]").onclick = () => setStep(session.stepIndex + 1);
     root.querySelector("[data-step-add]").onclick = insertStep;
     root.querySelector("[data-step-delete]").onclick = deleteStep;
-    root.querySelector("[data-step-left]").onclick = () => moveStep(-1);
-    root.querySelector("[data-step-right]").onclick = () => moveStep(1);
     root.querySelector("[data-play]").onclick = playAll;
     root.querySelector("[data-loop]").onclick = () => { session.loop = !session.loop; render(); };
     root.querySelector("[data-reset-play]").onclick = () => { stopPlayback({ reset: true }); render(); };

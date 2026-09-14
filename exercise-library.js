@@ -275,8 +275,8 @@
     const mode = item?.player_mode || "multiple";
     const focusOptions = focuses.map((x) => `<option value="${esc(x.code)}" ${item?.main_focus === x.code ? "selected" : ""}>${esc(x.label)}</option>`).join(""),
       materialOptions = materials.map((m) => `<label><input type="checkbox" name="material" value="${esc(m.code)}" ${selected.has(m.code) || (m.code === "none" && !item) ? "checked" : ""}> ${esc(m.label)}</label>`).join(""),
-      basicVolleyball = isV ? `<label>Form<select name="form_type"><option value="exercise" ${item?.form_type !== "game" ? "selected" : ""}>Übungsform</option><option value="game" ${item?.form_type === "game" ? "selected" : ""}>Spielform</option></select></label><label class="exercise-span-wide exercise-goal-field">Ziel<textarea class="exercise-goal-description" name="goal" required rows="5">${esc(item?.goal || "")}</textarea></label>` : "",
-      organizationFields = isV ? `<label>Spieleranzahl<select name="player_mode"><option value="exact" ${mode === "exact" ? "selected" : ""}>genau X</option><option value="minimum" ${mode === "range" && !item?.player_max ? "selected" : ""}>ab X</option><option value="range" ${mode === "range" && item?.player_max ? "selected" : ""}>von X bis Y</option><option value="multiple" ${mode === "multiple" ? "selected" : ""}>Gruppen zu X</option></select></label><label>X / Minimum<input name="players" type="number" min="1" max="40" value="${item?.player_exact || item?.group_size || item?.player_min || 3}"></label><label>Maximum (nur von–bis)<input name="players_max" type="number" min="1" max="40" value="${item?.player_max || ""}"></label><label>Feldbedarf<input name="field_need" value="${esc(item?.field_need || "")}"></label><details class="exercise-player-help exercise-span-wide"><summary>Wie gebe ich die Spielerzahl an?</summary>„genau X“ für feste Besetzung, „ab X“ für eine Mindestzahl, „von X bis Y“ für einen Bereich und „Gruppen zu X“ für feste Kleingruppen.</details><label class="exercise-span-wide">Ablauf / Organisation<textarea name="organization" required rows="3">${esc(item?.organization || "")}</textarea></label>` : `<label class="exercise-span-wide">Ausführung<textarea name="execution" required rows="3">${esc(item?.execution || "")}</textarea></label><label>Sozialform<select name="social_form"><option value="single">Einzeln</option><option value="partner" ${item?.social_form === "partner" ? "selected" : ""}>Partner</option><option value="group" ${item?.social_form === "group" ? "selected" : ""}>Gruppe</option></select></label>`;
+      basicVolleyball = isV ? `<label>Form<select name="form_type"><option value="exercise" ${item?.form_type !== "game" ? "selected" : ""}>Übungsform</option><option value="game" ${item?.form_type === "game" ? "selected" : ""}>Spielform</option></select></label><label class="exercise-span-wide exercise-goal-field"><span class="exercise-label-row"><span>Ziel</span><span class="exercise-character-count" data-goal-count>0/1000 Zeichen</span></span><textarea class="exercise-long-description" name="goal" required rows="2" maxlength="1000">${esc(item?.goal || "")}</textarea></label>` : "",
+      organizationFields = isV ? `<label>Spieleranzahl<select name="player_mode"><option value="exact" ${mode === "exact" ? "selected" : ""}>genau X</option><option value="minimum" ${mode === "range" && !item?.player_max ? "selected" : ""}>ab X</option><option value="range" ${mode === "range" && item?.player_max ? "selected" : ""}>von X bis Y</option><option value="multiple" ${mode === "multiple" ? "selected" : ""}>Gruppen zu X</option></select></label><label>X / Minimum<input name="players" type="number" min="1" max="40" value="${item?.player_exact || item?.group_size || item?.player_min || 3}"></label><label>Maximum (nur von–bis)<input name="players_max" type="number" min="1" max="40" value="${item?.player_max || ""}"></label><label>Feldbedarf<input name="field_need" value="${esc(item?.field_need || "")}"></label><details class="exercise-player-help exercise-span-wide"><summary>Wie gebe ich die Spielerzahl an?</summary>„genau X“ für feste Besetzung, „ab X“ für eine Mindestzahl, „von X bis Y“ für einen Bereich und „Gruppen zu X“ für feste Kleingruppen.</details><label class="exercise-span-wide"><span class="exercise-label-row"><span>Ablauf / Organisation</span><span class="exercise-character-count" data-organization-count>0/1000 Zeichen</span></span><textarea class="exercise-long-description" name="organization" required rows="2" maxlength="1000">${esc(item?.organization || "")}</textarea></label>` : `<label class="exercise-span-wide">Ausführung<textarea name="execution" required rows="3">${esc(item?.execution || "")}</textarea></label><label>Sozialform<select name="social_form"><option value="single">Einzeln</option><option value="partner" ${item?.social_form === "partner" ? "selected" : ""}>Partner</option><option value="group" ${item?.social_form === "group" ? "selected" : ""}>Gruppe</option></select></label>`;
     overlay.innerHTML = `<form class="exercise-editor"><div class="exercise-editor-head"><div><span class="eyebrow">${readonly ? "Übung ansehen" : item?.id ? "Übung bearbeiten" : "Neue Übung"}</span><h2>${isV ? "Volleyballübung" : "Athletikübung"}</h2></div><div class="exercise-editor-head-actions">${isV && item?.id ? '<button type="button" data-diagram-switch>Grafik</button>' : ""}<button type="button" data-close aria-label="Schließen">✕</button></div></div>
       <details class="exercise-form-section" open><summary><span>Grunddaten</span><small>Name, Beschreibung und Einordnung</small></summary><div class="exercise-section-body"><label>Name<input name="name" required maxlength="140" value="${esc(item?.name || "")}"></label><label class="exercise-short-field"><span class="exercise-label-row"><span>Kurzbeschreibung</span><span class="exercise-character-count" data-short-count>0/300 Zeichen</span></span><textarea class="exercise-short-description" name="short_description" required rows="2" maxlength="300">${esc(item?.short_description || "")}</textarea></label><div class="exercise-form-grid"><label>Hauptfokus<select name="main_focus" required>${focusOptions}</select></label><label>Schwierigkeit<select name="difficulty"><option value="easy" ${item?.difficulty === "easy" ? "selected" : ""}>Leicht</option><option value="medium" ${!item || item?.difficulty === "medium" ? "selected" : ""}>Mittel</option><option value="hard" ${item?.difficulty === "hard" ? "selected" : ""}>Schwer</option></select></label>${basicVolleyball}</div></div></details>
       <details class="exercise-form-section"><summary><span>Organisation</span><small>Spieler, Feld, Ablauf und Dauer</small></summary><div class="exercise-section-body exercise-form-grid">${organizationFields}<label>Dauer-Richtwert (min)<input name="duration_min" type="number" min="1" max="120" value="${item?.duration_min || 5}"></label></div></details>
@@ -284,22 +284,38 @@
       <details class="exercise-form-section exercise-material-section"><summary><span>Material</span><small data-material-summary>Auswahl anzeigen</small></summary><div class="exercise-section-body"><div class="exercise-materials">${materialOptions}</div></div></details>
       <p class="exercise-editor-status"></p><div class="exercise-editor-actions"><button type="button" data-close>${readonly ? "Schließen" : "Abbrechen"}</button>${readonly ? '<button type="button" class="primary" data-clone>Als eigene übernehmen</button>' : '<button class="primary" type="submit">Speichern</button>'}</div></form>`;
     document.body.appendChild(overlay);
-    const fitTextArea = (textarea, minHeight, maxHeight) => {
+    const fitTextArea = (textarea, minHeight, maxHeight = Infinity) => {
         if (!textarea) return;
-        textarea.style.height = "auto";
+        textarea.style.height = "0px";
         textarea.style.height = `${Math.min(maxHeight, Math.max(minHeight, textarea.scrollHeight))}px`;
       },
       shortDescription = overlay.querySelector('[name="short_description"]'),
       shortCount = overlay.querySelector("[data-short-count]"),
       goalDescription = overlay.querySelector('[name="goal"]'),
+      goalCount = overlay.querySelector("[data-goal-count]"),
+      organizationDescription = overlay.querySelector('[name="organization"]'),
+      organizationCount = overlay.querySelector("[data-organization-count]"),
       syncShortDescription = () => {
         shortCount.textContent = `${shortDescription.value.length}/300 Zeichen`;
         fitTextArea(shortDescription, 44, 220);
+      },
+      syncLongDescription = (textarea, counter) => {
+        if (!textarea) return;
+        if (counter) counter.textContent = `${textarea.value.length}/1000 Zeichen`;
+        fitTextArea(textarea, 44);
       };
     shortDescription.addEventListener("input", syncShortDescription);
-    goalDescription?.addEventListener("input", () => fitTextArea(goalDescription, 118, 320));
+    goalDescription?.addEventListener("input", () => syncLongDescription(goalDescription, goalCount));
+    organizationDescription?.addEventListener("input", () => syncLongDescription(organizationDescription, organizationCount));
+    overlay.querySelectorAll("details").forEach((details) => details.addEventListener("toggle", () => {
+      if (details.open) requestAnimationFrame(() => {
+        syncLongDescription(goalDescription, goalCount);
+        syncLongDescription(organizationDescription, organizationCount);
+      });
+    }));
     syncShortDescription();
-    fitTextArea(goalDescription, 118, 320);
+    syncLongDescription(goalDescription, goalCount);
+    syncLongDescription(organizationDescription, organizationCount);
     const materialInputs = [...overlay.querySelectorAll('[name="material"]')],
       materialSummary = overlay.querySelector("[data-material-summary]"),
       syncMaterials = (changed = null) => {
@@ -357,6 +373,10 @@
       mats = fd.getAll("material");
     if (fd.get("short_description").trim().length > 300)
       return (status.textContent = "Die Kurzbeschreibung darf höchstens 300 Zeichen enthalten.");
+    if ((fd.get("goal") || "").trim().length > 1000)
+      return (status.textContent = "Das Ziel darf höchstens 1000 Zeichen enthalten.");
+    if ((fd.get("organization") || "").trim().length > 1000)
+      return (status.textContent = "Ablauf / Organisation darf höchstens 1000 Zeichen enthalten.");
     if (!mats.length) return (status.textContent = "Bitte Material auswählen – auch „Kein Material“ ist eine bewusste Auswahl.");
     if (mats.includes("none") && mats.length > 1) return (status.textContent = "„Kein Material“ kann nicht mit anderem Material kombiniert werden.");
     const c = await context(),

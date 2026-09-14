@@ -97,6 +97,13 @@
     return session.histories.get(id);
   }
 
+  function clearOtherHistories() {
+    const id = currentStep().id;
+    session.histories.forEach((value, key) => {
+      if (key !== id) session.histories.delete(key);
+    });
+  }
+
   function selected() {
     return (
       currentStep()?.objects.find((x) => x.id === session.selectedId) ||
@@ -104,8 +111,9 @@
     );
   }
   function snapshot() {
+    clearOtherHistories();
     const h = history();
-    h.undo.push(clone(currentStep()));
+    h.undo.push(clone(session.doc));
     if (h.undo.length > 60) h.undo.shift();
     h.redo = [];
     session.dirty = true;
@@ -124,10 +132,40 @@
   }
   function restore(stack, target) {
     if (!stack.length) return;
-    target.push(clone(currentStep()));
-    session.doc.steps[session.stepIndex] = stack.pop();
+    target.push(clone(session.doc));
+    session.doc = stack.pop();
     session.selectedId = "";
     render();
+  }
+
+  const sameValue = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+  function addObjectToFollowingSteps(object) {
+    for (let index = session.stepIndex + 1; index < session.doc.steps.length; index += 1) {
+      const step = session.doc.steps[index];
+      if (!step.objects.some((candidate) => candidate.id === object.id))
+        step.objects.push(clone(object));
+    }
+  }
+  function propagateObjectChange(before, after) {
+    if (!before || !after || before.id !== after.id) return;
+    const changedKeys = Object.keys(after).filter(
+      (key) => !["id", "type"].includes(key) && !sameValue(before[key], after[key]),
+    );
+    if (!changedKeys.length) return;
+    for (let index = session.stepIndex + 1; index < session.doc.steps.length; index += 1) {
+      const candidate = session.doc.steps[index].objects.find((object) => object.id === after.id);
+      if (!candidate || !changedKeys.every((key) => sameValue(candidate[key], before[key]))) break;
+      changedKeys.forEach((key) => {
+        candidate[key] = clone(after[key]);
+      });
+    }
+  }
+  function removeObjectFromCurrentAndFollowing(objectId) {
+    for (let index = session.stepIndex; index < session.doc.steps.length; index += 1) {
+      const step = session.doc.steps[index];
+      step.objects = step.objects.filter((object) => object.id !== objectId);
+      step.paths = step.paths.filter((path) => path.objectId !== objectId);
+    }
   }
 
   async function load(exerciseId) {
@@ -224,6 +262,7 @@
     if (type === "text")
       Object.assign(base, { x: 350, y: 450, text: "Hinweis" });
     objects.push(base);
+    addObjectToFollowingSteps(base);
     session.selectedId = base.id;
     session.propertiesExpanded = false;
     session.tool = "move";
@@ -234,12 +273,7 @@
     const o = selected();
     if (!o || session.readonly) return;
     snapshot();
-    currentStep().objects = currentStep().objects.filter(
-      (x) => x.id !== o.id,
-    );
-    currentStep().paths = currentStep().paths.filter(
-      (x) => x.objectId !== o.id,
-    );
+    removeObjectFromCurrentAndFollowing(o.id);
     session.selectedId = "";
     render();
   }
@@ -410,7 +444,9 @@
         (input.onchange = () => {
           if (session.readonly) return;
           snapshot();
+          const before = clone(o);
           o[input.dataset.prop] = input.value;
+          propagateObjectChange(before, o);
           render();
         }),
     );
@@ -693,14 +729,19 @@
           }
           return render();
         }
+        clearOtherHistories();
         const h = history();
-        h.undo.push(d.before.steps[session.stepIndex]);
+        h.undo.push(d.before);
+        if (h.undo.length > 60) h.undo.shift();
         h.redo = [];
         session.dirty = true;
         const o = currentStep().objects.find((x) => x.id === d.id);
         if (d.kind === "draw-line") {
+          addObjectToFollowingSteps(o);
           session.tool = "move";
           setStatus("Linie angelegt. Endpunkte können verschoben werden.");
+        } else {
+          propagateObjectChange(d.origin, o);
         }
         if (session.tool === "path" && ["person", "ball"].includes(o.type) && d.points.length > 1) {
           const points = simplifyPathPoints([...d.points, { x: o.x, y: o.y }]);
@@ -722,7 +763,7 @@
     const row = await load(exercise.id),
       root = document.createElement("div");
     root.className = "exercise-diagram-shell";
-    root.innerHTML = `<section class="exercise-diagram-editor"><header><button type="button" data-close>←</button><div><small>Grafischer Aufbau · V1.2b.1</small><h2>${esc(exercise.name)}</h2></div><button type="button" class="primary" data-save>Speichern</button></header><nav class="diagram-step-bar" aria-label="Übungsschritte"><button type="button" data-step-prev aria-label="Vorheriger Schritt">‹</button><div data-step-strip></div><button type="button" data-step-next aria-label="Nächster Schritt">›</button><button type="button" data-step-add aria-label="Neuen Schritt anlegen">＋</button><button type="button" data-play aria-label="Abspielen">▶</button><button type="button" data-loop aria-label="Wiederholen">↻</button><button type="button" data-reset-play aria-label="Zum ersten Schritt" title="Zum ersten Schritt">|‹</button><button type="button" class="danger diagram-step-delete" data-step-delete aria-label="Aktuellen Schritt löschen" title="Schritt löschen">🗑</button></nav><section class="diagram-tool-panel"><div class="diagram-toolbar"><select data-field aria-label="Felddarstellung"><option value="full">Ganzfeld</option><option value="half">Halbfeld</option></select><button type="button" data-mode="move" class="active" aria-label="Nur verschieben">Verschieben</button><button type="button" data-mode="path" aria-label="Mit Laufweg oder Flugbahn bewegen">Weg / Flug</button><button type="button" data-undo aria-label="Rückgängig">↶</button><button type="button" data-redo aria-label="Wiederholen">↷</button></div></section><main><div class="diagram-court-wrap"><div class="diagram-court-view-toggle" role="group" aria-label="Darstellung"><button type="button" data-view-2d class="active">2D</button><button type="button" data-view-25d>2,5D</button></div><svg data-court role="img" aria-label="Grafischer Übungsaufbau" preserveAspectRatio="xMidYMid meet"></svg></div><aside data-properties></aside></main><section class="diagram-add-panel collapsed" data-collapsible="add"><button type="button" class="diagram-panel-toggle" data-panel-toggle="add" aria-expanded="false"><span>Hinzufügen</span><small>Personen &amp; Objekte</small><i>⌃</i></button><div>${[
+    root.innerHTML = `<section class="exercise-diagram-editor"><header><button type="button" data-close>←</button><div><small>Grafischer Aufbau · V1.2b.2</small><h2>${esc(exercise.name)}</h2></div><button type="button" class="primary" data-save>Speichern</button></header><nav class="diagram-step-bar" aria-label="Übungsschritte"><button type="button" data-step-prev aria-label="Vorheriger Schritt">‹</button><div data-step-strip></div><button type="button" data-step-next aria-label="Nächster Schritt">›</button><button type="button" data-step-add aria-label="Neuen Schritt anlegen">＋</button><button type="button" data-play aria-label="Abspielen">▶</button><button type="button" data-loop aria-label="Wiederholen">↻</button><button type="button" data-reset-play aria-label="Zum ersten Schritt" title="Zum ersten Schritt">|‹</button><button type="button" class="danger diagram-step-delete" data-step-delete aria-label="Aktuellen Schritt löschen" title="Schritt löschen">🗑</button></nav><section class="diagram-tool-panel"><div class="diagram-toolbar"><select data-field aria-label="Felddarstellung"><option value="full">Ganzfeld</option><option value="half">Halbfeld</option></select><button type="button" data-mode="move" class="active" aria-label="Nur verschieben">Verschieben</button><button type="button" data-mode="path" aria-label="Mit Laufweg oder Flugbahn bewegen">Weg / Flug</button><button type="button" data-undo aria-label="Rückgängig">↶</button><button type="button" data-redo aria-label="Wiederholen">↷</button></div></section><main><div class="diagram-court-wrap"><div class="diagram-court-view-toggle" role="group" aria-label="Darstellung"><button type="button" data-view-2d class="active">2D</button><button type="button" data-view-25d>2,5D</button></div><svg data-court role="img" aria-label="Grafischer Übungsaufbau" preserveAspectRatio="xMidYMid meet"></svg></div><aside data-properties></aside></main><section class="diagram-add-panel collapsed" data-collapsible="add"><button type="button" class="diagram-panel-toggle" data-panel-toggle="add" aria-expanded="false"><span>Hinzufügen</span><small>Personen &amp; Objekte</small><i>⌃</i></button><div>${[
       ["person", "＋ Person"],
       ["ball", "＋ Ball"],
       ["cone", "＋ Hütchen"],

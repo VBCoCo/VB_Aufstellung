@@ -13,11 +13,13 @@
     space: 2, fillFrequency: 2, seed: 31650,
   });
   const CHORDS = [[36, [60, 64, 67]], [43, [55, 59, 62]], [45, [57, 60, 64]], [41, [53, 57, 60]]];
+  // Hook notes are chord-tone indexes. Keeping the motifs tied to the current
+  // chord prevents the previous block transposition from creating clashes.
   const HOOKS = [
-    [[0, 72], [2, 76], [5, 79], [8, 76], [11, 74]],
-    [[1, 79], [4, 81], [8, 79], [11, 76]],
-    [[0, 76], [3, 79], [6, 84], [10, 81], [13, 79]],
-    [[0, 74], [3, 76], [7, 81], [12, 79]],
+    [[0, 0], [3, 1], [7, 2], [11, 1]],
+    [[0, 2], [4, 1], [9, 0], [13, 1]],
+    [[1, 0], [5, 2], [10, 1]],
+    [[0, 1], [4, 2], [8, 1], [12, 0]],
   ];
   const esc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
   const isAdmin = () => { try { return Boolean(JSON.parse(localStorage.getItem(ACCESS_KEY) || "null")?.platform_admin); } catch { return false; } };
@@ -229,7 +231,7 @@
     const drumsBus = new Tone.Gain(0.9).connect(compressor);
     const bassBus = new Tone.Gain(0.8).connect(compressor);
     const musicFilter = new Tone.Filter(9000, "lowpass").connect(compressor);
-    const harmonyBus = new Tone.Gain(0.62).connect(musicFilter);
+    const harmonyBus = new Tone.Gain(0.78).connect(musicFilter);
     const hookBus = new Tone.Gain(0.66).connect(musicFilter);
     const choirBus = new Tone.Gain(0.30).connect(musicFilter);
     const reverb = new Tone.Reverb({decay:2.2, wet:0.16}).connect(compressor);
@@ -246,7 +248,10 @@
   function applyImmediate() {
     if (!engine) return;
     ramp(engine.bassBus.gain, [0, .54, .66, .80, .94, 1.08][desired.bassPressure]);
-    ramp(engine.hookBus.gain, [0, .34, .48, .66, .82, .98][desired.melodyPresence]);
+    // Stufe 1 is deliberately almost accompaniment-only. Even at level 5 the
+    // hook stays below the harmony bed instead of taking over the whole mix.
+    ramp(engine.hookBus.gain, [0, .025, .10, .25, .43, .62][desired.melodyPresence]);
+    ramp(engine.harmonyBus.gain, [0, .86, .84, .82, .78, .74][desired.melodyPresence]);
     ramp(engine.choirBus.gain, [0, .08, .18, .30, .44, .60][desired.choirIntensity]);
     ramp(engine.musicFilter.frequency, [0, 3600, 5200, 7600, 10500, 14500][desired.brightness], .16);
     ramp(engine.reverb.wet, [0, .04, .10, .16, .24, .34][desired.space], .16);
@@ -292,17 +297,17 @@
         engine.sub.triggerAttackRelease(midi(note), .24 * 60 / bpm, at(time, baseBeat + step / 4, bpm), .24 * scale);
       });
 
-      const chordPositions = reduced ? [0, 2] : [.5, 1.5, 2.5, 3.5];
-      for (const position of chordPositions) for (const note of chord) harmony?.triggerAttackRelease(midi(note + 12), (reduced ? 1.1 : .44) * 60 / bpm, at(time, baseBeat + position, bpm), .20 * scale);
+      const chordPositions = reduced ? [0] : build ? [0, 2] : (bar % 2 ? [.5, 2.5] : [0, 1.5, 3]);
+      const chordLength = reduced ? 3.1 : build ? 1.35 : .72;
+      for (const position of chordPositions) for (const note of chord) harmony?.triggerAttackRelease(midi(note + 12), chordLength * 60 / bpm, at(time, baseBeat + position, bpm), .24 * scale);
 
-      const phraseSlots = cfg.melodyVariability <= 1 ? [0,4] : cfg.melodyVariability === 2 ? [0,4,6] : cfg.melodyVariability === 3 ? [0,1,4,6] : [0,1,3,4,6];
+      const phraseSlots = cfg.melodyVariability <= 1 ? [0] : cfg.melodyVariability === 2 ? [0,4] : cfg.melodyVariability === 3 ? [0,4,6] : cfg.melodyVariability === 4 ? [0,2,4,6] : [0,1,3,4,6];
       if (!reduced && phraseSlots.includes(bar)) {
         const motifCount = Math.min(HOOKS.length, Math.max(1, cfg.melodyVariability));
         const motif = HOOKS[(bar + Math.floor((blockCounter - 1) / 2)) % motifCount];
-        const shift = ((blockCounter - 1) % 3) * 2;
-        motif.forEach(([step, note], index) => {
-          lead?.triggerAttackRelease(midi(note + shift), .29 * 60 / bpm, at(time, baseBeat + step / 4, bpm), (.26 + cfg.melodyPresence * .025) * scale);
-          if (cfg.timbreChange >= 4 && index === 0 && engine.banks.lead.length > 1) engine.banks.lead[(blockCounter) % engine.banks.lead.length].node.triggerAttackRelease(midi(note + shift - 12), .22 * 60 / bpm, at(time, baseBeat + step / 4, bpm), .10 * scale);
+        motif.forEach(([step, chordTone]) => {
+          const note = chord[chordTone % chord.length] + 12;
+          lead?.triggerAttackRelease(midi(note), .34 * 60 / bpm, at(time, baseBeat + step / 4, bpm), (.20 + cfg.melodyPresence * .015) * scale);
         });
       }
       const choirEvery = Math.max(1, 6 - cfg.choirIntensity);

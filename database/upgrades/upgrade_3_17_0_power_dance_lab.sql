@@ -27,6 +27,8 @@ create table if not exists public.vt_power_dance_presets (
   updated_at timestamptz not null default now()
 );
 
+create index if not exists vt_music_sample_packs_created_by_idx
+  on public.vt_music_sample_packs(created_by);
 create unique index if not exists vt_power_dance_presets_owner_name
   on public.vt_power_dance_presets(owner_id, lower(name));
 

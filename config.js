@@ -3,7 +3,7 @@ window.APP_CONFIG = {
   SUPABASE_PUBLISHABLE_KEY: "sb_publishable_gwDoKpExqBfM4voiXncaaA_w61xcbO4",
 };
 (() => {
-  const version = "3.16.4";
+  const version = "3.17.0";
   window.VB_RELEASE_VERSION = version;
   const visualModes = {
     login: { color: "#153b72" },
@@ -269,7 +269,7 @@ window.APP_CONFIG = {
   const load = () => {
     registerReleaseWorker();
     checkRelease();
-    ["ui-3.14.4.css", "exercise-library.css", "exercise-diagram-editor.css", "ui-3.14.12.css", "ui-3.14.13.css", "ui-3.14.14.css", "ui-3.14.15.css", "ui-3.14.16.css", "ui-3.14.17.css", "ui-3.14.18.css", "ui-3.14.19.css", "ui-3.14.20.css", "ui-3.14.21.css", "ui-3.14.22.css", "ui-3.14.23.css", "ui-3.14.24.css", "ui-3.14.25.css", "ui-3.14.26.css", "ui-3.14.27.css", "ui-3.14.28.css", "ui-3.14.29.css", "ui-3.14.34.css"].forEach((href, i) =>
+    ["ui-3.14.4.css", "exercise-library.css", "exercise-diagram-editor.css", "power-dance-lab.css", "ui-3.14.12.css", "ui-3.14.13.css", "ui-3.14.14.css", "ui-3.14.15.css", "ui-3.14.16.css", "ui-3.14.17.css", "ui-3.14.18.css", "ui-3.14.19.css", "ui-3.14.20.css", "ui-3.14.21.css", "ui-3.14.22.css", "ui-3.14.23.css", "ui-3.14.24.css", "ui-3.14.25.css", "ui-3.14.26.css", "ui-3.14.27.css", "ui-3.14.28.css", "ui-3.14.29.css", "ui-3.14.34.css"].forEach((href, i) =>
       asset("link", {
         rel: "stylesheet",
         href: `${href}?v=${version}`,
@@ -283,6 +283,10 @@ window.APP_CONFIG = {
     asset("script", {
       src: `project-memory.js?v=${version}`,
       "data-vb-release": "project-memory",
+    });
+    asset("script", {
+      src: `power-dance-lab.js?v=${version}`,
+      "data-vb-release": "power-dance-lab",
     });
     asset("script", {
       src: `exercise-diagram-editor.js?v=${version}`,

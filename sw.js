@@ -1,4 +1,4 @@
-const VERSION = "3.16.4";
+const VERSION = "3.17.0";
 const CORE_VERSION = "3.13.0";
 const CACHE_PREFIX = "volleyball-trainer-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
@@ -10,9 +10,15 @@ const APP_SHELL = ["./index.html",`./style.css?v=${CORE_VERSION}`,`./vendor/tone
 APP_SHELL.push(
   `./style.css?v=${VERSION}`,
   `./music-sample-packs.js?v=${VERSION}`,
+  `./power-dance-lab.css?v=${VERSION}`,
+  `./power-dance-lab.js?v=${VERSION}`,
   "./assets/audio/packs/README.md",
   "./assets/audio/packs/accordion/A4.mp3","./assets/audio/packs/accordion/C5.mp3","./assets/audio/packs/accordion/E5.mp3","./assets/audio/packs/accordion/G5.mp3","./assets/audio/packs/accordion/C6.mp3","./assets/audio/packs/accordion/LICENSE.md",
   "./assets/audio/packs/choir/C3.mp3","./assets/audio/packs/choir/Fs3.mp3","./assets/audio/packs/choir/C4.mp3","./assets/audio/packs/choir/Fs4.mp3","./assets/audio/packs/choir/C5.mp3","./assets/audio/packs/choir/LICENSE.md",
+  "./assets/audio/packs/power-dance-bass/C1.mp3","./assets/audio/packs/power-dance-bass/Fs1.mp3","./assets/audio/packs/power-dance-bass/C2.mp3","./assets/audio/packs/power-dance-bass/Fs2.mp3","./assets/audio/packs/power-dance-bass/C3.mp3","./assets/audio/packs/power-dance-bass/LICENSE.txt",
+  "./assets/audio/packs/power-dance-lead/C3.mp3","./assets/audio/packs/power-dance-lead/E3.mp3","./assets/audio/packs/power-dance-lead/Gs3.mp3","./assets/audio/packs/power-dance-lead/C4.mp3","./assets/audio/packs/power-dance-lead/E4.mp3","./assets/audio/packs/power-dance-lead/Gs4.mp3","./assets/audio/packs/power-dance-lead/C5.mp3","./assets/audio/packs/power-dance-lead/E5.mp3","./assets/audio/packs/power-dance-lead/Gs5.mp3","./assets/audio/packs/power-dance-lead/LICENSE.txt",
+  "./assets/audio/packs/power-dance-piano/C3.mp3","./assets/audio/packs/power-dance-piano/Fs3.mp3","./assets/audio/packs/power-dance-piano/C4.mp3","./assets/audio/packs/power-dance-piano/Fs4.mp3","./assets/audio/packs/power-dance-piano/C5.mp3","./assets/audio/packs/power-dance-piano/Fs5.mp3","./assets/audio/packs/power-dance-piano/LICENSE.txt",
+  "./assets/audio/packs/power-dance-drums/Kick06.wav","./assets/audio/packs/power-dance-drums/kick-click.wav","./assets/audio/packs/power-dance-drums/Snare14.wav","./assets/audio/packs/power-dance-drums/Clap01.wav","./assets/audio/packs/power-dance-drums/ClosedHiHat02-01.wav","./assets/audio/packs/power-dance-drums/OpenHiHat02-01.wav","./assets/audio/packs/power-dance-drums/Cymbal01-03.wav","./assets/audio/packs/power-dance-drums/HighTom02-02.wav","./assets/audio/packs/power-dance-drums/MidTom02-02.wav","./assets/audio/packs/power-dance-drums/LowTom02-02.wav","./assets/audio/packs/power-dance-drums/LICENSE.txt",
   `./ui-3.14.35.css?v=${VERSION}`,`./exercise-diagram-editor.css?v=${VERSION}`,`./exercise-diagram-editor.js?v=${VERSION}`
 );
 const absoluteUrl=path=>new URL(path,self.registration.scope).href,INDEX_URL=absoluteUrl("./index.html"),VERSION_URL=absoluteUrl("./version.json"),APP_SHELL_URLS=new Set(APP_SHELL.map(absoluteUrl));

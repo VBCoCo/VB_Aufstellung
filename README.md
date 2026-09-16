@@ -16,6 +16,8 @@ Die aktuell veröffentlichte Web-App besteht im Kern aus:
 | `app.js` | aktuelle Anwendungslogik; Cache-Busting über den Release-Parameter in `index.html` |
 | `training-player.js` | getrennte Musik-, Intervall- und Ansagelogik des Trainings-Players |
 | `vendor/tone-15.1.22.js` | lokal ausgelieferte Tone.js-Musikbibliothek (MIT-Lizenz) |
+| `power-dance-lab.js` | Super-Admin-Testgenerator mit Live-Reglern und Samplekatalog |
+| `power-dance-lab.css` | mobile Oberfläche des Power Dance Labs |
 | `style.css` | aktuelles Layout und Design; Cache-Busting über den Release-Parameter in `index.html` |
 | `config.js` | öffentliche Supabase-URL und Publishable/Anon-Key für den Browser |
 | `version.json` | maschinenlesbare aktuelle Release-Version |

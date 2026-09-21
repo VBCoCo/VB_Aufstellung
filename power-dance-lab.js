@@ -37,6 +37,7 @@
   let active = {...desired};
   let pending = false;
   let engine = null;
+  let previewAudio = null;
   let blockCounter = 0;
   let playing = false;
 
@@ -119,8 +120,8 @@
   }
 
   function wireDialog() {
-    dialog.querySelector("[data-pd-close]").onclick = () => { stop(); dialog.close(); };
-    dialog.addEventListener("cancel", event => { event.preventDefault(); stop(); dialog.close(); });
+    dialog.querySelector("[data-pd-close]").onclick = () => { stopPreview(); stop(); dialog.close(); };
+    dialog.addEventListener("cancel", event => { event.preventDefault(); stopPreview(); stop(); dialog.close(); });
     dialog.querySelector("[data-pd-play]").onclick = play;
     dialog.querySelector("[data-pd-stop]").onclick = stop;
     dialog.querySelector("[data-pd-new]").onclick = () => { desired.seed = Math.floor(10000 + Math.random() * 89999); saveSettings(); status(`Neue reproduzierbare Variante: ${desired.seed}`); if (playing) pending = true; pendingStatus(); };
@@ -143,7 +144,7 @@
     dialog.querySelector("[data-pd-preset-save]").onclick = savePreset;
     dialog.querySelector("[data-pd-preset-load]").onclick = loadSelectedPreset;
     dialog.querySelector("[data-pd-upload]").onsubmit = uploadPack;
-    dialog.querySelector("[data-pd-pack-list]").onclick = togglePack;
+    dialog.querySelector("[data-pd-pack-list]").onclick = handlePackAction;
   }
 
   async function loadData() {
@@ -158,7 +159,12 @@
   }
   function renderPacks() {
     const root = dialog?.querySelector("[data-pd-pack-list]"); if (!root) return;
-    root.innerHTML = catalog.map(pack => `<article><span><strong>${esc(pack.name)}</strong><small>${esc(pack.instrument_role)} · ${esc(pack.license_name)}${pack.bundled ? " · lokal" : " · nachgeladen"}</small></span><button type="button" data-pd-pack-toggle="${esc(pack.id)}" data-enabled="${pack.lab_enabled}">${pack.lab_enabled ? "Im Lab aktiv" : "Deaktiviert"}</button></article>`).join("") || '<p class="hint">Keine Samplepakete verfügbar.</p>';
+    root.innerHTML = catalog.map(pack => {
+      const clip = pack.manifest?.type === "clip";
+      const group = pack.manifest?.group ? ` · ${esc(pack.manifest.group)}` : "";
+      const source = pack.license_source ? `<a href="${esc(pack.license_source)}" target="_blank" rel="noopener">Quelle</a>` : "";
+      return `<article><span><strong>${esc(pack.name)}</strong><small>${esc(pack.instrument_role)}${group} · ${esc(pack.license_name)} · ${source || (pack.bundled ? "lokal" : "nachgeladen")}</small></span><div class="pd-pack-actions">${clip ? `<button type="button" data-pd-pack-preview="${esc(pack.id)}">▶ Anhören</button>` : ""}<button type="button" data-pd-pack-toggle="${esc(pack.id)}" data-enabled="${pack.lab_enabled}">${pack.lab_enabled ? "Im Lab aktiv" : "Deaktiviert"}</button>${clip ? `<button class="danger" type="button" data-pd-pack-delete="${esc(pack.id)}">Löschen</button>` : ""}</div></article>`;
+    }).join("") || '<p class="hint">Keine Samplepakete verfügbar.</p>';
   }
   function renderPresets() {
     const select = dialog?.querySelector("[data-pd-preset-list]"); if (!select) return;
@@ -180,7 +186,38 @@
     const item = presets.find(row => row.id === id); if (!item) return status("Bitte ein Preset auswählen.", true);
     applyToControls(item.settings); status(`Preset „${item.name}“ geladen.`);
   }
-  async function togglePack(event) {
+  function clipUrl(pack) {
+    if (pack?.manifest?.url) return pack.manifest.url;
+    const first = pack?.manifest?.urls && Object.values(pack.manifest.urls)[0];
+    return first ? `${pack.manifest.baseUrl || ""}${first}` : "";
+  }
+  function stopPreview() {
+    if (!previewAudio) return;
+    previewAudio.pause(); previewAudio.currentTime = 0; previewAudio = null;
+  }
+  async function previewPack(id) {
+    const pack = catalog.find(item => item.id === id), url = clipUrl(pack);
+    if (!url) return status("Für dieses Sample ist keine Hörprobe vorhanden.", true);
+    stopPreview(); previewAudio = new Audio(url); previewAudio.volume = 0.78;
+    previewAudio.onended = () => { previewAudio = null; status(`Hörprobe „${pack.name}“ beendet.`); };
+    try { await previewAudio.play(); status(`Hörprobe: ${pack.name}`); }
+    catch (error) { stopPreview(); status(`Hörprobe konnte nicht gestartet werden: ${error.message}`, true); }
+  }
+  async function deletePack(id) {
+    const pack = catalog.find(item => item.id === id); if (!pack) return;
+    if (!confirm(`Sample „${pack.name}“ wirklich aus dem Katalog löschen?`)) return;
+    stopPreview();
+    try {
+      if (pack.storage_prefix) await api().request("/storage/v1/object/vt-music-samples", {method:"DELETE", body:{prefixes:[pack.storage_prefix]}});
+      await api().request(`/rest/v1/vt_music_sample_packs?id=eq.${encodeURIComponent(id)}`, {method:"DELETE"});
+      await loadData(); status(`Sample „${pack.name}“ wurde gelöscht.`);
+    } catch (error) { status(`Löschen fehlgeschlagen: ${error.message}`, true); }
+  }
+  async function handlePackAction(event) {
+    const preview = event.target.closest("[data-pd-pack-preview]");
+    if (preview) return previewPack(preview.dataset.pdPackPreview);
+    const remove = event.target.closest("[data-pd-pack-delete]");
+    if (remove) return deletePack(remove.dataset.pdPackDelete);
     const button = event.target.closest("[data-pd-pack-toggle]"); if (!button) return;
     button.disabled = true;
     try { await api().request(`/rest/v1/vt_music_sample_packs?id=eq.${encodeURIComponent(button.dataset.pdPackToggle)}`, {method:"PATCH", body:{lab_enabled:button.dataset.enabled !== "true", updated_at:new Date().toISOString()}}); await loadData(); status("Samplekatalog aktualisiert. Neustart der Wiedergabe übernimmt die Auswahl."); }
@@ -221,6 +258,9 @@
       .filter(pack => pack.lab_enabled && pack.instrument_role === role && pack.manifest?.urls)
       .sort((a, b) => Number(b.slug.includes("bright-lead")) - Number(a.slug.includes("bright-lead")) || a.name.localeCompare(b.name, "de"));
   }
+  function enabledClips() {
+    return catalog.filter(pack => pack.lab_enabled && pack.manifest?.type === "clip" && pack.manifest?.url);
+  }
   function sampler(pack, destination) {
     const manifest = pack.manifest;
     return new Tone.Sampler({urls:manifest.urls, baseUrl:manifest.baseUrl, attack:Number(manifest.attack) || 0.006, release:Number(manifest.release) || 0.16}).connect(destination);
@@ -240,9 +280,11 @@
     const player = (file, bus = drumsBus, volume = 0) => new Tone.Player({url:base + file, volume}).connect(bus);
     const drums = {kick:player("Kick06.wav", drumsBus, -1), click:player("kick-click.wav", drumsBus, -8), snare:player("Snare14.wav", drumsBus, -5), clap:player("Clap01.wav", drumsBus, -7), hat:player("ClosedHiHat02-01.wav", drumsBus, -12), open:player("OpenHiHat02-01.wav", drumsBus, -13), cymbal:player("Cymbal01-03.wav", drumsBus, -8), tomHigh:player("HighTom02-02.wav", drumsBus, -9), tomMid:player("MidTom02-02.wav", drumsBus, -8), tomLow:player("LowTom02-02.wav", drumsBus, -7)};
     const banks = {bass:enabled("bass").map(pack => ({pack, node:sampler(pack, bassBus)})), lead:enabled("lead").map(pack => ({pack, node:sampler(pack, hookBus)})), harmony:enabled("harmony").map(pack => ({pack, node:sampler(pack, harmonyBus)})), choir:enabled("choir").map(pack => ({pack, node:sampler(pack, choirBus)}))};
+    const clipBus = {drums:drumsBus,effects:drumsBus,lead:hookBus,harmony:harmonyBus};
+    const clips = enabledClips().map(pack => ({pack,node:new Tone.Player({url:pack.manifest.url,volume:Number(pack.manifest.volumeDb ?? -7)}).connect(clipBus[pack.instrument_role] || musicFilter)}));
     const sub = new Tone.MonoSynth({oscillator:{type:"sine"}, envelope:{attack:0.003,decay:0.16,sustain:0.05,release:0.04}}).connect(bassBus);
     await Tone.loaded(); await reverb.generate();
-    return {master, compressor, drumsBus, bassBus, musicFilter, harmonyBus, hookBus, choirBus, reverb, drums, banks, sub};
+    return {master, compressor, drumsBus, bassBus, musicFilter, harmonyBus, hookBus, choirBus, reverb, drums, banks, clips, sub};
   }
   function ramp(param, value, seconds = 0.08) { try { param.rampTo(value, seconds); } catch { param.value = value; } }
   function applyImmediate() {
@@ -274,6 +316,10 @@
     const cfg = active, bpm = cfg.bpm, scale = cfg.intensity === "low" ? .76 : cfg.intensity === "medium" ? .88 : 1;
     const kind = blockKind(blockCounter - 1, cfg.arrangementContrast), drop = kind === "drop", build = kind === "build", reduced = kind === "break";
     const rng = seeded(cfg.seed + blockCounter * 977), bass = chooseBank("bass", blockCounter - 1, cfg.timbreChange), lead = chooseBank("lead", blockCounter - 1, cfg.timbreChange), harmony = chooseBank("harmony", blockCounter - 1, cfg.timbreChange), choir = chooseBank("choir", blockCounter - 1, cfg.timbreChange);
+    const clipGroup = group => engine.clips.filter(item => item.pack.manifest.group === group);
+    const chooseClip = group => { const list = clipGroup(group); return list.length ? list[Math.floor(rng() * list.length)].node : null; };
+    if (drop) (chooseClip("impact") || chooseClip("crash"))?.start(time);
+    if (reduced) chooseClip("downlifter")?.start(time);
     const registerCycle = [0, -12, 0, 7, -12, 0];
     let register = cfg.bassVariability <= 1 ? 0 : registerCycle[(blockCounter - 1) % registerCycle.length];
     for (let bar = 0; bar < 8; bar++) {
@@ -315,6 +361,8 @@
       if (bar === 7) {
         if (cfg.fillFrequency >= 2) [engine.drums.tomHigh, engine.drums.tomMid, engine.drums.tomLow, engine.drums.clap].forEach((drum, i) => drum.start(at(time, baseBeat + 3 + i * .25, bpm)));
         if (cfg.arrangementContrast >= 3) engine.drums.cymbal.start(at(time, baseBeat + 3.75, bpm));
+        if (build) chooseClip("riser")?.start(at(time, baseBeat, bpm));
+        if (cfg.fillFrequency >= 4) chooseClip("fill")?.start(at(time, baseBeat + 2, bpm));
       }
     }
     requestAnimationFrame(() => { applyImmediate(); pendingStatus(); });
@@ -338,6 +386,7 @@
     if (!engine) return;
     Object.values(engine.drums).forEach(node => { try { node.stop(); node.dispose(); } catch {} });
     Object.values(engine.banks).flat().forEach(item => { try { item.node.releaseAll(); item.node.dispose(); } catch {} });
+    engine.clips.forEach(item => { try { item.node.stop(); item.node.dispose(); } catch {} });
     [engine.sub, engine.reverb, engine.musicFilter, engine.choirBus, engine.hookBus, engine.harmonyBus, engine.bassBus, engine.drumsBus, engine.compressor, engine.master].forEach(node => { try { node.dispose(); } catch {} });
     engine = null;
   }

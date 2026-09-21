@@ -6,21 +6,21 @@
   const SETTINGS_KEY = "vb-power-dance-lab-settings-v1";
   const AB_KEY = "vb-power-dance-lab-ab-v1";
   const CLIP_SELECTIONS_KEY = "vb-power-dance-lab-melodic-clips-v1";
-  const STRUCTURAL = new Set(["intensity", "bassVariability", "melodyVariability", "timbreChange", "arrangementContrast", "fillFrequency", "choirIntensity"]);
+  const STRUCTURAL = new Set(["intensity", "bassVariability", "melodyDensity", "melodyVariability", "timbreChange", "arrangementContrast", "fillFrequency", "choirIntensity"]);
   const DEFAULTS = Object.freeze({
     bpm: 150, intensity: "high", bassPressure: 3, bassVariability: 3,
-    chordPresence: 3, melodyPresence: 3, melodyVariability: 3, timbreChange: 3,
+    chordPresence: 3, melodyPresence: 3, melodyDensity: 2, melodyVariability: 3, timbreChange: 3,
     choirIntensity: 2, arrangementContrast: 3, brightness: 4,
     space: 2, fillFrequency: 2, seed: 31650,
   });
   const CHORDS = [[36, [60, 64, 67]], [43, [55, 59, 62]], [45, [57, 60, 64]], [41, [53, 57, 60]]];
-  // Hook notes are chord-tone indexes. Keeping the motifs tied to the current
-  // chord prevents the previous block transposition from creating clashes.
-  const HOOKS = [
-    [[0, 0], [3, 1], [7, 2], [11, 1]],
-    [[0, 2], [4, 1], [9, 0], [13, 1]],
-    [[1, 0], [5, 2], [10, 1]],
-    [[0, 1], [4, 2], [8, 1], [12, 0]],
+  // One eight-bar hook form: A – A – B – A'. Rhythm comes first and stays
+  // recognizable; pitch movements are subsequently voiced into each chord.
+  const HOOK_FORM = [
+    [[0, 0], [4, 2], [10, 2]], [[2, -2], [8, -2]],
+    [[0, 0], [4, 2], [10, 2]], [[2, -2], [8, -2]],
+    [[0, 2], [4, 3], [10, -2]], [[2, -2], [8, 2]],
+    [[0, 0], [4, 2], [10, 2]], [[2, -2], [8, -2], [12, -2]],
   ];
   const esc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
   const isAdmin = () => { try { return Boolean(JSON.parse(localStorage.getItem(ACCESS_KEY) || "null")?.platform_admin); } catch { return false; } };
@@ -96,7 +96,8 @@
         ${control("bassVariability", "Bassvariabilität", "statisch", "melodisch", desired.bassVariability)}
         ${control("chordPresence", "Akkordpräsenz", "zurückhaltend", "deutlich", desired.chordPresence)}
         ${control("melodyPresence", "Melodiepräsenz", "zurückhaltend", "deutlich", desired.melodyPresence)}
-        ${control("melodyVariability", "Melodievariabilität", "wenige Motive", "viele Antworten", desired.melodyVariability)}
+        ${control("melodyDensity", "Melodiedichte", "viel Pause", "viele Einsätze", desired.melodyDensity)}
+        ${control("melodyVariability", "Melodievariation", "nahe am Motiv", "stärker variiert", desired.melodyVariability)}
         ${control("timbreChange", "Klangfarbenwechsel", "einheitlich", "häufiger Wechsel", desired.timbreChange)}
         ${control("choirIntensity", "Chorintensität", "selten", "deutlich", desired.choirIntensity)}
         ${control("arrangementContrast", "Arrangement-Kontrast", "gleichmäßig", "Builds & Drops", desired.arrangementContrast)}
@@ -338,6 +339,18 @@
     const cadence = [99, 99, 4, 2, 1, 1][amount] || 2;
     return list[Math.floor(block / cadence) % list.length].node;
   }
+  function nearestChordPitch(chord, target, rootOnly = false) {
+    const pitchClasses = (rootOnly ? [chord[0]] : chord).map(note => ((note % 12) + 12) % 12);
+    const candidates = [];
+    for (let note = 64; note <= 79; note++) if (pitchClasses.includes(note % 12)) candidates.push(note);
+    return candidates.reduce((best, note) => Math.abs(note - target) < Math.abs(best - target) ? note : best, candidates[0]);
+  }
+  function melodyBarEnabled(bar, density) {
+    if (density <= 1) return bar < 2;
+    if (density === 2) return bar < 2 || bar >= 6;
+    if (density === 3) return bar < 4 || bar >= 6;
+    return true;
+  }
   function at(time, beat, bpm) { return time + beat * 60 / bpm; }
   function blockKind(block, contrast) {
     if (contrast <= 1) return "steady";
@@ -367,6 +380,7 @@
     if (reduced) chooseClip("downlifter")?.start(time);
     const registerCycle = [0, -12, 0, 7, -12, 0];
     let register = cfg.bassVariability <= 1 ? 0 : registerCycle[(blockCounter - 1) % registerCycle.length];
+    let previousLeadNote = 72;
     for (let bar = 0; bar < 8; bar++) {
       const baseBeat = bar * 4, [root, chord] = CHORDS[(bar + blockCounter - 1) % CHORDS.length];
       for (let beat = 0; beat < 4; beat++) {
@@ -392,13 +406,21 @@
       const chordLength = reduced ? 3.3 : build ? 1.8 : 1.35;
       if (!selectedHarmonyClip) for (const position of chordPositions) for (const note of chord) harmony?.triggerAttackRelease(midi(note + 12), chordLength * 60 / bpm, at(time, baseBeat + position, bpm), .20 * scale);
 
-      const phraseSlots = cfg.melodyVariability <= 1 ? [0] : cfg.melodyVariability === 2 ? [0,4] : cfg.melodyVariability === 3 ? [0,4,6] : cfg.melodyVariability === 4 ? [0,2,4,6] : [0,1,3,4,6];
-      if (!selectedLeadClip && !reduced && phraseSlots.includes(bar)) {
-        const motifCount = Math.min(HOOKS.length, Math.max(1, cfg.melodyVariability));
-        const motif = HOOKS[(bar + Math.floor((blockCounter - 1) / 2)) % motifCount];
-        motif.forEach(([step, chordTone]) => {
-          const note = chord[chordTone % chord.length] + 12;
-          lead?.triggerAttackRelease(midi(note), .68 * 60 / bpm, at(time, baseBeat + step / 4, bpm), (.20 + cfg.melodyPresence * .015) * scale);
+      if (!selectedLeadClip && !reduced && melodyBarEnabled(bar, cfg.melodyDensity) && (!build || cfg.melodyDensity >= 4)) {
+        let events = HOOK_FORM[bar].map(event => [...event]);
+        // Controlled variation changes only one detail while preserving the
+        // recognizable rhythm. Level 5 adds one quiet passing event.
+        if (cfg.melodyVariability >= 4 && (bar === 4 || bar === 7)) events[events.length - 1][1] += bar === 4 ? 2 : -2;
+        if (cfg.melodyVariability >= 5 && bar % 2 === 0) events.push([14, -1]);
+        if (build) events = events.slice(0, 1);
+        events.sort((a, b) => a[0] - b[0]).forEach(([step, movement], index) => {
+          const desiredPitch = previousLeadNote + movement;
+          const resolving = bar === 7 && index === events.length - 1;
+          const note = nearestChordPitch(chord, desiredPitch, resolving);
+          previousLeadNote = note;
+          const duration = (step === 14 ? .32 : index === events.length - 1 ? .82 : .56) * 60 / bpm;
+          const velocity = (.17 + cfg.melodyPresence * .012) * scale * (step === 0 ? 1 : .88);
+          lead?.triggerAttackRelease(midi(note), duration, at(time, baseBeat + step / 4, bpm), velocity);
         });
       }
       const choirEvery = Math.max(1, 6 - cfg.choirIntensity);

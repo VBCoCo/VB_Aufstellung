@@ -5,10 +5,11 @@
   const AUTH_KEY = "volleyball-trainer-auth-v3";
   const SETTINGS_KEY = "vb-power-dance-lab-settings-v1";
   const AB_KEY = "vb-power-dance-lab-ab-v1";
+  const CLIP_SELECTIONS_KEY = "vb-power-dance-lab-melodic-clips-v1";
   const STRUCTURAL = new Set(["intensity", "bassVariability", "melodyVariability", "timbreChange", "arrangementContrast", "fillFrequency", "choirIntensity"]);
   const DEFAULTS = Object.freeze({
     bpm: 150, intensity: "high", bassPressure: 3, bassVariability: 3,
-    melodyPresence: 3, melodyVariability: 3, timbreChange: 3,
+    chordPresence: 3, melodyPresence: 3, melodyVariability: 3, timbreChange: 3,
     choirIntensity: 2, arrangementContrast: 3, brightness: 4,
     space: 2, fillFrequency: 2, seed: 31650,
   });
@@ -38,6 +39,7 @@
   let pending = false;
   let engine = null;
   let previewAudio = null;
+  let selectedClipIds = loadClipSelections();
   let blockCounter = 0;
   let playing = false;
 
@@ -46,6 +48,11 @@
     catch { return {...DEFAULTS}; }
   }
   function saveSettings() { localStorage.setItem(SETTINGS_KEY, JSON.stringify(desired)); }
+  function loadClipSelections() {
+    try { return new Set(JSON.parse(localStorage.getItem(CLIP_SELECTIONS_KEY) || "[]")); }
+    catch { return new Set(); }
+  }
+  function saveClipSelections() { localStorage.setItem(CLIP_SELECTIONS_KEY, JSON.stringify([...selectedClipIds])); }
   function seeded(seed) { let state = seed >>> 0; return () => ((state = (Math.imul(1664525, state) + 1013904223) >>> 0) / 4294967296); }
   function values() {
     if (!dialog) return {...desired};
@@ -87,6 +94,7 @@
       <main class="pd-grid">
         ${control("bassPressure", "Bassdruck", "leicht", "druckvoll", desired.bassPressure)}
         ${control("bassVariability", "Bassvariabilität", "statisch", "melodisch", desired.bassVariability)}
+        ${control("chordPresence", "Akkordpräsenz", "zurückhaltend", "deutlich", desired.chordPresence)}
         ${control("melodyPresence", "Melodiepräsenz", "zurückhaltend", "deutlich", desired.melodyPresence)}
         ${control("melodyVariability", "Melodievariabilität", "wenige Motive", "viele Antworten", desired.melodyVariability)}
         ${control("timbreChange", "Klangfarbenwechsel", "einheitlich", "häufiger Wechsel", desired.timbreChange)}
@@ -159,11 +167,22 @@
   }
   function renderPacks() {
     const root = dialog?.querySelector("[data-pd-pack-list]"); if (!root) return;
-    root.innerHTML = catalog.map(pack => {
+    const labels = {drums:"Drums",effects:"Effekte",bass:"Bass",harmony:"Akkorde / Harmony",lead:"Melodie / Lead",choir:"Chor"};
+    const order = ["drums","effects","bass","harmony","lead","choir"];
+    const renderPack = pack => {
       const clip = pack.manifest?.type === "clip";
+      const tonal = Boolean(pack.manifest?.urls);
+      const melodicClip = clip && (pack.instrument_role === "harmony" || pack.instrument_role === "lead");
+      const selected = selectedClipIds.has(pack.id);
       const group = pack.manifest?.group ? ` · ${esc(pack.manifest.group)}` : "";
       const source = pack.license_source ? `<a href="${esc(pack.license_source)}" target="_blank" rel="noopener">Quelle</a>` : "";
-      return `<article><span><strong>${esc(pack.name)}</strong><small>${esc(pack.instrument_role)}${group} · ${esc(pack.license_name)} · ${source || (pack.bundled ? "lokal" : "nachgeladen")}</small></span><div class="pd-pack-actions">${clip ? `<button type="button" data-pd-pack-preview="${esc(pack.id)}">▶ Anhören</button>` : ""}<button type="button" data-pd-pack-toggle="${esc(pack.id)}" data-enabled="${pack.lab_enabled}">${pack.lab_enabled ? "Im Lab aktiv" : "Deaktiviert"}</button>${clip ? `<button class="danger" type="button" data-pd-pack-delete="${esc(pack.id)}">Löschen</button>` : ""}</div></article>`;
+      const metadata = [pack.manifest?.key, pack.manifest?.bpm ? `${pack.manifest.bpm} BPM` : ""].filter(Boolean).join(" · ");
+      return `<article><span><strong>${esc(pack.name)}</strong><small>${esc(pack.instrument_role)}${group} · ${esc(pack.license_name)}${metadata ? ` · ${esc(metadata)}` : ""} · ${source || (pack.bundled ? "lokal" : "nachgeladen")}</small></span><div class="pd-pack-actions">${clip || tonal ? `<button type="button" data-pd-pack-preview="${esc(pack.id)}">▶ Anhören</button>` : ""}${melodicClip ? `<button type="button" data-pd-pack-track="${esc(pack.id)}" class="${selected ? "selected" : ""}"${pack.lab_enabled ? "" : " disabled"}>${selected ? "Im Track" : "Nur Katalog"}</button>` : ""}<button type="button" data-pd-pack-toggle="${esc(pack.id)}" data-enabled="${pack.lab_enabled}">${pack.lab_enabled ? "Im Lab aktiv" : "Deaktiviert"}</button>${clip ? `<button class="danger" type="button" data-pd-pack-delete="${esc(pack.id)}">Löschen</button>` : ""}</div></article>`;
+    };
+    root.innerHTML = order.map(role => {
+      const packs = catalog.filter(pack => pack.instrument_role === role);
+      if (!packs.length) return "";
+      return `<details class="pd-pack-category"${role === "harmony" || role === "lead" ? " open" : ""}><summary><span>${esc(labels[role] || role)}</span><small>${packs.length} Samples</small></summary><div>${packs.map(renderPack).join("")}</div></details>`;
     }).join("") || '<p class="hint">Keine Samplepakete verfügbar.</p>';
   }
   function renderPresets() {
@@ -218,9 +237,24 @@
     if (preview) return previewPack(preview.dataset.pdPackPreview);
     const remove = event.target.closest("[data-pd-pack-delete]");
     if (remove) return deletePack(remove.dataset.pdPackDelete);
+    const track = event.target.closest("[data-pd-pack-track]");
+    if (track) {
+      const pack = catalog.find(item => item.id === track.dataset.pdPackTrack); if (!pack) return;
+      const alreadySelected = selectedClipIds.has(pack.id);
+      catalog.filter(item => item.instrument_role === pack.instrument_role).forEach(item => selectedClipIds.delete(item.id));
+      if (!alreadySelected) selectedClipIds.add(pack.id);
+      saveClipSelections(); renderPacks();
+      status(alreadySelected ? `„${pack.name}“ wird nicht mehr im Track verwendet.` : `„${pack.name}“ wird beim nächsten Start anstelle der generierten ${pack.instrument_role === "harmony" ? "Akkordspur" : "Melodiespur"} getestet.`);
+      return;
+    }
     const button = event.target.closest("[data-pd-pack-toggle]"); if (!button) return;
     button.disabled = true;
-    try { await api().request(`/rest/v1/vt_music_sample_packs?id=eq.${encodeURIComponent(button.dataset.pdPackToggle)}`, {method:"PATCH", body:{lab_enabled:button.dataset.enabled !== "true", updated_at:new Date().toISOString()}}); await loadData(); status("Samplekatalog aktualisiert. Neustart der Wiedergabe übernimmt die Auswahl."); }
+    try {
+      const enabling = button.dataset.enabled !== "true";
+      await api().request(`/rest/v1/vt_music_sample_packs?id=eq.${encodeURIComponent(button.dataset.pdPackToggle)}`, {method:"PATCH", body:{lab_enabled:enabling, updated_at:new Date().toISOString()}});
+      if (!enabling) { selectedClipIds.delete(button.dataset.pdPackToggle); saveClipSelections(); }
+      await loadData(); status("Samplekatalog aktualisiert. Neustart der Wiedergabe übernimmt die Auswahl.");
+    }
     catch (error) { status(error.message, true); button.disabled = false; }
   }
   function noteFromFile(name) {
@@ -261,9 +295,10 @@
   function enabledClips() {
     return catalog.filter(pack => pack.lab_enabled && pack.manifest?.type === "clip" && pack.manifest?.url);
   }
-  function sampler(pack, destination) {
+  function sampler(pack, destination, role) {
     const manifest = pack.manifest;
-    return new Tone.Sampler({urls:manifest.urls, baseUrl:manifest.baseUrl, attack:Number(manifest.attack) || 0.006, release:Number(manifest.release) || 0.16}).connect(destination);
+    const minimumRelease = role === "harmony" ? .72 : role === "lead" ? .34 : .16;
+    return new Tone.Sampler({urls:manifest.urls, baseUrl:manifest.baseUrl, attack:Math.max(Number(manifest.attack) || 0.006, role === "harmony" ? .018 : .01), release:Math.max(Number(manifest.release) || .16, minimumRelease)}).connect(destination);
   }
   async function createEngine() {
     const master = new Tone.Gain(0.82).toDestination();
@@ -279,9 +314,9 @@
     const base = "assets/audio/packs/power-dance-drums/";
     const player = (file, bus = drumsBus, volume = 0) => new Tone.Player({url:base + file, volume}).connect(bus);
     const drums = {kick:player("Kick06.wav", drumsBus, -1), click:player("kick-click.wav", drumsBus, -8), snare:player("Snare14.wav", drumsBus, -5), clap:player("Clap01.wav", drumsBus, -7), hat:player("ClosedHiHat02-01.wav", drumsBus, -12), open:player("OpenHiHat02-01.wav", drumsBus, -13), cymbal:player("Cymbal01-03.wav", drumsBus, -8), tomHigh:player("HighTom02-02.wav", drumsBus, -9), tomMid:player("MidTom02-02.wav", drumsBus, -8), tomLow:player("LowTom02-02.wav", drumsBus, -7)};
-    const banks = {bass:enabled("bass").map(pack => ({pack, node:sampler(pack, bassBus)})), lead:enabled("lead").map(pack => ({pack, node:sampler(pack, hookBus)})), harmony:enabled("harmony").map(pack => ({pack, node:sampler(pack, harmonyBus)})), choir:enabled("choir").map(pack => ({pack, node:sampler(pack, choirBus)}))};
+    const banks = {bass:enabled("bass").map(pack => ({pack, node:sampler(pack, bassBus, "bass")})), lead:enabled("lead").map(pack => ({pack, node:sampler(pack, hookBus, "lead")})), harmony:enabled("harmony").map(pack => ({pack, node:sampler(pack, harmonyBus, "harmony")})), choir:enabled("choir").map(pack => ({pack, node:sampler(pack, choirBus, "choir")}))};
     const clipBus = {drums:drumsBus,effects:drumsBus,lead:hookBus,harmony:harmonyBus};
-    const clips = enabledClips().map(pack => ({pack,node:new Tone.Player({url:pack.manifest.url,volume:Number(pack.manifest.volumeDb ?? -7)}).connect(clipBus[pack.instrument_role] || musicFilter)}));
+    const clips = enabledClips().map(pack => ({pack,node:new Tone.Player({url:pack.manifest.url,volume:Number(pack.manifest.volumeDb ?? -7),fadeIn:.035,fadeOut:.14}).connect(clipBus[pack.instrument_role] || musicFilter)}));
     const sub = new Tone.MonoSynth({oscillator:{type:"sine"}, envelope:{attack:0.003,decay:0.16,sustain:0.05,release:0.04}}).connect(bassBus);
     await Tone.loaded(); await reverb.generate();
     return {master, compressor, drumsBus, bassBus, musicFilter, harmonyBus, hookBus, choirBus, reverb, drums, banks, clips, sub};
@@ -293,7 +328,7 @@
     // Stufe 1 is deliberately almost accompaniment-only. Even at level 5 the
     // hook stays below the harmony bed instead of taking over the whole mix.
     ramp(engine.hookBus.gain, [0, .025, .10, .25, .43, .62][desired.melodyPresence]);
-    ramp(engine.harmonyBus.gain, [0, .86, .84, .82, .78, .74][desired.melodyPresence]);
+    ramp(engine.harmonyBus.gain, [0, .18, .34, .52, .70, .88][desired.chordPresence]);
     ramp(engine.choirBus.gain, [0, .08, .18, .30, .44, .60][desired.choirIntensity]);
     ramp(engine.musicFilter.frequency, [0, 3600, 5200, 7600, 10500, 14500][desired.brightness], .16);
     ramp(engine.reverb.wet, [0, .04, .10, .16, .24, .34][desired.space], .16);
@@ -316,6 +351,16 @@
     const cfg = active, bpm = cfg.bpm, scale = cfg.intensity === "low" ? .76 : cfg.intensity === "medium" ? .88 : 1;
     const kind = blockKind(blockCounter - 1, cfg.arrangementContrast), drop = kind === "drop", build = kind === "build", reduced = kind === "break";
     const rng = seeded(cfg.seed + blockCounter * 977), bass = chooseBank("bass", blockCounter - 1, cfg.timbreChange), lead = chooseBank("lead", blockCounter - 1, cfg.timbreChange), harmony = chooseBank("harmony", blockCounter - 1, cfg.timbreChange), choir = chooseBank("choir", blockCounter - 1, cfg.timbreChange);
+    const selectedHarmonyClip = engine.clips.find(item => item.pack.instrument_role === "harmony" && selectedClipIds.has(item.pack.id));
+    const selectedLeadClip = engine.clips.find(item => item.pack.instrument_role === "lead" && selectedClipIds.has(item.pack.id));
+    const startSelectedClip = item => {
+      if (!item) return;
+      const sourceBpm = Number(item.pack.manifest.bpm);
+      item.node.playbackRate = sourceBpm ? Math.max(.75, Math.min(1.35, bpm / sourceBpm)) : 1;
+      item.node.start(time);
+      item.node.stop(at(time, 31.8, bpm));
+    };
+    startSelectedClip(selectedHarmonyClip); startSelectedClip(selectedLeadClip);
     const clipGroup = group => engine.clips.filter(item => item.pack.manifest.group === group);
     const chooseClip = group => { const list = clipGroup(group); return list.length ? list[Math.floor(rng() * list.length)].node : null; };
     if (drop) (chooseClip("impact") || chooseClip("crash"))?.start(time);
@@ -344,16 +389,16 @@
       });
 
       const chordPositions = reduced ? [0] : build ? [0, 2] : (bar % 2 ? [.5, 2.5] : [0, 1.5, 3]);
-      const chordLength = reduced ? 3.1 : build ? 1.35 : .72;
-      for (const position of chordPositions) for (const note of chord) harmony?.triggerAttackRelease(midi(note + 12), chordLength * 60 / bpm, at(time, baseBeat + position, bpm), .24 * scale);
+      const chordLength = reduced ? 3.3 : build ? 1.8 : 1.35;
+      if (!selectedHarmonyClip) for (const position of chordPositions) for (const note of chord) harmony?.triggerAttackRelease(midi(note + 12), chordLength * 60 / bpm, at(time, baseBeat + position, bpm), .20 * scale);
 
       const phraseSlots = cfg.melodyVariability <= 1 ? [0] : cfg.melodyVariability === 2 ? [0,4] : cfg.melodyVariability === 3 ? [0,4,6] : cfg.melodyVariability === 4 ? [0,2,4,6] : [0,1,3,4,6];
-      if (!reduced && phraseSlots.includes(bar)) {
+      if (!selectedLeadClip && !reduced && phraseSlots.includes(bar)) {
         const motifCount = Math.min(HOOKS.length, Math.max(1, cfg.melodyVariability));
         const motif = HOOKS[(bar + Math.floor((blockCounter - 1) / 2)) % motifCount];
         motif.forEach(([step, chordTone]) => {
           const note = chord[chordTone % chord.length] + 12;
-          lead?.triggerAttackRelease(midi(note), .34 * 60 / bpm, at(time, baseBeat + step / 4, bpm), (.20 + cfg.melodyPresence * .015) * scale);
+          lead?.triggerAttackRelease(midi(note), .68 * 60 / bpm, at(time, baseBeat + step / 4, bpm), (.20 + cfg.melodyPresence * .015) * scale);
         });
       }
       const choirEvery = Math.max(1, 6 - cfg.choirIntensity);

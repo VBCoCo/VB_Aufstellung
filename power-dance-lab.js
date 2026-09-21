@@ -298,7 +298,7 @@
   function sampler(pack, destination, role) {
     const manifest = pack.manifest;
     const minimumRelease = role === "harmony" ? .72 : role === "lead" ? .34 : .16;
-    return new Tone.Sampler({urls:manifest.urls, baseUrl:manifest.baseUrl, attack:Math.max(Number(manifest.attack) || 0.006, role === "harmony" ? .018 : .01), release:Math.max(Number(manifest.release) || .16, minimumRelease)}).connect(destination);
+    return new Tone.Sampler({urls:manifest.urls, baseUrl:manifest.baseUrl, volume:Number(manifest.volumeDb ?? 0), attack:Math.max(Number(manifest.attack) || 0.006, role === "harmony" ? .018 : .01), release:Math.max(Number(manifest.release) || .16, minimumRelease)}).connect(destination);
   }
   async function createEngine() {
     const master = new Tone.Gain(0.82).toDestination();

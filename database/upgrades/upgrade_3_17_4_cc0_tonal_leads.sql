@@ -24,8 +24,8 @@ select
   'release-3.17.4-cc0-tonal-leads',
   'release',
   'Power Dance: fünf CC0-Instrumentklänge für generierte Melodien',
-  'Fünf einzeln nachvollziehbare C4-Instrumentaufnahmen (Supersaw, Unison Lead, Upright Piano, Crystal Bell und Flöte) sind als tonale Lead-Pakete im Super-Admin-Lab verfügbar. Tone.Sampler transponiert die Einzelnoten für die generierte Melodiespur. Jedes Paket ist separat anhörbar und aktivierbar; Ausgangsnote, Zieltonumfang, Pegel, Quelle und CC0-Lizenz sind dokumentiert. production_enabled bleibt false, daher gibt es keine Änderung für normale Nutzer oder den produktiven Musikgenerator.',
-  'completed',
+  'Fünf einzeln nachvollziehbare C-Einzelnoten (Supersaw und Unison Lead in C3; Upright Piano, Crystal Bell und Flöte in C4) sind als tonale Lead-Pakete im Super-Admin-Lab verfügbar. Tone.Sampler transponiert die Einzelnoten für die generierte Melodiespur. Jedes Paket ist separat anhörbar und aktivierbar; Ausgangsnote, Zieltonumfang, Pegel, Quelle und CC0-Lizenz sind dokumentiert. production_enabled bleibt false, daher gibt es keine Änderung für normale Nutzer oder den produktiven Musikgenerator.',
+  'done',
   '3.17.4',
   array['release','power-dance','lab','samples','melody','cc0']::text[]
 where not exists (

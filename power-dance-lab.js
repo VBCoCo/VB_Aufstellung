@@ -6,14 +6,18 @@
   const SETTINGS_KEY = "vb-power-dance-lab-settings-v1";
   const AB_KEY = "vb-power-dance-lab-ab-v1";
   const CLIP_SELECTIONS_KEY = "vb-power-dance-lab-melodic-clips-v1";
-  const STRUCTURAL = new Set(["intensity", "bassVariability", "melodyDensity", "melodyVariability", "timbreChange", "arrangementContrast", "fillFrequency", "choirIntensity"]);
+  const AI_RUNTIME_URL = "vendor/magenta/magentamusic-1.23.1.js";
+  const AI_MODEL_URL = "assets/models/chord-pitches-improv";
+  const STRUCTURAL = new Set(["intensity", "bassVariability", "melodyMode", "melodyDensity", "melodyVariability", "melodyClipMode", "timbreChange", "arrangementContrast", "fillFrequency", "choirIntensity"]);
   const DEFAULTS = Object.freeze({
     bpm: 150, intensity: "high", bassPressure: 3, bassVariability: 3,
-    chordPresence: 3, melodyPresence: 3, melodyDensity: 2, melodyVariability: 3, timbreChange: 3,
+    chordPresence: 2, melodyMode: "classic", melodyPresence: 3, melodyDensity: 2, melodyVariability: 3,
+    melodyClipMode: "accent", motifPresence: 2, timbreChange: 3,
     choirIntensity: 2, arrangementContrast: 3, brightness: 4,
     space: 2, fillFrequency: 2, seed: 31650,
   });
   const CHORDS = [[36, [60, 64, 67]], [43, [55, 59, 62]], [45, [57, 60, 64]], [41, [53, 57, 60]]];
+  const CHORD_NAMES = ["C", "G", "Am", "F"];
   // One eight-bar hook form: A – A – B – A'. Rhythm comes first and stays
   // recognizable; pitch movements are subsequently voiced into each chord.
   const HOOK_FORM = [
@@ -42,6 +46,11 @@
   let selectedClipIds = loadClipSelections();
   let blockCounter = 0;
   let playing = false;
+  let aiModel = null;
+  let aiModelPromise = null;
+  let aiNextBlock = null;
+  let aiGenerationPromise = null;
+  let aiGenerationToken = 0;
 
   function loadSettings() {
     try { return {...DEFAULTS, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}")}; }
@@ -74,6 +83,112 @@
     el.textContent = pending && playing ? "Änderungen vorgemerkt · Übernahme im nächsten 8-Takt-Block" : playing ? `Block ${blockCounter + 1} läuft · ${active.bpm} BPM konstant` : "Bereit · Änderungen werden beim Start übernommen";
     el.classList.toggle("pending", pending && playing);
   }
+  function aiStatus(message, error = false) {
+    const el = dialog?.querySelector("[data-pd-ai-status]");
+    if (!el) return;
+    el.textContent = message;
+    el.classList.toggle("error", error);
+  }
+  function loadAiRuntime() {
+    if (window.mm?.MusicRNN) return Promise.resolve(window.mm);
+    const existing = document.querySelector('script[data-pd-ai-runtime]');
+    if (existing) return new Promise((resolve, reject) => {
+      existing.addEventListener("load", () => resolve(window.mm), {once:true});
+      existing.addEventListener("error", () => reject(new Error("KI-Laufzeit konnte nicht geladen werden.")), {once:true});
+    });
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = AI_RUNTIME_URL; script.defer = true; script.dataset.pdAiRuntime = "1";
+      script.onload = () => window.mm?.MusicRNN ? resolve(window.mm) : reject(new Error("MusicRNN ist nicht verfügbar."));
+      script.onerror = () => reject(new Error("KI-Laufzeit konnte nicht geladen werden."));
+      document.head.appendChild(script);
+    });
+  }
+  async function ensureAiModel() {
+    if (aiModel?.isInitialized?.()) return aiModel;
+    if (aiModelPromise) return aiModelPromise;
+    aiModelPromise = (async () => {
+      aiStatus("Lokales KI-Modell wird geladen …");
+      const mm = await loadAiRuntime();
+      const model = new mm.MusicRNN(AI_MODEL_URL);
+      const started = performance.now();
+      await model.initialize();
+      aiModel = model;
+      aiStatus(`KI bereit · einmalig ${(performance.now() - started).toFixed(0)} ms Ladezeit`);
+      return model;
+    })().catch(error => {
+      aiModelPromise = null; aiStatus(`KI nicht verfügbar · klassischer Fallback: ${error.message}`, true); throw error;
+    });
+    return aiModelPromise;
+  }
+  function aiPrimer() {
+    return {
+      notes:[
+        {pitch:67,quantizedStartStep:0,quantizedEndStep:4},
+        {pitch:71,quantizedStartStep:6,quantizedEndStep:8},
+        {pitch:72,quantizedStartStep:9,quantizedEndStep:12},
+        {pitch:71,quantizedStartStep:13,quantizedEndStep:15},
+        {pitch:67,quantizedStartStep:18,quantizedEndStep:21},
+        {pitch:62,quantizedStartStep:24,quantizedEndStep:28},
+        {pitch:67,quantizedStartStep:29,quantizedEndStep:31},
+      ],
+      quantizationInfo:{stepsPerQuarter:4}, tempos:[{time:0,qpm:150}], totalQuantizedSteps:32,
+    };
+  }
+  function nearestScalePitch(target, allowedPitchClasses) {
+    const candidates = [];
+    for (let note = 64; note <= 79; note++) if (allowedPitchClasses.includes(note % 12)) candidates.push(note);
+    return candidates.reduce((best, note) => Math.abs(note - target) < Math.abs(best - target) ? note : best, candidates[0]);
+  }
+  function cleanAiEvents(rawNotes, blockIndex, cfg) {
+    const majorPitchClasses = [0,2,4,5,7,9,11], primer = aiPrimer().notes;
+    const combined = primer.concat((rawNotes || []).map(note => ({
+      pitch:Number(note.pitch), quantizedStartStep:Number(note.quantizedStartStep) + 32, quantizedEndStep:Number(note.quantizedEndStep) + 32,
+    })));
+    const output = []; let previous = 67;
+    combined.sort((a,b) => a.quantizedStartStep - b.quantizedStartStep).forEach(item => {
+      const start = Math.max(0, Math.min(127, Number(item.quantizedStartStep)));
+      const bar = Math.floor(start / 16), step = start % 16;
+      let note = nearestScalePitch(Number(item.pitch), majorPitchClasses);
+      const chord = CHORDS[(bar + blockIndex) % CHORDS.length][1];
+      if (step === 0 || step === 8) note = nearestChordPitch(chord, note);
+      if (Math.abs(note - previous) > 7) {
+        const nearby = majorPitchClasses.flatMap(pc => [pc + 60, pc + 72]).filter(value => value >= 64 && value <= 79 && Math.abs(value - previous) <= 7);
+        if (nearby.length) note = nearby.reduce((best, value) => Math.abs(value - note) < Math.abs(best - note) ? value : best, nearby[0]);
+      }
+      const durationSteps = Math.max(2, Math.min(7, Number(item.quantizedEndStep) - Number(item.quantizedStartStep)));
+      if (output.length && start < output[output.length - 1].end) return;
+      output.push({bar, step, note, duration:durationSteps / 4, end:start + durationSteps}); previous = note;
+    });
+    const densityLimit = [0, 10, 16, 22, 28, 36][cfg.melodyDensity] || 16;
+    if (output.length > densityLimit) {
+      const protectedEvents = output.filter((event, index) => index < 7 || event.step === 0);
+      const optional = output.filter(event => !protectedEvents.includes(event));
+      while (protectedEvents.length < densityLimit && optional.length) protectedEvents.push(optional.shift());
+      return protectedEvents.sort((a,b) => a.bar - b.bar || a.step - b.step);
+    }
+    return output;
+  }
+  async function generateAiBlock(blockIndex, cfg, token = aiGenerationToken) {
+    const model = await ensureAiModel();
+    const chords = Array.from({length:8}, (_, bar) => CHORD_NAMES[(bar + blockIndex) % CHORD_NAMES.length]);
+    const temperature = [0,.48,.56,.64,.72,.80][cfg.melodyVariability] || .64;
+    const started = performance.now();
+    const result = await model.continueSequence(aiPrimer(), 96, temperature, chords);
+    if (token !== aiGenerationToken) return null;
+    const events = cleanAiEvents(result.notes, blockIndex, cfg);
+    if (events.length < 7) throw new Error("KI-Phrase war zu leer");
+    aiStatus(`KI-Phrase vorbereitet · ${events.length} Noten · ${(performance.now() - started).toFixed(0)} ms`);
+    return events;
+  }
+  function queueNextAiBlock(blockIndex, cfg) {
+    if (cfg.melodyMode !== "ai" || aiGenerationPromise) return;
+    const token = aiGenerationToken;
+    aiGenerationPromise = generateAiBlock(blockIndex, cfg, token)
+      .then(events => { if (events && token === aiGenerationToken) aiNextBlock = events; })
+      .catch(error => aiStatus(`KI-Fallback aktiv: ${error.message}`, true))
+      .finally(() => { aiGenerationPromise = null; });
+  }
 
   function control(name, label, left, right, value = DEFAULTS[name]) {
     return `<label class="pd-control"><span><strong>${esc(label)}</strong><output data-pd-output="${esc(name)}">${value}</output></span><input data-pd-setting="${esc(name)}" type="range" min="1" max="5" step="1" value="${value}"><small>${esc(left)} <i>↔</i> ${esc(right)}</small></label>`;
@@ -91,6 +206,11 @@
         <label>Intensität <select data-pd-setting="intensity"><option value="low">Niedrig</option><option value="medium">Mittel</option><option value="high">Hoch</option></select></label>
       </section>
       <p class="pd-pending" data-pd-pending></p>
+      <section class="pd-mode-row">
+        <label><strong>Melodie-Engine</strong><select data-pd-setting="melodyMode"><option value="classic">Klassisch · Variante A</option><option value="ai">KI · ImprovRNN (lokal)</option></select></label>
+        <label><strong>Melody-Loop</strong><select data-pd-setting="melodyClipMode"><option value="accent">Als Motiv/Akzent ergänzen</option><option value="replace">Melodie vollständig ersetzen</option></select></label>
+        <p data-pd-ai-status>KI-Modell wird erst bei Auswahl lokal geladen.</p>
+      </section>
       <main class="pd-grid">
         ${control("bassPressure", "Bassdruck", "leicht", "druckvoll", desired.bassPressure)}
         ${control("bassVariability", "Bassvariabilität", "statisch", "melodisch", desired.bassVariability)}
@@ -98,6 +218,7 @@
         ${control("melodyPresence", "Melodiepräsenz", "zurückhaltend", "deutlich", desired.melodyPresence)}
         ${control("melodyDensity", "Melodiedichte", "viel Pause", "viele Einsätze", desired.melodyDensity)}
         ${control("melodyVariability", "Melodievariation", "nahe am Motiv", "stärker variiert", desired.melodyVariability)}
+        ${control("motifPresence", "Loop-/Motivakzente", "sehr sparsam", "deutlich", desired.motifPresence)}
         ${control("timbreChange", "Klangfarbenwechsel", "einheitlich", "häufiger Wechsel", desired.timbreChange)}
         ${control("choirIntensity", "Chorintensität", "selten", "deutlich", desired.choirIntensity)}
         ${control("arrangementContrast", "Arrangement-Kontrast", "gleichmäßig", "Builds & Drops", desired.arrangementContrast)}
@@ -113,6 +234,8 @@
     </div>`;
     document.body.appendChild(dialog);
     dialog.querySelector('[data-pd-setting="intensity"]').value = desired.intensity;
+    dialog.querySelector('[data-pd-setting="melodyMode"]').value = desired.melodyMode;
+    dialog.querySelector('[data-pd-setting="melodyClipMode"]').value = desired.melodyClipMode;
     wireDialog();
     return dialog;
   }
@@ -309,6 +432,7 @@
     const musicFilter = new Tone.Filter(9000, "lowpass").connect(compressor);
     const harmonyBus = new Tone.Gain(0.78).connect(musicFilter);
     const hookBus = new Tone.Gain(0.66).connect(musicFilter);
+    const motifBus = new Tone.Gain(0.10).connect(musicFilter);
     const choirBus = new Tone.Gain(0.30).connect(musicFilter);
     const reverb = new Tone.Reverb({decay:2.2, wet:0.16}).connect(compressor);
     musicFilter.connect(reverb);
@@ -316,20 +440,24 @@
     const player = (file, bus = drumsBus, volume = 0) => new Tone.Player({url:base + file, volume}).connect(bus);
     const drums = {kick:player("Kick06.wav", drumsBus, -1), click:player("kick-click.wav", drumsBus, -8), snare:player("Snare14.wav", drumsBus, -5), clap:player("Clap01.wav", drumsBus, -7), hat:player("ClosedHiHat02-01.wav", drumsBus, -12), open:player("OpenHiHat02-01.wav", drumsBus, -13), cymbal:player("Cymbal01-03.wav", drumsBus, -8), tomHigh:player("HighTom02-02.wav", drumsBus, -9), tomMid:player("MidTom02-02.wav", drumsBus, -8), tomLow:player("LowTom02-02.wav", drumsBus, -7)};
     const banks = {bass:enabled("bass").map(pack => ({pack, node:sampler(pack, bassBus, "bass")})), lead:enabled("lead").map(pack => ({pack, node:sampler(pack, hookBus, "lead")})), harmony:enabled("harmony").map(pack => ({pack, node:sampler(pack, harmonyBus, "harmony")})), choir:enabled("choir").map(pack => ({pack, node:sampler(pack, choirBus, "choir")}))};
-    const clipBus = {drums:drumsBus,effects:drumsBus,lead:hookBus,harmony:harmonyBus};
+    const clipBus = {drums:drumsBus,effects:drumsBus,lead:motifBus,harmony:harmonyBus};
     const clips = enabledClips().map(pack => ({pack,node:new Tone.Player({url:pack.manifest.url,volume:Number(pack.manifest.volumeDb ?? -7),fadeIn:.035,fadeOut:.14}).connect(clipBus[pack.instrument_role] || musicFilter)}));
     const sub = new Tone.MonoSynth({oscillator:{type:"sine"}, envelope:{attack:0.003,decay:0.16,sustain:0.05,release:0.04}}).connect(bassBus);
     await Tone.loaded(); await reverb.generate();
-    return {master, compressor, drumsBus, bassBus, musicFilter, harmonyBus, hookBus, choirBus, reverb, drums, banks, clips, sub};
+    return {master, compressor, drumsBus, bassBus, musicFilter, harmonyBus, hookBus, motifBus, choirBus, reverb, drums, banks, clips, sub};
   }
   function ramp(param, value, seconds = 0.08) { try { param.rampTo(value, seconds); } catch { param.value = value; } }
   function applyImmediate() {
     if (!engine) return;
     ramp(engine.bassBus.gain, [0, .54, .66, .80, .94, 1.08][desired.bassPressure]);
-    // Stufe 1 is deliberately almost accompaniment-only. Even at level 5 the
-    // hook stays below the harmony bed instead of taking over the whole mix.
+    // The melody remains independently controllable while harmony is capped
+    // well below it; this preserves space for generated hooks and motif clips.
     ramp(engine.hookBus.gain, [0, .025, .10, .25, .43, .62][desired.melodyPresence]);
-    ramp(engine.harmonyBus.gain, [0, .18, .34, .52, .70, .88][desired.chordPresence]);
+    ramp(engine.harmonyBus.gain, [0, .08, .15, .25, .38, .52][desired.chordPresence]);
+    const motifGain = desired.melodyClipMode === "replace"
+      ? [0, .025, .10, .25, .43, .62][desired.melodyPresence]
+      : [0, .025, .06, .12, .21, .34][desired.motifPresence];
+    ramp(engine.motifBus.gain, motifGain);
     ramp(engine.choirBus.gain, [0, .08, .18, .30, .44, .60][desired.choirIntensity]);
     ramp(engine.musicFilter.frequency, [0, 3600, 5200, 7600, 10500, 14500][desired.brightness], .16);
     ramp(engine.reverb.wet, [0, .04, .10, .16, .24, .34][desired.space], .16);
@@ -361,19 +489,32 @@
   }
   function scheduleBlock(time) {
     active = {...desired}; pending = false; blockCounter++;
-    const cfg = active, bpm = cfg.bpm, scale = cfg.intensity === "low" ? .76 : cfg.intensity === "medium" ? .88 : 1;
-    const kind = blockKind(blockCounter - 1, cfg.arrangementContrast), drop = kind === "drop", build = kind === "build", reduced = kind === "break";
-    const rng = seeded(cfg.seed + blockCounter * 977), bass = chooseBank("bass", blockCounter - 1, cfg.timbreChange), lead = chooseBank("lead", blockCounter - 1, cfg.timbreChange), harmony = chooseBank("harmony", blockCounter - 1, cfg.timbreChange), choir = chooseBank("choir", blockCounter - 1, cfg.timbreChange);
+    const cfg = active, bpm = cfg.bpm, scale = cfg.intensity === "low" ? .76 : cfg.intensity === "medium" ? .88 : 1, blockIndex = blockCounter - 1;
+    const kind = blockKind(blockIndex, cfg.arrangementContrast), drop = kind === "drop", build = kind === "build", reduced = kind === "break";
+    const rng = seeded(cfg.seed + blockCounter * 977), bass = chooseBank("bass", blockIndex, cfg.timbreChange), lead = chooseBank("lead", blockIndex, cfg.timbreChange), harmony = chooseBank("harmony", blockIndex, cfg.timbreChange), choir = chooseBank("choir", blockIndex, cfg.timbreChange);
     const selectedHarmonyClip = engine.clips.find(item => item.pack.instrument_role === "harmony" && selectedClipIds.has(item.pack.id));
     const selectedLeadClip = engine.clips.find(item => item.pack.instrument_role === "lead" && selectedClipIds.has(item.pack.id));
-    const startSelectedClip = item => {
+    const leadReplacement = Boolean(selectedLeadClip && cfg.melodyClipMode === "replace");
+    const aiEvents = cfg.melodyMode === "ai" ? aiNextBlock : null;
+    if (cfg.melodyMode === "ai") { aiNextBlock = null; queueNextAiBlock(blockIndex + 1, cfg); }
+    const prepareClip = item => {
       if (!item) return;
       const sourceBpm = Number(item.pack.manifest.bpm);
       item.node.playbackRate = sourceBpm ? Math.max(.75, Math.min(1.35, bpm / sourceBpm)) : 1;
+    };
+    const startFullClip = item => {
+      if (!item) return; prepareClip(item);
       item.node.start(time);
       item.node.stop(at(time, 31.8, bpm));
     };
-    startSelectedClip(selectedHarmonyClip); startSelectedClip(selectedLeadClip);
+    const startAccentClip = item => {
+      if (!item || cfg.motifPresence <= 0) return; prepareClip(item);
+      const maximum = 8 * 60 / bpm;
+      const available = Number(item.node.buffer?.duration || maximum) / item.node.playbackRate;
+      item.node.start(at(time, 16, bpm), 0, Math.min(maximum, available));
+    };
+    startFullClip(selectedHarmonyClip);
+    if (leadReplacement) startFullClip(selectedLeadClip); else startAccentClip(selectedLeadClip);
     const clipGroup = group => engine.clips.filter(item => item.pack.manifest.group === group);
     const chooseClip = group => { const list = clipGroup(group); return list.length ? list[Math.floor(rng() * list.length)].node : null; };
     if (drop) (chooseClip("impact") || chooseClip("crash"))?.start(time);
@@ -382,7 +523,7 @@
     let register = cfg.bassVariability <= 1 ? 0 : registerCycle[(blockCounter - 1) % registerCycle.length];
     let previousLeadNote = 72;
     for (let bar = 0; bar < 8; bar++) {
-      const baseBeat = bar * 4, [root, chord] = CHORDS[(bar + blockCounter - 1) % CHORDS.length];
+      const baseBeat = bar * 4, [root, chord] = CHORDS[(bar + blockIndex) % CHORDS.length];
       for (let beat = 0; beat < 4; beat++) {
         if (!(reduced && beat % 2)) engine.drums.kick.start(at(time, baseBeat + beat, bpm));
         if (drop || build) engine.drums.click.start(at(time, baseBeat + beat, bpm));
@@ -406,22 +547,33 @@
       const chordLength = reduced ? 3.3 : build ? 1.8 : 1.35;
       if (!selectedHarmonyClip) for (const position of chordPositions) for (const note of chord) harmony?.triggerAttackRelease(midi(note + 12), chordLength * 60 / bpm, at(time, baseBeat + position, bpm), .20 * scale);
 
-      if (!selectedLeadClip && !reduced && melodyBarEnabled(bar, cfg.melodyDensity) && (!build || cfg.melodyDensity >= 4)) {
-        let events = HOOK_FORM[bar].map(event => [...event]);
-        // Controlled variation changes only one detail while preserving the
-        // recognizable rhythm. Level 5 adds one quiet passing event.
-        if (cfg.melodyVariability >= 4 && (bar === 4 || bar === 7)) events[events.length - 1][1] += bar === 4 ? 2 : -2;
-        if (cfg.melodyVariability >= 5 && bar % 2 === 0) events.push([14, -1]);
-        if (build) events = events.slice(0, 1);
-        events.sort((a, b) => a[0] - b[0]).forEach(([step, movement], index) => {
-          const desiredPitch = previousLeadNote + movement;
-          const resolving = bar === 7 && index === events.length - 1;
-          const note = nearestChordPitch(chord, desiredPitch, resolving);
-          previousLeadNote = note;
-          const duration = (step === 14 ? .32 : index === events.length - 1 ? .82 : .56) * 60 / bpm;
-          const velocity = (.17 + cfg.melodyPresence * .012) * scale * (step === 0 ? 1 : .88);
-          lead?.triggerAttackRelease(midi(note), duration, at(time, baseBeat + step / 4, bpm), velocity);
-        });
+      if (!leadReplacement && !reduced && melodyBarEnabled(bar, cfg.melodyDensity) && (!build || cfg.melodyDensity >= 4)) {
+        const aiBarEvents = aiEvents?.filter(event => event.bar === bar) || [];
+        if (cfg.melodyMode === "ai" && aiBarEvents.length) {
+          const limited = build ? aiBarEvents.slice(0, 1) : aiBarEvents;
+          limited.forEach((event, index) => {
+            const resolving = bar === 7 && index === limited.length - 1;
+            const note = resolving ? nearestChordPitch(chord, event.note, true) : event.note;
+            const velocity = (.17 + cfg.melodyPresence * .012) * scale * (event.step === 0 ? 1 : .88);
+            lead?.triggerAttackRelease(midi(note), event.duration * 60 / bpm, at(time, baseBeat + event.step / 4, bpm), velocity);
+          });
+        } else {
+          let events = HOOK_FORM[bar].map(event => [...event]);
+          // Controlled variation changes only one detail while preserving the
+          // recognizable rhythm. Level 5 adds one quiet passing event.
+          if (cfg.melodyVariability >= 4 && (bar === 4 || bar === 7)) events[events.length - 1][1] += bar === 4 ? 2 : -2;
+          if (cfg.melodyVariability >= 5 && bar % 2 === 0) events.push([14, -1]);
+          if (build) events = events.slice(0, 1);
+          events.sort((a, b) => a[0] - b[0]).forEach(([step, movement], index) => {
+            const desiredPitch = previousLeadNote + movement;
+            const resolving = bar === 7 && index === events.length - 1;
+            const note = nearestChordPitch(chord, desiredPitch, resolving);
+            previousLeadNote = note;
+            const duration = (step === 14 ? .32 : index === events.length - 1 ? .82 : .56) * 60 / bpm;
+            const velocity = (.17 + cfg.melodyPresence * .012) * scale * (step === 0 ? 1 : .88);
+            lead?.triggerAttackRelease(midi(note), duration, at(time, baseBeat + step / 4, bpm), velocity);
+          });
+        }
       }
       const choirEvery = Math.max(1, 6 - cfg.choirIntensity);
       if (choir && bar % choirEvery === 0 && (drop || build)) choir.triggerAttackRelease(midi(bar % 2 ? 72 : 67), .7 * 60 / bpm, at(time, baseBeat, bpm), .20 * scale);
@@ -432,6 +584,7 @@
         if (cfg.fillFrequency >= 4) chooseClip("fill")?.start(at(time, baseBeat + 2, bpm));
       }
     }
+    if (cfg.melodyMode === "ai" && !aiEvents) aiStatus("KI-Phrase noch nicht fertig · dieser Block nutzt den klassischen Fallback.", true);
     requestAnimationFrame(() => { applyImmediate(); pendingStatus(); });
   }
 
@@ -443,7 +596,14 @@
     dialog.querySelector("[data-pd-play]").disabled = true; dialog.querySelector("[data-pd-stop]").disabled = false;
     status("Klangpakete werden geladen …");
     try {
-      await Tone.start(); engine = await createEngine(); applyImmediate();
+      await Tone.start();
+      aiGenerationToken++; aiNextBlock = null; aiGenerationPromise = null;
+      if (desired.melodyMode === "ai") {
+        status("Lokale KI bereitet die erste 8-Takt-Phrase vor …");
+        try { aiNextBlock = await generateAiBlock(0, desired); }
+        catch (error) { aiStatus(`KI nicht bereit · klassischer Fallback: ${error.message}`, true); }
+      }
+      engine = await createEngine(); applyImmediate();
       const transport = Tone.getTransport(); transport.stop(); transport.cancel(); transport.position = 0; transport.bpm.value = desired.bpm;
       blockCounter = 0; transport.scheduleRepeat(time => scheduleBlock(time), "8m", 0); transport.start("+0.12");
       playing = true; status(`Power Dance läuft mit konstant ${desired.bpm} BPM.`); pendingStatus();
@@ -454,11 +614,12 @@
     Object.values(engine.drums).forEach(node => { try { node.stop(); node.dispose(); } catch {} });
     Object.values(engine.banks).flat().forEach(item => { try { item.node.releaseAll(); item.node.dispose(); } catch {} });
     engine.clips.forEach(item => { try { item.node.stop(); item.node.dispose(); } catch {} });
-    [engine.sub, engine.reverb, engine.musicFilter, engine.choirBus, engine.hookBus, engine.harmonyBus, engine.bassBus, engine.drumsBus, engine.compressor, engine.master].forEach(node => { try { node.dispose(); } catch {} });
+    [engine.sub, engine.reverb, engine.musicFilter, engine.choirBus, engine.motifBus, engine.hookBus, engine.harmonyBus, engine.bassBus, engine.drumsBus, engine.compressor, engine.master].forEach(node => { try { node.dispose(); } catch {} });
     engine = null;
   }
   function stop() {
     try { const transport = Tone.getTransport(); transport.stop(); transport.cancel(); transport.position = 0; } catch {}
+    aiGenerationToken++; aiNextBlock = null; aiGenerationPromise = null;
     disposeEngine(); playing = false; pending = false; blockCounter = 0;
     if (dialog) { dialog.querySelector("[data-pd-play]").disabled = false; dialog.querySelector("[data-pd-stop]").disabled = true; dialog.querySelector('[data-pd-setting="bpm"]').disabled = false; }
     pendingStatus();

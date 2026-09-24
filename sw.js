@@ -1,4 +1,4 @@
-const VERSION = "3.17.7";
+const VERSION = "3.17.8";
 const CORE_VERSION = "3.13.0";
 const CACHE_PREFIX = "volleyball-trainer-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
@@ -26,4 +26,27 @@ const absoluteUrl=path=>new URL(path,self.registration.scope).href,INDEX_URL=abs
 self.addEventListener("message",event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener("install",event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE_NAME);for(const path of APP_SHELL){try{const request=new Request(absoluteUrl(path),{cache:"reload"}),response=await fetch(request);if(response.ok)await cache.put(request,response)}catch(err){console.warn('App-Shell-Datei konnte nicht vorgeladen werden',path,err)}}await self.skipWaiting()})())});
 self.addEventListener("activate",event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>key.startsWith(CACHE_PREFIX)&&key!==CACHE_NAME).map(key=>caches.delete(key)));await self.clients.claim()})())});
-self.addEventListener("fetch",event=>{const request=event.request,url=new URL(request.url);if(request.method!=="GET"||url.origin!==self.location.origin)return;if(url.href===VERSION_URL||url.pathname.endsWith("/version.json")){event.respondWith(fetch(request,{cache:"no-store"}));return}if(url.pathname.endsWith("/config.js")||url.pathname.endsWith("/training-player.js")||url.pathname.endsWith("/sw.js")){event.respondWith(fetch(request,{cache:"no-store"}).catch(()=>caches.match(request)));return}if(request.mode==="navigate"){event.respondWith((async()=>{try{const response=await fetch(request,{cache:"no-store"});if(response.ok){const cache=await caches.open(CACHE_NAME);await cache.put(INDEX_URL,response.clone())}return response}catch{const cached=await caches.match(INDEX_URL);return cached||Response.error()}})());return}if(APP_SHELL_URLS.has(url.href)){event.respondWith((async()=>{const cached=await caches.match(request);const network=fetch(request,{cache:"no-cache"}).then(async response=>{if(response.ok){const cache=await caches.open(CACHE_NAME);await cache.put(request,response.clone())}return response}).catch(()=>null);return cached||(await network)||Response.error()})());return}if(url.pathname.includes("/vendor/magenta/")||url.pathname.includes("/assets/models/chord-pitches-improv/")){event.respondWith((async()=>{const cache=await caches.open(AI_MODEL_CACHE),cached=await cache.match(request);if(cached)return cached;try{const response=await fetch(request);if(response.ok)await cache.put(request,response.clone());return response}catch{return Response.error()}})());return}if(request.destination==="audio"||url.pathname.includes("/assets/music/")||url.pathname.includes("/assets/audio/")){event.respondWith((async()=>{const cache=await caches.open(OFFLINE_MUSIC_CACHE),cached=await cache.match(request);if(cached)return cached;try{const response=await fetch(request);if(response.ok)await cache.put(request,response.clone());return response}catch{return Response.error()}})())}});
+self.addEventListener("fetch",event=>{
+  const request=event.request,url=new URL(request.url);
+  if(request.method!=="GET"||url.origin!==self.location.origin)return;
+  if(url.href===VERSION_URL||url.pathname.endsWith("/version.json")){event.respondWith(fetch(request,{cache:"no-store"}));return}
+  if(url.pathname.endsWith("/config.js")||url.pathname.endsWith("/training-player.js")||url.pathname.endsWith("/sw.js")){event.respondWith(fetch(request,{cache:"no-store"}).catch(()=>caches.match(request)));return}
+  if(request.mode==="navigate"){event.respondWith((async()=>{try{const response=await fetch(request,{cache:"no-store"});if(response.ok){const cache=await caches.open(CACHE_NAME);await cache.put(INDEX_URL,response.clone())}return response}catch{const cached=await caches.match(INDEX_URL);return cached||Response.error()}})());return}
+  if(APP_SHELL_URLS.has(url.href)){event.respondWith((async()=>{const cached=await caches.match(request);const network=fetch(request,{cache:"no-cache"}).then(async response=>{if(response.ok){const cache=await caches.open(CACHE_NAME);await cache.put(request,response.clone())}return response}).catch(()=>null);return cached||(await network)||Response.error()})());return}
+  if(url.pathname.includes("/vendor/magenta/")||url.pathname.includes("/assets/models/chord-pitches-improv/")){event.respondWith((async()=>{const cache=await caches.open(AI_MODEL_CACHE),cached=await cache.match(request);if(cached)return cached;try{const response=await fetch(request);if(response.ok)await cache.put(request,response.clone());return response}catch{return Response.error()}})());return}
+  if(request.destination==="audio"||url.pathname.includes("/assets/music/")||url.pathname.includes("/assets/audio/")){
+    // Media elements on iOS request byte ranges. A 206 partial response must
+    // be returned directly; trying to put it into Cache Storage rejects and
+    // previously turned a valid preview into Response.error().
+    if(request.headers.has("range")){event.respondWith(fetch(request));return}
+    event.respondWith((async()=>{
+      const cache=await caches.open(OFFLINE_MUSIC_CACHE),cached=await cache.match(request);
+      if(cached)return cached;
+      try{
+        const response=await fetch(request);
+        if(response.status===200){try{await cache.put(request,response.clone())}catch(error){console.warn("Audiodatei konnte nicht zwischengespeichert werden",url.pathname,error)}}
+        return response;
+      }catch{return Response.error()}
+    })());
+  }
+});

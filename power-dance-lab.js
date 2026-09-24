@@ -6,18 +6,53 @@
   const SETTINGS_KEY = "vb-power-dance-lab-settings-v1";
   const AB_KEY = "vb-power-dance-lab-ab-v1";
   const CLIP_SELECTIONS_KEY = "vb-power-dance-lab-melodic-clips-v1";
+  const FAMILY_VARIANTS_KEY = "vb-power-dance-lab-family-variants-v1";
   const AI_RUNTIME_URL = "vendor/magenta/magentamusic-1.23.1.js";
   const AI_MODEL_URL = "assets/models/chord-pitches-improv";
-  const STRUCTURAL = new Set(["intensity", "bassVariability", "melodyMode", "melodyDensity", "melodyVariability", "melodyClipMode", "timbreChange", "arrangementContrast", "fillFrequency", "choirIntensity"]);
+  const STRUCTURAL = new Set(["intensity", "bassVariability", "melodyMode", "melodyDensity", "melodyVariability", "melodyClipMode", "loopFamily", "loopForm", "loopRegister", "timbreChange", "arrangementContrast", "fillFrequency", "choirIntensity"]);
   const DEFAULTS = Object.freeze({
     bpm: 150, intensity: "high", bassPressure: 3, bassVariability: 3,
     chordPresence: 2, melodyMode: "classic", melodyPresence: 3, melodyDensity: 2, melodyVariability: 3,
-    melodyClipMode: "accent", motifPresence: 2, timbreChange: 3,
+    melodyClipMode: "accent", motifPresence: 2, loopFamily: "fupi-edm", loopForm: "call-response", loopRegister: "normal", timbreChange: 3,
     choirIntensity: 2, arrangementContrast: 3, brightness: 4,
     space: 2, fillFrequency: 2, seed: 31650,
   });
   const CHORDS = [[36, [60, 64, 67]], [43, [55, 59, 62]], [45, [57, 60, 64]], [41, [53, 57, 60]]];
   const CHORD_NAMES = ["C", "G", "Am", "F"];
+  const LOOP_FAMILIES = Object.freeze([
+    Object.freeze({
+      id:"fupi-edm", name:"Fupi · Melodic EDM", bpm:140, key:"D-Dur", volumeDb:-11,
+      source:"https://opengameart.org/content/melodic-edm-loops", license:"CC0 1.0",
+      chords:[[38,[62,66,69]],[45,[57,61,64]],[47,[59,62,66]],[43,[55,59,62]]],
+      variants:[
+        {id:"main",name:"Motiv A",url:"assets/audio/packs/power-dance-loop-families/fupi/main.ogg",bars:4},
+        {id:"loopy",name:"Antwort B",url:"assets/audio/packs/power-dance-loop-families/fupi/loopy.ogg",bars:4},
+        {id:"skippy",name:"A–A–B–A′ rhythmisch",url:"assets/audio/packs/power-dance-loop-families/fupi/skippy.ogg",bars:8},
+        {id:"bright-main",name:"Motiv A · helle Oktave",url:"assets/audio/packs/power-dance-loop-families/fupi/bright-main.ogg",bars:4},
+        {id:"bright-loopy",name:"Antwort B · helle Oktave",url:"assets/audio/packs/power-dance-loop-families/fupi/bright-loopy.ogg",bars:4},
+        {id:"bright-skippy",name:"A–A–B–A′ · helle Oktave",url:"assets/audio/packs/power-dance-loop-families/fupi/bright-skippy.ogg",bars:8},
+      ],
+    }),
+    Object.freeze({
+      id:"orbit-pluck", name:"Orbit 2 · Pluck", bpm:140, key:"A-Moll", volumeDb:1,
+      source:"https://freesound.org/people/deadrobotmusic/sounds/850693/", license:"CC0 1.0 · Freesound 850693",
+      chords:[[45,[57,60,64]],[41,[53,57,60]],[36,[60,64,67]],[43,[55,59,62]]],
+      variants:[
+        {id:"motif-a",name:"Motiv A",url:"assets/audio/packs/power-dance-loop-families/orbit/motif-a.ogg",bars:4},
+        {id:"answer-b",name:"Antwort B",url:"assets/audio/packs/power-dance-loop-families/orbit/answer-b.ogg",bars:4},
+      ],
+    }),
+    Object.freeze({
+      id:"shibuya", name:"Shibuya · Instrument-Layer", bpm:104, key:"C-Dur", volumeDb:1,
+      source:"https://freesound.org/people/deadrobotmusic/packs/31200/", license:"CC0 1.0 · Freesound 703688–703690",
+      chords:CHORDS,
+      variants:[
+        {id:"synth",name:"Synth",url:"assets/audio/packs/power-dance-loop-families/shibuya/synth.ogg",bars:4},
+        {id:"plucks",name:"Plucks",url:"assets/audio/packs/power-dance-loop-families/shibuya/plucks.ogg",bars:4},
+        {id:"piano",name:"Piano",url:"assets/audio/packs/power-dance-loop-families/shibuya/piano.ogg",bars:4},
+      ],
+    }),
+  ]);
   // One eight-bar hook form: A – A – B – A'. Rhythm comes first and stays
   // recognizable; pitch movements are subsequently voiced into each chord.
   const HOOK_FORM = [
@@ -44,6 +79,7 @@
   let engine = null;
   let previewAudio = null;
   let selectedClipIds = loadClipSelections();
+  let disabledFamilyVariants = loadDisabledFamilyVariants();
   let blockCounter = 0;
   let playing = false;
   let aiModel = null;
@@ -62,6 +98,13 @@
     catch { return new Set(); }
   }
   function saveClipSelections() { localStorage.setItem(CLIP_SELECTIONS_KEY, JSON.stringify([...selectedClipIds])); }
+  function loadDisabledFamilyVariants() {
+    try { return new Set(JSON.parse(localStorage.getItem(FAMILY_VARIANTS_KEY) || "[]")); }
+    catch { return new Set(); }
+  }
+  function saveDisabledFamilyVariants() { localStorage.setItem(FAMILY_VARIANTS_KEY, JSON.stringify([...disabledFamilyVariants])); }
+  function loopFamily(id = desired.loopFamily) { return LOOP_FAMILIES.find(item => item.id === id) || LOOP_FAMILIES[0]; }
+  function enabledFamilyVariants(family) { return family.variants.filter(item => !disabledFamilyVariants.has(`${family.id}:${item.id}`)); }
   function seeded(seed) { let state = seed >>> 0; return () => ((state = (Math.imul(1664525, state) + 1013904223) >>> 0) / 4294967296); }
   function values() {
     if (!dialog) return {...desired};
@@ -195,6 +238,7 @@
   }
   function createDialog() {
     if (dialog) return dialog;
+    const familyOptions = LOOP_FAMILIES.map(item => `<option value="${esc(item.id)}">${esc(item.name)} · ${esc(item.key)} · ${item.bpm} BPM</option>`).join("");
     dialog = document.createElement("dialog");
     dialog.id = "powerDanceLabDialog";
     dialog.className = "power-dance-lab-dialog";
@@ -207,9 +251,12 @@
       </section>
       <p class="pd-pending" data-pd-pending></p>
       <section class="pd-mode-row">
-        <label><strong>Melodie-Engine</strong><select data-pd-setting="melodyMode"><option value="classic">Klassisch · Variante A</option><option value="ai">KI · ImprovRNN (lokal)</option></select></label>
+        <label><strong>Melodie-Engine</strong><select data-pd-setting="melodyMode"><option value="classic">Klassisch · Variante A</option><option value="loops">Loop-Melodiefamilien</option><option value="ai">KI · ImprovRNN (lokal)</option></select></label>
         <label><strong>Melody-Loop</strong><select data-pd-setting="melodyClipMode"><option value="accent">Als Motiv/Akzent ergänzen</option><option value="replace">Melodie vollständig ersetzen</option></select></label>
-        <p data-pd-ai-status>KI-Modell wird erst bei Auswahl lokal geladen.</p>
+        <label data-pd-family-control><strong>Melodiefamilie</strong><select data-pd-setting="loopFamily">${familyOptions}</select></label>
+        <label data-pd-family-control><strong>Phrasenform</strong><select data-pd-setting="loopForm"><option value="motif">Nur Hauptmotiv</option><option value="call-response">Motiv und Antwort</option><option value="aaba">A–A–B–A′</option></select></label>
+        <label data-pd-family-control><strong>Tonlage</strong><select data-pd-setting="loopRegister"><option value="low">Eine Oktave tiefer</option><option value="normal">Originaltonlage</option><option value="high">Eine Oktave höher</option></select></label>
+        <p data-pd-ai-status>KI-Modell wird erst bei Auswahl lokal geladen. Loop-Familien laufen lokal mit unabhängiger Tempo- und Tonhöhensteuerung.</p>
       </section>
       <main class="pd-grid">
         ${control("bassPressure", "Bassdruck", "leicht", "druckvoll", desired.bassPressure)}
@@ -236,8 +283,22 @@
     dialog.querySelector('[data-pd-setting="intensity"]').value = desired.intensity;
     dialog.querySelector('[data-pd-setting="melodyMode"]').value = desired.melodyMode;
     dialog.querySelector('[data-pd-setting="melodyClipMode"]').value = desired.melodyClipMode;
+    dialog.querySelector('[data-pd-setting="loopFamily"]').value = loopFamily(desired.loopFamily).id;
+    dialog.querySelector('[data-pd-setting="loopForm"]').value = desired.loopForm;
+    dialog.querySelector('[data-pd-setting="loopRegister"]').value = desired.loopRegister;
     wireDialog();
+    updateModeHelp();
     return dialog;
+  }
+
+  function updateModeHelp() {
+    if (!dialog) return;
+    const mode = dialog.querySelector('[data-pd-setting="melodyMode"]')?.value || desired.melodyMode;
+    const family = loopFamily(dialog.querySelector('[data-pd-setting="loopFamily"]')?.value);
+    dialog.querySelectorAll("[data-pd-family-control]").forEach(item => item.classList.toggle("hidden", mode !== "loops"));
+    if (mode === "loops") aiStatus(`${family.name} · ${family.key} · ${family.bpm} BPM Quelle · Bass und Akkorde folgen automatisch.`);
+    else if (mode === "ai") aiStatus(aiModel?.isInitialized?.() ? "Lokales KI-Modell ist bereit." : "KI-Modell wird beim Start lokal geladen.");
+    else aiStatus("Klassische A–A–B–A′-Melodie mit musikalischen Regeln.");
   }
 
   function applyToControls(settings) {
@@ -248,6 +309,7 @@
     dialog?.querySelectorAll("[data-pd-output]").forEach(out => out.textContent = desired[out.dataset.pdOutput]);
     saveSettings();
     if (playing) { pending = true; applyImmediate(); }
+    updateModeHelp();
     pendingStatus();
   }
 
@@ -264,6 +326,7 @@
       saveSettings();
       if (playing && STRUCTURAL.has(name)) pending = true;
       if (playing) applyImmediate();
+      if (name === "melodyMode" || name === "loopFamily") updateModeHelp();
       pendingStatus();
     }));
     dialog.querySelectorAll("[data-pd-ab-save]").forEach(button => button.onclick = () => {
@@ -303,11 +366,21 @@
       const metadata = [pack.manifest?.key, pack.manifest?.bpm ? `${pack.manifest.bpm} BPM` : ""].filter(Boolean).join(" · ");
       return `<article><span><strong>${esc(pack.name)}</strong><small>${esc(pack.instrument_role)}${group} · ${esc(pack.license_name)}${metadata ? ` · ${esc(metadata)}` : ""} · ${source || (pack.bundled ? "lokal" : "nachgeladen")}</small></span><div class="pd-pack-actions">${clip || tonal ? `<button type="button" data-pd-pack-preview="${esc(pack.id)}">▶ Anhören</button>` : ""}${melodicClip ? `<button type="button" data-pd-pack-track="${esc(pack.id)}" class="${selected ? "selected" : ""}"${pack.lab_enabled ? "" : " disabled"}>${selected ? "Im Track" : "Nur Katalog"}</button>` : ""}<button type="button" data-pd-pack-toggle="${esc(pack.id)}" data-enabled="${pack.lab_enabled}">${pack.lab_enabled ? "Im Lab aktiv" : "Deaktiviert"}</button>${clip ? `<button class="danger" type="button" data-pd-pack-delete="${esc(pack.id)}">Löschen</button>` : ""}</div></article>`;
     };
-    root.innerHTML = order.map(role => {
+    const renderFamily = family => {
+      const selected = desired.loopFamily === family.id;
+      const variants = family.variants.map(variant => {
+        const key = `${family.id}:${variant.id}`, enabled = !disabledFamilyVariants.has(key);
+        return `<span class="pd-family-variant"><button type="button" data-pd-family-preview="${esc(key)}">▶ ${esc(variant.name)}</button><button type="button" data-pd-family-variant="${esc(key)}" class="${enabled ? "selected" : ""}">${enabled ? "Aktiv" : "Aus"}</button></span>`;
+      }).join("");
+      return `<article class="pd-family-card"><span><strong>${esc(family.name)}</strong><small>${esc(family.key)} · ${family.bpm} BPM · ${esc(family.license)} · <a href="${esc(family.source)}" target="_blank" rel="noopener">Quelle</a></small><span class="pd-family-variants">${variants}</span></span><div class="pd-pack-actions"><button type="button" data-pd-family-select="${esc(family.id)}" class="${selected ? "selected" : ""}">${selected ? "Ausgewählt" : "Familie wählen"}</button></div></article>`;
+    };
+    const familyCategory = `<details class="pd-pack-category pd-family-category" open><summary><span>Melodiefamilien</span><small>${LOOP_FAMILIES.length} Familien · ${LOOP_FAMILIES.reduce((sum, family) => sum + enabledFamilyVariants(family).length, 0)} aktive Varianten</small></summary><div>${LOOP_FAMILIES.map(renderFamily).join("")}</div></details>`;
+    const sampleCategories = order.map(role => {
       const packs = catalog.filter(pack => pack.instrument_role === role);
       if (!packs.length) return "";
       return `<details class="pd-pack-category"${role === "harmony" || role === "lead" ? " open" : ""}><summary><span>${esc(labels[role] || role)}</span><small>${packs.length} Samples</small></summary><div>${packs.map(renderPack).join("")}</div></details>`;
-    }).join("") || '<p class="hint">Keine Samplepakete verfügbar.</p>';
+    }).join("");
+    root.innerHTML = familyCategory + (sampleCategories || '<p class="hint">Keine weiteren Samplepakete verfügbar.</p>');
   }
   function renderPresets() {
     const select = dialog?.querySelector("[data-pd-preset-list]"); if (!select) return;
@@ -346,6 +419,14 @@
     try { await previewAudio.play(); status(`Hörprobe: ${pack.name}`); }
     catch (error) { stopPreview(); status(`Hörprobe konnte nicht gestartet werden: ${error.message}`, true); }
   }
+  async function previewFamilyVariant(key) {
+    const [familyId, variantId] = String(key).split(":"), family = loopFamily(familyId), variant = family.variants.find(item => item.id === variantId);
+    if (!variant) return status("Diese Loop-Variante ist nicht verfügbar.", true);
+    stopPreview(); previewAudio = new Audio(variant.url); previewAudio.volume = family.volumeDb <= -8 ? .34 : .78;
+    previewAudio.onended = () => { previewAudio = null; status(`Hörprobe „${family.name} · ${variant.name}“ beendet.`); };
+    try { await previewAudio.play(); status(`Hörprobe: ${family.name} · ${variant.name}`); }
+    catch (error) { stopPreview(); status(`Hörprobe konnte nicht gestartet werden: ${error.message}`, true); }
+  }
   async function deletePack(id) {
     const pack = catalog.find(item => item.id === id); if (!pack) return;
     if (!confirm(`Sample „${pack.name}“ wirklich aus dem Katalog löschen?`)) return;
@@ -357,6 +438,27 @@
     } catch (error) { status(`Löschen fehlgeschlagen: ${error.message}`, true); }
   }
   async function handlePackAction(event) {
+    const familyPreview = event.target.closest("[data-pd-family-preview]");
+    if (familyPreview) return previewFamilyVariant(familyPreview.dataset.pdFamilyPreview);
+    const familyVariant = event.target.closest("[data-pd-family-variant]");
+    if (familyVariant) {
+      const key = familyVariant.dataset.pdFamilyVariant;
+      if (disabledFamilyVariants.has(key)) disabledFamilyVariants.delete(key); else disabledFamilyVariants.add(key);
+      saveDisabledFamilyVariants(); renderPacks();
+      status("Loop-Variante aktualisiert. Die Auswahl greift beim nächsten Start.");
+      return;
+    }
+    const familySelect = event.target.closest("[data-pd-family-select]");
+    if (familySelect) {
+      desired.loopFamily = familySelect.dataset.pdFamilySelect;
+      desired.melodyMode = "loops";
+      dialog.querySelector('[data-pd-setting="loopFamily"]').value = desired.loopFamily;
+      dialog.querySelector('[data-pd-setting="melodyMode"]').value = "loops";
+      saveSettings(); renderPacks(); updateModeHelp();
+      if (playing) pending = true;
+      pendingStatus(); status(`„${loopFamily().name}“ wird beim nächsten Start als Melodiefamilie verwendet.`);
+      return;
+    }
     const preview = event.target.closest("[data-pd-pack-preview]");
     if (preview) return previewPack(preview.dataset.pdPackPreview);
     const remove = event.target.closest("[data-pd-pack-delete]");
@@ -433,6 +535,7 @@
     const harmonyBus = new Tone.Gain(0.78).connect(musicFilter);
     const hookBus = new Tone.Gain(0.66).connect(musicFilter);
     const motifBus = new Tone.Gain(0.10).connect(musicFilter);
+    const familyBus = new Tone.Gain(0.36).connect(musicFilter);
     const choirBus = new Tone.Gain(0.30).connect(musicFilter);
     const reverb = new Tone.Reverb({decay:2.2, wet:0.16}).connect(compressor);
     musicFilter.connect(reverb);
@@ -442,9 +545,11 @@
     const banks = {bass:enabled("bass").map(pack => ({pack, node:sampler(pack, bassBus, "bass")})), lead:enabled("lead").map(pack => ({pack, node:sampler(pack, hookBus, "lead")})), harmony:enabled("harmony").map(pack => ({pack, node:sampler(pack, harmonyBus, "harmony")})), choir:enabled("choir").map(pack => ({pack, node:sampler(pack, choirBus, "choir")}))};
     const clipBus = {drums:drumsBus,effects:drumsBus,lead:motifBus,harmony:harmonyBus};
     const clips = enabledClips().map(pack => ({pack,node:new Tone.Player({url:pack.manifest.url,volume:Number(pack.manifest.volumeDb ?? -7),fadeIn:.035,fadeOut:.14}).connect(clipBus[pack.instrument_role] || musicFilter)}));
+    const family = desired.melodyMode === "loops" ? loopFamily(desired.loopFamily) : null;
+    const familyPlayers = new Map((family ? enabledFamilyVariants(family) : []).map(variant => [variant.id, new Tone.GrainPlayer({url:variant.url,volume:family.volumeDb,grainSize:.12,overlap:.045,fadeIn:.025,fadeOut:.08}).connect(familyBus)]));
     const sub = new Tone.MonoSynth({oscillator:{type:"sine"}, envelope:{attack:0.003,decay:0.16,sustain:0.05,release:0.04}}).connect(bassBus);
     await Tone.loaded(); await reverb.generate();
-    return {master, compressor, drumsBus, bassBus, musicFilter, harmonyBus, hookBus, motifBus, choirBus, reverb, drums, banks, clips, sub};
+    return {master, compressor, drumsBus, bassBus, musicFilter, harmonyBus, hookBus, motifBus, familyBus, choirBus, reverb, drums, banks, clips, family, familyPlayers, sub};
   }
   function ramp(param, value, seconds = 0.08) { try { param.rampTo(value, seconds); } catch { param.value = value; } }
   function applyImmediate() {
@@ -458,6 +563,7 @@
       ? [0, .025, .10, .25, .43, .62][desired.melodyPresence]
       : [0, .025, .06, .12, .21, .34][desired.motifPresence];
     ramp(engine.motifBus.gain, motifGain);
+    ramp(engine.familyBus.gain, [0, .035, .10, .22, .36, .52][desired.melodyPresence]);
     ramp(engine.choirBus.gain, [0, .08, .18, .30, .44, .60][desired.choirIntensity]);
     ramp(engine.musicFilter.frequency, [0, 3600, 5200, 7600, 10500, 14500][desired.brightness], .16);
     ramp(engine.reverb.wet, [0, .04, .10, .16, .24, .34][desired.space], .16);
@@ -487,14 +593,64 @@
     if (cycle === 2 && contrast >= 4) return "break";
     return "drop";
   }
+  function familyVariantId(family, candidates) {
+    const activeIds = new Set(enabledFamilyVariants(family).map(item => item.id));
+    return candidates.find(id => activeIds.has(id) && engine.familyPlayers.has(id)) || [...activeIds].find(id => engine.familyPlayers.has(id)) || null;
+  }
+  function familySequence(cfg, blockIndex) {
+    const family = engine.family; if (!family || !engine.familyPlayers.size) return [];
+    const bright = cfg.melodyVariability >= 4 && blockIndex % 2 === 1;
+    let sequence = [];
+    if (family.id === "fupi-edm") {
+      if (cfg.loopForm === "aaba") sequence = [{id:familyVariantId(family, [bright ? "bright-skippy" : "skippy", "skippy", "bright-skippy"]),startBar:0,bars:8}];
+      else if (cfg.loopForm === "call-response") sequence = [
+        {id:familyVariantId(family, [bright ? "bright-main" : "main", "main", "bright-main"]),startBar:0,bars:4},
+        {id:familyVariantId(family, [bright ? "bright-loopy" : "loopy", "loopy", "bright-loopy"]),startBar:4,bars:4},
+      ];
+      else sequence = [{id:familyVariantId(family, [bright ? "bright-main" : "main", "main", "bright-main"]),startBar:blockIndex % 2 ? 4 : 0,bars:4}];
+    } else if (family.id === "orbit-pluck") {
+      const swap = cfg.melodyVariability >= 4 && blockIndex % 2 === 1;
+      if (cfg.loopForm === "motif") sequence = [{id:familyVariantId(family, [swap ? "answer-b" : "motif-a", "motif-a", "answer-b"]),startBar:blockIndex % 2 ? 4 : 0,bars:4}];
+      else sequence = [
+        {id:familyVariantId(family, [swap ? "answer-b" : "motif-a", "motif-a", "answer-b"]),startBar:0,bars:4},
+        {id:familyVariantId(family, [swap ? "motif-a" : "answer-b", "answer-b", "motif-a"]),startBar:4,bars:4},
+      ];
+    } else {
+      const orders = [["synth","plucks"],["plucks","piano"],["piano","synth"]], order = orders[Math.floor(blockIndex / Math.max(1, 6 - cfg.timbreChange)) % orders.length];
+      if (cfg.loopForm === "motif") sequence = [{id:familyVariantId(family, [order[0],"plucks","synth","piano"]),startBar:blockIndex % 2 ? 4 : 0,bars:4}];
+      else sequence = [
+        {id:familyVariantId(family, [order[0],"plucks","synth","piano"]),startBar:0,bars:4},
+        {id:familyVariantId(family, [order[1],"synth","piano","plucks"]),startBar:4,bars:4},
+      ];
+    }
+    sequence = sequence.filter((item, index, list) => item.id && list.findIndex(other => other.id === item.id) === index);
+    if (cfg.melodyDensity <= 1) return sequence.slice(0, 1).map(item => ({...item,startBar:blockIndex % 2 ? 4 : 0,bars:Math.min(4,item.bars)}));
+    if (cfg.melodyDensity === 2) return sequence.slice(blockIndex % Math.max(1, sequence.length), blockIndex % Math.max(1, sequence.length) + 1).map(item => ({...item,startBar:blockIndex % 2 ? 4 : 0,bars:Math.min(4,item.bars)}));
+    return sequence;
+  }
+  function scheduleFamilyMelody(time, cfg, blockIndex, bpm) {
+    if (cfg.melodyMode !== "loops" || !engine.family) return;
+    const detune = cfg.loopRegister === "low" ? -1200 : cfg.loopRegister === "high" ? 1200 : 0;
+    familySequence(cfg, blockIndex).forEach(item => {
+      const player = engine.familyPlayers.get(item.id); if (!player) return;
+      player.playbackRate = bpm / engine.family.bpm;
+      player.detune = detune;
+      player.start(at(time, item.startBar * 4, bpm), 0, item.bars * 4 * 60 / bpm);
+    });
+  }
   function scheduleBlock(time) {
     active = {...desired}; pending = false; blockCounter++;
     const cfg = active, bpm = cfg.bpm, scale = cfg.intensity === "low" ? .76 : cfg.intensity === "medium" ? .88 : 1, blockIndex = blockCounter - 1;
+    const harmonicChords = cfg.melodyMode === "loops" && engine.family ? engine.family.chords : CHORDS;
     const kind = blockKind(blockIndex, cfg.arrangementContrast), drop = kind === "drop", build = kind === "build", reduced = kind === "break";
     const rng = seeded(cfg.seed + blockCounter * 977), bass = chooseBank("bass", blockIndex, cfg.timbreChange), lead = chooseBank("lead", blockIndex, cfg.timbreChange), harmony = chooseBank("harmony", blockIndex, cfg.timbreChange), choir = chooseBank("choir", blockIndex, cfg.timbreChange);
-    const selectedHarmonyClip = engine.clips.find(item => item.pack.instrument_role === "harmony" && selectedClipIds.has(item.pack.id));
-    const selectedLeadClip = engine.clips.find(item => item.pack.instrument_role === "lead" && selectedClipIds.has(item.pack.id));
-    const leadReplacement = Boolean(selectedLeadClip && cfg.melodyClipMode === "replace");
+    const loopFamilyActive = cfg.melodyMode === "loops" && Boolean(engine.family);
+    // Older catalog loops do not consistently carry reliable key metadata.
+    // Keep them out of the keyed family mode so that they cannot clash with
+    // the family's melody, bass and chord progression.
+    const selectedHarmonyClip = loopFamilyActive ? null : engine.clips.find(item => item.pack.instrument_role === "harmony" && selectedClipIds.has(item.pack.id));
+    const selectedLeadClip = loopFamilyActive ? null : engine.clips.find(item => item.pack.instrument_role === "lead" && selectedClipIds.has(item.pack.id));
+    const leadReplacement = !loopFamilyActive && Boolean(selectedLeadClip && cfg.melodyClipMode === "replace");
     const aiEvents = cfg.melodyMode === "ai" ? aiNextBlock : null;
     if (cfg.melodyMode === "ai") { aiNextBlock = null; queueNextAiBlock(blockIndex + 1, cfg); }
     const prepareClip = item => {
@@ -515,6 +671,7 @@
     };
     startFullClip(selectedHarmonyClip);
     if (leadReplacement) startFullClip(selectedLeadClip); else startAccentClip(selectedLeadClip);
+    scheduleFamilyMelody(time, cfg, blockIndex, bpm);
     const clipGroup = group => engine.clips.filter(item => item.pack.manifest.group === group);
     const chooseClip = group => { const list = clipGroup(group); return list.length ? list[Math.floor(rng() * list.length)].node : null; };
     if (drop) (chooseClip("impact") || chooseClip("crash"))?.start(time);
@@ -523,7 +680,10 @@
     let register = cfg.bassVariability <= 1 ? 0 : registerCycle[(blockCounter - 1) % registerCycle.length];
     let previousLeadNote = 72;
     for (let bar = 0; bar < 8; bar++) {
-      const baseBeat = bar * 4, [root, chord] = CHORDS[(bar + blockIndex) % CHORDS.length];
+      // A loop family always starts at the beginning of its own four-chord
+      // progression. Classic/AI mode retains the existing rotating start.
+      const harmonicIndex = loopFamilyActive ? bar : bar + blockIndex;
+      const baseBeat = bar * 4, [root, chord] = harmonicChords[harmonicIndex % harmonicChords.length];
       for (let beat = 0; beat < 4; beat++) {
         if (!(reduced && beat % 2)) engine.drums.kick.start(at(time, baseBeat + beat, bpm));
         if (drop || build) engine.drums.click.start(at(time, baseBeat + beat, bpm));
@@ -547,7 +707,7 @@
       const chordLength = reduced ? 3.3 : build ? 1.8 : 1.35;
       if (!selectedHarmonyClip) for (const position of chordPositions) for (const note of chord) harmony?.triggerAttackRelease(midi(note + 12), chordLength * 60 / bpm, at(time, baseBeat + position, bpm), .20 * scale);
 
-      if (!leadReplacement && !reduced && melodyBarEnabled(bar, cfg.melodyDensity) && (!build || cfg.melodyDensity >= 4)) {
+      if (!leadReplacement && !loopFamilyActive && !reduced && melodyBarEnabled(bar, cfg.melodyDensity) && (!build || cfg.melodyDensity >= 4)) {
         const aiBarEvents = aiEvents?.filter(event => event.bar === bar) || [];
         if (cfg.melodyMode === "ai" && aiBarEvents.length) {
           const limited = build ? aiBarEvents.slice(0, 1) : aiBarEvents;
@@ -576,7 +736,7 @@
         }
       }
       const choirEvery = Math.max(1, 6 - cfg.choirIntensity);
-      if (choir && bar % choirEvery === 0 && (drop || build)) choir.triggerAttackRelease(midi(bar % 2 ? 72 : 67), .7 * 60 / bpm, at(time, baseBeat, bpm), .20 * scale);
+      if (choir && bar % choirEvery === 0 && (drop || build)) choir.triggerAttackRelease(midi(chord[0] + 12), .7 * 60 / bpm, at(time, baseBeat, bpm), .20 * scale);
       if (bar === 7) {
         if (cfg.fillFrequency >= 2) [engine.drums.tomHigh, engine.drums.tomMid, engine.drums.tomLow, engine.drums.clap].forEach((drum, i) => drum.start(at(time, baseBeat + 3 + i * .25, bpm)));
         if (cfg.arrangementContrast >= 3) engine.drums.cymbal.start(at(time, baseBeat + 3.75, bpm));
@@ -592,6 +752,7 @@
     if (playing) return;
     if (!catalog.some(pack => pack.lab_enabled)) return status("Kein Samplepaket ist für das Lab aktiviert.", true);
     desired = values(); active = {...desired}; saveSettings();
+    if (desired.melodyMode === "loops" && !enabledFamilyVariants(loopFamily(desired.loopFamily)).length) return status("In dieser Melodiefamilie ist keine Variante aktiviert.", true);
     const bpmInput = dialog.querySelector('[data-pd-setting="bpm"]'); bpmInput.disabled = true;
     dialog.querySelector("[data-pd-play]").disabled = true; dialog.querySelector("[data-pd-stop]").disabled = false;
     status("Klangpakete werden geladen …");
@@ -606,7 +767,9 @@
       engine = await createEngine(); applyImmediate();
       const transport = Tone.getTransport(); transport.stop(); transport.cancel(); transport.position = 0; transport.bpm.value = desired.bpm;
       blockCounter = 0; transport.scheduleRepeat(time => scheduleBlock(time), "8m", 0); transport.start("+0.12");
-      playing = true; status(`Power Dance läuft mit konstant ${desired.bpm} BPM.`); pendingStatus();
+      playing = true;
+      status(desired.melodyMode === "loops" ? `Power Dance läuft mit „${loopFamily(desired.loopFamily).name}“ bei konstant ${desired.bpm} BPM.` : `Power Dance läuft mit konstant ${desired.bpm} BPM.`);
+      pendingStatus();
     } catch (error) { stop(); status(`Start fehlgeschlagen: ${error.message}`, true); }
   }
   function disposeEngine() {
@@ -614,7 +777,8 @@
     Object.values(engine.drums).forEach(node => { try { node.stop(); node.dispose(); } catch {} });
     Object.values(engine.banks).flat().forEach(item => { try { item.node.releaseAll(); item.node.dispose(); } catch {} });
     engine.clips.forEach(item => { try { item.node.stop(); item.node.dispose(); } catch {} });
-    [engine.sub, engine.reverb, engine.musicFilter, engine.choirBus, engine.motifBus, engine.hookBus, engine.harmonyBus, engine.bassBus, engine.drumsBus, engine.compressor, engine.master].forEach(node => { try { node.dispose(); } catch {} });
+    engine.familyPlayers.forEach(node => { try { node.stop(); node.dispose(); } catch {} });
+    [engine.sub, engine.reverb, engine.musicFilter, engine.choirBus, engine.familyBus, engine.motifBus, engine.hookBus, engine.harmonyBus, engine.bassBus, engine.drumsBus, engine.compressor, engine.master].forEach(node => { try { node.dispose(); } catch {} });
     engine = null;
   }
   function stop() {

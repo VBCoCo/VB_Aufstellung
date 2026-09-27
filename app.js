@@ -15,7 +15,7 @@ const opponentRoster=[{id:"oa1",role:"AA",base:1,team:"opponent"},{id:"oz1",role
 const allPlayers=[...ownRoster,...opponentRoster];
 const ownSlots={1:{x:520,y:735},2:{x:520,y:545},3:{x:350,y:545},4:{x:180,y:545},5:{x:180,y:735},6:{x:350,y:735}};
 const opponentSlots={1:{x:180,y:165},2:{x:180,y:355},3:{x:350,y:355},4:{x:520,y:355},5:{x:520,y:165},6:{x:350,y:165}};
-const ids=["authGate","appMain","loginForm","loginEmail","loginPassword","loginSubmit","invitePasswordForm","invitePassword","invitePasswordRepeat","forgotPassword","authStatus","platformOnlyGate","platformOnlyAdminOpen","platformOnlyLogout","accountButton","accountDialog","closeAccount","accountName","accountEmail","accountRoles","clubSwitcherWrap","teamContextSelect","platformAdminOpen","clubAdminOpen","platformAdminDialog","closePlatformAdmin","platformAdminContent","platformAdminRefresh","clubAdminDialog","closeClubAdmin","clubAdminContent","clubAdminRefresh","logoutButton","teamNameInput","teamConfigClose","teamConfigPanel","teamConfigToggle","deleteTeam","addTeam","teamSelect","infoButton","editButton","brandClubName","rotationSelect","situationConfigToggle","situationConfigPanel","situationConfigClose","situationBaseNameWrap","situationBaseName","situationNameLabel","situationNameEdit","situationNameHint","addSituation","deleteSituation","stepNumber","stepTotal","stepNameEdit","stepNameInlineEditor","stepNameInlineInput","stepNameSuggestions","prevStep","playButton","nextStep","resetStepPositions","saveStep","addStep","deleteStep","actionMenuToggle","actionMenuClose","editPanel","editorHub","editorTileLineup","editorTileTactic","editorTileTraining","editorTilePlaylists","editorWorkspaceHead","editorWorkspaceBack","editorWorkspaceTitle","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","tapNoticeText","resetSelectedPlayer","status","infoDialog","closeInfo","closeInfoBottom","infoGuideTitle","infoGuideList","infoHistory","infoHistoryEditor","infoHistoryViewer","infoSituation","infoDataSource","lineupEditor","lineupGrid","liberoToggle","opponentSystem","opponentLiberoToggle","syncBadge","jsBuildBadge","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint","invitePreviewDialog","closeInvitePreview","invitePreviewTitle","invitePreviewMeta","invitePreviewSubject","invitePreviewBody","inviteTemplateHint","invitePreviewStatus","invitePreviewCancel","invitePreviewSave","invitePreviewSend","syncTimeStatus","infoSyncStatus","viewToggle","view2d","view25d","positionInfoToggle","positionInfoMenu","positionNumbersEnabled","myPositionEnabled","myPositionSelect","positionInfoClose","positionViewerNotice","court25d","court25Floor","movement25Layer","ballPath25Layer","action25Layer","player25Layer","ball25Object","actionPanel","actionType","actionActorWrap","actionActor","actionTechniqueWrap","actionTechnique","actionHelperWrap","actionHelper","actionOutcomeWrap","actionOutcome","actionReasonWrap","actionReason","attackBlockWrap","attackBlocker1","attackBlocker2","snapBallToActor","clearAction","actionHint","actionSummary","actionLayer","ruleCheck","ruleCheckToggle","ruleCheckSummary","ruleCheckChevron","ruleCheckDetails","stepStrip","tacticLaunch","tacticPanel","tacticPrev","tacticNext","tacticReset","tacticUndo","tacticPlayerMove","tacticPlayerPath","tacticBallMove","tacticBallPath","tacticExit","tacticTitle","tacticContext","tacticStepTitle","questionsButton","questionsBadge","courtQuestionButton","courtQuestionBadge","questionContextPanel","questionsDialog","questionsTitle","closeQuestions","questionsContent","questionNewButton","questionComposer","questionText","questionCancel","questionSend","situationInfoButton","stepInfoButton","situationInfoInline","situationInfoEdit","stepInfoEdit","publishSituation","publishState","contextInfoDialog","closeContextInfo","contextInfoTitle","contextInfoBody","noPublishedNotice"];
+const ids=["zoneControls","zoneToggle","zoneDecrease","zoneCount","zoneIncrease","zoneClear","zoneLayer","zoneHandleLayer","zone25Layer","authGate","appMain","loginForm","loginEmail","loginPassword","loginSubmit","invitePasswordForm","invitePassword","invitePasswordRepeat","forgotPassword","authStatus","platformOnlyGate","platformOnlyAdminOpen","platformOnlyLogout","accountButton","accountDialog","closeAccount","accountName","accountEmail","accountRoles","clubSwitcherWrap","teamContextSelect","platformAdminOpen","clubAdminOpen","platformAdminDialog","closePlatformAdmin","platformAdminContent","platformAdminRefresh","clubAdminDialog","closeClubAdmin","clubAdminContent","clubAdminRefresh","logoutButton","teamNameInput","teamConfigClose","teamConfigPanel","teamConfigToggle","deleteTeam","addTeam","teamSelect","infoButton","editButton","brandClubName","rotationSelect","situationConfigToggle","situationConfigPanel","situationConfigClose","situationBaseNameWrap","situationBaseName","situationNameLabel","situationNameEdit","situationNameHint","addSituation","deleteSituation","stepNumber","stepTotal","stepNameEdit","stepNameInlineEditor","stepNameInlineInput","stepNameSuggestions","prevStep","playButton","nextStep","resetStepPositions","saveStep","addStep","deleteStep","actionMenuToggle","actionMenuClose","editPanel","editorHub","editorTileLineup","editorTileTactic","editorTileTraining","editorTilePlaylists","editorWorkspaceHead","editorWorkspaceBack","editorWorkspaceTitle","currentStepTitle","court","validationLayer","movementLayer","ballPathLayer","playerLayer","ballObject","tapNotice","tapNoticeText","resetSelectedPlayer","status","infoDialog","closeInfo","closeInfoBottom","infoGuideTitle","infoGuideList","infoHistory","infoHistoryEditor","infoHistoryViewer","infoSituation","infoDataSource","lineupEditor","lineupGrid","liberoToggle","opponentSystem","opponentLiberoToggle","syncBadge","jsBuildBadge","migrationPanel","dataSourceStatus","migrateLocalButton","migrationHint","invitePreviewDialog","closeInvitePreview","invitePreviewTitle","invitePreviewMeta","invitePreviewSubject","invitePreviewBody","inviteTemplateHint","invitePreviewStatus","invitePreviewCancel","invitePreviewSave","invitePreviewSend","syncTimeStatus","infoSyncStatus","viewToggle","view2d","view25d","positionInfoToggle","positionInfoMenu","positionNumbersEnabled","myPositionEnabled","myPositionSelect","positionInfoClose","positionViewerNotice","court25d","court25Floor","movement25Layer","ballPath25Layer","action25Layer","player25Layer","ball25Object","actionPanel","actionType","actionActorWrap","actionActor","actionTechniqueWrap","actionTechnique","actionHelperWrap","actionHelper","actionOutcomeWrap","actionOutcome","actionReasonWrap","actionReason","attackBlockWrap","attackBlocker1","attackBlocker2","snapBallToActor","clearAction","actionHint","actionSummary","actionLayer","ruleCheck","ruleCheckToggle","ruleCheckSummary","ruleCheckChevron","ruleCheckDetails","stepStrip","tacticLaunch","tacticPanel","tacticPrev","tacticNext","tacticReset","tacticUndo","tacticPlayerMove","tacticPlayerPath","tacticBallMove","tacticBallPath","tacticExit","tacticTitle","tacticContext","tacticStepTitle","questionsButton","questionsBadge","courtQuestionButton","courtQuestionBadge","questionContextPanel","questionsDialog","questionsTitle","closeQuestions","questionsContent","questionNewButton","questionComposer","questionText","questionCancel","questionSend","situationInfoButton","stepInfoButton","situationInfoInline","situationInfoEdit","stepInfoEdit","publishSituation","publishState","contextInfoDialog","closeContextInfo","contextInfoTitle","contextInfoBody","noPublishedNotice"];
 const e=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
 if(e.jsBuildBadge)e.jsBuildBadge.textContent=`JS ${VERSION} geladen`;window.addEventListener("error",ev=>{if(e.jsBuildBadge)e.jsBuildBadge.textContent=`JS-Fehler ${VERSION}: ${ev.message||"unbekannt"}`});
 const roleNames={AA:"Außen",MB:"Mitte",Z:"Zuspiel",D:"Diagonal",L:"Libero"};
@@ -70,7 +70,7 @@ function migrate(){
   return changed;
 }
 const localMigrationApplied=migrate();if(localMigrationApplied)localStorage.setItem(KEY,JSON.stringify(state));
-let editing=false,editorWorkspace="hub",selected=null,dragging=null,playing=false,animations=[],teamConfigOpen=false,situationConfigOpen=false,committedState=structuredClone(state),dirty=false,renamingStep=false,actionMenuOpen=false,tacticMode=false,tacticSourceState=null,tacticPreviousView="2d",tacticChanged=false,tacticUndoStack=[],tacticPaths=[],tacticPlayerMode="move",tacticBallMode="move";
+let editing=false,editorWorkspace="hub",selected=null,dragging=null,playing=false,animations=[],teamConfigOpen=false,situationConfigOpen=false,committedState=structuredClone(state),dirty=false,renamingStep=false,actionMenuOpen=false,tacticMode=false,tacticSourceState=null,tacticPreviousView="2d",tacticChanged=false,tacticUndoStack=[],tacticPaths=[],tacticPlayerMode="move",tacticBallMode="move",zoneMode=false,zonePlayerId="";
 let remoteHasData=false,dataSource=hadLocalStateAtStartup?"browser":"default";
 let preferredView=localStorage.getItem("volleyball-trainer-view")||"2d";if(!["2d","25d"].includes(preferredView))preferredView="2d";
 let showPositionInfo=localStorage.getItem("volleyball-trainer-position-info")!=="off";
@@ -604,6 +604,59 @@ function renderTacticPaths(){
   });
 }
 function paths(){e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";if(tacticMode){renderTacticPaths();return}if(state.step===0)return;const a=rd().steps[state.step-1],b=sd(),highlighted=highlightedPlayerId();allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line(e.movementLayer,A,B,`movement-path${p.id===highlighted?" my-position-path":""}`)});if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPathLayer,a.ball,b.ball,"ball-path",false,motionFor(a))}
+const ZONE_COLORS=["#1769da","#14a8a0","#a24ad5","#f0ae24","#e95778","#46a44a"];
+function zonePoint(p){return{x:clamp(Number(p.x)||0,95,605),y:clamp(Number(p.y)||0,450,850)}}
+function initialZone(playerId,count=8){
+  const p=sd().positions[playerId]||{x:350,y:650},cx=clamp(p.x,158,542),cy=clamp(p.y,515,785);
+  if(count===4)return [{x:cx-60,y:cy-60},{x:cx+60,y:cy-60},{x:cx+60,y:cy+60},{x:cx-60,y:cy+60}].map(zonePoint);
+  return Array.from({length:count},(_,i)=>zonePoint({x:cx+55*Math.cos(2*Math.PI*i/count),y:cy+65*Math.sin(2*Math.PI*i/count)}));
+}
+function savedZone(playerId){const points=sd().zones?.[playerId];return Array.isArray(points)&&[4,8,16].includes(points.length)&&points.every(p=>Number.isFinite(Number(p?.x))&&Number.isFinite(Number(p?.y)))?points.map(zonePoint):null}
+function zonePath(points,{project=false}={}){
+  const p=points.map(point=>project?project25(point):point);
+  if(p.length<3)return "";
+  if(p.length===4)return `M ${p.map(v=>`${v.x} ${v.y}`).join(" L ")} Z`;
+  const mid=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+  let d=`M ${mid(p[p.length-1],p[0]).x} ${mid(p[p.length-1],p[0]).y}`;
+  for(let i=0;i<p.length;i++){const next=mid(p[i],p[(i+1)%p.length]);d+=` Q ${p[i].x} ${p[i].y} ${next.x} ${next.y}`}
+  return d+" Z";
+}
+function viewerZonesVisible(){return !editing&&!playing&&["receive","defense"].includes(sd().action?.type)}
+function renderZones(){
+  e.zoneLayer.innerHTML="";e.zoneHandleLayer.innerHTML="";e.zone25Layer.innerHTML="";
+  const editor=editing&&!playing,viewer=viewerZonesVisible();
+  if(zonePlayerId&&!savedZone(zonePlayerId))zonePlayerId="";
+  e.zoneControls?.classList.toggle("hidden",!editor||!["lineup","tactic"].includes(editorWorkspace));
+  e.zoneToggle?.setAttribute("aria-pressed",String(zoneMode));
+  e.zoneToggle?.classList.toggle("active",zoneMode);
+  const selectedPoints=zonePlayerId?savedZone(zonePlayerId):null;
+  const controls=editor&&zoneMode&&Boolean(zonePlayerId);
+  for(const el of [e.zoneDecrease,e.zoneCount,e.zoneIncrease,e.zoneClear])el?.classList.toggle("hidden",!controls);
+  if(e.zoneCount)e.zoneCount.textContent=String(selectedPoints?.length||8);
+  if(e.zoneDecrease)e.zoneDecrease.disabled=(selectedPoints?.length||8)<=4;
+  if(e.zoneIncrease)e.zoneIncrease.disabled=(selectedPoints?.length||8)>=16;
+  if(e.zoneClear)e.zoneClear.disabled=!selectedPoints;
+  if(!editor&&!viewer)return;
+  ownRoster.forEach((player,i)=>{
+    const stored=savedZone(player.id);if(viewer&&!stored)return;
+    const points=stored||initialZone(player.id),active=editor&&zoneMode&&zonePlayerId===player.id;
+    const color=ZONE_COLORS[i],d=zonePath(points);
+    const path=svg("path",{d,fill:color,"fill-opacity":editor?(stored?".15":".055"):".19",stroke:color,"stroke-width":active?4:stored?2.5:1.5,"stroke-opacity":stored||active?".9":".45",class:"responsibility-zone"});
+    e.zoneLayer.appendChild(path);
+    if(viewer&&preferredView==="25d")e.zone25Layer.appendChild(svg("path",{d:zonePath(points,{project:true}),fill:color,"fill-opacity":".25",stroke:color,"stroke-width":3,class:"responsibility-zone"}));
+    if(active)points.forEach((p,index)=>{
+      const hit=svg("circle",{cx:p.x,cy:p.y,r:27,fill:"transparent",class:"zone-handle","data-zone-point":index,"data-zone-player":player.id});
+      const marker=svg("circle",{cx:p.x,cy:p.y,r:9,fill:"#fff",stroke:color,"stroke-width":4,"pointer-events":"none"});
+      e.zoneHandleLayer.append(hit,marker);
+    });
+  });
+}
+function markZoneChanged(){if(tacticMode)tacticChanged=true;else dirty=true;render()}
+function resizeZone(points,count){
+  if(count===4){const xs=points.map(p=>p.x),ys=points.map(p=>p.y),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);return [{x:x0,y:y0},{x:x1,y:y0},{x:x1,y:y1},{x:x0,y:y1}].map(zonePoint)}
+  if(count===points.length*2)return points.flatMap((p,i)=>[p,zonePoint({x:(p.x+points[(i+1)%points.length].x)/2,y:(p.y+points[(i+1)%points.length].y)/2})]);
+  return points.filter((_,i)=>i%2===0);
+}
 function applySelectTextFit(select,text){
   if(!select)return;const len=Array.from(text||"").length;select.classList.remove("text-fit-medium","text-fit-small");
   if(len>28)select.classList.add("text-fit-small");else if(len>20)select.classList.add("text-fit-medium");
@@ -647,7 +700,13 @@ function ensureVisibleSituation(){
 }
 function renderSituationOptions(){
   const current=String(state.rotation);e.rotationSelect.innerHTML="";
-  td().rotations.forEach((situation,i)=>{
+  const ordered=td().rotations.map((situation,i)=>({situation,i})).sort((a,b)=>{
+    const aBase=Boolean(a.situation.baseName),bBase=Boolean(b.situation.baseName);
+    if(aBase!==bBase)return aBase?-1:1;
+    if(aBase&&bBase)return Number(a.situation.rotationOffset||0)-Number(b.situation.rotationOffset||0)||a.i-b.i;
+    return situationDisplayName(a.situation).localeCompare(situationDisplayName(b.situation),"de",{sensitivity:"base"})||a.i-b.i;
+  });
+  ordered.forEach(({situation,i})=>{
     if(!editing&&!situation.published)return;
     const o=document.createElement("option"),status=editing?statusForSituation(situation):"ok";
     o.value=String(i);o.textContent=situationDisplayName(situation);o.dataset.status=status;
@@ -713,7 +772,7 @@ function render(){
   document.body.classList.toggle("no-published-view",!editing&&!hasVisibleSituation);
   e.noPublishedNotice?.classList.toggle("hidden",editing||hasVisibleSituation);
   if(!editing&&!hasVisibleSituation){
-    renderSituationOptions();
+    e.zoneControls?.classList.add("hidden");e.zoneLayer.innerHTML="";e.zoneHandleLayer.innerHTML="";e.zone25Layer.innerHTML="";renderSituationOptions();
     document.body.classList.toggle("editing-mode",false);
     e.editButton?.classList.toggle("hidden",!canEdit());
     e.teamConfigToggle?.classList.add("hidden");e.addTeam?.classList.add("hidden");e.deleteTeam?.classList.add("hidden");
@@ -740,7 +799,7 @@ e.questionNewButton?.classList.toggle("hidden",editing);updateMigrationUI();e.ad
   e.ballObject.setAttribute("visibility","visible");e.ballObject.setAttribute("transform",`translate(${sd().ball.x} ${sd().ball.y})`);e.ballObject.classList.toggle("editable",editing||tacticMode);e.ballObject.classList.toggle("selected",selected?.type==="ball");e.ballObject.classList.toggle("tactic-dragging",tacticMode&&dragging?.type==="ball");e.ballObject.classList.toggle("linked-contact",editing&&Boolean(actionData().ballLinked));
   if(e.tapNoticeText)e.tapNoticeText.textContent=selected?.type==="player"?"Zielposition antippen":"Zielposition antippen";
   if(e.resetSelectedPlayer)e.resetSelectedPlayer.classList.toggle("hidden",!(editing&&state.step>0&&selected?.type==="player"));
-  render25();renderActionLinks();renderRuleCheck();
+  render25();renderZones();renderActionLinks();renderRuleCheck();
 }
 function buildLineupEditor(){
   e.lineupGrid.innerHTML="";ownRoster.forEach((p,i)=>{const label=document.createElement("label");label.className="player-role";label.textContent=`Spieler ${i+1} · Startposition ${p.base}`;const select=document.createElement("select");select.dataset.playerId=p.id;[["AA","Außen (AA)"],["MB","Mitte (MB)"],["Z","Zuspiel (Z)"],["D","Diagonal (D)"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;select.appendChild(o)});select.value=ownRole(p);select.addEventListener("change",()=>{td().teamConfig.roles[p.id]=select.value;dirty=true;render()});label.appendChild(select);e.lineupGrid.appendChild(label)});e.liberoToggle.checked=td().teamConfig.libero
@@ -750,7 +809,7 @@ function clearVisualAnimations(){
   e.ballObject.getAnimations().forEach(a=>a.cancel());
 }
 function stop(){playing=false;animations.forEach(a=>a.cancel());animations=[];clearVisualAnimations();e.playButton.textContent="▶"}
-function edit(v){stop();clearVisualAnimations();if(v&&!editing){state=structuredClone(committedState);dirty=false;editorWorkspace="hub"}if(!v&&editing&&dirty){state=structuredClone(committedState);migrate();dirty=false}editing=v;selected=dragging=null;if(!v){editorWorkspace="hub";renamingStep=false;actionMenuOpen=false;teamConfigOpen=false;situationConfigOpen=false;window.VBMusicLibrary?.close?.();}e.editButton.textContent=v?"✓":"✎";e.editButton.setAttribute("aria-label",v?"Bearbeitung beenden":"Bearbeiten");e.editButton.setAttribute("title",v?"Bearbeitung beenden":"Bearbeiten");e.editPanel.classList.toggle("hidden",!v);e.tapNotice.classList.add("hidden");if(!v){teamConfigOpen=false;situationConfigOpen=false;e.lineupEditor.classList.add("hidden");e.teamConfigPanel?.classList.add("hidden");e.situationConfigPanel?.classList.add("hidden")}render()}
+function edit(v){stop();clearVisualAnimations();if(v&&!editing){state=structuredClone(committedState);dirty=false;editorWorkspace="hub"}if(!v&&editing&&dirty){state=structuredClone(committedState);migrate();dirty=false}editing=v;selected=dragging=null;if(!v){zoneMode=false;zonePlayerId="";editorWorkspace="hub";renamingStep=false;actionMenuOpen=false;teamConfigOpen=false;situationConfigOpen=false;window.VBMusicLibrary?.close?.();}e.editButton.textContent=v?"✓":"✎";e.editButton.setAttribute("aria-label",v?"Bearbeitung beenden":"Bearbeiten");e.editButton.setAttribute("title",v?"Bearbeitung beenden":"Bearbeiten");e.editPanel.classList.toggle("hidden",!v);e.tapNotice.classList.add("hidden");if(!v){teamConfigOpen=false;situationConfigOpen=false;e.lineupEditor.classList.add("hidden");e.teamConfigPanel?.classList.add("hidden");e.situationConfigPanel?.classList.add("hidden")}render()}
 async function requestEdit(){if(editing){edit(false);return}if(!navigator.onLine){e.status.textContent="Offline-Bearbeitung nicht möglich.";window.alert("Offline-Bearbeitung nicht möglich.\n\nZum Bearbeiten wird eine Internetverbindung benötigt.");return}if(!canEdit()){window.alert("Dein Konto hat keine Bearbeitungsberechtigung.");return}edit(true)}
 function resetTacticWorkspace(){tacticUndoStack=[];tacticPaths=[];tacticChanged=false;selected=dragging=null}
 function tacticSnapshot(){return{step:state.step,stepData:structuredClone(sd()),paths:structuredClone(tacticPaths),changed:tacticChanged}}
@@ -772,7 +831,7 @@ function enterTacticMode(){
   stop();clearVisualAnimations();
   tacticSourceState=structuredClone(state);
   state=structuredClone(state);
-  tacticPreviousView=preferredView;tacticMode=true;editorWorkspace="tactic";tacticPlayerMode="move";tacticBallMode="move";resetTacticWorkspace();preferredView="2d";
+  tacticPreviousView=preferredView;tacticMode=true;zoneMode=false;zonePlayerId="";editorWorkspace="tactic";tacticPlayerMode="move";tacticBallMode="move";resetTacticWorkspace();preferredView="2d";
   e.status.textContent="Taktiktafel im Bearbeitungsmodus: Änderungen werden nicht gespeichert.";
   render();
 }
@@ -791,7 +850,7 @@ function exitTacticMode(){
   stop();clearVisualAnimations();
   const context={teamIndex:state.teamIndex,rotation:state.rotation,step:state.step};
   if(tacticSourceState){state=structuredClone(tacticSourceState);state.teamIndex=Math.max(0,Math.min(state.teams.length-1,context.teamIndex));state.rotation=Math.max(0,Math.min(state.teams[state.teamIndex].rotations.length-1,context.rotation));state.step=Math.max(0,Math.min(state.teams[state.teamIndex].rotations[state.rotation].steps.length-1,context.step))}
-  tacticSourceState=null;tacticMode=false;editorWorkspace="lineup";resetTacticWorkspace();preferredView=tacticPreviousView;
+  tacticSourceState=null;tacticMode=false;zoneMode=false;zonePlayerId="";editorWorkspace="lineup";resetTacticWorkspace();preferredView=tacticPreviousView;
   e.status.textContent="Zur Bearbeitung der ausgewählten Spielsituation. Änderungen auf der Taktiktafel wurden nicht gespeichert.";
   render();
 }
@@ -834,6 +893,18 @@ function finishTacticDrag(){
 e.court.addEventListener("pointerdown",ev=>{
   if((!editing&&!tacticMode)||playing)return;
   ev.preventDefault();
+  if(zoneMode){
+    const handle=ev.target.closest("[data-zone-point]"),player=ev.target.closest("[data-id]");
+    if(handle){
+      const id=handle.dataset.zonePlayer,index=Number(handle.dataset.zonePoint),points=savedZone(id);
+      if(points){zonePlayerId=id;dragging={type:"zone",id,index,moved:false,before:tacticMode?tacticSnapshot():null};e.court.setPointerCapture(ev.pointerId)}
+    }else if(player?.dataset.id&&ownRoster.some(p=>p.id===player.dataset.id)){
+      const id=player.dataset.id;zonePlayerId=id;
+      if(!savedZone(id)){const before=tacticMode?tacticSnapshot():null;sd().zones??={};sd().zones[id]=initialZone(id);if(before)tacticUndoStack.push(before);markZoneChanged()}
+      else render();
+    }
+    return;
+  }
   const pe=ev.target.closest("[data-id]"),be=ev.target.closest("#ballObject");
   if(tacticMode){if(pe&&beginTacticDrag("player",pe.dataset.id))e.court.setPointerCapture(ev.pointerId);else if(be&&beginTacticDrag("ball"))e.court.setPointerCapture(ev.pointerId);return}
   if(mode()==="tap"){
@@ -850,15 +921,23 @@ e.court.addEventListener("pointerdown",ev=>{
 e.court.addEventListener("pointermove",ev=>{
   if(!dragging||(!editing&&!tacticMode)||playing)return;
   ev.preventDefault();const p=point(ev);
+  if(dragging.type==="zone"){
+    const next=zonePoint(p),previous=sd().zones?.[dragging.id]?.[dragging.index];
+    if(previous&&Math.hypot(next.x-previous.x,next.y-previous.y)>.25){sd().zones[dragging.id][dragging.index]=next;dragging.moved=true;render()}
+    return;
+  }
   if(tacticMode){moveTacticDrag(p);render();return}
   if(dragging.type==="player"){const player=allPlayers.find(x=>x.id===dragging.id);sd().positions[dragging.id]=playerPoint(p,player);if(actionData().actorId===dragging.id)syncContactBall();dirty=true}else{sd().ball=cb(p);dirty=true}render();
 },{passive:false});
-["pointerup","pointercancel"].forEach(n=>e.court.addEventListener(n,()=>{if(tacticMode)finishTacticDrag();else dragging=null}));
+["pointerup","pointercancel"].forEach(n=>e.court.addEventListener(n,()=>{
+  if(dragging?.type==="zone"){const done=dragging;dragging=null;if(done.moved){if(tacticMode&&done.before)tacticUndoStack.push(done.before);markZoneChanged()}else render();return}
+  if(tacticMode)finishTacticDrag();else dragging=null
+}));
 async function animate(target,{sequence=false}={}){
   target=Math.max(0,Math.min(rd().steps.length-1,target));
   if(target===state.step)return true;
   if(!sequence)stop();else{animations.forEach(a=>a.cancel());animations=[];clearVisualAnimations()}
-  const a=sd(),b=rd().steps[target],motion=motionFor(a),duration=motion.duration;playing=true;e.playButton.textContent="■";e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";
+  const a=sd(),b=rd().steps[target],motion=motionFor(a),duration=motion.duration;playing=true;e.playButton.textContent="■";renderZones();e.movementLayer.innerHTML="";e.ballPathLayer.innerHTML="";
   allPlayers.forEach(p=>{const A=a.positions[p.id],B=b.positions[p.id];if(A&&B&&(A.x!==B.x||A.y!==B.y))line(e.movementLayer,A,B,`movement-path${p.id===highlightedPlayerId()?" my-position-path":""}`)});
   if(a.ball.x!==b.ball.x||a.ball.y!==b.ball.y)drawBallCurve(e.ballPathLayer,a.ball,b.ball,"ball-path",false,motion);
   let pa,ba;
@@ -878,7 +957,7 @@ async function animate(target,{sequence=false}={}){
   localAnimations.forEach(a=>a.cancel());
   animations=[];
   render();
-  if(!sequence){playing=false;e.playButton.textContent="▶"}
+  if(!sequence){playing=false;e.playButton.textContent="▶";renderZones()}
   return true;
 }
 async function playAll(){
@@ -895,9 +974,25 @@ async function playAll(){
   }
   if(playing){playing=false;animations=[];clearVisualAnimations();e.playButton.textContent="▶";render()}
 }
-function goStep(target){questionContextOpen=false;activeQuestionId=null;target=Math.max(0,Math.min(rd().steps.length-1,target));if(target===state.step)return;if(editing){clearVisualAnimations();state.step=target;selected=dragging=null;renamingStep=false;actionMenuOpen=false;render();return}animate(target)}
-e.stepStrip?.addEventListener("click",ev=>{questionContextOpen=false;activeQuestionId=null;const b=ev.target.closest("button[data-step-index]");if(!b||playing)return;const target=Number(b.dataset.stepIndex);if(!Number.isFinite(target)||target===state.step)return;clearVisualAnimations();state.step=target;selected=dragging=null;renamingStep=false;actionMenuOpen=false;render()});
+function goStep(target){questionContextOpen=false;activeQuestionId=null;target=Math.max(0,Math.min(rd().steps.length-1,target));if(target===state.step)return;if(editing){clearVisualAnimations();state.step=target;selected=dragging=null;zonePlayerId="";renamingStep=false;actionMenuOpen=false;render();return}animate(target)}
+e.stepStrip?.addEventListener("click",ev=>{questionContextOpen=false;activeQuestionId=null;const b=ev.target.closest("button[data-step-index]");if(!b||playing)return;const target=Number(b.dataset.stepIndex);if(!Number.isFinite(target)||target===state.step)return;clearVisualAnimations();state.step=target;selected=dragging=null;zonePlayerId="";renamingStep=false;actionMenuOpen=false;render()});
 e.prevStep.addEventListener("click",()=>goStep(state.step-1));e.nextStep.addEventListener("click",()=>goStep(state.step+1));e.playButton.addEventListener("click",playAll);
+e.zoneToggle?.addEventListener("click",()=>{if(!editing||playing)return;zoneMode=!zoneMode;zonePlayerId="";selected=dragging=null;e.status.textContent=zoneMode?"Zonenmodus: Spieler antippen, dann Randpunkte verschieben.":"Zonenmodus beendet.";render()});
+for(const [button,delta] of [[e.zoneDecrease,-1],[e.zoneIncrease,1]])button?.addEventListener("click",()=>{
+  if(!editing||!zoneMode||!zonePlayerId)return;
+  const points=savedZone(zonePlayerId);if(!points)return;
+  const count=points.length*(delta>0?2:.5);if(count<4||count>16)return;
+  const before=tacticMode?tacticSnapshot():null;
+  sd().zones[zonePlayerId]=resizeZone(points,count);
+  if(before)tacticUndoStack.push(before);
+  markZoneChanged();
+});
+e.zoneClear?.addEventListener("click",()=>{
+  if(!editing||!zoneMode||!zonePlayerId||!savedZone(zonePlayerId))return;
+  const before=tacticMode?tacticSnapshot():null;delete sd().zones[zonePlayerId];
+  if(before)tacticUndoStack.push(before);
+  zonePlayerId="";markZoneChanged();
+});
 e.view2d.addEventListener("click",()=>{preferredView="2d";localStorage.setItem("volleyball-trainer-view",preferredView);clearVisualAnimations();render()});e.view25d.addEventListener("click",()=>{if(editing)return;preferredView="25d";localStorage.setItem("volleyball-trainer-view",preferredView);clearVisualAnimations();render()});e.positionInfoToggle.addEventListener("click",()=>{if(editing||tacticMode)return;positionMenuOpen=!positionMenuOpen;render()});e.positionInfoClose?.addEventListener("click",()=>{positionMenuOpen=false;render()});e.positionNumbersEnabled?.addEventListener("change",()=>{showPositionInfo=e.positionNumbersEnabled.checked;localStorage.setItem("volleyball-trainer-position-info",showPositionInfo?"on":"off");render()});e.myPositionEnabled?.addEventListener("change",()=>{myPositionEnabled=e.myPositionEnabled.checked;if(!myPositionEnabled)myPositionPlayerId="";savePositionPreference();render();if(myPositionEnabled&&!myPositionPlayerId)e.myPositionSelect?.focus()});e.myPositionSelect?.addEventListener("change",()=>{myPositionPlayerId=e.myPositionSelect.value;myPositionEnabled=Boolean(myPositionPlayerId);savePositionPreference();render()});e.ruleCheckToggle?.addEventListener("click",()=>{const open=e.ruleCheckToggle.getAttribute("aria-expanded")==="true";e.ruleCheckToggle.setAttribute("aria-expanded",String(!open));e.ruleCheckDetails.classList.toggle("hidden",open);e.ruleCheckChevron.textContent=open?"▾":"▴"});
 e.teamSelect?.addEventListener("change",ev=>{const teamIndex=Number(ev.target.value);if(changeTacticContext({teamIndex,rotation:0}))return;state.teamIndex=teamIndex;state.rotation=0;state.step=0;actionMenuOpen=false;teamConfigOpen=false;situationConfigOpen=false;buildLineupEditor();render()});
 e.rotationSelect?.addEventListener("change",ev=>{if(!tacticMode)return;ev.stopImmediatePropagation();changeTacticContext({teamIndex:state.teamIndex,rotation:Number(ev.target.value)})},true);
@@ -906,7 +1001,7 @@ e.deleteTeam?.addEventListener("click",()=>{if(!editing)return;if(state.teams.le
 e.teamConfigToggle?.addEventListener("click",()=>{if(!editing)return;teamConfigOpen=!teamConfigOpen;if(teamConfigOpen)situationConfigOpen=false;e.teamConfigPanel?.classList.toggle("hidden",!teamConfigOpen);e.lineupEditor?.classList.toggle("hidden",!teamConfigOpen);if(teamConfigOpen)buildLineupEditor();render();});
 e.teamConfigClose?.addEventListener("click",()=>{teamConfigOpen=false;e.teamConfigPanel?.classList.add("hidden")});
 e.teamNameInput?.addEventListener("input",()=>{if(!editing)return;const chars=Array.from(e.teamNameInput.value.trimStart());if(chars.length>16)e.teamNameInput.value=chars.slice(0,16).join("");td().name=e.teamNameInput.value||"Teamaufstellung";dirty=true;renderTeamOptions();e.saveStep.classList.remove("hidden")});
-e.editButton.addEventListener("click",requestEdit);e.rotationSelect.addEventListener("change",x=>{questionContextOpen=false;activeQuestionId=null;state.rotation=Number(x.target.value);state.step=0;actionMenuOpen=false;situationConfigOpen=false;buildLineupEditor();render()});e.situationConfigToggle?.addEventListener("click",()=>{if(!editing)return;situationConfigOpen=!situationConfigOpen;if(situationConfigOpen)teamConfigOpen=false;render()});e.situationConfigClose?.addEventListener("click",()=>{situationConfigOpen=false;render()});e.situationNameEdit?.addEventListener("input",()=>{if(!editing)return;const value=e.situationNameEdit.value;if(rd().baseName){rd().nameSuffix=value.trimStart();rd().name=situationDisplayName(rd())}else{rd().name=value.trimStart()||"Spielsituation"}dirty=true;renderSituationOptions();e.saveStep.classList.remove("hidden")});e.stepNameEdit?.addEventListener("click",openStepNameEditor);e.stepNameSuggestions?.addEventListener("click",ev=>{const b=ev.target.closest("button[data-step-name]");if(!b||!renamingStep)return;const value=b.dataset.stepName||"";if(value){e.stepNameInlineInput.value=value;sd().name=value;rememberStepName(value);dirty=true;renamingStep=false;render()}else{e.stepNameInlineInput.value="";e.stepNameInlineInput.focus()}});e.stepNameInlineInput?.addEventListener("input",()=>{if(!renamingStep)return;sd().name=e.stepNameInlineInput.value.trimStart()||`Schritt ${state.step+1}`;dirty=true;e.currentStepTitle.textContent=sd().name;e.saveStep.classList.remove("hidden")});e.stepNameInlineInput?.addEventListener("keydown",ev=>{if(ev.key==="Enter"){ev.preventDefault();applyInlineStepName(true);render()}else if(ev.key==="Escape"){ev.preventDefault();renamingStep=false;render()}});e.addSituation.addEventListener("click",()=>{if(!editing)return;const suggested=`Neue Spielsituation ${td().rotations.length+1}`;const entered=window.prompt("Name der neuen Spielsituation:",suggested);if(entered===null)return;const name=entered.trim()||suggested;const copy=structuredClone(rd());delete copy.baseName;delete copy.nameSuffix;copy.name=name;td().rotations.splice(state.rotation+1,0,copy);state.rotation++;state.step=0;actionMenuOpen=false;situationConfigOpen=false;dirty=true;buildLineupEditor();render()});e.deleteSituation.addEventListener("click",()=>{if(!editing)return;if(td().rotations.length===1){e.status.textContent="Die einzige Spielsituation kann nicht gelöscht werden.";return}const name=rd().name||defaultSituationName(state.rotation);if(!window.confirm(`Spielsituation „${name}“ wirklich löschen?\n\nDabei werden alle Schritte dieser Spielsituation gelöscht.`))return;td().rotations.splice(state.rotation,1);state.rotation=Math.max(0,state.rotation-1);state.step=0;actionMenuOpen=false;situationConfigOpen=false;dirty=true;buildLineupEditor();render()});
+e.editButton.addEventListener("click",requestEdit);e.rotationSelect.addEventListener("change",x=>{questionContextOpen=false;activeQuestionId=null;state.rotation=Number(x.target.value);state.step=0;actionMenuOpen=false;situationConfigOpen=false;buildLineupEditor();render()});e.situationConfigToggle?.addEventListener("click",()=>{if(!editing)return;situationConfigOpen=!situationConfigOpen;if(situationConfigOpen)teamConfigOpen=false;render()});e.situationConfigClose?.addEventListener("click",()=>{situationConfigOpen=false;render()});e.situationNameEdit?.addEventListener("input",()=>{if(!editing)return;const value=e.situationNameEdit.value;if(rd().baseName){rd().nameSuffix=value.trimStart();rd().name=situationDisplayName(rd())}else{rd().name=value.trimStart()||"Spielsituation"}dirty=true;renderSituationOptions();e.saveStep.classList.remove("hidden")});e.stepNameEdit?.addEventListener("click",openStepNameEditor);e.stepNameSuggestions?.addEventListener("click",ev=>{const b=ev.target.closest("button[data-step-name]");if(!b||!renamingStep)return;const value=b.dataset.stepName||"";if(value){e.stepNameInlineInput.value=value;sd().name=value;rememberStepName(value);dirty=true;renamingStep=false;render()}else{e.stepNameInlineInput.value="";e.stepNameInlineInput.focus()}});e.stepNameInlineInput?.addEventListener("input",()=>{if(!renamingStep)return;sd().name=e.stepNameInlineInput.value.trimStart()||`Schritt ${state.step+1}`;dirty=true;e.currentStepTitle.textContent=sd().name;e.saveStep.classList.remove("hidden")});e.stepNameInlineInput?.addEventListener("keydown",ev=>{if(ev.key==="Enter"){ev.preventDefault();applyInlineStepName(true);render()}else if(ev.key==="Escape"){ev.preventDefault();renamingStep=false;render()}});e.addSituation.addEventListener("click",()=>{if(!editing)return;const suggested=`Neue Spielsituation ${td().rotations.length+1}`;const entered=window.prompt("Name der neuen Spielsituation:",suggested);if(entered===null)return;const name=entered.trim()||suggested;const copy=structuredClone(rd());delete copy.baseName;delete copy.nameSuffix;copy.name=name;copy.published=false;td().rotations.push(copy);state.rotation=td().rotations.length-1;state.step=0;actionMenuOpen=false;situationConfigOpen=false;dirty=true;buildLineupEditor();render()});e.deleteSituation.addEventListener("click",()=>{if(!editing)return;if(td().rotations.length===1){e.status.textContent="Die einzige Spielsituation kann nicht gelöscht werden.";return}const name=rd().name||defaultSituationName(state.rotation);if(!window.confirm(`Spielsituation „${name}“ wirklich löschen?\n\nDabei werden alle Schritte dieser Spielsituation gelöscht.`))return;td().rotations.splice(state.rotation,1);state.rotation=Math.max(0,state.rotation-1);state.step=0;actionMenuOpen=false;situationConfigOpen=false;dirty=true;buildLineupEditor();render()});
 // 2.9.4: Browser-Doppeltipp-Zoom auf den Spielfeldern verhindern.
 [e.court,e.court25d].filter(Boolean).forEach(courtNode=>{
   courtNode.addEventListener("dblclick",ev=>ev.preventDefault(),{passive:false});
@@ -930,7 +1025,7 @@ e.tacticBallPath?.addEventListener("click",()=>setTacticTool("ball","path"));
 e.tacticExit?.addEventListener("click",exitTacticMode);
 
 e.saveStep.addEventListener("click",()=>{if(renamingStep)applyInlineStepName(true);keepServePlayersInside();selected=dragging=null;e.tapNotice.classList.add("hidden");save("Änderungen gespeichert.");renamingStep=false;render()});
-e.addStep.addEventListener("click",()=>{keepServePlayersInside();const s=sd();rd().steps.splice(state.step+1,0,{name:`Schritt ${state.step+2}`,positions:structuredClone(s.positions),ball:structuredClone(s.ball),action:{type:"",actorId:"",technique:"",helperId:"",blocker1Id:"",blocker2Id:"",outcome:"",reason:"",ballLinked:false}});state.step++;renamingStep=true;actionMenuOpen=false;dirty=true;render();setTimeout(()=>{if(e.stepNameInlineInput){e.stepNameInlineInput.focus();e.stepNameInlineInput.select()}},0)});
+e.addStep.addEventListener("click",()=>{keepServePlayersInside();const s=sd();rd().steps.splice(state.step+1,0,{name:`Schritt ${state.step+2}`,positions:structuredClone(s.positions),ball:structuredClone(s.ball),zones:structuredClone(s.zones||{}),action:{type:"",actorId:"",technique:"",helperId:"",blocker1Id:"",blocker2Id:"",outcome:"",reason:"",ballLinked:false}});state.step++;renamingStep=true;actionMenuOpen=false;dirty=true;render();setTimeout(()=>{if(e.stepNameInlineInput){e.stepNameInlineInput.focus();e.stepNameInlineInput.select()}},0)});
 e.deleteStep.addEventListener("click",()=>{if(rd().steps.length===1){e.status.textContent="Der einzige Schritt kann nicht gelöscht werden.";return}const name=sd().name||`Schritt ${state.step+1}`;if(!window.confirm(`Schritt „${name}“ wirklich löschen?`))return;rd().steps.splice(state.step,1);state.step=Math.max(0,state.step-1);actionMenuOpen=false;dirty=true;render()});
 
 function copyPlayerPositionsFromPrevious(ids=allPlayers.map(p=>p.id)){

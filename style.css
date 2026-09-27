@@ -1039,3 +1039,26 @@ body.editing-mode.editor-workspace-playlists .music-library-workspace{display:bl
 .zone-handle{cursor:grab;touch-action:none}
 .zone-handle:active{cursor:grabbing}
 @media(max-width:430px){.zone-controls{left:5px;top:5px;gap:2px;padding:2px}.zone-controls button{width:34px;min-width:34px;height:36px;min-height:36px}}
+
+/* 3.18.2 – 2,5D im Editor als Vorschau; Z rechts neben dem Ansichtsschalter. */
+body.editing-mode:not(.tactic-mode) .court-view-toggle{display:grid!important}
+body.editing-mode:not(.tactic-mode) #court25d{touch-action:manipulation}
+@media (hover:none) and (pointer:coarse) and (min-width:681px) and (max-width:1366px){
+  body.editing-mode #court25d{width:auto;height:min(62dvh,760px);max-width:100%;max-height:760px}
+}
+body.editing-mode:not(.tactic-mode) .zone-controls{left:62px;top:10px}
+body.tactic-mode .zone-controls{left:8px;top:8px}
+@media(max-width:680px){body.editing-mode:not(.tactic-mode) .zone-controls{left:53px;top:7px}}
+@media(max-width:430px){body.editing-mode:not(.tactic-mode) .zone-controls{left:52px;top:5px}}
+
+/* Ein fester Teamplatz gibt die übrige Breite an den Situationsnamen; Info bleibt reserviert. */
+body:not(.editing-mode):not(.tactic-mode) .court-toolbar{grid-template-columns:150px minmax(0,1fr)}
+body:not(.editing-mode):not(.tactic-mode) .court-toolbar>.situation-compact select{
+  appearance:none;-webkit-appearance:none;
+  padding-left:6px;padding-right:19px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m3 4 3 4 3-4' fill='none' stroke='%2390bce6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 5px center;background-size:12px 12px;
+}
+body:not(.editing-mode):not(.tactic-mode) #teamSelect,
+body:not(.editing-mode):not(.tactic-mode) #rotationSelect{padding-right:19px}
+@media(max-width:360px){body:not(.editing-mode):not(.tactic-mode) .court-toolbar{grid-template-columns:132px minmax(0,1fr)}}

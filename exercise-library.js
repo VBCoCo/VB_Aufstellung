@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const VERSION = "3.19.2",
+  const VERSION = "3.19.3",
     FEATURE = "exercise_library",
     API = () => window.VBTrainingApi,
     KEY = "volleyball-trainer-exercise-density";
@@ -18,6 +18,12 @@
     access: null,
   };
   const labels = {
+    reaction: "Reaktion",
+    agility: "Richtungswechsel",
+    balance: "Gleichgewicht",
+    technique: "Technik",
+    plyometrics: "Sprungkraft",
+    playful: "Spielerisch",
     easy: "Leicht",
     medium: "Mittel",
     hard: "Schwer",
@@ -183,7 +189,7 @@
     s.value = state.focus;
   }
   function label(code) {
-    return state.catalog.find((x) => x.code === code)?.label || code || "–";
+    return state.catalog.find((x) => x.code === code)?.label || labels[code] || code || "–";
   }
   function playerText(x) {
     if (x.player_mode === "exact") return `${x.player_exact || "–"} Spieler`;
@@ -216,7 +222,7 @@
         .map((x) => {
           const editable = canEditExercise(x),
             system = !x.club_id;
-          return `<article class="exercise-card"><div>${state.type === "athletics" && x.media_items?.length ? `<button type="button" class="exercise-card-image" data-exercise-image="${x.id}" aria-label="Bilder zu ${esc(x.name)} öffnen"><img alt="${esc(x.media_items[0].caption || x.name)}" loading="lazy"><small>${x.media_items.length} Bild${x.media_items.length === 1 ? "" : "er"}</small></button>` : ""}<div class="exercise-card-title"><button class="exercise-favorite ${state.favorites.has(x.id) ? "active" : ""}" data-action="favorite" data-id="${x.id}">★</button><div><h3>${esc(x.name)}</h3><p>${esc(x.short_description)}</p></div></div><div class="exercise-chips"><span>${esc(label(x.main_focus))}</span>${state.type === "athletics" && x.main_focus !== "endurance" && (x.secondary_tags || []).includes("endurance") ? `<span>Neben: ${esc(label("endurance"))}</span>` : ""}${x.form_type ? `<span>${esc(labels[x.form_type])}</span>` : ""}<span>${esc(labels[x.difficulty])}</span>${x.duration_min ? `<span>${x.duration_min} min</span>` : ""}${playerText(x) ? `<span>${esc(playerText(x))}</span>` : ""}${x.parallel_groups ? "<span>parallel teilbar</span>" : ""}</div><div class="exercise-detail"><strong>${state.type === "volleyball" ? "Ziel" : "Ausführung"}:</strong> ${esc(state.type === "volleyball" ? x.goal : x.execution)}<br><strong>Material:</strong> ${esc(materialText(x))}</div></div><div class="exercise-actions">${editable ? `<button data-action="edit" data-id="${x.id}">Bearbeiten</button>` : `<button data-action="view" data-id="${x.id}">Öffnen</button><button data-action="clone" data-id="${x.id}">Als eigene übernehmen</button>`}${state.type === "volleyball" ? `<button data-action="diagram" data-id="${x.id}">Grafik</button>` : ""}${system ? '<span class="exercise-seed">Bibliotheksübung</span>' : ""}</div></article>`;
+          return `<article class="exercise-card"><div>${state.type === "athletics" && x.media_items?.length ? `<button type="button" class="exercise-card-image" data-exercise-image="${x.id}" aria-label="Bilder zu ${esc(x.name)} öffnen"><img alt="${esc(x.media_items[0].caption || x.name)}" loading="lazy"><small>${x.media_items.length} Bild${x.media_items.length === 1 ? "" : "er"}</small></button>` : ""}<div class="exercise-card-title"><button class="exercise-favorite ${state.favorites.has(x.id) ? "active" : ""}" data-action="favorite" data-id="${x.id}">★</button><div><h3>${esc(x.name)}</h3><p>${esc(x.short_description)}</p></div></div><div class="exercise-chips"><span>${esc(label(x.main_focus))}</span>${state.type === "athletics" ? (x.secondary_tags || []).filter(code => code !== x.main_focus).map(code => `<span>Neben: ${esc(label(code))}</span>`).join("") : ""}${x.form_type ? `<span>${esc(labels[x.form_type])}</span>` : ""}<span>${esc(labels[x.difficulty])}</span>${x.duration_min ? `<span>${x.duration_min} min</span>` : ""}${playerText(x) ? `<span>${esc(playerText(x))}</span>` : ""}${x.parallel_groups ? "<span>parallel teilbar</span>" : ""}</div><div class="exercise-detail"><strong>${state.type === "volleyball" ? "Ziel" : "Ausführung"}:</strong> ${esc(state.type === "volleyball" ? x.goal : x.execution)}<br><strong>Material:</strong> ${esc(materialText(x))}</div></div><div class="exercise-actions">${editable ? `<button data-action="edit" data-id="${x.id}">Bearbeiten</button>` : `<button data-action="view" data-id="${x.id}">Öffnen</button><button data-action="clone" data-id="${x.id}">Als eigene übernehmen</button>`}${state.type === "volleyball" ? `<button data-action="diagram" data-id="${x.id}">Grafik</button>` : ""}${system ? '<span class="exercise-seed">Bibliotheksübung</span>' : ""}</div></article>`;
         })
         .join("") || '<p class="exercise-empty">Keine passenden Übungen gefunden.</p>';
     window.VBExerciseMedia?.hydrateCards(list, rows);

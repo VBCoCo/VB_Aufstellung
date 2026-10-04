@@ -1,0 +1,5067 @@
+[
+  {
+    "id": "93000000-0000-4000-8000-000000000028",
+    "goal": "Trainiert Beschleunigen, Abbremsen und erneutes Beschleunigen.",
+    "name": "5–10–5 Pendellauf kurz",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Von der Mitte fünf Schritte zu einer Seite, zehn zur anderen und fünf zurück sprinten; Linien mit der Hand oder dem Fuß markieren. Leichter/Jugend: kürzere Abstände und 70 Prozent Tempo. Anspruchsvoller: maximale saubere Geschwindigkeit.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "whole"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "hard",
+    "family_key": "athletics-2026-028",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3–4 Läufe",
+    "main_focus": "speed",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 7,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "agility",
+      "potentiation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Tief und kontrolliert bremsen",
+      "Außenbein aktiv einsetzen",
+      "Qualität vor Tempo"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Trainiert Beschleunigen, Abbremsen und erneutes Beschleunigen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schnelligkeit",
+      "Richtungswechsel",
+      "Abwehr"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000030",
+    "goal": "Automatisiert den Rhythmus des Angriffsanlaufs ohne Landungsbelastung.",
+    "name": "Angriffsanlauf ohne Sprung",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Drei- oder Vier-Schritt-Anlauf rhythmisch ausführen und im Stemmschritt stabil stoppen, zunächst ohne Absprung. Leichter/Kinder: langsam mitzählen. Anspruchsvoller: schneller Rhythmus mit aktivem Armschwung.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "whole"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-030",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "8–10",
+    "main_focus": "coordination",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "specialize"
+    ],
+    "secondary_tags": [
+      "speed",
+      "technique"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Vorletzter Schritt lang",
+      "Letzter Schritt schnell heran",
+      "Stabil und ausgerichtet stoppen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Automatisiert den Rhythmus des Angriffsanlaufs ohne Landungsbelastung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Angriffsanlauf",
+      "Sprungvorbereitung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000002",
+    "goal": "Dynamische Mobilisation für Hüftbeuger, Beinrückseite und Brustwirbelsäule.",
+    "name": "Ausfallschritt mit langem Rücken",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Einen langen Schritt nach vorn setzen, hinteres Knie nur so weit absenken wie angenehm und Oberkörper aufrichten. Zurückdrücken und Seite wechseln. Leichter/Kinder: kleiner Schritt. Anspruchsvoller: gegenüberliegenden Arm nach oben führen und leicht rotieren.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "hip",
+      "legs",
+      "back"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-002",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "6 je Seite",
+    "main_focus": "mobility",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/dvids-lunge-1.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/551832/stationary-forward-lunge",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 15.5 s; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Tiefe Position im Ausfallschritt: Oberkörper lang, vorderes Knie stabil."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 4,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "mobilize"
+    ],
+    "secondary_tags": [
+      "activation",
+      "coordination"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Vorderes Knie folgt der Fußrichtung",
+      "Rumpf lang halten",
+      "Bewegung schmerzfrei begrenzen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Dynamische Mobilisation für Hüftbeuger, Beinrückseite und Brustwirbelsäule.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Angriffsanlauf",
+      "Abwehrbewegung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000022",
+    "goal": "Aktiviert die Außenrotatoren durch Druck der Hände gegeneinander.",
+    "name": "Außenrotation isometrisch ohne Band",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Ellbogen am Körper auf 90 Grad beugen. Handrücken oder Hände gegen den Widerstand der jeweils anderen Hand nach außen drücken, ohne sichtbare Bewegung. Leichter/Kinder: geringer Druck. Anspruchsvoller: längere Haltezeit.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "arms"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-022",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3 × 15 s",
+    "main_focus": "activation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 3,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "stability"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Ellbogen bleiben am Körper",
+      "Schultern tief",
+      "Nur mäßiger schmerzfreier Druck"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Aktiviert die Außenrotatoren durch Druck der Hände gegeneinander.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schulterprävention",
+      "Aufschlag",
+      "Angriff"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000010",
+    "goal": "Aktiviert Rumpf, Schultergürtel und Hüfte in kompakter Stützposition.",
+    "name": "Bärenstand halten",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Im Vierfüßlerstand Zehen aufstellen und Knie wenige Zentimeter anheben. Leichter/Kinder: kurze Intervalle oder Knie absetzen. Anspruchsvoller: langsam vor und zurück tippen.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "core",
+      "shoulder",
+      "hip",
+      "legs"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-010",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3 × 15–25 s",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 4,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "strength",
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Rücken neutral",
+      "Knie bleiben tief",
+      "Gleichmäßig atmen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Aktiviert Rumpf, Schultergürtel und Hüfte in kompakter Stützposition.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Abwehrhaltung",
+      "Rumpfstabilität"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000021",
+    "goal": "Kräftigt Schulterblattführung in drei Armpositionen.",
+    "name": "Bauchlage Y–T–W",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "In Bauchlage Arme nacheinander als Y, T und W wenige Zentimeter anheben und absenken. Leichter/Kinder: nur eine Form je Satz. Anspruchsvoller: jede Position drei Sekunden halten.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "back"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-021",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "6 je Position",
+    "main_focus": "activation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "strength",
+      "stability"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Stirn locker ablegen",
+      "Schultern tief",
+      "Bewegung klein und sauber"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Kräftigt Schulterblattführung in drei Armpositionen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schulterprävention",
+      "Angriff",
+      "Aufschlag"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000008",
+    "goal": "Kräftigt Gesäß und hintere Kette bei stabiler Rumpfposition.",
+    "name": "Beckenheben",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "In Rückenlage Füße hüftbreit aufstellen, Gesäß anspannen und Becken bis zur geraden Linie Schulter–Hüfte–Knie anheben. Leichter/Kinder: kürzer anheben. Anspruchsvoller: abwechselnd einen Fuß wenige Zentimeter lösen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "hip",
+      "legs",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-008",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "12–15",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "credit": "Pk0001",
+        "caption": "Halteposition: Gesäß anspannen und das Becken anheben, bis Schulter, Hüfte und Knie eine Linie bilden. Anschließend kontrolliert absenken.",
+        "changes": "SVG als PNG gerastert",
+        "license": "CC BY-SA 4.0",
+        "asset_path": "assets/athletics/bridge.png",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Bridge_exercise.svg",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "stability",
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Druck über ganze Füße",
+      "Rippen nicht aufklappen",
+      "Gesäß bewusst anspannen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Kräftigt Gesäß und hintere Kette bei stabiler Rumpfposition.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprungkraft",
+      "Landung",
+      "Knieschutz"
+    ]
+  },
+  {
+    "id": "7f8adf16-1aec-4723-8d76-28cea2377107",
+    "goal": "",
+    "name": "Blockhaltung isometrisch",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Blockgrundhaltung einnehmen und Position halten.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "core",
+      "shoulder"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "easy",
+    "family_key": null,
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 20 s",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 3,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": null,
+    "warmup_phases": [
+      "orient_activate",
+      "specialize"
+    ],
+    "secondary_tags": [
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Gewicht auf dem Vorfuß",
+      "Arme aktiv"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Volleyballspezifische Aktivierung in Blockgrundhaltung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Block"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000036",
+    "goal": "Verbindet seitliche Blockbewegung mit senkrechtem Absprung und Landung.",
+    "name": "Blockschritt mit kontrolliertem Sprung",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Ein bis zwei seitliche Blockschritte ausführen, Füße ausrichten, senkrecht abspringen und stabil landen. Leichter/Kinder: Bewegung ohne Sprung. Anspruchsvoller: Richtungswechsel oder Reaktionssignal.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "ankle",
+      "whole"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-036",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3 × 4 je Richtung",
+    "main_focus": "potentiation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 7,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "specialize",
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "coordination",
+      "plyometrics",
+      "technique"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Vor dem Sprung zum Netz ausrichten",
+      "Nicht seitlich wegdriften",
+      "Leise und stabil landen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Verbindet seitliche Blockbewegung mit senkrechtem Absprung und Landung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Block",
+      "Sprungkraft",
+      "Landung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000003",
+    "goal": "Verbessert die Rotation des oberen Rückens und die Schulterbeweglichkeit.",
+    "name": "Brustwirbelsäulen-Rotation im Vierfüßler",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Im Vierfüßlerstand eine Hand an den Hinterkopf legen. Ellbogen zum Boden und anschließend zur Decke drehen. Leichter/Kinder: Hand auf die Schulter legen. Anspruchsvoller: Endposition zwei Sekunden halten.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "back",
+      "shoulder",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-003",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "6–8 je Seite",
+    "main_focus": "mobility",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 4,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "mobilize"
+    ],
+    "secondary_tags": [
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Becken möglichst ruhig",
+      "Rotation aus dem oberen Rücken",
+      "Nacken lang"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Verbessert die Rotation des oberen Rückens und die Schulterbeweglichkeit.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Angriff",
+      "Aufschlag",
+      "Zuspiel"
+    ]
+  },
+  {
+    "id": "76055912-6f70-4f30-9038-6c32e6b3c0b1",
+    "goal": "",
+    "name": "Cooldown Mobilitätsflow",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Ruhige Mobilitätspositionen fließend verbinden.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "hip",
+      "back",
+      "shoulder",
+      "whole"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "easy",
+    "family_key": null,
+    "field_need": null,
+    "group_size": null,
+    "load_value": "5–8 min",
+    "main_focus": "mobility",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "group",
+    "duration_min": 7,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": null,
+    "warmup_phases": [
+      "cooldown"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Ruhig atmen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": false,
+    "hall_requirements": [],
+    "short_description": "Ruhiger Flow für Hüfte, Rücken und Schulter.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Regeneration"
+    ]
+  },
+  {
+    "id": "2f9e44b1-315a-4999-b4c4-0817d2563e23",
+    "goal": "",
+    "name": "Dead Bug",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Gegengleichen Arm und Bein langsam strecken und zurückführen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "gym_mat",
+        "quantity": "1 pro Person"
+      }
+    ],
+    "body_areas": [
+      "core",
+      "hip"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "medium",
+    "family_key": "core-dead-bug",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "8 je Seite",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/dead-bug-start.jpg",
+        "credit": "Xu et al. (2025), Abb. 1",
+        "source_url": "https://doi.org/10.1186/s12998-025-00588-x",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "changes": "Ausschnitt B aus Abb. 1; JPG komprimiert",
+        "caption": "Start: Arme zur Decke, Hüfte und Knie ungefähr rechtwinklig gebeugt."
+      },
+      {
+        "asset_path": "assets/athletics/dead-bug-extend.jpg",
+        "credit": "Xu et al. (2025), Abb. 1",
+        "source_url": "https://doi.org/10.1186/s12998-025-00588-x",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "changes": "Ausschnitt C aus Abb. 1; JPG komprimiert",
+        "caption": "Gegenüberliegenden Arm und Bein langsam strecken; Rücken und Becken bleiben ruhig."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Standard",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Lendenwirbelsäule am Boden halten",
+      "Langsam arbeiten"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Rumpfstabilisation in Rückenlage mit diagonalem Arm-/Beineinsatz.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000007",
+    "goal": "Rumpfstabilität durch gegengleiches Strecken von Arm und Bein.",
+    "name": "Diagonalstrecken im Vierfüßler",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Aus dem Vierfüßlerstand einen Arm und das gegenüberliegende Bein lang ausstrecken, kurz halten und zurückführen. Leichter/Kinder: nur Arm oder nur Bein bewegen. Anspruchsvoller: Ellbogen und Knie unter dem Körper zusammenführen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "core",
+      "back",
+      "hip",
+      "shoulder"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-007",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "8 je Seite",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "credit": "PTPioneer (Tyler Read)",
+        "caption": "Streckposition: Einen Arm und das gegenüberliegende Bein lang ausstrecken. Becken ruhig halten, Kopf in Verlängerung des Rückens und das Bein etwa auf Hüfthöhe führen. Langsam zurückführen und Seite wechseln.",
+        "changes": "Verkleinert und JPG komprimiert",
+        "license": "CC BY 2.0",
+        "asset_path": "assets/athletics/bird-dog.jpg",
+        "author_url": "https://www.ptpioneer.com/",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Bird_dog_exercise.jpg",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/"
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "coordination",
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Becken bleibt waagerecht",
+      "Lendenwirbelsäule ruhig",
+      "In die Länge arbeiten"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Rumpfstabilität durch gegengleiches Strecken von Arm und Bein.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität",
+      "Angriff",
+      "Abwehr"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000016",
+    "goal": "Kräftigt hintere Kette und verbessert einbeinige Stabilität.",
+    "name": "Einbeinige Standwaage",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Auf einem Bein stehen, Hüfte nach hinten schieben und Oberkörper mit langem Rücken nach vorn neigen. Freies Bein nach hinten führen. Leichter/Kinder: Zehenspitze hinten am Boden. Anspruchsvoller: Arme nach vorn strecken.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-016",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "8 je Seite",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/single-leg-hinge.jpg",
+        "credit": "Lilianwhite",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Rocket-yoga-20.jpg",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "changes": "Auf höchstens 1200 Pixel verkleinert; JPG komprimiert",
+        "caption": "Standwaage: freies Bein nach hinten, Oberkörper nach vorn; Becken ruhig halten und das Standknie leicht beugen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "balance",
+      "stability"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Standknie leicht gebeugt",
+      "Becken bleibt parallel",
+      "Bewegung aus der Hüfte"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Kräftigt hintere Kette und verbessert einbeinige Stabilität.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Landung",
+      "Anlauf",
+      "Knieschutz"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000011",
+    "goal": "Schult Fuß-, Knie- und Hüftstabilität sowie Gleichgewicht.",
+    "name": "Einbeinstand mit Reichbewegung",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Auf einem Bein stehen und mit der freien Fußspitze kontrolliert nach vorn, seitlich und hinten tippen. Leichter/Kinder: nur zwei Richtungen oder Partnerhilfe. Anspruchsvoller: weiter reichen, ohne das Becken zu verdrehen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "ankle",
+      "legs",
+      "hip",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-011",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 Runden je Seite",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:59:14.990881+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "stability",
+      "coordination"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Standknie stabil über dem Fuß",
+      "Becken gerade",
+      "Leise antippen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Schult Fuß-, Knie- und Hüftstabilität sowie Gleichgewicht.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Landung",
+      "Richtungswechsel",
+      "Knieschutz"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000031",
+    "goal": "Entwickelt reaktive Fuß- und Wadenkraft mit kleinen Sprüngen.",
+    "name": "Federnde Fußgelenksprünge",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Mit nahezu gestreckten Knien kleine federnde Sprünge aus den Fußgelenken ausführen. Leichter/Kinder: beidbeiniger Zehenstand ohne Abheben. Anspruchsvoller: vorwärts oder seitwärts wandern.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "ankle",
+      "legs"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-031",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3 × 15–20 s",
+    "main_focus": "potentiation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "plyometrics",
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Sehr kleine Sprunghöhe",
+      "Kurze Bodenkontakte",
+      "Sofort stoppen bei Schmerz"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Entwickelt reaktive Fuß- und Wadenkraft mit kleinen Sprüngen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprungkraft",
+      "Block",
+      "Landung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000015",
+    "goal": "Stärkt Beine und Beckenstabilität ohne dynamisch tiefe Kniebeugung.",
+    "name": "Geteilter Stand isometrisch",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Im versetzten Stand beide Knie leicht beugen und Position halten. Leichter/Kinder: höhere Position. Anspruchsvoller: Ferse des vorderen Fußes kurz anheben oder kleine Pulse.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-015",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 20–30 s je Seite",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/dvids-lunge-1.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/551832/stationary-forward-lunge",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 15.5 s; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Halteposition im geteilten Stand: beide Knie beugen, Oberkörper aufrecht und Becken ruhig halten."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "stability"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Gewicht auf beide Beine verteilen",
+      "Knie stabil",
+      "Schmerzfreie Höhe wählen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Stärkt Beine und Beckenstabilität ohne dynamisch tiefe Kniebeugung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Abwehrhaltung",
+      "Blockbewegung",
+      "Knieschutz"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000012",
+    "goal": "Kräftigt die vordere Rumpfkette in Rückenlage.",
+    "name": "Hohlkörper-Halten kompakt",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "In Rückenlage Bauch anspannen, unteren Rücken am Boden halten und Kopf sowie Schultern leicht anheben. Leichter/Kinder: Füße aufstellen. Anspruchsvoller: Beine und Arme weiter vom Körper wegstrecken.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-012",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3 × 15–30 s",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 4,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "strength"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Lendenwirbelsäule bleibt am Boden",
+      "Nacken locker",
+      "Nur so weit strecken wie stabil"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Kräftigt die vordere Rumpfkette in Rückenlage.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität",
+      "Kraftübertragung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000006",
+    "goal": "Mobilisiert das Hüftgelenk und fordert die einbeinige Balance.",
+    "name": "Hüftöffner im Stand",
+    "rules": [],
+    "club_id": null,
+    "playful": true,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Ein Knie anheben und in einem kontrollierten Bogen nach außen führen, Fuß wieder absetzen und wechseln. Leichter/Kinder: an Partner oder Wand festhalten. Anspruchsvoller: ohne Absetzen mehrere Wiederholungen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "hip",
+      "legs",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-006",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "6 je Seite",
+    "main_focus": "mobility",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 3,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "mobilize"
+    ],
+    "secondary_tags": [
+      "balance",
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Becken gerade halten",
+      "Standbein leicht gebeugt",
+      "Ruhige kontrollierte Kreise"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Mobilisiert das Hüftgelenk und fordert die einbeinige Balance.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Abwehrbewegung",
+      "Richtungswechsel"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000004",
+    "goal": "Dynamische Sprunggelenksmobilisation aus dem Schrittstand.",
+    "name": "Knie-vor-zur-Wand ohne Wand",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Im Schrittstand das vordere Knie kontrolliert über die Zehen nach vorn schieben, während die Ferse am Boden bleibt. Leichter/Kinder: kürzerer Weg. Anspruchsvoller: Endposition kurz halten und Reichweite vergrößern.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "ankle",
+      "legs"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-004",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "10 je Seite",
+    "main_focus": "mobility",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 3,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "mobilize"
+    ],
+    "secondary_tags": [
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Ferse bleibt unten",
+      "Knie folgt zweiter Zehe",
+      "Kein Einknicken nach innen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Dynamische Sprunggelenksmobilisation aus dem Schrittstand.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Landung",
+      "Abwehrhaltung",
+      "Sprung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000013",
+    "goal": "Verbindet kontrollierte Beinkraft mit Fuß- und Wadenaktivierung.",
+    "name": "Kniebeuge zum Zehenstand",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "In eine schmerzfreie Kniebeuge gehen, aufrichten und anschließend kontrolliert in den Zehenstand steigen. Leichter/Kinder: nur Viertelkniebeuge. Anspruchsvoller: oben drei Sekunden balancieren.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "ankle",
+      "hip"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-013",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "10–12",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/bodyweight-squat-low.jpg",
+        "credit": "Tokorozawa Namiki / Kozo Nakamura",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Squatting.jpg",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "changes": "Ausschnitt der gebeugten Position; JPG komprimiert",
+        "caption": "Teilbewegung Kniebeuge: kontrolliert beugen. Anschließend gemäß Text aufrichten und in den Zehenstand wechseln; der Zehenstand ist hier nicht dargestellt."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate",
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "balance",
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Nur schmerzfreie Tiefe",
+      "Knie folgen den Füßen",
+      "Fersen langsam heben und senken"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Verbindet kontrollierte Beinkraft mit Fuß- und Wadenaktivierung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprung",
+      "Landung",
+      "Block"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000023",
+    "goal": "Dynamische Schulteraktivierung mit steigender Bewegungsweite.",
+    "name": "Kontrollierte Armkreise",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Arme seitlich ausstrecken und kleine Kreise beginnen, langsam größer werden lassen und Richtung wechseln. Leichter/Kinder: kürzere Serien. Anspruchsvoller: langsames Tempo mit Handflächenwechsel.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "arms"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-023",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 30 s je Richtung",
+    "main_focus": "activation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/dvids-arms-1.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/551356/arm-circles",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 12.5 s; JPG komprimiert; Ausschnitt",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Aufrecht stehen und die Arme seitlich führen."
+      },
+      {
+        "asset_path": "assets/athletics/dvids-arms-2.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/551356/arm-circles",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 20 s; JPG komprimiert; Ausschnitt",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Arme kontrolliert kreisen; Bildfolge zeigt zwei Positionen der Bewegung."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 3,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "mobilize",
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "mobility"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Schultern tief halten",
+      "Rumpf ruhig",
+      "Bewegung schmerzfrei"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Dynamische Schulteraktivierung mit steigender Bewegungsweite.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Aufschlag",
+      "Angriff",
+      "Block"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000018",
+    "goal": "Übt sichere beidbeinige Landung und stabile Knieachse.",
+    "name": "Landung einfrieren",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Aus dem Zehenstand oder einem sehr kleinen Hopser weich auf beiden Füßen landen und zwei Sekunden stabil stehen. Leichter/Kinder: nur aus dem Zehenstand absenken. Anspruchsvoller: aus höherem Sprung oder mit Vierteldrehung.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "ankle",
+      "hip",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-018",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 6",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:59:14.990881+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate",
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "stability",
+      "coordination"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Leise landen",
+      "Knie folgen den Füßen",
+      "Hüfte nimmt die Landung auf"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Übt sichere beidbeinige Landung und stabile Knieachse.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Landung",
+      "Sprung",
+      "Knieschutz"
+    ]
+  },
+  {
+    "id": "41f4b58e-4be2-446e-acb8-d4afe0a130a5",
+    "goal": "",
+    "name": "Liniensprints mit Blocksprüngen",
+    "rules": [],
+    "club_id": null,
+    "playful": true,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Zu Linien sprinten und anschließend zwei Blocksprüngen außen und Mitte ausführen.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "whole"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "medium",
+    "family_key": null,
+    "field_need": null,
+    "group_size": null,
+    "load_value": "4–5 min",
+    "main_focus": "potentiation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "group",
+    "duration_min": 5,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": null,
+    "warmup_phases": [
+      "potentiate",
+      "specialize"
+    ],
+    "secondary_tags": [
+      "speed",
+      "coordination"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Saubere Landung",
+      "Explosiv arbeiten"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Kurze Sprints kombiniert mit Blocksprüngen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Block",
+      "Sprungkraft",
+      "Schnelligkeit"
+    ]
+  },
+  {
+    "id": "f7ecb6ed-ca37-4e9a-b5b8-54c22c5c6ae4",
+    "goal": "",
+    "name": "Reaktive Blocksprüngen an der Wand",
+    "rules": [],
+    "club_id": null,
+    "playful": true,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Auf Kommando seitlich bewegen oder drehen und unmittelbar einen Blocksprüng ausführen.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "whole"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "medium",
+    "family_key": null,
+    "field_need": null,
+    "group_size": null,
+    "load_value": "4–5 min",
+    "main_focus": "potentiation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "group",
+    "duration_min": 5,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": null,
+    "warmup_phases": [
+      "potentiate",
+      "specialize"
+    ],
+    "secondary_tags": [
+      "coordination",
+      "speed"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Kurze Bodenkontaktzeit",
+      "Kontrolliert landen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [
+      "wall"
+    ],
+    "short_description": "Reaktive Sprungfolge mit Sidestep- und Drehkommandos.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Block",
+      "Reaktion"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000014",
+    "goal": "Kräftigt Beine und Gesäß mit kontrollierter Knieachse.",
+    "name": "Rückwärts-Ausfallschritt",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Einen Schritt nach hinten setzen und beide Knie nur so weit beugen wie stabil und schmerzfrei. Über den vorderen Fuß zurückdrücken. Leichter/Kinder: kleiner Schritt und geringe Tiefe. Anspruchsvoller: Kniehub beim Zurückkommen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-014",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "8 je Seite",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/dvids-lunge-1.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/551832/stationary-forward-lunge",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 15.5 s; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Tiefe Position nach dem Rückwärtsschritt. Die Schrittrichtung ist auf dem Standbild nicht sichtbar; kontrolliert zurück aufrichten."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "stability",
+      "balance"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Vorderes Knie über dem Fuß",
+      "Oberkörper aufrecht",
+      "Druck über den vorderen ganzen Fuß"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Kräftigt Beine und Gesäß mit kontrollierter Knieachse.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Abwehrbewegung",
+      "Sprungkraft",
+      "Knieschutz"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000025",
+    "goal": "Schult Fußgeschwindigkeit und kurze Bodenkontakte an einer Hallenlinie.",
+    "name": "Schnelle Linienfüße vor–zurück",
+    "rules": [],
+    "club_id": null,
+    "playful": true,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Beidbeinig mit kleinen schnellen Schritten vor und zurück über eine Linie arbeiten. Leichter/Kinder: langsamer Rhythmus. Anspruchsvoller: einbeinig oder auf Kommando Richtungswechsel.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "ankle",
+      "whole"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-025",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "4 × 15–20 s",
+    "main_focus": "speed",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "coordination",
+      "potentiation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Kleine Schritte",
+      "Ballen aktiv",
+      "Oberkörper stabil"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Schult Fußgeschwindigkeit und kurze Bodenkontakte an einer Hallenlinie.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schnelligkeit",
+      "Abwehr",
+      "Block"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000032",
+    "goal": "Übt aktives Abbremsen aus dem hohen Stand ohne Sprung.",
+    "name": "Schnelles Absenken in Landeposition",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Aus gestrecktem Stand mit Armen oben zügig in eine flache, stabile Landeposition absenken und einfrieren. Leichter/Kinder: langsam. Anspruchsvoller: aus dem Zehenstand oder auf akustisches Signal.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-032",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 8",
+    "main_focus": "coordination",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:59:14.990881+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate",
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "stability",
+      "coordination"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Knie folgen den Füßen",
+      "Hüfte nach hinten",
+      "Position stabil halten"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Übt aktives Abbremsen aus dem hohen Stand ohne Sprung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Landung",
+      "Block",
+      "Angriff"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000020",
+    "goal": "Aktiviert die Schulterblattmuskulatur bei gestreckten Armen.",
+    "name": "Schulterblatt-Liegestütz",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Im hohen Stütz Brustkorb zwischen den Schulterblättern leicht absinken lassen und Boden aktiv wegdrücken, ohne die Ellbogen zu beugen. Leichter/Kinder: an der Wand oder auf Knien. Anspruchsvoller: voller Stütz mit langsamem Tempo.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "back",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-020",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "10–15",
+    "main_focus": "activation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/scapular-push-start.jpg",
+        "credit": "San Juan et al. (2015), Abb. 1",
+        "source_url": "https://doi.org/10.1186/s12891-015-0486-5",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "changes": "Ausschnitt A aus Abb. 1; JPG komprimiert",
+        "caption": "Ausgangsposition im hohen Stütz. Für diese Übung bleiben die Ellbogen gestreckt; nur die Schulterblätter bewegen sich, wie im Text beschrieben."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "stability",
+      "strength"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Ellbogen bleiben gestreckt",
+      "Kopf in Verlängerung",
+      "Kleine kontrollierte Bewegung"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Aktiviert die Schulterblattmuskulatur bei gestreckten Armen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Angriff",
+      "Aufschlag",
+      "Block"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000005",
+    "goal": "Aktiviert Schulterblätter und mobilisiert den Schultergürtel.",
+    "name": "Schulterblattkreisen im Stand",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Arme locker hängen lassen und Schulterblätter bewusst nach oben, hinten, unten und vorn führen. Danach Richtung wechseln. Leichter/Kinder: kleine Kreise. Anspruchsvoller: Arme auf Schulterhöhe halten.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "back"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-005",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 30 s",
+    "main_focus": "mobility",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 3,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "mobilize",
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Rippen unten halten",
+      "Bewegung aus den Schulterblättern",
+      "Langsam und kontrolliert"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Aktiviert Schulterblätter und mobilisiert den Schultergürtel.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Aufschlag",
+      "Angriff",
+      "Block"
+    ]
+  },
+  {
+    "id": "cb8985c0-171c-4a21-99de-66ad10774956",
+    "goal": "",
+    "name": "Seitlicher Ausfallschritt mit Rotation",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Seitlich in den Ausfallschritt gehen und den Oberkörper kontrolliert rotieren.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "hip",
+      "legs",
+      "core"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "easy",
+    "family_key": null,
+    "field_need": null,
+    "group_size": null,
+    "load_value": "6 je Seite",
+    "main_focus": "mobility",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/dvids-lateral-1.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/677362/lateral-lunge",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 4.5 s; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Grundposition des seitlichen Ausfallschritts. Anschließend die Rotation gemäß Übungstext ergänzen; diese ist im Foto nicht dargestellt."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 4,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": null,
+    "warmup_phases": [
+      "mobilize"
+    ],
+    "secondary_tags": [
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Knie über dem Fuß führen",
+      "Rumpf lang halten"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Mobilisation für Hüfte, Beine und Rumpf.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Abwehrbewegung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000026",
+    "goal": "Trainiert volleyballtypische Seitbewegung und stabile Bremsposition.",
+    "name": "Seitliches Gleiten mit Stopp",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "In flacher Grundhaltung zwei bis drei schnelle Seitwärtsschritte ausführen und auf Signal stabil stoppen. Leichter/Kinder: kürzere Strecke. Anspruchsvoller: Richtungswechsel auf Zuruf.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip",
+      "whole"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-026",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "4 × 20 s",
+    "main_focus": "speed",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/dvids-shuffle-1.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/558578/lateral-shuffle",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 16.5 s; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Tiefe Bereitschaft: seitlich gleiten, Beine nicht kreuzen."
+      },
+      {
+        "asset_path": "assets/athletics/dvids-shuffle-2.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/558578/lateral-shuffle",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 18 s; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Nachsetzen und kontrolliert stoppen; Knie bleiben weich."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "specialize",
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "coordination",
+      "stability"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Füße nicht überkreuzen",
+      "Brust bleibt zum Feld",
+      "Stopp leise und stabil"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Trainiert volleyballtypische Seitbewegung und stabile Bremsposition.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Abwehrbewegung",
+      "Block"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000017",
+    "goal": "Kräftigt seitliche Beinkette in einer flachen, kniefreundlichen Bewegung.",
+    "name": "Seitliches Verlagern",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Breiter Stand, Gewicht kontrolliert von einer Seite zur anderen verlagern und das belastete Knie leicht beugen. Leichter/Kinder: geringe Tiefe. Anspruchsvoller: auf der belasteten Seite kurz halten.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-017",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "8 je Seite",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/dvids-lateral-1.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/677362/lateral-lunge",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 4.5 s; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Seitlich verlagern: ein Knie beugen, das andere Bein lang lassen."
+      },
+      {
+        "asset_path": "assets/athletics/dvids-lateral-2.jpg",
+        "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+        "source_url": "https://www.dvidshub.net/video/677362/lateral-lunge",
+        "license": "Public Domain (US)",
+        "license_url": "https://www.dvidshub.net/about/copyright",
+        "changes": "Standbild bei 8.5 s; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Die Gegenseite kontrolliert belasten; ganze Füße bleiben am Boden."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "mobility",
+      "stability"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Hüfte nach hinten",
+      "Knie folgt dem Fuß",
+      "Andere Fußsohle bleibt am Boden"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Kräftigt seitliche Beinkette in einer flachen, kniefreundlichen Bewegung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Abwehrbewegung",
+      "Seitbewegung"
+    ]
+  },
+  {
+    "id": "a2ca1dcb-e34f-40bc-abe3-dc1f3237c102",
+    "goal": "",
+    "name": "Seitstütz",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Unterarm unter der Schulter, Körper in einer Linie anheben.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "gym_mat",
+        "quantity": "1 pro Person"
+      }
+    ],
+    "body_areas": [
+      "core",
+      "shoulder"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "medium",
+    "family_key": "side-plank",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "20–40 s je Seite",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "credit": "Everkinetic",
+        "caption": "Ausgangsposition: Seitlich auf den Unterarm stützen, Ellbogen unter der Schulter und Beine lang ausrichten.",
+        "license": "CC BY-SA 3.0",
+        "asset_path": "assets/athletics/side-plank-start.png",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Side-plank-1.png",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+      },
+      {
+        "credit": "Everkinetic",
+        "caption": "Halteposition: Becken anheben und den Körper in einer Linie halten. Ruhig weiteratmen, anschließend kontrolliert absenken und die Seite wechseln.",
+        "license": "CC BY-SA 3.0",
+        "asset_path": "assets/athletics/side-plank-hold.png",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Side-plank-2.png",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Standard",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "strength"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Hüfte nicht absinken lassen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Seitliche Rumpfstabilisation.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ]
+  },
+  {
+    "id": "f0abc1b5-b0ba-4c74-9b0a-5dfd1e9c1af8",
+    "goal": "",
+    "name": "Seitstütz mit Arm und Bein",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Aus stabilem Seitstütz oberen Arm und oberes Bein anheben.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "gym_mat",
+        "quantity": "1 pro Person"
+      }
+    ],
+    "body_areas": [
+      "core",
+      "shoulder",
+      "hip"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "hard",
+    "family_key": "side-plank",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "15–30 s je Seite",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Arm/Bein anheben",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "coordination",
+      "strength"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Becken stabil halten"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Schwierigere Seitstütz-Variante mit Balanceanforderung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000035",
+    "goal": "Trainiert seitliche Kraft, Abbremsen und einbeinige Stabilität.",
+    "name": "Skater-Schritt mit Balance",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Seitlich von einem Bein auf das andere steigen oder leicht springen und jeweils stabilisieren. Leichter/Kinder: großer Seitwärtsschritt ohne Flugphase. Anspruchsvoller: weiter springen und kürzer stabilisieren.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip",
+      "ankle"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-035",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 6 je Seite",
+    "main_focus": "potentiation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "balance",
+      "agility"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Landeknie folgt dem Fuß",
+      "Becken kontrollieren",
+      "Zuerst Stabilität, dann Weite"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Trainiert seitliche Kraft, Abbremsen und einbeinige Stabilität.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Abwehrbewegung",
+      "Richtungswechsel",
+      "Landung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000029",
+    "goal": "Reaktionsspiel mit seitlichen und kurzen Vor-/Rückbewegungen.",
+    "name": "Spiegeln zu zweit ohne Gerät",
+    "rules": [],
+    "club_id": null,
+    "playful": true,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Zwei Personen stehen sich gegenüber. Eine führt kurze Bewegungen aus, die andere spiegelt. Nach 20 Sekunden Rollen wechseln. Leichter/Kinder: nur seitlich. Anspruchsvoller: vor, zurück und Split-Step ergänzen.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "whole"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-029",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "4 × 20 s",
+    "main_focus": "speed",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "partner",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "specialize",
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "reaction",
+      "playful",
+      "coordination"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Kleine kontrollierte Bewegungen",
+      "Abstand halten",
+      "Nicht in tiefe schmerzhafte Position zwingen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Reaktionsspiel mit seitlichen und kurzen Vor-/Rückbewegungen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Abwehr",
+      "Block",
+      "Reaktion"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000027",
+    "goal": "Verbindet Bereitschaftssprung, Wahrnehmung und ersten Schritt.",
+    "name": "Split-Step auf Signal",
+    "rules": [],
+    "club_id": null,
+    "playful": true,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Locker auf den Fußballen stehen. Auf Signal einen kleinen Split-Step landen und sofort einen Schritt in die angezeigte Richtung machen. Leichter/Kinder: zwei Richtungen. Anspruchsvoller: vier Richtungen oder Täuschsignale.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "ankle",
+      "whole"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-027",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3 × 6 Signale",
+    "main_focus": "speed",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "partner",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "specialize",
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "reaction",
+      "coordination"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Split-Step klein halten",
+      "Landung aktiv",
+      "Erster Schritt entschlossen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Verbindet Bereitschaftssprung, Wahrnehmung und ersten Schritt.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Annahme",
+      "Abwehr",
+      "Reaktion"
+    ]
+  },
+  {
+    "id": "fb4e7783-1b80-4ce9-b554-173987dbcc14",
+    "goal": "",
+    "name": "Sprunggelenke mobilisieren",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Fußgelenke kreisen, danach kontrolliert zwischen Zehen- und Fersenstand wechseln.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "ankle",
+      "legs"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "easy",
+    "family_key": null,
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2–3 min",
+    "main_focus": "mobility",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ankle-circle-relaxation.png",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/dist/png/0270-relaxation.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "Unverändert",
+        "caption": "Fuß frei halten und das Sprunggelenk langsam bewegen."
+      },
+      {
+        "asset_path": "assets/athletics/ankle-circle-tension.png",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/dist/png/0270-tension.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "Unverändert",
+        "caption": "Weitere Position der Kreisbewegung; beide Richtungen und beide Füße mobilisieren."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 3,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": null,
+    "warmup_phases": [
+      "mobilize"
+    ],
+    "secondary_tags": [
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Kontrolliert und schmerzfrei arbeiten"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Fußkreisen sowie Wechsel zwischen Zehen- und Fersenstand.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprung",
+      "Landung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000034",
+    "goal": "Entwickelt horizontale Explosivität und Landekontrolle.",
+    "name": "Standweitsprung mit Halt",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Beidbeinig nach vorn springen und Landung zwei Sekunden stabil halten. Leichter/Kinder: kurze Distanz. Anspruchsvoller: größere Distanz oder Zielzone, ohne die Landungsqualität zu verlieren.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip",
+      "ankle"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-034",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3 × 4",
+    "main_focus": "potentiation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "potentiate"
+    ],
+    "secondary_tags": [
+      "plyometrics",
+      "stability"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Arme aktiv einsetzen",
+      "Beide Füße gleichzeitig landen",
+      "Knie stabil"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Entwickelt horizontale Explosivität und Landekontrolle.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprungkraft",
+      "Landung",
+      "Anlauf"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000033",
+    "goal": "Trainiert vertikalen Absprung und sichere beidbeinige Landung.",
+    "name": "Strecksprung mit stabiler Landung",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Aus schmerzfreier Beugung senkrecht abspringen, Arme aktiv nutzen und weich landen. Leichter/Kinder: kleiner Sprung. Anspruchsvoller: maximale Höhe bei gleicher Landungsqualität.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "ankle",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-033",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3 × 5",
+    "main_focus": "potentiation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/vertical-jump.jpg",
+        "credit": "U.S. Army / Army Combat Fitness Test",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Conditioning_Drill_1-_Power_Jump.webm",
+        "license": "Public Domain (US)",
+        "license_url": "https://commons.wikimedia.org/wiki/Template:PD-USGov-Military-Army",
+        "changes": "Standbild bei 42.3 s; Ausschnitt; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Flugphase des Strecksprungs: Körper lang und Arme oben. Anschließend gemäß Text weich landen und stabil stehen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 6,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "potentiate",
+      "specialize"
+    ],
+    "secondary_tags": [
+      "plyometrics",
+      "technique"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Senkrecht abspringen",
+      "Leise landen",
+      "Zwischen Wiederholungen neu stabilisieren"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Trainiert vertikalen Absprung und sichere beidbeinige Landung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprungkraft",
+      "Block",
+      "Angriff"
+    ]
+  },
+  {
+    "id": "55815185-646c-4313-834e-232a6aff9e4f",
+    "goal": "",
+    "name": "Theraband Außenrotation Schulter",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Ellbogen am Körper, Unterarm 90 Grad, Band kontrolliert nach außen führen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "theraband",
+        "quantity": "1 pro Person"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "arms"
+    ],
+    "created_at": "2026-09-02T21:20:35.742866+00:00",
+    "difficulty": "easy",
+    "family_key": null,
+    "field_need": null,
+    "group_size": null,
+    "load_value": "12–15 je Seite",
+    "main_focus": "activation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-02T21:20:35.742866+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": null,
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "stability"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Schulter tief halten"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Aktivierung der Außenrotatoren.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schulterprävention",
+      "Angriff",
+      "Aufschlag"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000024",
+    "goal": "Trainiert stabile Überkopfposition und Rumpfkontrolle.",
+    "name": "Überkopfspannung im Stand",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Arme über Kopf strecken, Schulterblätter aktiv führen und Rippen über dem Becken halten. Leichter/Kinder: Arme leicht nach vorn. Anspruchsvoller: abwechselnd auf die Zehenspitzen steigen.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "core",
+      "back"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-024",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "3 × 20 s",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/overhead-hold.jpg",
+        "credit": "U.S. Army / Army Combat Fitness Test",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Conditioning_Drill_1-_Power_Jump.webm",
+        "license": "Public Domain (US)",
+        "license_url": "https://commons.wikimedia.org/wiki/Template:PD-USGov-Military-Army",
+        "changes": "Standbild bei 22 s; Ausschnitt; JPG komprimiert",
+        "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+        "caption": "Überkopfposition: Arme lang, Rippen über dem Becken halten."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 4,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "activation",
+      "mobility"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Rippen nicht aufklappen",
+      "Schultern nicht hochziehen",
+      "Kopf neutral"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Trainiert stabile Überkopfposition und Rumpfkontrolle.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Block",
+      "Zuspiel",
+      "Aufschlag"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000009",
+    "goal": "Trainiert Rumpf und Schulterstabilität gegen Rotation.",
+    "name": "Unterarmstütz mit Schultertippen",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Im hohen Stütz abwechselnd mit einer Hand die gegenüberliegende Schulter berühren. Leichter/Kinder: Knie absetzen oder Hände erhöht auf Bank. Anspruchsvoller: Füße enger stellen und langsam arbeiten.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "core",
+      "shoulder",
+      "arms"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "medium",
+    "family_key": "athletics-2026-009",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "8–12 je Seite",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/wger-1091-334.jpg",
+        "credit": "clafal",
+        "source_url": "https://wger.de/api/v2/exerciseinfo/1091/",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "Unverändert",
+        "caption": "Hoher Stütz: eine Hand zur gegenüberliegenden Schulter führen, Becken ruhig halten."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "strength",
+      "coordination"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Becken möglichst ruhig",
+      "Hände unter den Schultern",
+      "Körper bleibt lang"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Trainiert Rumpf und Schulterstabilität gegen Rotation.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität",
+      "Stützfähigkeit"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000001",
+    "goal": "Mobilisiert Wirbelsäule und Schultergürtel im Vierfüßlerstand.",
+    "name": "Vierfüßler Wirbelsäulenwelle",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Im Vierfüßlerstand Rücken langsam rund machen und anschließend kontrolliert in eine lange, neutrale Position zurückführen. Leichter/Kinder: kleine Bewegungsamplitude und Tierbilder nutzen. Anspruchsvoller: Bewegung mit bewusster Atmung und kurzer Endposition.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "back",
+      "shoulder",
+      "core"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-001",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "45–60 s",
+    "main_focus": "mobility",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 3,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "mobilize"
+    ],
+    "secondary_tags": [
+      "activation"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Hände unter den Schultern",
+      "Knie unter der Hüfte",
+      "Nicht in ein schmerzhaftes Hohlkreuz drücken"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Mobilisiert Wirbelsäule und Schultergürtel im Vierfüßlerstand.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfbeweglichkeit",
+      "Abwehrhaltung"
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000019",
+    "goal": "Verbessert Schulterbeweglichkeit und Schulterblattkontrolle.",
+    "name": "Wandgleiten der Arme",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Mit Rücken zur Wand stehen, Unterarme anlegen und langsam nach oben und unten gleiten. Leichter/Kinder: kleinere Höhe. Anspruchsvoller: Rücken und Unterarme dauerhaft an der Wand halten.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "back",
+      "arms"
+    ],
+    "created_at": "2026-09-21T08:57:55.764199+00:00",
+    "difficulty": "easy",
+    "family_key": "athletics-2026-019",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "10–12",
+    "main_focus": "activation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "updated_at": "2026-09-21T08:57:55.764199+00:00",
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 4,
+    "organization": "Für alle Altersgruppen: zuerst die leichte Form sauber beherrschen, dann zur anspruchsvolleren Variante wechseln.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Alle Altersgruppen",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [
+      "mobility",
+      "stability"
+    ],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Rippen unten",
+      "Schultern weg von den Ohren",
+      "Nur schmerzfreie Höhe"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Verbessert Schulterbeweglichkeit und Schulterblattkontrolle.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Aufschlag",
+      "Angriff",
+      "Block"
+    ]
+  },
+  {
+    "goal": "Rumpfspannung in einer geraden Körperlinie halten.",
+    "name": "Unterarmstütz klassisch",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Unterarme unter den Schultern aufsetzen, Beine strecken und auf den Zehen stützen. Bauch und Gesäß leicht anspannen und ruhig atmen. Leichter: Knie aufsetzen oder kürzer halten.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "core"
+    ],
+    "difficulty": "easy",
+    "family_key": "athletics-2026-10-001",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 15–30 s",
+    "main_focus": "stability",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/wger-458-354.png",
+        "credit": "utkb",
+        "source_url": "https://wger.de/api/v2/exerciseinfo/458/",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "Unverändert",
+        "caption": "Halteposition: Unterarme unter den Schultern, Körper lang und Becken ruhig."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Rippen über dem Becken",
+      "Kopf in Verlängerung des Rückens",
+      "Beenden, bevor der Rücken durchhängt"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Rumpfspannung in einer geraden Körperlinie halten.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000001"
+  },
+  {
+    "goal": "Brust, Arme und Schultergürtel bei stabilem Rumpf kräftigen.",
+    "name": "Liegestütz klassisch",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Aus dem hohen Stütz den Körper als Einheit kontrolliert absenken und wieder hochdrücken. Ellbogen schräg nach hinten führen. Leichter: Hände auf eine sicher stehende Bank setzen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "core",
+      "shoulder",
+      "arms"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-002",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 5–10",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-push-ups-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-ups-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: hoher Stütz mit festem Rumpf."
+      },
+      {
+        "asset_path": "assets/athletics/ever-push-ups-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-ups-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Absenken: Brust Richtung Boden, Körper als Einheit bewegen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Rumpf bleibt lang",
+      "Hände etwa schulterbreit",
+      "Kontrolliert absenken"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Brust, Arme und Schultergürtel bei stabilem Rumpf kräftigen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000002"
+  },
+  {
+    "goal": "Fortgeschrittene Stützkräftigung mit den Füßen auf einer Bank.",
+    "name": "Liegestütz mit erhöhten Füßen",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Füße auf eine niedrige, rutschfeste Bank legen. Hände auf den Boden setzen und den Körper gerade halten. Langsam absenken und hochdrücken. Erst einsetzen, wenn normale Liegestütze sicher gelingen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "bench"
+      }
+    ],
+    "body_areas": [
+      "core",
+      "shoulder",
+      "arms"
+    ],
+    "difficulty": "hard",
+    "family_key": "athletics-2026-10-003",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 4–8",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-push-up-feet-elevated-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-up-feet-elevated-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: Füße auf einer stabilen Bank, Körper in einer Linie."
+      },
+      {
+        "asset_path": "assets/athletics/ever-push-up-feet-elevated-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-up-feet-elevated-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Tiefe Position: kontrolliert absenken und wieder hochdrücken."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Bank gegen Verrutschen sichern",
+      "Kein Hohlkreuz",
+      "Ellbogen nicht seitlich ausstellen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Fortgeschrittene Stützkräftigung mit den Füßen auf einer Bank.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000003"
+  },
+  {
+    "goal": "Zugkraft von Rücken und Schultergürtel trainieren.",
+    "name": "Rudern mit Körpergewicht",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Unter einer fest verankerten niedrigen Stange hängen, Füße aufstellen und den Körper gerade halten. Brust Richtung Stange ziehen, dann kontrolliert absenken. Leichter: Knie beugen und Füße näher heranstellen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "pullup_bar"
+      }
+    ],
+    "body_areas": [
+      "back",
+      "shoulder",
+      "arms"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-004",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 5–10",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-body-row-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-row-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: Arme lang, Körper gerade unter der fest verankerten Stange."
+      },
+      {
+        "asset_path": "assets/athletics/ever-body-row-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-row-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Zugposition: Brust zur Stange führen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Nur belastbare, fest montierte Stange",
+      "Schultern weg von den Ohren",
+      "Körper als Einheit bewegen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Zugkraft von Rücken und Schultergürtel trainieren.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schulterstabilität",
+      "Angriff"
+    ],
+    "id": "94000000-0000-4000-8000-000000000004"
+  },
+  {
+    "goal": "Rücken und Arme durch kontrolliertes Hochziehen kräftigen.",
+    "name": "Klimmzug im Obergriff",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "An einer fest montierten Klimmzugstange im Obergriff hängen. Schultern aktiv halten und ohne Schwung hochziehen; anschließend langsam absenken. Leichter: Fußunterstützung auf einer gesicherten niedrigen Bank.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "pullup_bar"
+      }
+    ],
+    "body_areas": [
+      "back",
+      "shoulder",
+      "arms"
+    ],
+    "difficulty": "hard",
+    "family_key": "athletics-2026-10-005",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 3–6",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-pull-ups-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pull-ups-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: aktiver Hang an einer fest montierten Stange."
+      },
+      {
+        "asset_path": "assets/athletics/ever-pull-ups-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pull-ups-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Hochziehen: Ellbogen nach unten führen, ohne Schwung."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Nicht kippen oder schwingen",
+      "Stange und Befestigung prüfen",
+      "Nur im kontrollierten Bewegungsumfang"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Rücken und Arme durch kontrolliertes Hochziehen kräftigen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schulterstabilität",
+      "Angriff"
+    ],
+    "id": "94000000-0000-4000-8000-000000000005"
+  },
+  {
+    "goal": "Hintere Körperkette mit kleinen kontrollierten Bewegungen aktivieren.",
+    "name": "Bauchlage Arm- und Beinheben",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "In Bauchlage Arme nach vorn ausstrecken. Arme und Beine wenige Zentimeter anheben, kurz halten und wieder ablegen. Bauchspannung halten. Leichter: nur Arme oder Beine anheben.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "back",
+      "hip",
+      "core"
+    ],
+    "difficulty": "easy",
+    "family_key": "athletics-2026-10-006",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 6–10",
+    "main_focus": "activation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-supermans-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/supermans-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: Bauchlage, Arme und Beine lang."
+      },
+      {
+        "asset_path": "assets/athletics/ever-supermans-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/supermans-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Arme und Beine nur leicht anheben; Kopf bleibt neutral."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Blick zum Boden",
+      "Klein und lang statt hoch heben",
+      "Nicht ins Hohlkreuz drücken"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Hintere Körperkette mit kleinen kontrollierten Bewegungen aktivieren.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000006"
+  },
+  {
+    "goal": "Hüftstreckung und hintere Körperkette kräftigen.",
+    "name": "Kreuzheben mit Kurzhanteln",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Mit leichten Kurzhanteln aufrecht stehen. Knie etwas beugen und Hüfte nach hinten schieben; Hanteln nah an den Beinen absenken. Nur so tief gehen, wie der Rücken neutral bleibt. Über die Hüfte wieder aufrichten.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "dumbbell"
+      }
+    ],
+    "body_areas": [
+      "hip",
+      "legs",
+      "back"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-007",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 6–10",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-dumbbell-dead-lifts-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-dead-lifts-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: aufrecht mit leichten Kurzhanteln."
+      },
+      {
+        "asset_path": "assets/athletics/ever-dumbbell-dead-lifts-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-dead-lifts-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Hüftbeuge: Rücken lang, Hanteln nah an den Beinen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Hüfte schiebt nach hinten",
+      "Hanteln körpernah",
+      "Zunächst ohne Gewicht üben"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Hüftstreckung und hintere Körperkette kräftigen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprungkraft",
+      "Landung"
+    ],
+    "id": "94000000-0000-4000-8000-000000000007"
+  },
+  {
+    "goal": "Oberen Rücken und hintere Schulter kontrolliert kräftigen.",
+    "name": "Einarmiges Rudern mit Kurzhantel",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Eine Hand und ein Knie auf einer stabilen Bank abstützen. Mit der anderen Hand eine leichte Hantel halten. Ellbogen leicht seitlich nach hinten ziehen und die Hantel kontrolliert absenken. Anschließend Seite wechseln.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "bench"
+      },
+      {
+        "code": "dumbbell"
+      }
+    ],
+    "body_areas": [
+      "back",
+      "shoulder",
+      "arms"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-008",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 8 je Seite",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-rear-deltoid-row-dumbbell-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/rear-deltoid-row-dumbbell-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: stabil auf der Bank abstützen, Hantelarm lang."
+      },
+      {
+        "asset_path": "assets/athletics/ever-rear-deltoid-row-dumbbell-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/rear-deltoid-row-dumbbell-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Hantel anheben: Ellbogen leicht seitlich nach hinten führen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Becken bleibt waagerecht",
+      "Nicht aus dem Rumpf drehen",
+      "Schulter nicht zum Ohr ziehen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Oberen Rücken und hintere Schulter kontrolliert kräftigen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schulterstabilität",
+      "Angriff"
+    ],
+    "id": "94000000-0000-4000-8000-000000000008"
+  },
+  {
+    "goal": "Kontrollierte Kniebeuge mit einer Bank als Tiefenorientierung.",
+    "name": "Bankkniebeuge mit Kurzhanteln",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Vor einer sicher stehenden Bank mit leichten Hanteln stehen. Hüfte nach hinten unten führen, die Bank nur leicht berühren und wieder aufstehen. Zum Lernen ohne Hanteln beginnen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "bench"
+      },
+      {
+        "code": "dumbbell"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-009",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 8–10",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-squat-to-bench-with-dumbbells-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/squat-to-bench-with-dumbbells-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: aufrecht vor der stabilen Bank."
+      },
+      {
+        "asset_path": "assets/athletics/ever-squat-to-bench-with-dumbbells-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/squat-to-bench-with-dumbbells-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Bank leicht berühren und über die ganzen Füße aufrichten."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Knie folgen der Fußrichtung",
+      "Nicht auf die Bank fallen",
+      "Ganzer Fuß bleibt belastet"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Kontrollierte Kniebeuge mit einer Bank als Tiefenorientierung.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprungkraft",
+      "Landung"
+    ],
+    "id": "94000000-0000-4000-8000-000000000009"
+  },
+  {
+    "goal": "Einseitige Beinkraft und kontrolliertes Aufsteigen trainieren.",
+    "name": "Aufsteigen auf Bank mit Kurzhanteln",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Vor einer niedrigen, standsicheren Bank stehen. Einen Fuß vollständig aufsetzen und über dieses Bein nach oben drücken. Langsam wieder absteigen und die Seite wechseln. Zuerst ohne Hanteln beherrschen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "bench"
+      },
+      {
+        "code": "dumbbell"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-010",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 6–8 je Seite",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-step-ups-with-dumbbells-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/step-ups-with-dumbbells-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start vor einer niedrigen, stabilen Bank."
+      },
+      {
+        "asset_path": "assets/athletics/ever-step-ups-with-dumbbells-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/step-ups-with-dumbbells-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Einen Fuß vollständig aufsetzen."
+      },
+      {
+        "asset_path": "assets/athletics/ever-step-ups-with-dumbbells-3.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/step-ups-with-dumbbells-3.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Über das obere Bein aufrichten, anschließend langsam absteigen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Höhe an die Beweglichkeit anpassen",
+      "Oberes Knie bleibt stabil",
+      "Nicht vom unteren Fuß abspringen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Einseitige Beinkraft und kontrolliertes Aufsteigen trainieren.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprungkraft",
+      "Beinstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000010"
+  },
+  {
+    "goal": "Beine und Gesäß in einer breiten Kniebeuge kräftigen.",
+    "name": "Sumo-Kniebeuge mit Kurzhantel",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Breit stehen, Füße leicht nach außen richten und eine leichte Kurzhantel vor dem Körper halten. Knie in Fußrichtung beugen und kontrolliert aufrichten. Nur im gut kontrollierbaren Bewegungsumfang arbeiten.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "dumbbell"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "hip"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-011",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 8–10",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-pile-squat-with-dumbbell-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pile-squat-with-dumbbell-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Breiter Stand mit einer leichten Hantel vor dem Körper."
+      },
+      {
+        "asset_path": "assets/athletics/ever-pile-squat-with-dumbbell-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pile-squat-with-dumbbell-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Kontrolliert beugen und aufrichten; Knie bleiben in Fußrichtung."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Knie folgen den Füßen",
+      "Gewicht nah am Körper",
+      "Keine maximale Tiefe erzwingen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Beine und Gesäß in einer breiten Kniebeuge kräftigen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Beinkraft",
+      "Landung"
+    ],
+    "id": "94000000-0000-4000-8000-000000000011"
+  },
+  {
+    "goal": "Kontrollierte Kraft über Kopf mit leichten Hanteln entwickeln.",
+    "name": "Schulterdrücken sitzend mit Kurzhanteln",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Aufrecht auf einer stabilen Bank sitzen. Leichte Hanteln auf Schulterhöhe halten, nach oben drücken und langsam zurückführen. Nur bei frei und schmerzlos möglicher Armhebung ausführen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "bench"
+      },
+      {
+        "code": "dumbbell"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "arms",
+      "core"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-012",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 6–10",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-dumbbell-shoulder-press-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-shoulder-press-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: aufrechter Sitz, Hanteln auf Schulterhöhe."
+      },
+      {
+        "asset_path": "assets/athletics/ever-dumbbell-shoulder-press-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-shoulder-press-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Kontrolliert nach oben drücken, ohne ins Hohlkreuz auszuweichen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Rippen nicht aufklappen",
+      "Keine Schwungbewegung",
+      "Leichtes Gewicht wählen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Kontrollierte Kraft über Kopf mit leichten Hanteln entwickeln.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schulterkraft",
+      "Angriff",
+      "Block"
+    ],
+    "id": "94000000-0000-4000-8000-000000000012"
+  },
+  {
+    "goal": "Schultermuskulatur mit kleiner Last kontrolliert kräftigen.",
+    "name": "Seitheben mit leichten Kurzhanteln",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Aufrecht stehen und sehr leichte Hanteln seitlich halten. Arme mit leicht gebeugten Ellbogen bis etwa Schulterhöhe anheben und langsam absenken. Schultern bleiben entspannt.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "dumbbell"
+      }
+    ],
+    "body_areas": [
+      "shoulder"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-013",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 8–12",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-lateral-dumbbell-raises-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/lateral-dumbbell-raises-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: Arme seitlich, Hanteln leicht."
+      },
+      {
+        "asset_path": "assets/athletics/ever-lateral-dumbbell-raises-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/lateral-dumbbell-raises-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Arme kontrolliert bis etwa Schulterhöhe anheben."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Ohne Schwung",
+      "Nicht über Schulterhöhe",
+      "Schultern weg von den Ohren"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Schultermuskulatur mit kleiner Last kontrolliert kräftigen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schulterstabilität",
+      "Block"
+    ],
+    "id": "94000000-0000-4000-8000-000000000013"
+  },
+  {
+    "goal": "Hintere Schulter und oberen Rücken mit einem Band kräftigen.",
+    "name": "Reverse Fly am Band",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Ein leichtes Band sicher auf Brusthöhe vor dem Körper verankern. Enden mit langen, leicht gebeugten Armen halten und die Arme seitlich öffnen. Langsam zurückführen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "theraband"
+      }
+    ],
+    "body_areas": [
+      "shoulder",
+      "back"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-014",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 10–12",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-back-flys-exercise-band-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/back-flys-exercise-band-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: Band vor dem Körper sicher auf Brusthöhe verankern."
+      },
+      {
+        "asset_path": "assets/athletics/ever-back-flys-exercise-band-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/back-flys-exercise-band-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Arme seitlich öffnen und langsam zurückführen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Befestigung vor jedem Satz prüfen",
+      "Rippen und Becken ruhig",
+      "Band nicht ruckartig loslassen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Hintere Schulter und oberen Rücken mit einem Band kräftigen.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Schulterstabilität",
+      "Angriff"
+    ],
+    "id": "94000000-0000-4000-8000-000000000014"
+  },
+  {
+    "goal": "Wadenkraft und kontrollierte Fußarbeit stärken.",
+    "name": "Wadenheben mit Kurzhanteln",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Mit leichten Hanteln aufrecht stehen. Fersen langsam anheben, oben kurz halten und kontrolliert absetzen. Leichter: ohne Hanteln und mit einer Hand an einer festen Stütze.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "dumbbell"
+      }
+    ],
+    "body_areas": [
+      "legs",
+      "ankle"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-015",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 10–15",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/wger-622-439.jpeg",
+        "credit": "clafal",
+        "source_url": "https://wger.de/api/v2/exerciseinfo/622/",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "Verkleinert / JPG komprimiert",
+        "caption": "Beide Positionen: Fersen am Boden und angehoben, Hanteln ruhig seitlich halten."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": false,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Gleichmäßig auf den Vorfuß drücken",
+      "Nicht nach außen kippen",
+      "Langsam absenken"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Wadenkraft und kontrollierte Fußarbeit stärken.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Sprungkraft",
+      "Fußstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000015"
+  },
+  {
+    "goal": "Gleichgewicht und Fußkontrolle auf einer instabilen Unterlage üben.",
+    "name": "Balance auf Wackelbrett",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Ein Wackelbrett auf rutschfestem Boden mit freiem Umfeld aufstellen. Mit weichen Knien aufsteigen und kleine Ausgleichsbewegungen ausführen. Leichter: an einer festen Stütze festhalten.",
+    "form_type": null,
+    "load_type": "time",
+    "materials": [
+      {
+        "code": "balance_board"
+      }
+    ],
+    "body_areas": [
+      "ankle",
+      "legs",
+      "core"
+    ],
+    "difficulty": "easy",
+    "family_key": "athletics-2026-10-016",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 20–30 s",
+    "main_focus": "coordination",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-balance-board-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/balance-board-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Balanceposition: Knie weich, Oberkörper aufrecht."
+      },
+      {
+        "asset_path": "assets/athletics/ever-balance-board-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/balance-board-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Fußstellung auf dem Wackelbrett; kleine kontrollierte Ausgleichsbewegungen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Unterlage und Umfeld sichern",
+      "Kleine ruhige Bewegungen",
+      "Nicht bis zur Erschöpfung halten"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Gleichgewicht und Fußkontrolle auf einer instabilen Unterlage üben.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Fußstabilität",
+      "Beinstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000016"
+  },
+  {
+    "goal": "Bauchspannung durch kleines kontrolliertes Einrollen des Beckens trainieren.",
+    "name": "Reverse Crunch mit Beckenrollen",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "In Rückenlage Arme neben den Körper legen. Beine anwinkeln und anheben. Knie Richtung Brust führen und das Becken wenige Zentimeter einrollen; langsam zurückführen. Ohne Schwung arbeiten.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "core"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-017",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 6–10",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-bent-knee-hip-raise-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bent-knee-hip-raise-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Vorbereitung in Rückenlage, Arme am Boden."
+      },
+      {
+        "asset_path": "assets/athletics/ever-bent-knee-hip-raise-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bent-knee-hip-raise-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Knie anziehen und Becken leicht einrollen, ohne Schwung."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Bewegung aus der Bauchspannung",
+      "Becken nur wenig anheben",
+      "Langsam zurückrollen"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Bauchspannung durch kleines kontrolliertes Einrollen des Beckens trainieren.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000017"
+  },
+  {
+    "goal": "Rumpfbeugung bei unterstützt gelagerten Beinen kontrollieren.",
+    "name": "Crunch mit Beinen auf Bank",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Auf den Rücken legen und Unterschenkel auf eine niedrige Bank legen. Arme vor der Brust oder leicht am Kopf halten. Schulterblätter etwas anheben und langsam ablegen. Nicht am Kopf ziehen.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "bench"
+      },
+      {
+        "code": "gym_mat"
+      }
+    ],
+    "body_areas": [
+      "core"
+    ],
+    "difficulty": "easy",
+    "family_key": "athletics-2026-10-018",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 8–12",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-crunches-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: Unterschenkel auf der Bank, Rücken am Boden."
+      },
+      {
+        "asset_path": "assets/athletics/ever-crunches-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Schulterblätter leicht anheben und wieder kontrolliert ablegen."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Kleine Bewegung",
+      "Ausatmen beim Anheben",
+      "Kopf bleibt locker"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Rumpfbeugung bei unterstützt gelagerten Beinen kontrollieren.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000018"
+  },
+  {
+    "goal": "Rumpfspannung bei beweglicher Beinunterstützung üben.",
+    "name": "Crunch mit Beinen auf Gymnastikball",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "In Rückenlage Unterschenkel auf einen Gymnastikball legen. Ball ruhig halten und die Schulterblätter leicht anheben. Langsam ablegen. Hände unterstützen den Kopf nur leicht.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "gym_ball"
+      },
+      {
+        "code": "gym_mat"
+      }
+    ],
+    "body_areas": [
+      "core"
+    ],
+    "difficulty": "medium",
+    "family_key": "athletics-2026-10-019",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 8–12",
+    "main_focus": "strength",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-crunches-with-legs-on-stability-ball-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-with-legs-on-stability-ball-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: Unterschenkel auf dem Gymnastikball, Rücken am Boden."
+      },
+      {
+        "asset_path": "assets/athletics/ever-crunches-with-legs-on-stability-ball-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-with-legs-on-stability-ball-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Schulterblätter leicht anheben, während der Ball ruhig bleibt."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Ball bleibt ruhig",
+      "Nicht am Nacken ziehen",
+      "Kleine kontrollierte Bewegung"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Rumpfspannung bei beweglicher Beinunterstützung üben.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Rumpfstabilität"
+    ],
+    "id": "94000000-0000-4000-8000-000000000019"
+  },
+  {
+    "goal": "Gesäß im Einbeinstand kontrolliert aktivieren.",
+    "name": "Bein nach hinten anheben im Stand",
+    "rules": [],
+    "club_id": null,
+    "playful": false,
+    "scoring": "",
+    "team_id": null,
+    "owner_id": null,
+    "execution": "Aufrecht stehen und bei Bedarf an einer festen Stütze festhalten. Ein Knie leicht beugen und das Bein aus der Hüfte ein kleines Stück nach hinten führen. Becken ruhig halten und die Seite wechseln.",
+    "form_type": null,
+    "load_type": "repetitions",
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "body_areas": [
+      "hip",
+      "legs"
+    ],
+    "difficulty": "easy",
+    "family_key": "athletics-2026-10-020",
+    "field_need": null,
+    "group_size": null,
+    "load_value": "2 × 8–10 je Seite",
+    "main_focus": "activation",
+    "max_groups": null,
+    "min_groups": null,
+    "player_max": null,
+    "player_min": null,
+    "visibility": "system",
+    "game_phases": [],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/ever-body-leg-lifts-1.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-leg-lifts-1.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Start: aufrecht stehen, bei Bedarf festhalten."
+      },
+      {
+        "asset_path": "assets/athletics/ever-body-leg-lifts-2.webp",
+        "credit": "Everkinetic / Greg Priday",
+        "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-leg-lifts-2.png",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "PNG verlustfrei als WebP komprimiert",
+        "caption": "Ein gebeugtes Bein leicht nach hinten anheben, Becken bleibt ruhig."
+      }
+    ],
+    "player_mode": null,
+    "social_form": "single",
+    "duration_min": 5,
+    "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+    "player_exact": null,
+    "exercise_type": "athletics",
+    "variant_label": "Grundform",
+    "warmup_phases": [
+      "orient_activate"
+    ],
+    "secondary_tags": [],
+    "youth_suitable": true,
+    "ball_initiation": null,
+    "coaching_points": [
+      "Keine Ausweichbewegung im Rücken",
+      "Bewegung klein halten",
+      "Standbein bleibt weich"
+    ],
+    "parallel_groups": false,
+    "circuit_suitable": true,
+    "hall_requirements": [],
+    "short_description": "Gesäß im Einbeinstand kontrolliert aktivieren.",
+    "competition_oriented": false,
+    "volleyball_relevance": [
+      "Beinstabilität",
+      "Einbeinbalance"
+    ],
+    "id": "94000000-0000-4000-8000-000000000020"
+  }
+]

@@ -1,0 +1,94 @@
+[
+  {
+    "id": "93000000-0000-4000-8000-000000000008",
+    "name": "Beckenheben",
+    "exercise_type": "athletics",
+    "club_id": null,
+    "visibility": "system",
+    "short_description": "Testübung",
+    "execution": "Kontrolliert ausführen",
+    "main_focus": "stability",
+    "difficulty": "easy",
+    "duration_min": 5,
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/bridge.png",
+        "caption": "Halteposition: Gesäß anspannen und das Becken anheben, bis Schulter, Hüfte und Knie eine Linie bilden. Anschließend kontrolliert absenken.",
+        "credit": "Pk0001",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Bridge_exercise.svg",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "changes": "SVG als PNG gerastert"
+      }
+    ]
+  },
+  {
+    "id": "a2ca1dcb-e34f-40bc-abe3-dc1f3237c102",
+    "name": "Seitstütz",
+    "exercise_type": "athletics",
+    "club_id": null,
+    "visibility": "system",
+    "short_description": "Testübung",
+    "execution": "Kontrolliert ausführen",
+    "main_focus": "stability",
+    "difficulty": "easy",
+    "duration_min": 5,
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/side-plank-start.png",
+        "caption": "Ausgangsposition: Seitlich auf den Unterarm stützen, Ellbogen unter der Schulter und Beine lang ausrichten.",
+        "credit": "Everkinetic",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Side-plank-1.png",
+        "license": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+      },
+      {
+        "asset_path": "assets/athletics/side-plank-hold.png",
+        "caption": "Halteposition: Becken anheben und den Körper in einer Linie halten. Ruhig weiteratmen, anschließend kontrolliert absenken und die Seite wechseln.",
+        "credit": "Everkinetic",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Side-plank-2.png",
+        "license": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+      }
+    ]
+  },
+  {
+    "id": "93000000-0000-4000-8000-000000000007",
+    "name": "Diagonalstrecken im Vierfüßler",
+    "exercise_type": "athletics",
+    "club_id": null,
+    "visibility": "system",
+    "short_description": "Testübung",
+    "execution": "Kontrolliert ausführen",
+    "main_focus": "stability",
+    "difficulty": "easy",
+    "duration_min": 5,
+    "materials": [
+      {
+        "code": "none"
+      }
+    ],
+    "media_items": [
+      {
+        "asset_path": "assets/athletics/bird-dog.jpg",
+        "caption": "Streckposition: Einen Arm und das gegenüberliegende Bein lang ausstrecken. Becken ruhig halten, Kopf in Verlängerung des Rückens und das Bein etwa auf Hüfthöhe führen. Langsam zurückführen und Seite wechseln.",
+        "credit": "PTPioneer (Tyler Read)",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Bird_dog_exercise.jpg",
+        "license": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/",
+        "changes": "Verkleinert und JPG komprimiert",
+        "author_url": "https://www.ptpioneer.com/"
+      }
+    ]
+  }
+]

@@ -3,7 +3,7 @@ window.APP_CONFIG = {
   SUPABASE_PUBLISHABLE_KEY: "sb_publishable_gwDoKpExqBfM4voiXncaaA_w61xcbO4",
 };
 (() => {
-  const version = "3.18.2";
+  const version = "3.19.0";
   window.VB_RELEASE_VERSION = version;
   const visualModes = {
     login: { color: "#153b72" },
@@ -85,6 +85,7 @@ window.APP_CONFIG = {
   const asset = (tag, attrs) => {
     if (document.querySelector(`${tag}[data-vb-release="${attrs["data-vb-release"]}"]`)) return;
     const el = document.createElement(tag);
+    if (tag === "script") el.async = false;
     Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
     (tag === "link" ? document.head : document.body).appendChild(el);
   };
@@ -291,6 +292,10 @@ window.APP_CONFIG = {
     asset("script", {
       src: `exercise-diagram-editor.js?v=${version}`,
       "data-vb-release": "exercise-diagram-js",
+    });
+    asset("script", {
+      src: `exercise-media.js?v=${version}`,
+      "data-vb-release": "exercise-media-js",
     });
     asset("script", {
       src: `exercise-library.js?v=${version}`,

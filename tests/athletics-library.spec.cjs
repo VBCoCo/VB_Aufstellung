@@ -10,7 +10,7 @@ window.APP_CONFIG={SUPABASE_URL:location.origin};window.testRows=${JSON.stringif
 window.VBTrainingApi={request:async(path,opts={})=>{
  window.requests.push({path,method:opts.method,body:opts.body instanceof Blob ? {blob:true,type:opts.body.type,size:opts.body.size}:opts.body});
  if(path==='/auth/v1/user')return {id:user};if(path.startsWith('/rest/v1/vt_teams'))return [{id:'team-test',club_id:club}];
- if(path.startsWith('/rest/v1/vt_exercise_catalog_items'))return [{kind:'athletics_focus',code:'stability',label:'Stabilität'},{kind:'material',code:'none',label:'Kein Material'}];
+ if(path.startsWith('/rest/v1/vt_exercise_catalog_items'))return [{kind:'athletics_focus',code:'stability',label:'Stabilität'},{kind:'athletics_focus',code:'endurance',label:'Ausdauer'},{kind:'athletics_focus',code:'speed',label:'Schnelligkeit'},{kind:'material',code:'none',label:'Kein Material'}];
  if(path.startsWith('/rest/v1/vt_exercise_favorites'))return [];
  if(path.startsWith('/storage/v1/object/sign/'))return {signedURL:'/test-image.jpg'};
  if(path==='/storage/v1/object/vt-exercise-images'){window.deletes.push(...opts.body.prefixes);return {};}
@@ -35,6 +35,9 @@ async function run(options){
   if(row.media_items[0].notice)assert((await page.locator('.exercise-image-credit').textContent()).includes('endorsement'));
   await page.locator('.exercise-image-viewer [data-close]').click();await page.locator('.exercise-image-viewer').waitFor({state:'detached'});
  }
+ await page.locator('#exerciseFilterToggle').click();await page.locator('#exerciseFocus').selectOption('endurance');assert.equal(await page.locator('.exercise-card').count(),4);assert.equal(await page.locator('.exercise-card-image').count(),1);assert.equal(await page.locator('.exercise-chips span').filter({hasText:'Neben: Ausdauer'}).count(),4);
+ await page.locator('#exerciseSearch').fill('Gleiten');assert.equal(await page.locator('.exercise-card').count(),1);await page.locator('#exerciseSearch').fill('');await page.locator('#exerciseFocus').selectOption('');assert.equal(await page.locator('.exercise-card').count(),66);
+ await page.locator('#exerciseSearch').fill('Ausdauer');assert.equal(await page.locator('.exercise-card').count(),4);await page.locator('#exerciseSearch').fill('');
  await page.locator('#exerciseSearch').fill('Kurzhantel');assert((await page.locator('.exercise-card').count())>=8);await page.locator('#exerciseSearch').fill('Dead Bug');assert.equal(await page.locator('.exercise-card').count(),1);
  assert.deepEqual(errors,[]);await browser.close();console.log(`Full library: 66 public exercises, 38 galleries, ${result} images; search and mobile gallery checks passed (${options.viewport.width}px).`);
 }

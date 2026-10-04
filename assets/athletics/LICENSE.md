@@ -83,3 +83,36 @@ Am 04.10.2026 visuell geprüft. Keine KI-generierten Bilder. Ausschnitte und Vid
 Bei DVIDS- und U.S.-Army-Standbildern: The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.
 
 Dead Bug: Xu, R., Yang, Y., Yan, C. et al. (2025), Chiropractic & Manual Therapies 33, 26, Abb. 1, DOI 10.1186/s12998-025-00588-x. Schulterblatt-Stütz: San Juan, J.G., Suprak, D.N., Roach, S.M., Lyda, M. (2015), BMC Musculoskeletal Disorders 16, 23, Abb. 1, DOI 10.1186/s12891-015-0486-5.
+
+
+## Erweiterung 3.19.3 – Koordination und Schnelligkeit
+
+Originale Übungsdemonstrationen: Capt. Matthew Holfinger / U.S. Marine Corps, DVIDS; auf den Quellseiten als Public Domain ausgewiesen. Nutzungshinweise: https://www.dvidshub.net/about/copyright
+
+The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.
+
+- `dvids193-carioca-1.jpg`: https://www.dvidshub.net/video/558561/carioca — Standbild bei 20.8 s; JPG komprimiert.
+- `dvids193-carioca-2.jpg`: https://www.dvidshub.net/video/558561/carioca — Standbild bei 21.1 s; JPG komprimiert.
+- `dvids193-carioca-3.jpg`: https://www.dvidshub.net/video/558561/carioca — Standbild bei 24 s; JPG komprimiert.
+- `dvids193-knees-1.jpg`: https://www.dvidshub.net/video/558574/high-knees — Standbild bei 10.32 s; JPG komprimiert.
+- `dvids193-knees-2.jpg`: https://www.dvidshub.net/video/558574/high-knees — Standbild bei 12.04 s; JPG komprimiert.
+- `dvids193-lskip-1.jpg`: https://www.dvidshub.net/video/558579/lateral-skip — Standbild bei 15.2 s; JPG komprimiert.
+- `dvids193-lskip-2.jpg`: https://www.dvidshub.net/video/558579/lateral-skip — Standbild bei 16.1 s; JPG komprimiert.
+- `dvids193-scissor-1.jpg`: https://www.dvidshub.net/video/753249/ladder-scissor-switch — Standbild bei 8.3 s; JPG komprimiert.
+- `dvids193-scissor-2.jpg`: https://www.dvidshub.net/video/753249/ladder-scissor-switch — Standbild bei 8.6 s; JPG komprimiert.
+- `dvids193-hop-1.jpg`: https://www.dvidshub.net/video/753248/ladder-single-leg-lateral-hop — Standbild bei 5 s; JPG komprimiert.
+- `dvids193-hop-2.jpg`: https://www.dvidshub.net/video/753248/ladder-single-leg-lateral-hop — Standbild bei 5.4 s; JPG komprimiert.
+- `dvids193-bear-1.jpg`: https://www.dvidshub.net/video/551361/bear-crawl — Standbild bei 23 s; JPG komprimiert.
+- `dvids193-bear-2.jpg`: https://www.dvidshub.net/video/551361/bear-crawl — Standbild bei 25 s; JPG komprimiert.
+- `dvids193-inchworm-1.jpg`: https://www.dvidshub.net/video/551396/inchworm — Standbild bei 13 s; JPG komprimiert.
+- `dvids193-inchworm-2.jpg`: https://www.dvidshub.net/video/551396/inchworm — Standbild bei 16 s; JPG komprimiert.
+- `dvids193-inchworm-3.jpg`: https://www.dvidshub.net/video/551396/inchworm — Standbild bei 19 s; JPG komprimiert.
+- `dvids193-tdrill-1.jpg`: https://www.dvidshub.net/video/697874/prone-t-drill — Standbild bei 3 s; JPG komprimiert; Ausschnitt ohne schwarze Videoränder.
+- `dvids193-tdrill-2.jpg`: https://www.dvidshub.net/video/697874/prone-t-drill — Standbild bei 4.7 s; JPG komprimiert; Ausschnitt ohne schwarze Videoränder.
+- `dvids193-tdrill-3.jpg`: https://www.dvidshub.net/video/697874/prone-t-drill — Standbild bei 8.7 s; JPG komprimiert; Ausschnitt ohne schwarze Videoränder.
+- `dvids193-tdrill-4.jpg`: https://www.dvidshub.net/video/697874/prone-t-drill — Standbild bei 13 s; JPG komprimiert; Ausschnitt ohne schwarze Videoränder.
+- `dvids193-jhook-1.jpg`: https://www.dvidshub.net/video/697861/j-hook-reverse-sprint — Standbild bei 8.8 s; JPG komprimiert; Ausschnitt ohne schwarze Videoränder.
+- `dvids193-jhook-2.jpg`: https://www.dvidshub.net/video/697861/j-hook-reverse-sprint — Standbild bei 11 s; JPG komprimiert; Ausschnitt ohne schwarze Videoränder.
+- `dvids193-tdrill-5.jpg`: https://www.dvidshub.net/video/697874/prone-t-drill — Standbild bei 6.5 s; JPG komprimiert; Ausschnitt ohne schwarze Videoränder.
+
+Bildunterschriften unterscheiden vollständig dargestellte Bewegungen von Teilpositionen und angepassten Laufvarianten. Fallstart bleibt ohne Bild, da die geprüfte Split-Screen-Aufnahme die Startbewegung zu klein zeigt.

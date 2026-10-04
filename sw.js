@@ -1,4 +1,4 @@
-const VERSION = "3.18.2";
+const VERSION = "3.19.0";
 const CORE_VERSION = "3.13.0";
 const CACHE_PREFIX = "volleyball-trainer-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
@@ -20,6 +20,7 @@ APP_SHELL.push(
   "./assets/audio/packs/power-dance-lead/C3.mp3","./assets/audio/packs/power-dance-lead/E3.mp3","./assets/audio/packs/power-dance-lead/Gs3.mp3","./assets/audio/packs/power-dance-lead/C4.mp3","./assets/audio/packs/power-dance-lead/E4.mp3","./assets/audio/packs/power-dance-lead/Gs4.mp3","./assets/audio/packs/power-dance-lead/C5.mp3","./assets/audio/packs/power-dance-lead/E5.mp3","./assets/audio/packs/power-dance-lead/Gs5.mp3","./assets/audio/packs/power-dance-lead/LICENSE.txt",
   "./assets/audio/packs/power-dance-piano/C3.mp3","./assets/audio/packs/power-dance-piano/Fs3.mp3","./assets/audio/packs/power-dance-piano/C4.mp3","./assets/audio/packs/power-dance-piano/Fs4.mp3","./assets/audio/packs/power-dance-piano/C5.mp3","./assets/audio/packs/power-dance-piano/Fs5.mp3","./assets/audio/packs/power-dance-piano/LICENSE.txt",
   "./assets/audio/packs/power-dance-drums/Kick06.wav","./assets/audio/packs/power-dance-drums/kick-click.wav","./assets/audio/packs/power-dance-drums/Snare14.wav","./assets/audio/packs/power-dance-drums/Clap01.wav","./assets/audio/packs/power-dance-drums/ClosedHiHat02-01.wav","./assets/audio/packs/power-dance-drums/OpenHiHat02-01.wav","./assets/audio/packs/power-dance-drums/Cymbal01-03.wav","./assets/audio/packs/power-dance-drums/HighTom02-02.wav","./assets/audio/packs/power-dance-drums/MidTom02-02.wav","./assets/audio/packs/power-dance-drums/LowTom02-02.wav","./assets/audio/packs/power-dance-drums/LICENSE.txt",
+  `./exercise-media.js?v=${VERSION}`, "./assets/athletics/bridge.png", "./assets/athletics/side-plank-start.png", "./assets/athletics/side-plank-hold.png", "./assets/athletics/bird-dog.jpg",
   `./ui-3.14.35.css?v=${VERSION}`,`./exercise-diagram-editor.css?v=${VERSION}`,`./exercise-diagram-editor.js?v=${VERSION}`
 );
 const absoluteUrl=path=>new URL(path,self.registration.scope).href,INDEX_URL=absoluteUrl("./index.html"),VERSION_URL=absoluteUrl("./version.json"),APP_SHELL_URLS=new Set(APP_SHELL.map(absoluteUrl));

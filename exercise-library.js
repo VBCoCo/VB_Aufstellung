@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const VERSION = "3.15.2",
+  const VERSION = "3.19.0",
     FEATURE = "exercise_library",
     API = () => window.VBTrainingApi,
     KEY = "volleyball-trainer-exercise-density";
@@ -216,9 +216,10 @@
         .map((x) => {
           const editable = canEditExercise(x),
             system = !x.club_id;
-          return `<article class="exercise-card"><div><div class="exercise-card-title"><button class="exercise-favorite ${state.favorites.has(x.id) ? "active" : ""}" data-action="favorite" data-id="${x.id}">★</button><div><h3>${esc(x.name)}</h3><p>${esc(x.short_description)}</p></div></div><div class="exercise-chips"><span>${esc(label(x.main_focus))}</span>${x.form_type ? `<span>${esc(labels[x.form_type])}</span>` : ""}<span>${esc(labels[x.difficulty])}</span>${x.duration_min ? `<span>${x.duration_min} min</span>` : ""}${playerText(x) ? `<span>${esc(playerText(x))}</span>` : ""}${x.parallel_groups ? "<span>parallel teilbar</span>" : ""}</div><div class="exercise-detail"><strong>${state.type === "volleyball" ? "Ziel" : "Ausführung"}:</strong> ${esc(state.type === "volleyball" ? x.goal : x.execution)}<br><strong>Material:</strong> ${esc(materialText(x))}</div></div><div class="exercise-actions">${editable ? `<button data-action="edit" data-id="${x.id}">Bearbeiten</button>` : `<button data-action="view" data-id="${x.id}">Öffnen</button><button data-action="clone" data-id="${x.id}">Als eigene übernehmen</button>`}${state.type === "volleyball" ? `<button data-action="diagram" data-id="${x.id}">Grafik</button>` : ""}${system ? '<span class="exercise-seed">Testübung</span>' : ""}</div></article>`;
+          return `<article class="exercise-card"><div>${state.type === "athletics" && x.media_items?.length ? `<button type="button" class="exercise-card-image" data-exercise-image="${x.id}" aria-label="Bilder zu ${esc(x.name)} öffnen"><img alt="${esc(x.media_items[0].caption || x.name)}" loading="lazy"><small>${x.media_items.length} Bild${x.media_items.length === 1 ? "" : "er"}</small></button>` : ""}<div class="exercise-card-title"><button class="exercise-favorite ${state.favorites.has(x.id) ? "active" : ""}" data-action="favorite" data-id="${x.id}">★</button><div><h3>${esc(x.name)}</h3><p>${esc(x.short_description)}</p></div></div><div class="exercise-chips"><span>${esc(label(x.main_focus))}</span>${x.form_type ? `<span>${esc(labels[x.form_type])}</span>` : ""}<span>${esc(labels[x.difficulty])}</span>${x.duration_min ? `<span>${x.duration_min} min</span>` : ""}${playerText(x) ? `<span>${esc(playerText(x))}</span>` : ""}${x.parallel_groups ? "<span>parallel teilbar</span>" : ""}</div><div class="exercise-detail"><strong>${state.type === "volleyball" ? "Ziel" : "Ausführung"}:</strong> ${esc(state.type === "volleyball" ? x.goal : x.execution)}<br><strong>Material:</strong> ${esc(materialText(x))}</div></div><div class="exercise-actions">${editable ? `<button data-action="edit" data-id="${x.id}">Bearbeiten</button>` : `<button data-action="view" data-id="${x.id}">Öffnen</button><button data-action="clone" data-id="${x.id}">Als eigene übernehmen</button>`}${state.type === "volleyball" ? `<button data-action="diagram" data-id="${x.id}">Grafik</button>` : ""}${system ? '<span class="exercise-seed">Testübung</span>' : ""}</div></article>`;
         })
         .join("") || '<p class="exercise-empty">Keine passenden Übungen gefunden.</p>';
+    window.VBExerciseMedia?.hydrateCards(list, rows);
     setStatus(`${rows.length} von ${state.items.length} Übungen angezeigt`);
   }
   async function onListClick(e) {
@@ -284,6 +285,8 @@
       <details class="exercise-form-section exercise-material-section"><summary><span>Material</span><small data-material-summary>Auswahl anzeigen</small></summary><div class="exercise-section-body"><div class="exercise-materials">${materialOptions}</div></div></details>
       <p class="exercise-editor-status"></p><div class="exercise-editor-actions"><button type="button" data-close>${readonly ? "Schließen" : "Abbrechen"}</button>${readonly ? '<button type="button" class="primary" data-clone>Als eigene übernehmen</button>' : '<button class="primary" type="submit">Speichern</button>'}</div></form>`;
     document.body.appendChild(overlay);
+    const mediaEditor = !isV ? window.VBExerciseMedia.mountEditor(overlay, item, readonly) : null;
+    const removeOverlay = () => {mediaEditor?.dispose();overlay.remove();};
     const fitTextArea = (textarea, minHeight, maxHeight = Infinity) => {
         if (!textarea) return;
         textarea.style.height = "0px";
@@ -334,9 +337,9 @@
     }));
     syncMaterials();
     if (readonly) overlay.querySelectorAll("input,textarea,select").forEach((x) => (x.disabled = true));
-    overlay.querySelectorAll("[data-close]").forEach((b) => (b.onclick = () => overlay.remove()));
+    overlay.querySelectorAll("[data-close]").forEach((b) => (b.onclick = removeOverlay));
     overlay.querySelector("[data-clone]")?.addEventListener("click", () => {
-      overlay.remove();
+      removeOverlay();
       editExercise(
         {
           ...item,
@@ -364,9 +367,9 @@
         status.textContent = `Grafik konnte nicht geöffnet werden: ${error.message}`;
       }
     });
-    if (!readonly) overlay.querySelector("form").onsubmit = (e) => saveExercise(e, item, overlay, sourceId);
+    if (!readonly) overlay.querySelector("form").onsubmit = (e) => saveExercise(e, item, overlay, sourceId, mediaEditor, removeOverlay);
   }
-  async function saveExercise(ev, item, overlay, sourceId = null) {
+  async function saveExercise(ev, item, overlay, sourceId = null, mediaEditor = null, removeOverlay = () => overlay.remove()) {
     ev.preventDefault();
     const fd = new FormData(ev.currentTarget),
       status = overlay.querySelector(".exercise-editor-status"),
@@ -379,6 +382,9 @@
       return (status.textContent = "Ablauf / Organisation darf höchstens 1000 Zeichen enthalten.");
     if (!mats.length) return (status.textContent = "Bitte Material auswählen – auch „Kein Material“ ist eine bewusste Auswahl.");
     if (mats.includes("none") && mats.length > 1) return (status.textContent = "„Kein Material“ kann nicht mit anderem Material kombiniert werden.");
+    if (overlay.dataset.saving === "1") return;
+    if (mediaEditor?.isBusy()) return (status.textContent = "Bitte warten, bis die Bilder vorbereitet sind.");
+    overlay.dataset.saving = "1";
     const c = await context(),
       isV = state.type === "volleyball",
       mode = fd.get("player_mode"),
@@ -428,41 +434,58 @@
         circuit_suitable: fd.get("circuit_suitable") === "on",
       });
     status.textContent = "Speichere …";
+    const controls = [...overlay.querySelectorAll("input,textarea,select,button")];
+    controls.forEach(control => {control.disabled = true;});
+    let prepared = null;
     try {
-      if (item?.id)
-        await API().request(`/rest/v1/vt_exercises?id=eq.${item.id}`, {
-          method: "PATCH",
-          body: payload,
-          headers: { Prefer: "return=minimal" },
+      if (isV) {
+        if (item?.id) await API().request(`/rest/v1/vt_exercises?id=eq.${item.id}`, {
+          method:"PATCH",body:payload,headers:{Prefer:"return=minimal"},
         });
-      else {
-        const rows = await API().request("/rest/v1/vt_exercises", {
-            method: "POST",
-            body: payload,
-            headers: { Prefer: "return=representation" },
-          }),
-          created = rows?.[0];
-        if (sourceId && created) {
-          const diagrams = await API().request(`/rest/v1/vt_exercise_diagrams?exercise_id=eq.${sourceId}&select=schema_version,document`);
-          if (diagrams?.[0])
-            await API().request("/rest/v1/vt_exercise_diagrams", {
-              method: "POST",
-              body: {
-                exercise_id: created.id,
-                schema_version: diagrams[0].schema_version,
-                document: diagrams[0].document,
-                updated_by: c.userId,
-              },
-              headers: { Prefer: "return=minimal" },
+        else {
+          const rows = await API().request("/rest/v1/vt_exercises", {
+            method:"POST",body:payload,headers:{Prefer:"return=representation"},
+          }), created = rows?.[0];
+          if (sourceId && created) {
+            const diagrams = await API().request(`/rest/v1/vt_exercise_diagrams?exercise_id=eq.${sourceId}&select=schema_version,document`);
+            if (diagrams?.[0]) await API().request("/rest/v1/vt_exercise_diagrams", {
+              method:"POST",body:{exercise_id:created.id,schema_version:diagrams[0].schema_version,document:diagrams[0].document,updated_by:c.userId},headers:{Prefer:"return=minimal"},
             });
+          }
         }
+        removeOverlay();await load();return;
       }
-      overlay.remove();
+      let targetId = item?.id;
+      if (!targetId) {
+        const rows = await API().request("/rest/v1/vt_exercises", {
+          method: "POST", headers: {Prefer:"return=representation"}, body: payload,
+        });
+        targetId = rows?.[0]?.id;
+        if (!targetId) throw new Error("Übung konnte nicht angelegt werden.");
+        // Preserve a newly created ID across retry, so a failed image upload cannot create duplicates.
+        item = {...item, id:targetId};
+        overlay.querySelector("form").onsubmit = ev => saveExercise(ev, item, overlay, sourceId, mediaEditor, removeOverlay);
+        delete payload.club_id;delete payload.team_id;delete payload.owner_id;delete payload.visibility;
+      }
+      if (mediaEditor) {
+        status.textContent = "Bilder werden gespeichert …";
+        prepared = await mediaEditor.prepare(targetId);
+        payload.media_items = prepared.items;
+      }
+      await API().request(`/rest/v1/vt_exercises?id=eq.${targetId}`, {
+        method:"PATCH", body:payload, headers:{Prefer:"return=representation"},
+      }).then(rows => {if (!rows?.length) throw new Error("Übung wurde nicht gespeichert. Bitte Zugriffsrechte prüfen.");});
+      const savedMedia = prepared;
+      prepared = null; // Uploads now belong to the committed row; later reload errors must not delete them.
+      if (savedMedia) await mediaEditor.committed(savedMedia.items);
+      removeOverlay();
       await load();
     } catch (e) {
+      if (prepared) await mediaEditor.rollback(prepared.uploaded);
       status.textContent = `Speichern fehlgeschlagen: ${e.message}`;
-    }
+    } finally {overlay.dataset.saving = "0";controls.forEach(control => {control.disabled = false;});}
   }
+
   function setStatus(t) {
     const e = document.getElementById("exerciseStatus");
     if (e) e.textContent = t;

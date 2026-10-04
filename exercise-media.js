@@ -4,7 +4,7 @@
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
   const api = () => window.VBTrainingApi;
   const safeLink = value => { try { const url = new URL(value); return url.protocol === "https:" ? url.href : ""; } catch { return ""; } };
-  const assetNames = new Set(["bridge.png", "side-plank-start.png", "side-plank-hold.png", "bird-dog.jpg"]);
+  const assetNames = new Set(["bridge.png", "side-plank-start.png", "side-plank-hold.png", "bird-dog.jpg", "ankle-circle-relaxation.png", "ankle-circle-tension.png", "bodyweight-squat-low.jpg", "bodyweight-squat-start.jpg", "dead-bug-extend.jpg", "dead-bug-start.jpg", "dvids-arms-1.jpg", "dvids-arms-2.jpg", "dvids-lateral-1.jpg", "dvids-lateral-2.jpg", "dvids-lunge-1.jpg", "dvids-shuffle-1.jpg", "dvids-shuffle-2.jpg", "ever-back-flys-exercise-band-1.webp", "ever-back-flys-exercise-band-2.webp", "ever-balance-board-1.webp", "ever-balance-board-2.webp", "ever-bent-knee-hip-raise-1.webp", "ever-bent-knee-hip-raise-2.webp", "ever-body-leg-lifts-1.webp", "ever-body-leg-lifts-2.webp", "ever-body-row-1.webp", "ever-body-row-2.webp", "ever-crunches-1.webp", "ever-crunches-2.webp", "ever-crunches-with-legs-on-stability-ball-1.webp", "ever-crunches-with-legs-on-stability-ball-2.webp", "ever-dumbbell-dead-lifts-1.webp", "ever-dumbbell-dead-lifts-2.webp", "ever-dumbbell-shoulder-press-1.webp", "ever-dumbbell-shoulder-press-2.webp", "ever-lateral-dumbbell-raises-1.webp", "ever-lateral-dumbbell-raises-2.webp", "ever-pile-squat-with-dumbbell-1.webp", "ever-pile-squat-with-dumbbell-2.webp", "ever-pull-ups-1.webp", "ever-pull-ups-2.webp", "ever-push-up-feet-elevated-1.webp", "ever-push-up-feet-elevated-2.webp", "ever-push-ups-1.webp", "ever-push-ups-2.webp", "ever-rear-deltoid-row-dumbbell-1.webp", "ever-rear-deltoid-row-dumbbell-2.webp", "ever-squat-to-bench-with-dumbbells-1.webp", "ever-squat-to-bench-with-dumbbells-2.webp", "ever-step-ups-with-dumbbells-1.webp", "ever-step-ups-with-dumbbells-2.webp", "ever-step-ups-with-dumbbells-3.webp", "ever-supermans-1.webp", "ever-supermans-2.webp", "overhead-hold.jpg", "scapular-push-start.jpg", "single-leg-hinge.jpg", "vertical-jump.jpg", "wger-1091-334.jpg", "wger-458-354.png", "wger-622-439.jpeg"]);
   const entries = item => Array.isArray(item?.media_items) ? item.media_items : [];
   const urls = new Map();
   async function urlFor(item) {
@@ -20,7 +20,7 @@
   }
   function creditHtml(item) {
     const source = safeLink(item.source_url), license = safeLink(item.license_url), author = safeLink(item.author_url);
-    return `<small class="exercise-image-credit">${author ? `<a href="${esc(author)}" target="_blank" rel="noopener">${esc(item.credit)}</a>` : esc(item.credit)}${source ? ` · <a href="${esc(source)}" target="_blank" rel="noopener">Quelle</a>` : ""}${license ? ` · <a href="${esc(license)}" target="_blank" rel="noopener">${esc(item.license || "Lizenz")}</a>` : ""}${item.changes ? ` · ${esc(item.changes)}` : ""}</small>`;
+    return `<small class="exercise-image-credit">${author ? `<a href="${esc(author)}" target="_blank" rel="noopener">${esc(item.credit)}</a>` : esc(item.credit)}${source ? ` · <a href="${esc(source)}" target="_blank" rel="noopener">Quelle</a>` : ""}${license ? ` · <a href="${esc(license)}" target="_blank" rel="noopener">${esc(item.license || "Lizenz")}</a>` : ""}${item.changes ? ` · ${esc(item.changes)}` : ""}${item.notice ? `<br>${esc(item.notice)}` : ""}</small>`;
   }
   async function loadImage(img, item, status) {
     try {

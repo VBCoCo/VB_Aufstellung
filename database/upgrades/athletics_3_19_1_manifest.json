@@ -1,0 +1,2454 @@
+{
+  "version": "3.19.1",
+  "reviewed_at": "2026-10-04",
+  "assets": {
+    "wger-458-354.png": {
+      "asset_path": "assets/athletics/wger-458-354.png",
+      "credit": "utkb",
+      "source_url": "https://wger.de/api/v2/exerciseinfo/458/",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "Unverändert"
+    },
+    "wger-622-439.jpeg": {
+      "asset_path": "assets/athletics/wger-622-439.jpeg",
+      "credit": "clafal",
+      "source_url": "https://wger.de/api/v2/exerciseinfo/622/",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "Verkleinert / JPG komprimiert"
+    },
+    "wger-1091-334.jpg": {
+      "asset_path": "assets/athletics/wger-1091-334.jpg",
+      "credit": "clafal",
+      "source_url": "https://wger.de/api/v2/exerciseinfo/1091/",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "Unverändert"
+    },
+    "dead-bug-start.jpg": {
+      "asset_path": "assets/athletics/dead-bug-start.jpg",
+      "credit": "Xu et al. (2025), Abb. 1",
+      "source_url": "https://doi.org/10.1186/s12998-025-00588-x",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "changes": "Ausschnitt B aus Abb. 1; JPG komprimiert"
+    },
+    "dead-bug-extend.jpg": {
+      "asset_path": "assets/athletics/dead-bug-extend.jpg",
+      "credit": "Xu et al. (2025), Abb. 1",
+      "source_url": "https://doi.org/10.1186/s12998-025-00588-x",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "changes": "Ausschnitt C aus Abb. 1; JPG komprimiert"
+    },
+    "scapular-push-start.jpg": {
+      "asset_path": "assets/athletics/scapular-push-start.jpg",
+      "credit": "San Juan et al. (2015), Abb. 1",
+      "source_url": "https://doi.org/10.1186/s12891-015-0486-5",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "changes": "Ausschnitt A aus Abb. 1; JPG komprimiert"
+    },
+    "dvids-arms-1.jpg": {
+      "asset_path": "assets/athletics/dvids-arms-1.jpg",
+      "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+      "source_url": "https://www.dvidshub.net/video/551356/arm-circles",
+      "license": "Public Domain (US)",
+      "license_url": "https://www.dvidshub.net/about/copyright",
+      "changes": "Standbild bei 12.5 s; JPG komprimiert; Ausschnitt",
+      "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement."
+    },
+    "dvids-arms-2.jpg": {
+      "asset_path": "assets/athletics/dvids-arms-2.jpg",
+      "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+      "source_url": "https://www.dvidshub.net/video/551356/arm-circles",
+      "license": "Public Domain (US)",
+      "license_url": "https://www.dvidshub.net/about/copyright",
+      "changes": "Standbild bei 20 s; JPG komprimiert; Ausschnitt",
+      "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement."
+    },
+    "dvids-lateral-1.jpg": {
+      "asset_path": "assets/athletics/dvids-lateral-1.jpg",
+      "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+      "source_url": "https://www.dvidshub.net/video/677362/lateral-lunge",
+      "license": "Public Domain (US)",
+      "license_url": "https://www.dvidshub.net/about/copyright",
+      "changes": "Standbild bei 4.5 s; JPG komprimiert",
+      "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement."
+    },
+    "dvids-lateral-2.jpg": {
+      "asset_path": "assets/athletics/dvids-lateral-2.jpg",
+      "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+      "source_url": "https://www.dvidshub.net/video/677362/lateral-lunge",
+      "license": "Public Domain (US)",
+      "license_url": "https://www.dvidshub.net/about/copyright",
+      "changes": "Standbild bei 8.5 s; JPG komprimiert",
+      "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement."
+    },
+    "dvids-lunge-1.jpg": {
+      "asset_path": "assets/athletics/dvids-lunge-1.jpg",
+      "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+      "source_url": "https://www.dvidshub.net/video/551832/stationary-forward-lunge",
+      "license": "Public Domain (US)",
+      "license_url": "https://www.dvidshub.net/about/copyright",
+      "changes": "Standbild bei 15.5 s; JPG komprimiert",
+      "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement."
+    },
+    "dvids-shuffle-1.jpg": {
+      "asset_path": "assets/athletics/dvids-shuffle-1.jpg",
+      "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+      "source_url": "https://www.dvidshub.net/video/558578/lateral-shuffle",
+      "license": "Public Domain (US)",
+      "license_url": "https://www.dvidshub.net/about/copyright",
+      "changes": "Standbild bei 16.5 s; JPG komprimiert",
+      "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement."
+    },
+    "dvids-shuffle-2.jpg": {
+      "asset_path": "assets/athletics/dvids-shuffle-2.jpg",
+      "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+      "source_url": "https://www.dvidshub.net/video/558578/lateral-shuffle",
+      "license": "Public Domain (US)",
+      "license_url": "https://www.dvidshub.net/about/copyright",
+      "changes": "Standbild bei 18 s; JPG komprimiert",
+      "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement."
+    },
+    "single-leg-hinge.jpg": {
+      "asset_path": "assets/athletics/single-leg-hinge.jpg",
+      "credit": "Lilianwhite",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Rocket-yoga-20.jpg",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "changes": "Auf höchstens 1200 Pixel verkleinert; JPG komprimiert"
+    },
+    "bodyweight-squat-start.jpg": {
+      "asset_path": "assets/athletics/bodyweight-squat-start.jpg",
+      "credit": "Tokorozawa Namiki / Kozo Nakamura",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Squatting.jpg",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "changes": "Ausschnitt der Ausgangsposition; JPG komprimiert"
+    },
+    "bodyweight-squat-low.jpg": {
+      "asset_path": "assets/athletics/bodyweight-squat-low.jpg",
+      "credit": "Tokorozawa Namiki / Kozo Nakamura",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Squatting.jpg",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "changes": "Ausschnitt der gebeugten Position; JPG komprimiert"
+    },
+    "ankle-circle-relaxation.png": {
+      "asset_path": "assets/athletics/ankle-circle-relaxation.png",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/dist/png/0270-relaxation.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "Unverändert"
+    },
+    "ankle-circle-tension.png": {
+      "asset_path": "assets/athletics/ankle-circle-tension.png",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/dist/png/0270-tension.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "Unverändert"
+    },
+    "overhead-hold.jpg": {
+      "asset_path": "assets/athletics/overhead-hold.jpg",
+      "credit": "U.S. Army / Army Combat Fitness Test",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Conditioning_Drill_1-_Power_Jump.webm",
+      "license": "Public Domain (US)",
+      "license_url": "https://commons.wikimedia.org/wiki/Template:PD-USGov-Military-Army",
+      "changes": "Standbild bei 22 s; Ausschnitt; JPG komprimiert",
+      "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement."
+    },
+    "vertical-jump.jpg": {
+      "asset_path": "assets/athletics/vertical-jump.jpg",
+      "credit": "U.S. Army / Army Combat Fitness Test",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Conditioning_Drill_1-_Power_Jump.webm",
+      "license": "Public Domain (US)",
+      "license_url": "https://commons.wikimedia.org/wiki/Template:PD-USGov-Military-Army",
+      "changes": "Standbild bei 42.3 s; Ausschnitt; JPG komprimiert",
+      "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement."
+    },
+    "ever-body-row-2.webp": {
+      "asset_path": "assets/athletics/ever-body-row-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-row-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-crunches-1.webp": {
+      "asset_path": "assets/athletics/ever-crunches-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-body-leg-lifts-1.webp": {
+      "asset_path": "assets/athletics/ever-body-leg-lifts-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-leg-lifts-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-pull-ups-1.webp": {
+      "asset_path": "assets/athletics/ever-pull-ups-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pull-ups-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-step-ups-with-dumbbells-2.webp": {
+      "asset_path": "assets/athletics/ever-step-ups-with-dumbbells-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/step-ups-with-dumbbells-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-push-up-feet-elevated-2.webp": {
+      "asset_path": "assets/athletics/ever-push-up-feet-elevated-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-up-feet-elevated-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-pile-squat-with-dumbbell-1.webp": {
+      "asset_path": "assets/athletics/ever-pile-squat-with-dumbbell-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pile-squat-with-dumbbell-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-pile-squat-with-dumbbell-2.webp": {
+      "asset_path": "assets/athletics/ever-pile-squat-with-dumbbell-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pile-squat-with-dumbbell-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-rear-deltoid-row-dumbbell-2.webp": {
+      "asset_path": "assets/athletics/ever-rear-deltoid-row-dumbbell-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/rear-deltoid-row-dumbbell-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-push-up-feet-elevated-1.webp": {
+      "asset_path": "assets/athletics/ever-push-up-feet-elevated-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-up-feet-elevated-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-pull-ups-2.webp": {
+      "asset_path": "assets/athletics/ever-pull-ups-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pull-ups-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-dumbbell-dead-lifts-2.webp": {
+      "asset_path": "assets/athletics/ever-dumbbell-dead-lifts-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-dead-lifts-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-bent-knee-hip-raise-2.webp": {
+      "asset_path": "assets/athletics/ever-bent-knee-hip-raise-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bent-knee-hip-raise-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-squat-to-bench-with-dumbbells-1.webp": {
+      "asset_path": "assets/athletics/ever-squat-to-bench-with-dumbbells-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/squat-to-bench-with-dumbbells-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-body-leg-lifts-2.webp": {
+      "asset_path": "assets/athletics/ever-body-leg-lifts-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-leg-lifts-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-supermans-2.webp": {
+      "asset_path": "assets/athletics/ever-supermans-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/supermans-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-lateral-dumbbell-raises-2.webp": {
+      "asset_path": "assets/athletics/ever-lateral-dumbbell-raises-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/lateral-dumbbell-raises-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-dumbbell-dead-lifts-1.webp": {
+      "asset_path": "assets/athletics/ever-dumbbell-dead-lifts-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-dead-lifts-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-back-flys-exercise-band-1.webp": {
+      "asset_path": "assets/athletics/ever-back-flys-exercise-band-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/back-flys-exercise-band-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-balance-board-1.webp": {
+      "asset_path": "assets/athletics/ever-balance-board-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/balance-board-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-balance-board-2.webp": {
+      "asset_path": "assets/athletics/ever-balance-board-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/balance-board-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-squat-to-bench-with-dumbbells-2.webp": {
+      "asset_path": "assets/athletics/ever-squat-to-bench-with-dumbbells-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/squat-to-bench-with-dumbbells-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-supermans-1.webp": {
+      "asset_path": "assets/athletics/ever-supermans-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/supermans-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-push-ups-1.webp": {
+      "asset_path": "assets/athletics/ever-push-ups-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-ups-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-lateral-dumbbell-raises-1.webp": {
+      "asset_path": "assets/athletics/ever-lateral-dumbbell-raises-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/lateral-dumbbell-raises-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-bent-knee-hip-raise-1.webp": {
+      "asset_path": "assets/athletics/ever-bent-knee-hip-raise-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bent-knee-hip-raise-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-back-flys-exercise-band-2.webp": {
+      "asset_path": "assets/athletics/ever-back-flys-exercise-band-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/back-flys-exercise-band-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-crunches-with-legs-on-stability-ball-1.webp": {
+      "asset_path": "assets/athletics/ever-crunches-with-legs-on-stability-ball-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-with-legs-on-stability-ball-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-body-row-1.webp": {
+      "asset_path": "assets/athletics/ever-body-row-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-row-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-crunches-2.webp": {
+      "asset_path": "assets/athletics/ever-crunches-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-rear-deltoid-row-dumbbell-1.webp": {
+      "asset_path": "assets/athletics/ever-rear-deltoid-row-dumbbell-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/rear-deltoid-row-dumbbell-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-crunches-with-legs-on-stability-ball-2.webp": {
+      "asset_path": "assets/athletics/ever-crunches-with-legs-on-stability-ball-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-with-legs-on-stability-ball-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-dumbbell-shoulder-press-2.webp": {
+      "asset_path": "assets/athletics/ever-dumbbell-shoulder-press-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-shoulder-press-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-push-ups-2.webp": {
+      "asset_path": "assets/athletics/ever-push-ups-2.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-ups-2.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-step-ups-with-dumbbells-3.webp": {
+      "asset_path": "assets/athletics/ever-step-ups-with-dumbbells-3.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/step-ups-with-dumbbells-3.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-step-ups-with-dumbbells-1.webp": {
+      "asset_path": "assets/athletics/ever-step-ups-with-dumbbells-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/step-ups-with-dumbbells-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    },
+    "ever-dumbbell-shoulder-press-1.webp": {
+      "asset_path": "assets/athletics/ever-dumbbell-shoulder-press-1.webp",
+      "credit": "Everkinetic / Greg Priday",
+      "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-shoulder-press-1.png",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "PNG verlustfrei als WebP komprimiert"
+    }
+  },
+  "new_exercises": [
+    {
+      "goal": "Rumpfspannung in einer geraden Körperlinie halten.",
+      "name": "Unterarmstütz klassisch",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Unterarme unter den Schultern aufsetzen, Beine strecken und auf den Zehen stützen. Bauch und Gesäß leicht anspannen und ruhig atmen. Leichter: Knie aufsetzen oder kürzer halten.",
+      "form_type": null,
+      "load_type": "time",
+      "materials": [
+        {
+          "code": "none"
+        }
+      ],
+      "body_areas": [
+        "core"
+      ],
+      "difficulty": "easy",
+      "family_key": "athletics-2026-10-001",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 15–30 s",
+      "main_focus": "stability",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/wger-458-354.png",
+          "credit": "utkb",
+          "source_url": "https://wger.de/api/v2/exerciseinfo/458/",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "Unverändert",
+          "caption": "Halteposition: Unterarme unter den Schultern, Körper lang und Becken ruhig."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Rippen über dem Becken",
+        "Kopf in Verlängerung des Rückens",
+        "Beenden, bevor der Rücken durchhängt"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Rumpfspannung in einer geraden Körperlinie halten.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Rumpfstabilität"
+      ]
+    },
+    {
+      "goal": "Brust, Arme und Schultergürtel bei stabilem Rumpf kräftigen.",
+      "name": "Liegestütz klassisch",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Aus dem hohen Stütz den Körper als Einheit kontrolliert absenken und wieder hochdrücken. Ellbogen schräg nach hinten führen. Leichter: Hände auf eine sicher stehende Bank setzen.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "none"
+        }
+      ],
+      "body_areas": [
+        "core",
+        "shoulder",
+        "arms"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-002",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 5–10",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-push-ups-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-ups-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: hoher Stütz mit festem Rumpf."
+        },
+        {
+          "asset_path": "assets/athletics/ever-push-ups-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-ups-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Absenken: Brust Richtung Boden, Körper als Einheit bewegen."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Rumpf bleibt lang",
+        "Hände etwa schulterbreit",
+        "Kontrolliert absenken"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Brust, Arme und Schultergürtel bei stabilem Rumpf kräftigen.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Rumpfstabilität"
+      ]
+    },
+    {
+      "goal": "Fortgeschrittene Stützkräftigung mit den Füßen auf einer Bank.",
+      "name": "Liegestütz mit erhöhten Füßen",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Füße auf eine niedrige, rutschfeste Bank legen. Hände auf den Boden setzen und den Körper gerade halten. Langsam absenken und hochdrücken. Erst einsetzen, wenn normale Liegestütze sicher gelingen.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "bench"
+        }
+      ],
+      "body_areas": [
+        "core",
+        "shoulder",
+        "arms"
+      ],
+      "difficulty": "hard",
+      "family_key": "athletics-2026-10-003",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 4–8",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-push-up-feet-elevated-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-up-feet-elevated-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: Füße auf einer stabilen Bank, Körper in einer Linie."
+        },
+        {
+          "asset_path": "assets/athletics/ever-push-up-feet-elevated-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/push-up-feet-elevated-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Tiefe Position: kontrolliert absenken und wieder hochdrücken."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Bank gegen Verrutschen sichern",
+        "Kein Hohlkreuz",
+        "Ellbogen nicht seitlich ausstellen"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Fortgeschrittene Stützkräftigung mit den Füßen auf einer Bank.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Rumpfstabilität"
+      ]
+    },
+    {
+      "goal": "Zugkraft von Rücken und Schultergürtel trainieren.",
+      "name": "Rudern mit Körpergewicht",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Unter einer fest verankerten niedrigen Stange hängen, Füße aufstellen und den Körper gerade halten. Brust Richtung Stange ziehen, dann kontrolliert absenken. Leichter: Knie beugen und Füße näher heranstellen.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "pullup_bar"
+        }
+      ],
+      "body_areas": [
+        "back",
+        "shoulder",
+        "arms"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-004",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 5–10",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-body-row-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-row-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: Arme lang, Körper gerade unter der fest verankerten Stange."
+        },
+        {
+          "asset_path": "assets/athletics/ever-body-row-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-row-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Zugposition: Brust zur Stange führen."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Nur belastbare, fest montierte Stange",
+        "Schultern weg von den Ohren",
+        "Körper als Einheit bewegen"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Zugkraft von Rücken und Schultergürtel trainieren.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Schulterstabilität",
+        "Angriff"
+      ]
+    },
+    {
+      "goal": "Rücken und Arme durch kontrolliertes Hochziehen kräftigen.",
+      "name": "Klimmzug im Obergriff",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "An einer fest montierten Klimmzugstange im Obergriff hängen. Schultern aktiv halten und ohne Schwung hochziehen; anschließend langsam absenken. Leichter: Fußunterstützung auf einer gesicherten niedrigen Bank.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "pullup_bar"
+        }
+      ],
+      "body_areas": [
+        "back",
+        "shoulder",
+        "arms"
+      ],
+      "difficulty": "hard",
+      "family_key": "athletics-2026-10-005",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 3–6",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-pull-ups-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pull-ups-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: aktiver Hang an einer fest montierten Stange."
+        },
+        {
+          "asset_path": "assets/athletics/ever-pull-ups-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pull-ups-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Hochziehen: Ellbogen nach unten führen, ohne Schwung."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Nicht kippen oder schwingen",
+        "Stange und Befestigung prüfen",
+        "Nur im kontrollierten Bewegungsumfang"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Rücken und Arme durch kontrolliertes Hochziehen kräftigen.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Schulterstabilität",
+        "Angriff"
+      ]
+    },
+    {
+      "goal": "Hintere Körperkette mit kleinen kontrollierten Bewegungen aktivieren.",
+      "name": "Bauchlage Arm- und Beinheben",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "In Bauchlage Arme nach vorn ausstrecken. Arme und Beine wenige Zentimeter anheben, kurz halten und wieder ablegen. Bauchspannung halten. Leichter: nur Arme oder Beine anheben.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "none"
+        }
+      ],
+      "body_areas": [
+        "back",
+        "hip",
+        "core"
+      ],
+      "difficulty": "easy",
+      "family_key": "athletics-2026-10-006",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 6–10",
+      "main_focus": "activation",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-supermans-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/supermans-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: Bauchlage, Arme und Beine lang."
+        },
+        {
+          "asset_path": "assets/athletics/ever-supermans-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/supermans-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Arme und Beine nur leicht anheben; Kopf bleibt neutral."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Blick zum Boden",
+        "Klein und lang statt hoch heben",
+        "Nicht ins Hohlkreuz drücken"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Hintere Körperkette mit kleinen kontrollierten Bewegungen aktivieren.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Rumpfstabilität"
+      ]
+    },
+    {
+      "goal": "Hüftstreckung und hintere Körperkette kräftigen.",
+      "name": "Kreuzheben mit Kurzhanteln",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Mit leichten Kurzhanteln aufrecht stehen. Knie etwas beugen und Hüfte nach hinten schieben; Hanteln nah an den Beinen absenken. Nur so tief gehen, wie der Rücken neutral bleibt. Über die Hüfte wieder aufrichten.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "dumbbell"
+        }
+      ],
+      "body_areas": [
+        "hip",
+        "legs",
+        "back"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-007",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 6–10",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-dumbbell-dead-lifts-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-dead-lifts-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: aufrecht mit leichten Kurzhanteln."
+        },
+        {
+          "asset_path": "assets/athletics/ever-dumbbell-dead-lifts-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-dead-lifts-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Hüftbeuge: Rücken lang, Hanteln nah an den Beinen."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Hüfte schiebt nach hinten",
+        "Hanteln körpernah",
+        "Zunächst ohne Gewicht üben"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Hüftstreckung und hintere Körperkette kräftigen.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Sprungkraft",
+        "Landung"
+      ]
+    },
+    {
+      "goal": "Oberen Rücken und hintere Schulter kontrolliert kräftigen.",
+      "name": "Einarmiges Rudern mit Kurzhantel",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Eine Hand und ein Knie auf einer stabilen Bank abstützen. Mit der anderen Hand eine leichte Hantel halten. Ellbogen leicht seitlich nach hinten ziehen und die Hantel kontrolliert absenken. Anschließend Seite wechseln.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "bench"
+        },
+        {
+          "code": "dumbbell"
+        }
+      ],
+      "body_areas": [
+        "back",
+        "shoulder",
+        "arms"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-008",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 8 je Seite",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-rear-deltoid-row-dumbbell-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/rear-deltoid-row-dumbbell-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: stabil auf der Bank abstützen, Hantelarm lang."
+        },
+        {
+          "asset_path": "assets/athletics/ever-rear-deltoid-row-dumbbell-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/rear-deltoid-row-dumbbell-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Hantel anheben: Ellbogen leicht seitlich nach hinten führen."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Becken bleibt waagerecht",
+        "Nicht aus dem Rumpf drehen",
+        "Schulter nicht zum Ohr ziehen"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Oberen Rücken und hintere Schulter kontrolliert kräftigen.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Schulterstabilität",
+        "Angriff"
+      ]
+    },
+    {
+      "goal": "Kontrollierte Kniebeuge mit einer Bank als Tiefenorientierung.",
+      "name": "Bankkniebeuge mit Kurzhanteln",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Vor einer sicher stehenden Bank mit leichten Hanteln stehen. Hüfte nach hinten unten führen, die Bank nur leicht berühren und wieder aufstehen. Zum Lernen ohne Hanteln beginnen.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "bench"
+        },
+        {
+          "code": "dumbbell"
+        }
+      ],
+      "body_areas": [
+        "legs",
+        "hip"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-009",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 8–10",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-squat-to-bench-with-dumbbells-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/squat-to-bench-with-dumbbells-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: aufrecht vor der stabilen Bank."
+        },
+        {
+          "asset_path": "assets/athletics/ever-squat-to-bench-with-dumbbells-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/squat-to-bench-with-dumbbells-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Bank leicht berühren und über die ganzen Füße aufrichten."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Knie folgen der Fußrichtung",
+        "Nicht auf die Bank fallen",
+        "Ganzer Fuß bleibt belastet"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Kontrollierte Kniebeuge mit einer Bank als Tiefenorientierung.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Sprungkraft",
+        "Landung"
+      ]
+    },
+    {
+      "goal": "Einseitige Beinkraft und kontrolliertes Aufsteigen trainieren.",
+      "name": "Aufsteigen auf Bank mit Kurzhanteln",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Vor einer niedrigen, standsicheren Bank stehen. Einen Fuß vollständig aufsetzen und über dieses Bein nach oben drücken. Langsam wieder absteigen und die Seite wechseln. Zuerst ohne Hanteln beherrschen.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "bench"
+        },
+        {
+          "code": "dumbbell"
+        }
+      ],
+      "body_areas": [
+        "legs",
+        "hip"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-010",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 6–8 je Seite",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-step-ups-with-dumbbells-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/step-ups-with-dumbbells-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start vor einer niedrigen, stabilen Bank."
+        },
+        {
+          "asset_path": "assets/athletics/ever-step-ups-with-dumbbells-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/step-ups-with-dumbbells-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Einen Fuß vollständig aufsetzen."
+        },
+        {
+          "asset_path": "assets/athletics/ever-step-ups-with-dumbbells-3.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/step-ups-with-dumbbells-3.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Über das obere Bein aufrichten, anschließend langsam absteigen."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Höhe an die Beweglichkeit anpassen",
+        "Oberes Knie bleibt stabil",
+        "Nicht vom unteren Fuß abspringen"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Einseitige Beinkraft und kontrolliertes Aufsteigen trainieren.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Sprungkraft",
+        "Beinstabilität"
+      ]
+    },
+    {
+      "goal": "Beine und Gesäß in einer breiten Kniebeuge kräftigen.",
+      "name": "Sumo-Kniebeuge mit Kurzhantel",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Breit stehen, Füße leicht nach außen richten und eine leichte Kurzhantel vor dem Körper halten. Knie in Fußrichtung beugen und kontrolliert aufrichten. Nur im gut kontrollierbaren Bewegungsumfang arbeiten.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "dumbbell"
+        }
+      ],
+      "body_areas": [
+        "legs",
+        "hip"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-011",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 8–10",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-pile-squat-with-dumbbell-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pile-squat-with-dumbbell-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Breiter Stand mit einer leichten Hantel vor dem Körper."
+        },
+        {
+          "asset_path": "assets/athletics/ever-pile-squat-with-dumbbell-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pile-squat-with-dumbbell-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Kontrolliert beugen und aufrichten; Knie bleiben in Fußrichtung."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Knie folgen den Füßen",
+        "Gewicht nah am Körper",
+        "Keine maximale Tiefe erzwingen"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Beine und Gesäß in einer breiten Kniebeuge kräftigen.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Beinkraft",
+        "Landung"
+      ]
+    },
+    {
+      "goal": "Kontrollierte Kraft über Kopf mit leichten Hanteln entwickeln.",
+      "name": "Schulterdrücken sitzend mit Kurzhanteln",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Aufrecht auf einer stabilen Bank sitzen. Leichte Hanteln auf Schulterhöhe halten, nach oben drücken und langsam zurückführen. Nur bei frei und schmerzlos möglicher Armhebung ausführen.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "bench"
+        },
+        {
+          "code": "dumbbell"
+        }
+      ],
+      "body_areas": [
+        "shoulder",
+        "arms",
+        "core"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-012",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 6–10",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-dumbbell-shoulder-press-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-shoulder-press-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: aufrechter Sitz, Hanteln auf Schulterhöhe."
+        },
+        {
+          "asset_path": "assets/athletics/ever-dumbbell-shoulder-press-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/dumbbell-shoulder-press-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Kontrolliert nach oben drücken, ohne ins Hohlkreuz auszuweichen."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Rippen nicht aufklappen",
+        "Keine Schwungbewegung",
+        "Leichtes Gewicht wählen"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Kontrollierte Kraft über Kopf mit leichten Hanteln entwickeln.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Schulterkraft",
+        "Angriff",
+        "Block"
+      ]
+    },
+    {
+      "goal": "Schultermuskulatur mit kleiner Last kontrolliert kräftigen.",
+      "name": "Seitheben mit leichten Kurzhanteln",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Aufrecht stehen und sehr leichte Hanteln seitlich halten. Arme mit leicht gebeugten Ellbogen bis etwa Schulterhöhe anheben und langsam absenken. Schultern bleiben entspannt.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "dumbbell"
+        }
+      ],
+      "body_areas": [
+        "shoulder"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-013",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 8–12",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-lateral-dumbbell-raises-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/lateral-dumbbell-raises-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: Arme seitlich, Hanteln leicht."
+        },
+        {
+          "asset_path": "assets/athletics/ever-lateral-dumbbell-raises-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/lateral-dumbbell-raises-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Arme kontrolliert bis etwa Schulterhöhe anheben."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Ohne Schwung",
+        "Nicht über Schulterhöhe",
+        "Schultern weg von den Ohren"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Schultermuskulatur mit kleiner Last kontrolliert kräftigen.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Schulterstabilität",
+        "Block"
+      ]
+    },
+    {
+      "goal": "Hintere Schulter und oberen Rücken mit einem Band kräftigen.",
+      "name": "Reverse Fly am Band",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Ein leichtes Band sicher auf Brusthöhe vor dem Körper verankern. Enden mit langen, leicht gebeugten Armen halten und die Arme seitlich öffnen. Langsam zurückführen.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "theraband"
+        }
+      ],
+      "body_areas": [
+        "shoulder",
+        "back"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-014",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 10–12",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-back-flys-exercise-band-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/back-flys-exercise-band-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: Band vor dem Körper sicher auf Brusthöhe verankern."
+        },
+        {
+          "asset_path": "assets/athletics/ever-back-flys-exercise-band-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/back-flys-exercise-band-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Arme seitlich öffnen und langsam zurückführen."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Befestigung vor jedem Satz prüfen",
+        "Rippen und Becken ruhig",
+        "Band nicht ruckartig loslassen"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Hintere Schulter und oberen Rücken mit einem Band kräftigen.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Schulterstabilität",
+        "Angriff"
+      ]
+    },
+    {
+      "goal": "Wadenkraft und kontrollierte Fußarbeit stärken.",
+      "name": "Wadenheben mit Kurzhanteln",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Mit leichten Hanteln aufrecht stehen. Fersen langsam anheben, oben kurz halten und kontrolliert absetzen. Leichter: ohne Hanteln und mit einer Hand an einer festen Stütze.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "dumbbell"
+        }
+      ],
+      "body_areas": [
+        "legs",
+        "ankle"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-015",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 10–15",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/wger-622-439.jpeg",
+          "credit": "clafal",
+          "source_url": "https://wger.de/api/v2/exerciseinfo/622/",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "Verkleinert / JPG komprimiert",
+          "caption": "Beide Positionen: Fersen am Boden und angehoben, Hanteln ruhig seitlich halten."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": false,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Gleichmäßig auf den Vorfuß drücken",
+        "Nicht nach außen kippen",
+        "Langsam absenken"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Wadenkraft und kontrollierte Fußarbeit stärken.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Sprungkraft",
+        "Fußstabilität"
+      ]
+    },
+    {
+      "goal": "Gleichgewicht und Fußkontrolle auf einer instabilen Unterlage üben.",
+      "name": "Balance auf Wackelbrett",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Ein Wackelbrett auf rutschfestem Boden mit freiem Umfeld aufstellen. Mit weichen Knien aufsteigen und kleine Ausgleichsbewegungen ausführen. Leichter: an einer festen Stütze festhalten.",
+      "form_type": null,
+      "load_type": "time",
+      "materials": [
+        {
+          "code": "balance_board"
+        }
+      ],
+      "body_areas": [
+        "ankle",
+        "legs",
+        "core"
+      ],
+      "difficulty": "easy",
+      "family_key": "athletics-2026-10-016",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 20–30 s",
+      "main_focus": "coordination",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-balance-board-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/balance-board-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Balanceposition: Knie weich, Oberkörper aufrecht."
+        },
+        {
+          "asset_path": "assets/athletics/ever-balance-board-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/balance-board-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Fußstellung auf dem Wackelbrett; kleine kontrollierte Ausgleichsbewegungen."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Unterlage und Umfeld sichern",
+        "Kleine ruhige Bewegungen",
+        "Nicht bis zur Erschöpfung halten"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Gleichgewicht und Fußkontrolle auf einer instabilen Unterlage üben.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Fußstabilität",
+        "Beinstabilität"
+      ]
+    },
+    {
+      "goal": "Bauchspannung durch kleines kontrolliertes Einrollen des Beckens trainieren.",
+      "name": "Reverse Crunch mit Beckenrollen",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "In Rückenlage Arme neben den Körper legen. Beine anwinkeln und anheben. Knie Richtung Brust führen und das Becken wenige Zentimeter einrollen; langsam zurückführen. Ohne Schwung arbeiten.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "none"
+        }
+      ],
+      "body_areas": [
+        "core"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-017",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 6–10",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-bent-knee-hip-raise-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bent-knee-hip-raise-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Vorbereitung in Rückenlage, Arme am Boden."
+        },
+        {
+          "asset_path": "assets/athletics/ever-bent-knee-hip-raise-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bent-knee-hip-raise-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Knie anziehen und Becken leicht einrollen, ohne Schwung."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Bewegung aus der Bauchspannung",
+        "Becken nur wenig anheben",
+        "Langsam zurückrollen"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Bauchspannung durch kleines kontrolliertes Einrollen des Beckens trainieren.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Rumpfstabilität"
+      ]
+    },
+    {
+      "goal": "Rumpfbeugung bei unterstützt gelagerten Beinen kontrollieren.",
+      "name": "Crunch mit Beinen auf Bank",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Auf den Rücken legen und Unterschenkel auf eine niedrige Bank legen. Arme vor der Brust oder leicht am Kopf halten. Schulterblätter etwas anheben und langsam ablegen. Nicht am Kopf ziehen.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "bench"
+        },
+        {
+          "code": "gym_mat"
+        }
+      ],
+      "body_areas": [
+        "core"
+      ],
+      "difficulty": "easy",
+      "family_key": "athletics-2026-10-018",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 8–12",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-crunches-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: Unterschenkel auf der Bank, Rücken am Boden."
+        },
+        {
+          "asset_path": "assets/athletics/ever-crunches-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Schulterblätter leicht anheben und wieder kontrolliert ablegen."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Kleine Bewegung",
+        "Ausatmen beim Anheben",
+        "Kopf bleibt locker"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Rumpfbeugung bei unterstützt gelagerten Beinen kontrollieren.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Rumpfstabilität"
+      ]
+    },
+    {
+      "goal": "Rumpfspannung bei beweglicher Beinunterstützung üben.",
+      "name": "Crunch mit Beinen auf Gymnastikball",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "In Rückenlage Unterschenkel auf einen Gymnastikball legen. Ball ruhig halten und die Schulterblätter leicht anheben. Langsam ablegen. Hände unterstützen den Kopf nur leicht.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "gym_ball"
+        },
+        {
+          "code": "gym_mat"
+        }
+      ],
+      "body_areas": [
+        "core"
+      ],
+      "difficulty": "medium",
+      "family_key": "athletics-2026-10-019",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 8–12",
+      "main_focus": "strength",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-crunches-with-legs-on-stability-ball-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-with-legs-on-stability-ball-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: Unterschenkel auf dem Gymnastikball, Rücken am Boden."
+        },
+        {
+          "asset_path": "assets/athletics/ever-crunches-with-legs-on-stability-ball-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/crunches-with-legs-on-stability-ball-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Schulterblätter leicht anheben, während der Ball ruhig bleibt."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Ball bleibt ruhig",
+        "Nicht am Nacken ziehen",
+        "Kleine kontrollierte Bewegung"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Rumpfspannung bei beweglicher Beinunterstützung üben.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Rumpfstabilität"
+      ]
+    },
+    {
+      "goal": "Gesäß im Einbeinstand kontrolliert aktivieren.",
+      "name": "Bein nach hinten anheben im Stand",
+      "rules": [],
+      "club_id": null,
+      "playful": false,
+      "scoring": "",
+      "team_id": null,
+      "owner_id": null,
+      "execution": "Aufrecht stehen und bei Bedarf an einer festen Stütze festhalten. Ein Knie leicht beugen und das Bein aus der Hüfte ein kleines Stück nach hinten führen. Becken ruhig halten und die Seite wechseln.",
+      "form_type": null,
+      "load_type": "repetitions",
+      "materials": [
+        {
+          "code": "none"
+        }
+      ],
+      "body_areas": [
+        "hip",
+        "legs"
+      ],
+      "difficulty": "easy",
+      "family_key": "athletics-2026-10-020",
+      "field_need": null,
+      "group_size": null,
+      "load_value": "2 × 8–10 je Seite",
+      "main_focus": "activation",
+      "max_groups": null,
+      "min_groups": null,
+      "player_max": null,
+      "player_min": null,
+      "visibility": "system",
+      "game_phases": [],
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ever-body-leg-lifts-1.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-leg-lifts-1.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Start: aufrecht stehen, bei Bedarf festhalten."
+        },
+        {
+          "asset_path": "assets/athletics/ever-body-leg-lifts-2.webp",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/body-leg-lifts-2.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "PNG verlustfrei als WebP komprimiert",
+          "caption": "Ein gebeugtes Bein leicht nach hinten anheben, Becken bleibt ruhig."
+        }
+      ],
+      "player_mode": null,
+      "social_form": "single",
+      "duration_min": 5,
+      "organization": "Zuerst die Technik mit leichter Belastung lernen. Belastung so wählen, dass die letzten Wiederholungen sauber bleiben; zwischen Sätzen 45–90 Sekunden Pause.",
+      "player_exact": null,
+      "exercise_type": "athletics",
+      "variant_label": "Grundform",
+      "warmup_phases": [
+        "orient_activate"
+      ],
+      "secondary_tags": [],
+      "youth_suitable": true,
+      "ball_initiation": null,
+      "coaching_points": [
+        "Keine Ausweichbewegung im Rücken",
+        "Bewegung klein halten",
+        "Standbein bleibt weich"
+      ],
+      "parallel_groups": false,
+      "circuit_suitable": true,
+      "hall_requirements": [],
+      "short_description": "Gesäß im Einbeinstand kontrolliert aktivieren.",
+      "competition_oriented": false,
+      "volleyball_relevance": [
+        "Beinstabilität",
+        "Einbeinbalance"
+      ]
+    }
+  ],
+  "existing_updates": [
+    {
+      "name": "Unterarmstütz mit Schultertippen",
+      "family_key": "athletics-2026-009",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/wger-1091-334.jpg",
+          "credit": "clafal",
+          "source_url": "https://wger.de/api/v2/exerciseinfo/1091/",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "Unverändert",
+          "caption": "Hoher Stütz: eine Hand zur gegenüberliegenden Schulter führen, Becken ruhig halten."
+        }
+      ]
+    },
+    {
+      "name": "Dead Bug",
+      "family_key": "core-dead-bug",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/dead-bug-start.jpg",
+          "credit": "Xu et al. (2025), Abb. 1",
+          "source_url": "https://doi.org/10.1186/s12998-025-00588-x",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "changes": "Ausschnitt B aus Abb. 1; JPG komprimiert",
+          "caption": "Start: Arme zur Decke, Hüfte und Knie ungefähr rechtwinklig gebeugt."
+        },
+        {
+          "asset_path": "assets/athletics/dead-bug-extend.jpg",
+          "credit": "Xu et al. (2025), Abb. 1",
+          "source_url": "https://doi.org/10.1186/s12998-025-00588-x",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "changes": "Ausschnitt C aus Abb. 1; JPG komprimiert",
+          "caption": "Gegenüberliegenden Arm und Bein langsam strecken; Rücken und Becken bleiben ruhig."
+        }
+      ]
+    },
+    {
+      "name": "Schulterblatt-Liegestütz",
+      "family_key": "athletics-2026-020",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/scapular-push-start.jpg",
+          "credit": "San Juan et al. (2015), Abb. 1",
+          "source_url": "https://doi.org/10.1186/s12891-015-0486-5",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "changes": "Ausschnitt A aus Abb. 1; JPG komprimiert",
+          "caption": "Ausgangsposition im hohen Stütz. Für diese Übung bleiben die Ellbogen gestreckt; nur die Schulterblätter bewegen sich, wie im Text beschrieben."
+        }
+      ]
+    },
+    {
+      "name": "Kontrollierte Armkreise",
+      "family_key": "athletics-2026-023",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/dvids-arms-1.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/551356/arm-circles",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 12.5 s; JPG komprimiert; Ausschnitt",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Aufrecht stehen und die Arme seitlich führen."
+        },
+        {
+          "asset_path": "assets/athletics/dvids-arms-2.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/551356/arm-circles",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 20 s; JPG komprimiert; Ausschnitt",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Arme kontrolliert kreisen; Bildfolge zeigt zwei Positionen der Bewegung."
+        }
+      ]
+    },
+    {
+      "name": "Seitliches Verlagern",
+      "family_key": "athletics-2026-017",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/dvids-lateral-1.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/677362/lateral-lunge",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 4.5 s; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Seitlich verlagern: ein Knie beugen, das andere Bein lang lassen."
+        },
+        {
+          "asset_path": "assets/athletics/dvids-lateral-2.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/677362/lateral-lunge",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 8.5 s; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Die Gegenseite kontrolliert belasten; ganze Füße bleiben am Boden."
+        }
+      ]
+    },
+    {
+      "name": "Seitlicher Ausfallschritt mit Rotation",
+      "family_key": null,
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/dvids-lateral-1.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/677362/lateral-lunge",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 4.5 s; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Grundposition des seitlichen Ausfallschritts. Anschließend die Rotation gemäß Übungstext ergänzen; diese ist im Foto nicht dargestellt."
+        }
+      ]
+    },
+    {
+      "name": "Ausfallschritt mit langem Rücken",
+      "family_key": "athletics-2026-002",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/dvids-lunge-1.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/551832/stationary-forward-lunge",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 15.5 s; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Tiefe Position im Ausfallschritt: Oberkörper lang, vorderes Knie stabil."
+        }
+      ]
+    },
+    {
+      "name": "Geteilter Stand isometrisch",
+      "family_key": "athletics-2026-015",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/dvids-lunge-1.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/551832/stationary-forward-lunge",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 15.5 s; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Halteposition im geteilten Stand: beide Knie beugen, Oberkörper aufrecht und Becken ruhig halten."
+        }
+      ]
+    },
+    {
+      "name": "Rückwärts-Ausfallschritt",
+      "family_key": "athletics-2026-014",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/dvids-lunge-1.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/551832/stationary-forward-lunge",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 15.5 s; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Tiefe Position nach dem Rückwärtsschritt. Die Schrittrichtung ist auf dem Standbild nicht sichtbar; kontrolliert zurück aufrichten."
+        }
+      ]
+    },
+    {
+      "name": "Seitliches Gleiten mit Stopp",
+      "family_key": "athletics-2026-026",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/dvids-shuffle-1.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/558578/lateral-shuffle",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 16.5 s; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Tiefe Bereitschaft: seitlich gleiten, Beine nicht kreuzen."
+        },
+        {
+          "asset_path": "assets/athletics/dvids-shuffle-2.jpg",
+          "credit": "Capt. Matthew Holfinger / U.S. Marine Corps",
+          "source_url": "https://www.dvidshub.net/video/558578/lateral-shuffle",
+          "license": "Public Domain (US)",
+          "license_url": "https://www.dvidshub.net/about/copyright",
+          "changes": "Standbild bei 18 s; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Nachsetzen und kontrolliert stoppen; Knie bleiben weich."
+        }
+      ]
+    },
+    {
+      "name": "Einbeinige Standwaage",
+      "family_key": "athletics-2026-016",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/single-leg-hinge.jpg",
+          "credit": "Lilianwhite",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Rocket-yoga-20.jpg",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "changes": "Auf höchstens 1200 Pixel verkleinert; JPG komprimiert",
+          "caption": "Standwaage: freies Bein nach hinten, Oberkörper nach vorn; Becken ruhig halten und das Standknie leicht beugen."
+        }
+      ]
+    },
+    {
+      "name": "Kniebeuge",
+      "family_key": "Kniebeuge",
+      "visibility": "team",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/bodyweight-squat-start.jpg",
+          "credit": "Tokorozawa Namiki / Kozo Nakamura",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Squatting.jpg",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "changes": "Ausschnitt der Ausgangsposition; JPG komprimiert",
+          "caption": "Start: aufrecht stehen, Fußstellung an die eigene Beweglichkeit anpassen."
+        },
+        {
+          "asset_path": "assets/athletics/bodyweight-squat-low.jpg",
+          "credit": "Tokorozawa Namiki / Kozo Nakamura",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Squatting.jpg",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "changes": "Ausschnitt der gebeugten Position; JPG komprimiert",
+          "caption": "Hüfte und Knie kontrolliert beugen; Knie folgen der Fußrichtung."
+        }
+      ]
+    },
+    {
+      "name": "Kniebeuge zum Zehenstand",
+      "family_key": "athletics-2026-013",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/bodyweight-squat-low.jpg",
+          "credit": "Tokorozawa Namiki / Kozo Nakamura",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Squatting.jpg",
+          "license": "CC BY 4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "changes": "Ausschnitt der gebeugten Position; JPG komprimiert",
+          "caption": "Teilbewegung Kniebeuge: kontrolliert beugen. Anschließend gemäß Text aufrichten und in den Zehenstand wechseln; der Zehenstand ist hier nicht dargestellt."
+        }
+      ]
+    },
+    {
+      "name": "Sprunggelenke mobilisieren",
+      "family_key": null,
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/ankle-circle-relaxation.png",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/dist/png/0270-relaxation.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "Unverändert",
+          "caption": "Fuß frei halten und das Sprunggelenk langsam bewegen."
+        },
+        {
+          "asset_path": "assets/athletics/ankle-circle-tension.png",
+          "credit": "Everkinetic / Greg Priday",
+          "source_url": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/dist/png/0270-tension.png",
+          "license": "CC BY-SA 4.0",
+          "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "changes": "Unverändert",
+          "caption": "Weitere Position der Kreisbewegung; beide Richtungen und beide Füße mobilisieren."
+        }
+      ]
+    },
+    {
+      "name": "Überkopfspannung im Stand",
+      "family_key": "athletics-2026-024",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/overhead-hold.jpg",
+          "credit": "U.S. Army / Army Combat Fitness Test",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Conditioning_Drill_1-_Power_Jump.webm",
+          "license": "Public Domain (US)",
+          "license_url": "https://commons.wikimedia.org/wiki/Template:PD-USGov-Military-Army",
+          "changes": "Standbild bei 22 s; Ausschnitt; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Überkopfposition: Arme lang, Rippen über dem Becken halten."
+        }
+      ]
+    },
+    {
+      "name": "Strecksprung mit stabiler Landung",
+      "family_key": "athletics-2026-033",
+      "visibility": "system",
+      "media_items": [
+        {
+          "asset_path": "assets/athletics/vertical-jump.jpg",
+          "credit": "U.S. Army / Army Combat Fitness Test",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Conditioning_Drill_1-_Power_Jump.webm",
+          "license": "Public Domain (US)",
+          "license_url": "https://commons.wikimedia.org/wiki/Template:PD-USGov-Military-Army",
+          "changes": "Standbild bei 42.3 s; Ausschnitt; JPG komprimiert",
+          "notice": "The appearance of U.S. Department of War (DoW) visual information does not imply or constitute DoW endorsement.",
+          "caption": "Flugphase des Strecksprungs: Körper lang und Arme oben. Anschließend gemäß Text weich landen und stabil stehen."
+        }
+      ]
+    }
+  ],
+  "unillustrated_existing": [
+    "5–10–5 Pendellauf kurz",
+    "Angriffsanlauf ohne Sprung",
+    "Außenrotation isometrisch ohne Band",
+    "Bärenstand halten",
+    "Bauchlage Y–T–W",
+    "Blockhaltung isometrisch",
+    "Blockschritt mit kontrolliertem Sprung",
+    "Brustwirbelsäulen-Rotation im Vierfüßler",
+    "Cooldown Mobilitätsflow",
+    "Einbeinstand mit Reichbewegung",
+    "Federnde Fußgelenksprünge",
+    "Hohlkörper-Halten kompakt",
+    "Hüftöffner im Stand",
+    "Knie-vor-zur-Wand ohne Wand",
+    "Landung einfrieren",
+    "Liniensprints mit Blocksprüngen",
+    "Reaktive Blocksprüngen an der Wand",
+    "Schnelle Linienfüße vor–zurück",
+    "Schnelles Absenken in Landeposition",
+    "Schulterblattkreisen im Stand",
+    "Seitstütz mit Arm und Bein",
+    "Skater-Schritt mit Balance",
+    "Spiegeln zu zweit ohne Gerät",
+    "Split-Step auf Signal",
+    "Standweitsprung mit Halt",
+    "Theraband Außenrotation Schulter",
+    "Vierfüßler Wirbelsäulenwelle",
+    "Wandgleiten der Arme"
+  ]
+}
